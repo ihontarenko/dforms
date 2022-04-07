@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>StartForm.io - Dependencies</name>
+    <groupId>io.startform</groupId>
+    <artifactId>startform-dependencies</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0-RC</version>
+
+    <properties>
+        <spring-boot.version>2.4.4</spring-boot.version>
+        <pebble-starter.version>3.0.10</pebble-starter.version>
+        <hikari-cp.version>4.0.3</hikari-cp.version>
+        <flyway-maven-plugin.version>8.5.2</flyway-maven-plugin.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot Dependencies -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Pebble -->
+            <dependency>
+                <groupId>io.pebbletemplates</groupId>
+                <artifactId>pebble-spring-boot-2-starter</artifactId>
+                <version>${pebble-starter.version}</version>
+            </dependency>
+            <!-- Hikari -->
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hikari-cp.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.flywaydb</groupId>
+                    <artifactId>flyway-maven-plugin</artifactId>
+                    <version>${flyway-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

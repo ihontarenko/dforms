@@ -1,0 +1,16 @@
+server.port: 8077
+server.servlet.context-path: /api
+server.error.whitelabel.enabled: false
+
+spring:
+  config:
+    additional-location: classpath:api-default.yml
+  application:
+    admin:
+      enabled: false
+      jmx-name: org.springframework.boot:type=API,name=APIApplication
+
+hello: World!
+
+http-security:
+  h2-console: /api-console/**
