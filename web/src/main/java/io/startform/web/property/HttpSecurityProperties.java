@@ -1,5 +1,6 @@
-package io.startform.parent.property;
+package io.startform.web.property;
 
+import io.startform.parent.property.SecurityProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Arrays;
@@ -7,7 +8,7 @@ import java.util.Arrays;
 import static java.lang.String.format;
 
 @ConfigurationProperties(prefix = "http-security")
-public class HttpSecurityProperties {
+public class HttpSecurityProperties implements SecurityProperties {
 
     private String[] permitAll;
     private String h2Console;
@@ -17,6 +18,7 @@ public class HttpSecurityProperties {
     private WebSecurityProperties webSecurity;
 
     private String sessionCookie;
+    private String successRedirect;
 
     public String[] getPermitAll() {
         return permitAll;
@@ -67,9 +69,18 @@ public class HttpSecurityProperties {
     }
 
     @Override
+    public String getSuccessRedirect() {
+        return successRedirect;
+    }
+
+    public void setSuccessRedirect(String successRedirect) {
+        this.successRedirect = successRedirect;
+    }
+
+    @Override
     public String toString() {
-        return "HttpSecurityProperties{permitAll=%s, h2Console='%s', rememberMe=%s, formLogin=%s, webSecurity=%s, sessionCookie='%s'}"
-                .formatted(Arrays.toString(permitAll), h2Console, rememberMe, formLogin, webSecurity, sessionCookie);
+        return "HttpSecurityProperties{permitAll=%s, h2Console='%s', rememberMe=%s, formLogin=%s, webSecurity=%s, sessionCookie='%s', successRedirect='%s'}"
+                .formatted(Arrays.toString(permitAll), h2Console, rememberMe, formLogin, webSecurity, sessionCookie, successRedirect);
     }
 
     public static class FormLoginProperties {

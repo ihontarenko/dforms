@@ -1,6 +1,6 @@
 # Server
 server.port: 8099
-server.servlet.context-path: /web
+server.servlet.context-path: /
 server.error.whitelabel.enabled: false
 server:
   servlet:
@@ -23,20 +23,11 @@ spring:
     admin:
       enabled: false
       jmx-name: org.springframework.boot:type=Web,name=WebApplication
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            clientId: e84033c9b98706b5ab7c
-            clientSecret: 8e550eb028c98040a8be796a7492c135cdaccf8a
-          google:
-            clientId: 809685880440-4idg7dtjejltuqp6ddtf0mvcrjscnr50.apps.googleusercontent.com
-            clientSecret: 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
   banner:
     location: classpath:banner.txt
   config:
     import:
+      - classpath:application-sensitive.yml
       - classpath:db/data-source.properties
       - classpath:db/spring-jpa-hibernate.properties
       - classpath:db/flyway.properties
@@ -45,7 +36,7 @@ spring:
     enabled: true
 # Application
 application:
-  title: StartForm
+  title: StartForm-Web
   version: 1.0-beta
   locale:
     cookie-name: J_START_FORM_IO_LOCALE
@@ -56,13 +47,11 @@ pebble:
   cache: false
   exposeRequestAttributes: true
 
-h2-console:
-  name: A
-
 # Http Security
 http-security:
   h2-console: /console/**
   security-path: /security
+  success-redirect: ${http-security.security-path}/check
   permit-all:
     - ${http-security.security-path}/**
     - ${http-security.security-path}/oauth/**
@@ -85,5 +74,3 @@ http-security:
       - "/js/**"
       - "/css/**"
       - "/images/**"
-
-hello: Hello World!

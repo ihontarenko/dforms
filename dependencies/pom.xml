@@ -10,9 +10,9 @@
     <version>1.0.0-RC</version>
 
     <properties>
-        <spring-boot.version>2.4.4</spring-boot.version>
+        <spring-boot.version>2.6.6</spring-boot.version>
         <pebble-starter.version>3.0.10</pebble-starter.version>
-        <hikari-cp.version>4.0.3</hikari-cp.version>
+        <hikari-cp.version>5.0.1</hikari-cp.version>
         <flyway-maven-plugin.version>8.5.2</flyway-maven-plugin.version>
     </properties>
 

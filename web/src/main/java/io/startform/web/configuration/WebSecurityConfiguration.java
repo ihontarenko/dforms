@@ -1,9 +1,11 @@
 package io.startform.web.configuration;
 
-import io.startform.parent.property.HttpSecurityProperties;
+import io.startform.parent.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import io.startform.parent.security.oauth2.OAuth2UserService;
+import io.startform.parent.security.service.UserService;
+import io.startform.web.property.HttpSecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -63,40 +65,54 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
+    @Bean
+    public OAuth2UserService oauth2UserService() {
+        return new OAuth2UserService();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
-                // global configuration
-                .requestMatchers()
-                //.requestMatchers(requestMatcherPort(8099))
-                .and()
-                .authorizeRequests()
-                .antMatchers(properties.getPermitAll()).permitAll()
-                .anyRequest().authenticated()
-                // log-in configuration
-                .and()
-                .formLogin()
-                .loginPage(properties.getFormLogin().getLogin()).permitAll()
-                .usernameParameter(properties.getFormLogin().getUsername())
-                .passwordParameter(properties.getFormLogin().getPassword())
-                .loginProcessingUrl(properties.getFormLogin().getLogin())
+            .oauth2Login()
+                .loginPage("/login/oauth2")
+                .authorizationEndpoint()
+                    .baseUri("/goto/")
+                    .and()
+                .redirectionEndpoint()
+                    .baseUri("/")
+                    .and()
+                .userInfoEndpoint()
+                    .userService(oauth2UserService())
+                    .and()
+                .successHandler(
+                        new OAuth2AuthenticationSuccessHandler(new UserService(), properties)
+                )
+                    .and()
+//                .formLogin()
+//                .loginPage(properties.getFormLogin().getLogin()).permitAll()
+//                .usernameParameter(properties.getFormLogin().getUsername())
+//                .passwordParameter(properties.getFormLogin().getPassword())
+//                .loginProcessingUrl(properties.getFormLogin().getLogin())
                 // remember-me configuration
-                .and()
-                .rememberMe()
-                .rememberMeParameter(properties.getRememberMe().getParameterName())
-                .rememberMeCookieName(properties.getRememberMe().getCookieName())
-                .key(properties.getRememberMe().getSecretKey())
-                .tokenValiditySeconds(properties.getRememberMe().getValiditySeconds())
-                // log-out configuration
-                .and()
-                .logout().logoutUrl(properties.getFormLogin().getLogout())
-                .deleteCookies(properties.getSessionCookie())
+//                .and()
+//                .rememberMe()
+//                .rememberMeParameter(properties.getRememberMe().getParameterName())
+//                .rememberMeCookieName(properties.getRememberMe().getCookieName())
+//                .key(properties.getRememberMe().getSecretKey())
+//                .tokenValiditySeconds(properties.getRememberMe().getValiditySeconds())
+//                // log-out configuration
+//                .and()
+//                .logout().logoutUrl(properties.getFormLogin().getLogout())
+//                .deleteCookies(properties.getSessionCookie())
                 // others
-                .and()
-                .headers().frameOptions().disable()
-                .and()
-                .csrf().ignoringAntMatchers(properties.getH2Console())
-                .and()
+
+                .headers()
+                    .frameOptions().disable()
+                    .and()
+                .csrf()
+                    .ignoringAntMatchers(properties.getH2Console())
+                    .and()
                 .cors().disable();
     }
 

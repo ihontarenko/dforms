@@ -1,0 +1,53 @@
+# Server
+server.port: 8077
+server.servlet.context-path: /
+server.error.whitelabel.enabled: false
+# Management
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,flyway
+# Endpoints
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+# Spring
+spring:
+  application:
+    admin:
+      enabled: false
+      jmx-name: org.springframework.boot:type=API,name=APIApplication
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: e84033c9b98706b5ab7c
+            clientSecret: 8e550eb028c98040a8be796a7492c135cdaccf8a
+          google:
+            clientId: 809685880440-4idg7dtjejltuqp6ddtf0mvcrjscnr50.apps.googleusercontent.com
+            clientSecret: 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
+  banner:
+    location: classpath:banner.txt
+  config:
+    import:
+      - classpath:db/data-source.properties
+      - classpath:db/spring-jpa-hibernate.properties
+      - classpath:db/flyway.properties
+      - classpath:db/h2.properties
+  flyway:
+    enabled: true
+# Application
+application:
+  title: StartForm-API
+  version: 1.0-beta
+
+# Http Security
+http-security:
+  h2-console: /console/**
+  security-path: /security
+  permit-all:
+    - ${http-security.security-path}/oauth/**
+    - ${http-security.h2-console}

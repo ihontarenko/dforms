@@ -10,10 +10,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Integer id;
-    @Column(name = "USERNAME")
-    private String name;
+
+    @Column(name = "LOGIN")
+    private String login;
+
     @Column(name = "PASSWORD")
     private String password;
+
     @Column(name = "ENABLED")
     private boolean enabled;
 
@@ -25,12 +28,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLogin() {
+        return login;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
@@ -51,6 +54,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{id=%d, name='%s', password='*HIDDEN*', enabled=%s}".formatted(id, name, enabled);
+        return "User{id=%d, login='%s', password='*HIDDEN*', enabled=%s}".formatted(id, login, enabled);
     }
 }

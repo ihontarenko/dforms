@@ -11,7 +11,7 @@
     </parent>
 
     <properties>
-        <start-class>io.startform.web.StartApplication</start-class>
+        <start-class>io.startform.web.StartFormWebApplication</start-class>
     </properties>
 
     <name>StartForm.io - WEB Application</name>
@@ -50,15 +50,6 @@
                 <configuration>
                     <mainClass>${start-class}</mainClass>
                     <jvmArguments>--enable-preview</jvmArguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <compilerArgs>--enable-preview</compilerArgs>
-                    <source>16</source>
-                    <target>16</target>
                 </configuration>
             </plugin>
         </plugins>

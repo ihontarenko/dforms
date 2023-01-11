@@ -11,7 +11,7 @@
     </parent>
 
     <properties>
-        <start-class>io.startform.api.StartApplication</start-class>
+        <start-class>io.startform.api.StartFormApiApplication</start-class>
     </properties>
 
     <name>StartForm.io - API Application</name>
@@ -37,5 +37,18 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>${start-class}</mainClass>
+                    <jvmArguments>--enable-preview</jvmArguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

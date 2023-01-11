@@ -23,3 +23,4 @@ output/
 .factorypath
 .DS_Store
 *.private.properties
+*senvitive.yml

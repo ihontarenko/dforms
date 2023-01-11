@@ -1,19 +1,26 @@
 package io.startform.web.controller;
 
-import io.startform.parent.property.HttpSecurityProperties;
+import io.startform.web.property.HttpSecurityProperties;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/security")
 public class AuthorizationController {
 
-    private HttpSecurityProperties properties;
+    private final HttpSecurityProperties properties;
 
     public AuthorizationController(HttpSecurityProperties properties) {
         this.properties = properties;
+    }
+
+    @GetMapping("/check")
+    @ResponseBody
+    public String check(Principal principal) {
+        return principal != null ? principal.getName() : "NULL";
     }
 
     @GetMapping("/login")
