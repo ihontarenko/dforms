@@ -1,0 +1,34 @@
+[Section1]
+key1: value1
+key2: value2
+
+[Section1.Subsection]
+key3: value3
+key4: value4
+
+[Section2]
+list_key:
+  - item1
+  - item2
+  - item3
+
+set_key:
+  { item1, item2, item3 }
+
+dict_key:
+  subkey1: subvalue1
+  subkey2: subvalue2
+
+int_key: 42
+float_key: 3.14
+bool_key_true: true
+bool_key_false: false
+
+multiline_string: """
+This is a multiline
+string example.
+"""
+
+variable: ${Section1.key1}
+
+include: another_confio_file.confio

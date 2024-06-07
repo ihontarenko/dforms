@@ -14,7 +14,11 @@ endpoints:
     enabled: true
     sensitive: false
 # Spring
+
 spring:
+  h2:
+    console:
+      enabled: false
   application:
     admin:
       enabled: false

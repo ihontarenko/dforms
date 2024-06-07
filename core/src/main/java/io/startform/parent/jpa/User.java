@@ -1,9 +1,9 @@
 package io.startform.parent.jpa;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="USERS")
+@Table(name="SECURITY_USERS")
 public class User {
 
     @Id

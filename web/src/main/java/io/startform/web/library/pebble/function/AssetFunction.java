@@ -7,7 +7,7 @@ import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

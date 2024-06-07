@@ -21,6 +21,7 @@
         <module>core</module>
         <module>api</module>
         <module>web</module>
+        <module>app-test</module>
     </modules>
 
 </project>

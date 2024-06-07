@@ -1,7 +1,5 @@
 package io.startform.api.controller;
 
-import io.startform.parent.jpa.geo.Country;
-import io.startform.parent.jpa.geo.CountryRepository;
 import io.startform.parent.service.HelloService;
 import io.startform.parent.service.StateCheck;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +25,6 @@ public class IndexController {
     @Autowired
     private Environment env;
 
-    @Autowired
-    private CountryRepository repository;
-
     private final HelloService helloService;
 
     public IndexController(HelloService helloService) {
@@ -45,11 +40,6 @@ public class IndexController {
     public String login() {
         System.out.println("from api");
         return env.getProperty("pebble.suffix");
-    }
-
-    @GetMapping("/country/{iso}")
-    public Country getCountry(@PathVariable("iso") String iso) {
-        return repository.getFirst("iso", iso);
     }
 
     @GetMapping("/object")
