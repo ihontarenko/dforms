@@ -4,25 +4,25 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.startform</groupId>
+        <groupId>df</groupId>
         <version>1.0.0-RC</version>
-        <artifactId>startform-project</artifactId>
+        <artifactId>df-project</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <properties>
-        <start-class>io.startform.api.StartFormApiApplication</start-class>
+        <start-class>df.api.DFAPIApplication</start-class>
     </properties>
 
-    <name>StartForm.io - API Application</name>
-    <artifactId>startform-api</artifactId>
+    <name>Dynamic Forms - API Application</name>
+    <artifactId>df-api</artifactId>
     <packaging>jar</packaging>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.startform</groupId>
-                <artifactId>startform-dependencies</artifactId>
+                <groupId>df</groupId>
+                <artifactId>df-dependencies</artifactId>
                 <version>1.0.0-RC</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -32,8 +32,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.startform</groupId>
-            <artifactId>startform-core</artifactId>
+            <groupId>df</groupId>
+            <artifactId>df-core</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

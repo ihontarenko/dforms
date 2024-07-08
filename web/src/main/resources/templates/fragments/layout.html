@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>title</title>
+        <title>Dynamic Forms - {% block title %}Default{% endblock %}</title>
 
         <link rel="stylesheet" href="{{asset('/css/bootstrap.min.css')}}" crossorigin="anonymous">
         <link rel="stylesheet" href="{{asset('/css/bootstrap-utilities.min.css')}}" crossorigin="anonymous">
@@ -13,8 +13,6 @@
         <!-- Extra CSS -->
         {% block css %}{% endblock %}
         <!-- END:Extra CSS -->
-
-        <title>Hello, world!</title>
     </head>
     <body>
         {% block body %}{% endblock %}

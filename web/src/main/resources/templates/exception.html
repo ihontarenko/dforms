@@ -1,0 +1,21 @@
+{% extends "fragments/layout" %}
+{% block body %}
+<div class="container text-left">
+    <div class="row pb-4">
+        <div class="col">
+            <h1>{{ class }}</h1>
+        </div>
+    </div>
+    <div class="row pb-3">
+        <div class="col">
+            <h3>{{ message }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h4>{{ t.getMessage('common.stack_trace.title') }}</h4>
+            <pre style="border: 1px solid #bfbfbf;background-color: black;color: #94ff94;" class="p-2">{{ stackTrace }}</pre>
+        </div>
+    </div>
+</div>
+{% endblock %}

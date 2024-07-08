@@ -3,9 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>StartForm.io - ROOT</name>
-    <groupId>io.startform</groupId>
-    <artifactId>startform-project</artifactId>
+    <name>Dynamic Forms - ROOT</name>
+    <groupId>df</groupId>
+    <artifactId>df-project</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-RC</version>
 

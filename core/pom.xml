@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.startform</groupId>
+        <groupId>df</groupId>
         <version>1.0.0-RC</version>
-        <artifactId>startform-project</artifactId>
+        <artifactId>df-project</artifactId>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <name>StartForm.io - Core</name>
-    <artifactId>startform-core</artifactId>
+    <name>Dynamic Forms - Core</name>
+    <artifactId>df-core</artifactId>
     <packaging>jar</packaging>
 
     <properties>
@@ -23,8 +23,8 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.startform</groupId>
-                <artifactId>startform-dependencies</artifactId>
+                <groupId>df</groupId>
+                <artifactId>df-dependencies</artifactId>
                 <version>1.0.0-RC</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -37,15 +37,13 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>mysql</groupId>-->
+<!--            <artifactId>mysql-connector-java</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>

@@ -3,15 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>StartForm.io - Dependencies</name>
-    <groupId>io.startform</groupId>
-    <artifactId>startform-dependencies</artifactId>
+    <name>Dynamic Forms - Dependencies</name>
+    <groupId>df</groupId>
+    <artifactId>df-dependencies</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0-RC</version>
 
     <properties>
-        <spring-boot.version>3.0.2</spring-boot.version>
-        <pebble-starter.version>3.0.10</pebble-starter.version>
+        <spring-boot.version>3.3.0</spring-boot.version>
+        <pebble-starter.version>3.2.2</pebble-starter.version>
         <hikari-cp.version>5.0.1</hikari-cp.version>
         <flyway-maven-plugin.version>8.5.2</flyway-maven-plugin.version>
     </properties>
@@ -29,7 +29,7 @@
             <!-- Pebble -->
             <dependency>
                 <groupId>io.pebbletemplates</groupId>
-                <artifactId>pebble-spring-boot-2-starter</artifactId>
+                <artifactId>pebble-spring-boot-starter</artifactId>
                 <version>${pebble-starter.version}</version>
             </dependency>
             <!-- Hikari -->
