@@ -34,6 +34,14 @@ spring:
       - classpath:db/h2.properties
   flyway:
     enabled: true
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            redirectUri: '{baseUrl}/secure/oauth2/callback/{registrationId}'
+          google:
+            redirectUri: '{baseUrl}/secure/oauth2/callback/{registrationId}'
 # Application
 application:
   version: 1.0-beta

@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class OAuth2UserDelegate implements OAuth2User {
 
+    public static final String FIELD_LOGIN = "login";
     public static final String FIELD_NAME = "name";
     public static final String FIELD_EMAIL = "email";
 
@@ -35,6 +36,10 @@ public class OAuth2UserDelegate implements OAuth2User {
 
     public String getEmail() {
         return user.getAttribute(FIELD_EMAIL);
+    }
+
+    public String getLogin() {
+        return user.getAttribute(FIELD_LOGIN);
     }
 
 }

@@ -14,15 +14,21 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"unused"})
 @Configuration
@@ -55,6 +61,12 @@ public class WebSecurityConfiguration {
     }
 
     @Bean
+    public GrantedAuthoritiesMapper userAuthoritiesMapper() {
+        return authorities -> authorities.stream()
+                .filter(OAuth2UserAuthority.class::isInstance).collect(Collectors.toSet());
+    }
+
+    @Bean
     protected SecurityFilterChain securityFilterChain(
             HttpSecurity http, UserDetailsService userDetailsService, OAuth2UserService oauth2UserService
     ) throws Exception {
@@ -70,8 +82,10 @@ public class WebSecurityConfiguration {
                 .anyRequest().authenticated()
         );
 
-        http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
-        http.csrf(csrf -> csrf.ignoringRequestMatchers(h2Matcher));
+        http.headers(headers
+                -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+        http.csrf(csrf
+                -> csrf.ignoringRequestMatchers(h2Matcher));
         http.cors(AbstractHttpConfigurer::disable);
         http.userDetailsService(userDetailsService);
 
