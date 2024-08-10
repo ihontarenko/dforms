@@ -1,34 +1,35 @@
 package df.web.configuration;
 
-import df.parent.security.oauth2.OAuth2AuthenticationSuccessHandler;
-import df.parent.security.oauth2.OAuth2UserService;
-import df.parent.security.service.UserSuccessHandlerService;
+import df.base.security.*;
+import df.base.security.oauth2.OAuth2UserMapperFactory;
+import df.base.security.oauth2.OAuth2UserMappers;
+import df.base.security.oauth2.OAuth2UserService;
+import df.base.security.oauth2.OpenIDUserService;
+import df.base.service.UserService;
 import df.web.property.HttpSecurityProperties;
+import df.web.property.HttpSecurityProperties.FormLoginProperties;
+import df.web.property.HttpSecurityProperties.OAuth2Properties;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+import static java.util.Arrays.stream;
 
 @SuppressWarnings({"unused"})
 @Configuration
@@ -47,69 +48,91 @@ public class WebSecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userService, PasswordEncoder encoder) {
+    public AuthenticationProvider authenticationProvider(UserDetailsService userService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
-        provider.setPasswordEncoder(encoder);
+        provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(userService);
 
         return provider;
     }
 
     @Bean
-    public GrantedAuthoritiesMapper userAuthoritiesMapper() {
-        return authorities -> authorities.stream()
-                .filter(OAuth2UserAuthority.class::isInstance).collect(Collectors.toSet());
+    public UserDetailsService userDetailsService(UserService userService) {
+        return new UserInfoService(userService);
     }
 
     @Bean
     protected SecurityFilterChain securityFilterChain(
-            HttpSecurity http, UserDetailsService userDetailsService, OAuth2UserService oauth2UserService
+            HttpSecurity http,
+            UserDetailsService userDetailsService,
+            OAuth2UserService oauth2UserService,
+            OpenIDUserService openIDUserService
     ) throws Exception {
-        HttpSecurityProperties.OAuth2SecurityProperties oauth2Properties = properties.getOAuth2Security();
-        AuthenticationSuccessHandler                    successHandler   = new OAuth2AuthenticationSuccessHandler(new UserSuccessHandlerService(), properties);
-        HttpSecurityProperties.FormLoginProperties      loginProperties  = properties.getFormLogin();
-        RequestMatcher[]                                securityMatchers = Arrays.stream(properties.getPermitAll())
+        FormLoginProperties          loginProperties  = properties.getFormLogin();
+        OAuth2Properties             oauth2Properties = properties.getOAuth2();
+        AuthenticationSuccessHandler successHandler   = new UserAuthenticationSuccessHandler(properties);
+        AuthenticationFailureHandler failureHandler   = new UserAuthenticationFailureHandler(properties);
+        RequestMatcher[]             securityMatchers = stream(properties.getPermitAll())
                 .map(AntPathRequestMatcher::new).toArray(RequestMatcher[]::new);
-        RequestMatcher                                  h2Matcher        = new AntPathRequestMatcher("%s/**".formatted(properties.getH2Console()));
 
         http.authorizeHttpRequests(authorization -> authorization
                 .requestMatchers(securityMatchers).permitAll()
                 .anyRequest().authenticated()
         );
 
-        http.headers(headers
-                -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
-        http.csrf(csrf
-                -> csrf.ignoringRequestMatchers(h2Matcher));
+        http.exceptionHandling(Customizer.withDefaults());
+
+        http.headers(headers -> headers
+                .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+        http.csrf(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
         http.userDetailsService(userDetailsService);
 
-        http.oauth2Login(oauth2 -> oauth2
-                .loginPage(properties.getLoginPage()).permitAll()
-                .authorizationEndpoint(authorizationEndpoint
-                        -> authorizationEndpoint.baseUri(oauth2Properties.getAuthorizationEndpoint()))
-                .redirectionEndpoint(redirectionEndpoint
-                        -> redirectionEndpoint.baseUri(oauth2Properties.getRedirectEndpoint()))
-                .userInfoEndpoint(userInfoEndpoint
-                        -> userInfoEndpoint.userService(oauth2UserService))
+        http.formLogin(formLogin -> formLogin
                 .successHandler(successHandler)
-                .defaultSuccessUrl(loginProperties.getLoginSuccess(), true)
-                .failureUrl(loginProperties.getLoginFailure())
+                .failureHandler(failureHandler)
+                .loginPage(loginProperties.getBaseUrl())
+                .loginProcessingUrl(loginProperties.getProcessingUrl())
+                .permitAll()
+        );
+
+        http.oauth2Login(oauth2 -> oauth2
+                .loginPage(oauth2Properties.getBaseUrl()).permitAll()
+                .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint
+                        .baseUri(oauth2Properties.getAuthorizationEndpoint()))
+                .redirectionEndpoint(redirectionEndpoint -> redirectionEndpoint
+                        .baseUri(oauth2Properties.getRedirectEndpoint()))
+                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+                        .userService(oauth2UserService)
+                        .oidcUserService(openIDUserService))
+                .successHandler(successHandler)
+                .failureHandler(failureHandler)
         );
 
         http.logout(logout -> logout
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher(loginProperties.getLogout()))
-                .logoutSuccessUrl(loginProperties.getLogoutSuccess())
+                .logoutRequestMatcher(new AntPathRequestMatcher(loginProperties.getLogoutUrl()))
+                .logoutSuccessUrl(loginProperties.getLogoutSuccessUrl())
         );
 
         return http.build();
+    }
+
+    @Bean
+    public OAuth2UserMapperFactory userMapperFactory() {
+        OAuth2UserMapperFactory factory = new OAuth2UserMapperFactory();
+
+        factory.addMapper(Provider.GOOGLE, OAuth2UserMappers.INSTANCE::mapGoogle);
+        factory.addMapper(Provider.FACEBOOK, OAuth2UserMappers.INSTANCE::mapFacebook);
+        factory.addMapper(Provider.GITHUB, OAuth2UserMappers.INSTANCE::mapGitHub);
+
+        return factory;
     }
 
 }

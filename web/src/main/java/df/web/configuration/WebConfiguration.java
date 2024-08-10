@@ -1,10 +1,9 @@
 package df.web.configuration;
 
-import df.parent.configuration.ParentConfiguration;
-import df.parent.library.BeansHolder;
-import df.parent.property.ApplicationProperties;
-import df.parent.library.resource.ContentHashVersionStrategy;
-import df.web.library.pebble.PebbleExtension;
+import df.base.common.resource.ContentHashVersionStrategy;
+import df.base.configuration.ParentConfiguration;
+import df.base.property.ApplicationProperties;
+import df.web.common.pebble.PebbleExtension;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ApplicationContext;
@@ -17,8 +16,6 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.resource.EncodedResourceResolver;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
-import jakarta.annotation.PostConstruct;
-
 import static java.util.Objects.requireNonNull;
 
 @Configuration
@@ -28,19 +25,14 @@ import static java.util.Objects.requireNonNull;
 @Import(ParentConfiguration.class)
 public class WebConfiguration implements WebMvcConfigurer {
 
-    private final ApplicationContext context;
+    private final ApplicationContext    context;
     private final ApplicationProperties properties;
-    private final Environment environment;
+    private final Environment           environment;
 
     public WebConfiguration(ApplicationContext context, ApplicationProperties properties, Environment environment) {
         this.environment = environment;
         this.context = context;
         this.properties = properties;
-    }
-
-    @PostConstruct
-    public void afterConstruct() {
-        BeansHolder.INSTANCE.set(ApplicationContext.class, context);
     }
 
     @Bean

@@ -1,0 +1,8 @@
+{% extends "common/layout" %}
+{% block title %}{{ translate('title.home') }}{% endblock %}
+{% block content %}
+<p class="mt-5 mb-3 text-muted text-center">{{ status }}</p>
+<p class="mt-5 mb-3 text-muted text-center">
+    <h3>{{ principal.name }}</h3>
+</p>
+{% endblock %}

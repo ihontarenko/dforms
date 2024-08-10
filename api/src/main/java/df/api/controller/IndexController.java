@@ -1,7 +1,7 @@
 package df.api.controller;
 
-import df.parent.service.HelloService;
-import df.parent.service.StateCheck;
+import df.base.service.HelloService;
+import df.base.service.StateCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;

@@ -1,0 +1,10 @@
+{% if messagesMap is not empty %}
+    {% for messagesEntry in messagesMap %}
+    {% set messages = messagesEntry.value %}
+    <div class="alert {{ messagesEntry.key.bootstrapClass }}">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>
+    {% endfor %}
+{% endif %}

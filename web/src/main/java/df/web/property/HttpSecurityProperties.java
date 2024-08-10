@@ -1,24 +1,18 @@
 package df.web.property;
 
-import df.parent.property.SecurityProperties;
+import df.base.property.AuthorizationRedirectProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.Arrays;
-
-import static java.lang.String.format;
-
 @ConfigurationProperties(prefix = "http-security")
-public class HttpSecurityProperties implements SecurityProperties {
+public class HttpSecurityProperties implements AuthorizationRedirectProperties {
 
     private String[] permitAll;
     private String h2Console;
     private String securityPath;
-    private String oauth2Path;
-    private String loginPage;
 
     private RememberMeProperties rememberMe;
-    private FormLoginProperties formLogin;
-    private OAuth2SecurityProperties oauth2Security;
+    private FormLoginProperties  formLogin;
+    private OAuth2Properties     oauth2;
 
     private String sessionCookie;
     private String successRedirect;
@@ -39,28 +33,12 @@ public class HttpSecurityProperties implements SecurityProperties {
         this.h2Console = h2Console;
     }
 
-    public String getOauth2Path() {
-        return oauth2Path;
+    public OAuth2Properties getOAuth2() {
+        return oauth2;
     }
 
-    public void setOauth2Path(String oauth2Path) {
-        this.oauth2Path = oauth2Path;
-    }
-
-    public String getLoginPage() {
-        return loginPage;
-    }
-
-    public void setLoginPage(String loginPage) {
-        this.loginPage = loginPage;
-    }
-
-    public OAuth2SecurityProperties getOAuth2Security() {
-        return oauth2Security;
-    }
-
-    public void setOAuth2Security(OAuth2SecurityProperties oauth2Security) {
-        this.oauth2Security = oauth2Security;
+    public void setOAuth2(OAuth2Properties oauth2Security) {
+        this.oauth2 = oauth2Security;
     }
 
     public FormLoginProperties getFormLogin() {
@@ -96,28 +74,37 @@ public class HttpSecurityProperties implements SecurityProperties {
     }
 
     @Override
-    public String getSuccessRedirect() {
-        return successRedirect;
+    public String getOAuth2SuccessRedirect() {
+        return getOAuth2().getSuccessUrl();
+    }
+
+    @Override
+    public String getOAuth2FailureRedirect() {
+        return getOAuth2().getFailureUrl();
+    }
+
+    @Override
+    public String getFormLoginSuccessRedirect() {
+        return getFormLogin().getSuccessUrl();
+    }
+
+    @Override
+    public String getFormLoginFailureRedirect() {
+        return getFormLogin().getFailureUrl();
     }
 
     public void setSuccessRedirect(String successRedirect) {
         this.successRedirect = successRedirect;
     }
 
-    @Override
-    public String toString() {
-        return "HttpSecurityProperties{permitAll=%s, securityPath=%s, h2Console='%s', rememberMe=%s, formLogin=%s, sessionCookie='%s', successRedirect='%s', webSecurity=%s, oauth2Security=%s}"
-                .formatted(Arrays.toString(permitAll), securityPath, h2Console, rememberMe, formLogin, sessionCookie, successRedirect, oauth2Security);
-    }
-
     public static class FormLoginProperties {
 
         private String processingUrl;
-        private String login;
-        private String loginSuccess;
-        private String loginFailure;
-        private String logout;
-        private String logoutSuccess;
+        private String baseUrl;
+        private String successUrl;
+        private String failureUrl;
+        private String logoutUrl;
+        private String logoutSuccessUrl;
         private String username;
         private String password;
 
@@ -129,20 +116,20 @@ public class HttpSecurityProperties implements SecurityProperties {
             this.processingUrl = processingUrl;
         }
 
-        public String getLogin() {
-            return login;
+        public String getBaseUrl() {
+            return baseUrl;
         }
 
-        public void setLogin(String login) {
-            this.login = login;
+        public void setBaseUrl(String baseUrl) {
+            this.baseUrl = baseUrl;
         }
 
-        public String getLogout() {
-            return logout;
+        public String getLogoutUrl() {
+            return logoutUrl;
         }
 
-        public void setLogout(String logout) {
-            this.logout = logout;
+        public void setLogoutUrl(String logoutUrl) {
+            this.logoutUrl = logoutUrl;
         }
 
         public String getUsername() {
@@ -161,35 +148,30 @@ public class HttpSecurityProperties implements SecurityProperties {
             this.password = password;
         }
 
-        public String getLoginSuccess() {
-            return loginSuccess;
+        public String getSuccessUrl() {
+            return successUrl;
         }
 
-        public void setLoginSuccess(String loginSuccess) {
-            this.loginSuccess = loginSuccess;
+        public void setSuccessUrl(String successUrl) {
+            this.successUrl = successUrl;
         }
 
-        public String getLogoutSuccess() {
-            return logoutSuccess;
+        public String getLogoutSuccessUrl() {
+            return logoutSuccessUrl;
         }
 
-        public String getLoginFailure() {
-            return loginFailure;
+        public String getFailureUrl() {
+            return failureUrl;
         }
 
-        public void setLoginFailure(String loginFailure) {
-            this.loginFailure = loginFailure;
+        public void setFailureUrl(String failureUrl) {
+            this.failureUrl = failureUrl;
         }
 
-        public void setLogoutSuccess(String logoutSuccess) {
-            this.logoutSuccess = logoutSuccess;
+        public void setLogoutSuccessUrl(String logoutSuccessUrl) {
+            this.logoutSuccessUrl = logoutSuccessUrl;
         }
 
-        @Override
-        public String toString() {
-            return "FormLoginProperties{processingUrl='%s', login='%s', loginSuccess='%s', logout='%s', logoutSuccess='%s', username='%s', password='%s'}"
-                    .formatted(processingUrl, login, loginSuccess, logout, logoutSuccess, username, password);
-        }
     }
 
     public static class RememberMeProperties {
@@ -231,17 +213,15 @@ public class HttpSecurityProperties implements SecurityProperties {
             this.validitySeconds = validitySeconds;
         }
 
-        @Override
-        public String toString() {
-            return format("RememberMe{cookieName='%s', parameterName='%s', secretKey='%s', validitySeconds=%d}",
-                    cookieName, parameterName, secretKey, validitySeconds);
-        }
     }
 
-    public static class OAuth2SecurityProperties {
+    public static class OAuth2Properties {
 
         public String redirectEndpoint;
         public String authorizationEndpoint;
+        public String successUrl;
+        public String failureUrl;
+        public String baseUrl;
 
         public String getRedirectEndpoint() {
             return redirectEndpoint;
@@ -259,12 +239,29 @@ public class HttpSecurityProperties implements SecurityProperties {
             this.authorizationEndpoint = authorizationEndpoint;
         }
 
-        @Override
-        public String toString() {
-            return "OAuth2SecurityProperties{redirectEndpoint='%s', authorizationEndpoint='%s'}"
-                    .formatted(redirectEndpoint, authorizationEndpoint);
+        public String getSuccessUrl() {
+            return successUrl;
         }
 
+        public void setSuccessUrl(String successUrl) {
+            this.successUrl = successUrl;
+        }
+
+        public String getFailureUrl() {
+            return failureUrl;
+        }
+
+        public void setFailureUrl(String failureUrl) {
+            this.failureUrl = failureUrl;
+        }
+
+        public String getBaseUrl() {
+            return baseUrl;
+        }
+
+        public void setBaseUrl(String baseUrl) {
+            this.baseUrl = baseUrl;
+        }
     }
 
 }

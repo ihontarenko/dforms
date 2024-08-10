@@ -1,13 +1,13 @@
-{% extends "fragments/layout" %}
+{% extends "common/body" %}
 {% block css %}
 <link rel="stylesheet" href="{{asset('css/page/secure.css')}}" crossorigin="anonymous">
 {% endblock %}
 {% block title %}Login via OAuth 2.0{% endblock %}
-{% block body %}
+{% block layout %}
 <form class="form-signin" action="{{ href(security.getLoginProcessingUrl()) }}" method="POST">
-    <div class="text-center mb-4">
+    <!--<div class="text-center mb-4">
         <img class="mb-4" src="{{asset('/images/penguin.webp')}}" alt="" width="128">
-    </div>
+    </div>-->
 
     <div class="form-label-group text-center">
         <button onclick="window.location='{{ href(github) }}'" type="button" class="btn btn-outline-dark">
@@ -31,6 +31,6 @@
         </button>
     </div>
 
-    <p class="mt-5 mb-3 text-muted text-center">{{translate('application.title', 123, 'ololo', 2021)}}</p>
+    <p class="mt-5 mb-3 text-muted text-center">{{translate('application.title')}}</p>
 </form>
 {% endblock %}

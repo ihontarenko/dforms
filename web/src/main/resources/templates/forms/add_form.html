@@ -1,0 +1,17 @@
+{% extends "common/layout" %}
+{% block title %}Add New Form{% endblock %}
+{% block content %}
+<form method="post" action="{{ href('/form/perform') }}" enctype="multipart/form-data" class="row g-3" >
+    <div class="form-floating mb-3">
+        <input type="text" name="name" class="form-control" id="floatingInput" placeholder="Name">
+        <label for="floatingInput">Name</label>
+    </div>
+    <div class="form-floating">
+        <input type="text" name="description" class="form-control" id="floatingPassword" placeholder="Description">
+        <label for="floatingPassword">Description</label>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Submit form</button>
+    </div>
+</form>
+{% endblock %}

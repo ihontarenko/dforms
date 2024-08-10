@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Dynamic Forms - {% block title %}Default{% endblock %}</title>
+
+        <link rel="stylesheet" href="{{asset('/css/bootstrap.min.css')}}" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{asset('/css/dashboard.css')}}" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{asset('/css/sidebars.css')}}" crossorigin="anonymous">
+        <!-- Extra CSS -->
+        {% block css %}{% endblock %}
+        <!-- END:Extra CSS -->
+    </head>
+    <body>
+        {% block layout %}{% endblock %}
+        <script src="{{asset('/js/bootstrap.bundle.min.js')}}" crossorigin="anonymous"></script>
+        <!-- Extra JS -->
+        {% block js %}{% endblock %}
+        <!-- END:Extra JS -->
+    </body>
+</html>
