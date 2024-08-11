@@ -89,4 +89,9 @@ public class UserInfo implements UserDetails, OAuth2User, OidcUser, Authenticate
     public static UserInfo create(String email, String name, String password) {
         return create(email, name, password, Set.of(), Map.of(), Map.of());
     }
+
+    @Override
+    public String toString() {
+        return "UserInfo{username='%s', name='%s', authorities=%s}".formatted(username, name, authorities);
+    }
 }

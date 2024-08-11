@@ -5,6 +5,12 @@
     <div class="form-floating mb-3">
         <input type="text" name="name" class="form-control" id="floatingInput" placeholder="Name">
         <label for="floatingInput">Name</label>
+        {% if hasFieldErrors('formDTO', 'name') %}
+            {% for errorMessage in getFieldErrors('formDTO', 'name') %}
+            <p>{{ errorMessage }}</p>
+            {% endfor %}
+        {% endif %}
+        {{ ifFieldErrors('formDTO', 'description', 'description invalid', 'description OK!') }}
     </div>
     <div class="form-floating">
         <input type="text" name="description" class="form-control" id="floatingPassword" placeholder="Description">

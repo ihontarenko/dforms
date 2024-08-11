@@ -2,6 +2,8 @@ package df.web.common.flash;
 
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -12,6 +14,15 @@ import java.util.Map;
 @Service
 @SuppressWarnings("unchecked")
 public class FlashMessageService {
+
+    public void addFlashMessage(RedirectAttributes redirectAttributes, BindingResult bindingResult, FlashMessageType type) {
+        if (bindingResult.hasFieldErrors()) {
+            for (FieldError fieldError : bindingResult.getFieldErrors()) {
+                addFlashMessage(redirectAttributes,
+                        "%s: %s".formatted(fieldError.getField(), fieldError.getDefaultMessage()), type);
+            }
+        }
+    }
 
     public void addFlashMessage(RedirectAttributes redirectAttributes, String message, FlashMessageType type) {
         Map<String, ?>                      attributes = redirectAttributes.getFlashAttributes();

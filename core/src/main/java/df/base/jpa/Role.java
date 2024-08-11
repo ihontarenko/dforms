@@ -1,7 +1,10 @@
 package df.base.jpa;
 
+import df.base.common.hibernate5.generator.IdPrefixGenerator;
 import df.base.common.hibernate5.generator.PrefixedId;
+import df.base.common.hibernate5.generator.PrefixedTableSequenceGenerator;
 import jakarta.persistence.*;
+import org.hibernate.id.IdentifierGenerationException;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +19,8 @@ public class Role {
             prefixValue = "URE",
             sequenceName = "ROLE",
             initialValue = 100,
-            incrementBy = 10
+            incrementBy = 10,
+            prefixGenerator = Role.IdGenerator.class
     )
     private String id;
 
@@ -71,6 +75,20 @@ public class Role {
 
     public Set<User> getUsers() {
         return users;
+    }
+
+    public static class IdGenerator implements IdPrefixGenerator {
+
+        @Override
+        public void configure(PrefixedTableSequenceGenerator.GeneratorContext context, Object entity) {
+
+        }
+
+        @Override
+        public String generated(Object ordinalID, PrefixedId annotation, Object entity) {
+            return "%s%08x".formatted(annotation.numberFormat().formatted(ordinalID), entity.hashCode());
+        }
+
     }
 
 }

@@ -6,15 +6,15 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
-@IdGeneratorType(PrefixedTableGenerator.class)
+@IdGeneratorType(PrefixedTableSequenceGenerator.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.FIELD})
 public @interface PrefixedId {
 
     String prefixValue();
+
+    Class<? extends IdPrefixGenerator> prefixGenerator() default IdPrefixGenerator.Default.class;
 
     String prefixSeparator() default "-";
 
@@ -31,9 +31,5 @@ public @interface PrefixedId {
     int initialValue() default 1;
 
     int incrementBy() default 50;
-
-    interface Generator extends Function<Object, Object> {
-
-    }
 
 }

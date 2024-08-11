@@ -1,6 +1,7 @@
 package df.web.common.pebble;
 
 import df.web.common.pebble.function.AssetFunction;
+import df.web.common.pebble.function.IfFieldErrors;
 import df.web.common.pebble.function.TranslateFunction;
 import io.pebbletemplates.pebble.extension.AbstractExtension;
 import io.pebbletemplates.pebble.extension.Function;
@@ -25,6 +26,7 @@ public class PebbleExtension extends AbstractExtension {
             put(AssetFunction.FUNCTION_NAME, new AssetFunction(context));
             put(TranslateFunction.FUNCTION_NAME, translation);
             put(TranslateFunction.FUNCTION_NAME_SHORT, translation);
+            put(IfFieldErrors.FUNCTION_NAME, new IfFieldErrors());
         }};
     }
 

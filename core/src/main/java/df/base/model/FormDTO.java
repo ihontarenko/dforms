@@ -16,9 +16,10 @@ public class FormDTO {
     private String ownerId;
 
     @NotEmpty
-    @Size(max = 2)
+    @Size(max = 32)
     private String name;
 
+    @NotEmpty
     @Size(max = 500)
     private String description;
 
