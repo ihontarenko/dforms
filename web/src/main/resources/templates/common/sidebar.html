@@ -27,15 +27,15 @@
         </li>
         <li class="mb-1">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-                Electronic Components
+                IC Index
             </button>
             <div class="collapse" id="orders-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">New Element</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Resistors</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Capacitors</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">ICs</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Semiconductors</a></li>
+                    <li><a href="{{ href('/ic-index/new-ec') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Add New</a></li>
+                    <li><a href="{{ href('/ic-index/resistors') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Resistors</a></li>
+                    <li><a href="{{ href('/ic-index/capacitors') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Capacitors</a></li>
+                    <li><a href="{{ href('/ic-index/ics') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">ICs</a></li>
+                    <li><a href="{{ href('/ic-index/semiconductors') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Semiconductors</a></li>
                 </ul>
             </div>
         </li>

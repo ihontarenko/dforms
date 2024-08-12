@@ -18,10 +18,6 @@ public class FormService {
     @Autowired
     private FormRepository repository;
 
-    public boolean canModify(User user, Form form) {
-        User owner = form.getUser();
-    }
-
     @Transactional(readOnly = true)
     public Optional<Form> getFormById(String formId) {
         return repository.findById(formId);

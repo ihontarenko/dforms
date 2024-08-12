@@ -1,6 +1,8 @@
 package df.base.jpa.forms;
 
+import df.base.common.hibernate5.generator.IdPrefixGenerator;
 import df.base.common.hibernate5.generator.PrefixedId;
+import df.base.common.hibernate5.generator.PrefixedTableSequenceGenerator;
 import df.base.jpa.User;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
@@ -11,7 +13,12 @@ import java.util.List;
 public class Form {
 
     @Id
-    @PrefixedId(prefixValue = "FRM", sequenceName = "FORM")
+    @PrefixedId(
+            prefixValue = "FRM",
+            sequenceName = "FORM",
+            prefixGenerator = Form.IdGenerator.class,
+            numberFormat = "%04d"
+    )
     @Column(name = "ID")
     private String id;
 
@@ -112,4 +119,18 @@ public class Form {
     public void setEntries(List<FormEntry> entries) {
         this.entries = entries;
     }
+
+    public static class IdGenerator implements IdPrefixGenerator {
+
+        @Override
+        public void configure(PrefixedTableSequenceGenerator.GeneratorContext context, Object entity) { }
+
+        @Override
+        public String generated(Object ordinalID, PrefixedId annotation, Object entity) {
+            return "%s%s%s%s%04x".formatted(annotation.prefixValue(), annotation.prefixSeparator(),
+                    annotation.numberFormat().formatted(ordinalID), annotation.prefixSeparator(), entity.hashCode());
+        }
+
+    }
+
 }

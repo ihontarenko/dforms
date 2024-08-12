@@ -6,6 +6,7 @@ import df.base.jpa.forms.FormStatus;
 import df.base.model.FormDTO;
 import df.base.security.UserInfo;
 import df.base.service.forms.FormService;
+import df.base.service.forms.HasFormAccess;
 import df.web.common.flash.FlashMessageService;
 import df.web.common.flash.FlashMessageType;
 import jakarta.validation.Valid;
@@ -42,6 +43,7 @@ public class FormController {
         this.formService = formService;
     }
 
+//    @HasFormAccess
     @GetMapping(value = {"/index", "/{formId}/edit"})
     public ModelAndView index(@AuthenticationPrincipal UserInfo principal,
                               @PathVariable(value = "formId", required = false) String formId,
@@ -92,9 +94,13 @@ public class FormController {
         ModelAndView mav = new ModelAndView("redirect:/form/index");
 
         if (!result.hasFieldErrors()) {
-            Form form = formService.createForm(principal.getUser(), formDTO);
-            flashMessage.addFlashMessage(attributes, "Form ID '%s' has been successfully saved"
-                    .formatted(form.getId()), SUCCESS);
+            if (formDTO.getId() != null) {
+                Form form = formService.getFormById(formDTO.getId())
+                        .map(f -> formService.updateForm(f, formDTO))
+                        .orElseGet(() -> formService.createForm(principal.getUser(), formDTO));
+                flashMessage.addFlashMessage(attributes, "Form ID '%s' has been successfully saved"
+                        .formatted(form.getId()), SUCCESS);
+            }
         } else {
             mav.addObject("formDTO", formDTO);
             mav.addObject("principal", principal);
