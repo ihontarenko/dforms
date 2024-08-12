@@ -24,8 +24,11 @@ public class OpenIDUserService extends OidcUserService {
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         OidcUser oidcUser   = super.loadUser(userRequest);
         User     userEntity = oauth2UserService.getProcessedUser(userRequest, oidcUser);
-
-        return UserInfo.create(userEntity.getEmail(), userEntity.getLogin(), userEntity.getPassword(),
+        UserInfo userInfo   = UserInfo.create(userEntity.getEmail(), userEntity.getLogin(), userEntity.getPassword(),
                 userService.getAuthorities(userEntity), oidcUser.getAttributes(), oidcUser.getClaims());
+
+        userInfo.setUser(userEntity);
+
+        return userInfo;
     }
 }

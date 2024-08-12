@@ -1,4 +1,4 @@
-package df.base;
+package df.base.common;
 
 public enum ValueHolder {
     HOLDER(new ThreadLocal<>());

@@ -53,6 +53,7 @@ spring:
 application:
   version: 1.0-beta
   name: Dynamic Forms
+  homeUrl: /index/home
   locale:
     cookie-name: J_DF_LOCALE
     cookie-max-age: 2592000

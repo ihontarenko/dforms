@@ -1,5 +1,6 @@
 package df.base.security;
 
+import df.base.jpa.User;
 import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,44 @@ public class UserInfo implements UserDetails, OAuth2User, OidcUser, Authenticate
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object>                    attributes;
     private Map<String, Object>                    claims;
+    private User                                   user;
+
+    public static UserInfo create(User user, Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes) {
+        UserInfo userInfo = create(user.getEmail(), user.getLogin(), user.getPassword(), authorities, attributes, Map.of());
+
+        userInfo.setUser(user);
+
+        return userInfo;
+    }
+
+    public static UserInfo create(String email, String name, String password,
+                                  Collection<? extends GrantedAuthority> authorities,
+                                  Map<String, Object> attributes, Map<String, Object> claims) {
+        UserInfo userInfo = new UserInfo();
+
+        userInfo.username = email;
+        userInfo.name = name;
+        userInfo.password = password;
+        userInfo.authorities = authorities;
+        userInfo.attributes = attributes;
+        userInfo.claims = claims;
+
+        return userInfo;
+    }
+
+    public static UserInfo create(String email, String name, String password,
+                                  Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes) {
+        return create(email, name, password, authorities, attributes, Map.of());
+    }
+
+    public static UserInfo create(String email, String name, String password,
+                                  Collection<? extends GrantedAuthority> authorities) {
+        return create(email, name, password, authorities, Map.of(), Map.of());
+    }
+
+    public static UserInfo create(String email, String name, String password) {
+        return create(email, name, password, Set.of(), Map.of(), Map.of());
+    }
 
     @Override
     public String getName() {
@@ -61,33 +100,12 @@ public class UserInfo implements UserDetails, OAuth2User, OidcUser, Authenticate
         return null;
     }
 
-    public static UserInfo create(String email, String name, String password,
-                                  Collection<? extends GrantedAuthority> authorities,
-                                  Map<String, Object> attributes, Map<String, Object> claims) {
-        UserInfo userInfo = new UserInfo();
-
-        userInfo.username = email;
-        userInfo.name = name;
-        userInfo.password = password;
-        userInfo.authorities = authorities;
-        userInfo.attributes = attributes;
-        userInfo.claims = claims;
-
-        return userInfo;
+    public User getUser() {
+        return user;
     }
 
-    public static UserInfo create(String email, String name, String password,
-                                  Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes) {
-        return create(email, name, password, authorities, attributes, Map.of());
-    }
-
-    public static UserInfo create(String email, String name, String password,
-                                  Collection<? extends GrantedAuthority> authorities) {
-        return create(email, name, password, authorities, Map.of(), Map.of());
-    }
-
-    public static UserInfo create(String email, String name, String password) {
-        return create(email, name, password, Set.of(), Map.of(), Map.of());
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

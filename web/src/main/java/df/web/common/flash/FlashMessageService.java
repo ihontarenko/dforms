@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -24,27 +25,37 @@ public class FlashMessageService {
         }
     }
 
+    public void addFlashMessage(FlashMap flashMap, String message, FlashMessageType type) {
+        Map<FlashMessageType, List<String>> messages = (Map<FlashMessageType, List<String>>) flashMap.get("flashMessages");
+
+        performMessages(messages, type, message);
+
+        flashMap.put("flashMessages", messages);
+    }
+
     public void addFlashMessage(RedirectAttributes redirectAttributes, String message, FlashMessageType type) {
         Map<String, ?>                      attributes = redirectAttributes.getFlashAttributes();
         Map<FlashMessageType, List<String>> messages   = (Map<FlashMessageType, List<String>>) attributes.get("flashMessages");
 
-        if (messages == null) {
-            messages = new HashMap<>();
-        }
+        performMessages(messages, type, message);
 
-        messages.computeIfAbsent(type, key -> new ArrayList<>()).add(message);
         redirectAttributes.addFlashAttribute("flashMessages", messages);
     }
 
     public void addAttribute(ModelMap modelMap, String message, FlashMessageType type) {
-        Map<FlashMessageType, List<String>> messages   = (Map<FlashMessageType, List<String>>) modelMap.getAttribute("alertMessages");
+        Map<FlashMessageType, List<String>> messages = (Map<FlashMessageType, List<String>>) modelMap.getAttribute("alertMessages");
 
+        performMessages(messages, type, message);
+
+        modelMap.addAttribute("alertMessages", messages);
+    }
+
+    private void performMessages(Map<FlashMessageType, List<String>> messages, FlashMessageType type, String message) {
         if (messages == null) {
             messages = new HashMap<>();
         }
 
         messages.computeIfAbsent(type, key -> new ArrayList<>()).add(message);
-        modelMap.addAttribute("alertMessages", messages);
     }
 
 }

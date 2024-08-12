@@ -7,6 +7,16 @@ public class ApplicationProperties {
 
     private LocaleProperties locale;
 
+    public String getHomeUrl() {
+        return homeUrl;
+    }
+
+    public void setHomeUrl(String homeUrl) {
+        this.homeUrl = homeUrl;
+    }
+
+    private String homeUrl;
+
     public LocaleProperties getLocale() {
         return locale;
     }
