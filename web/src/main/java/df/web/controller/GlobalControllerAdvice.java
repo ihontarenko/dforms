@@ -6,6 +6,7 @@ import df.web.common.flash.FlashMessageType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import java.io.IOException;
@@ -25,22 +26,26 @@ import java.util.Set;
 
 @SuppressWarnings({"unused"})
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalControllerAdvice {
 
     private final ApplicationProperties properties;
     private final Set<Locale> locales;
     private final FlashMessageService flashMessageService;
 
-    public GlobalExceptionHandler(ApplicationProperties properties, Set<Locale> locales, FlashMessageService flashMessageService) {
+    public GlobalControllerAdvice(ApplicationProperties properties, Set<Locale> locales, FlashMessageService flashMessageService) {
         this.properties = properties;
         this.locales = locales;
         this.flashMessageService = flashMessageService;
     }
 
-    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    @ExceptionHandler({
+            HttpRequestMethodNotSupportedException.class,
+            AuthorizationDeniedException.class,
+            NoResourceFoundException.class
+    })
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     public void httpRequestMethodNotSupportedException(HttpServletRequest request, HttpServletResponse response,
-                                                       HttpRequestMethodNotSupportedException exception) throws IOException {
+                                                       Exception exception) throws IOException {
         if (!response.isCommitted()) {
             FlashMap flashMap = RequestContextUtils.getOutputFlashMap(request);
             flashMessageService.addFlashMessage(flashMap, exception.getMessage(), FlashMessageType.ERROR);

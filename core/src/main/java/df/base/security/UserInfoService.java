@@ -23,7 +23,12 @@ public class UserInfoService implements UserDetailsService, UserDetailsPasswordS
             throw new UsernameNotFoundException("Username %s not found".formatted(username));
         }
 
-        return UserInfo.create(user.getEmail(), user.getLogin(), user.getPassword(), userService.getAuthorities(user));
+        UserInfo userInfo = UserInfo.create(user.getEmail(), user.getLogin(), user.getPassword(),
+                userService.getAuthorities(user));
+
+        userInfo.setUser(user);
+
+        return userInfo;
     }
 
     @Override

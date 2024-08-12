@@ -29,14 +29,17 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oauth2User = super.loadUser(userRequest);
         User       userEntity = getProcessedUser(userRequest, oauth2User);
-
-        return UserInfo.create(userEntity.getEmail(), userEntity.getLogin(), userEntity.getPassword(),
+        UserInfo   userInfo   = UserInfo.create(userEntity.getEmail(), userEntity.getLogin(), userEntity.getPassword(),
                 userService.getAuthorities(userEntity), oauth2User.getAttributes());
+
+        userInfo.setUser(userEntity);
+
+        return userInfo;
     }
 
     public User getProcessedUser(OAuth2UserRequest request, OAuth2User user) {
-        String     registrationId = request.getClientRegistration().getRegistrationId();
-        Provider   provider       = Provider.valueOf(registrationId.toUpperCase(Locale.ROOT));
+        String   registrationId = request.getClientRegistration().getRegistrationId();
+        Provider provider       = Provider.valueOf(registrationId.toUpperCase(Locale.ROOT));
 
         if (user == null) {
             throw new OAuth2AuthenticationException("User cannot be NULL");

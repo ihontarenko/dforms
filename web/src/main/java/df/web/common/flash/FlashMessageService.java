@@ -28,7 +28,7 @@ public class FlashMessageService {
     public void addFlashMessage(FlashMap flashMap, String message, FlashMessageType type) {
         Map<FlashMessageType, List<String>> messages = (Map<FlashMessageType, List<String>>) flashMap.get("flashMessages");
 
-        performMessages(messages, type, message);
+        messages = performMessages(messages, type, message);
 
         flashMap.put("flashMessages", messages);
     }
@@ -37,7 +37,7 @@ public class FlashMessageService {
         Map<String, ?>                      attributes = redirectAttributes.getFlashAttributes();
         Map<FlashMessageType, List<String>> messages   = (Map<FlashMessageType, List<String>>) attributes.get("flashMessages");
 
-        performMessages(messages, type, message);
+        messages = performMessages(messages, type, message);
 
         redirectAttributes.addFlashAttribute("flashMessages", messages);
     }
@@ -45,17 +45,19 @@ public class FlashMessageService {
     public void addAttribute(ModelMap modelMap, String message, FlashMessageType type) {
         Map<FlashMessageType, List<String>> messages = (Map<FlashMessageType, List<String>>) modelMap.getAttribute("alertMessages");
 
-        performMessages(messages, type, message);
+        messages = performMessages(messages, type, message);
 
         modelMap.addAttribute("alertMessages", messages);
     }
 
-    private void performMessages(Map<FlashMessageType, List<String>> messages, FlashMessageType type, String message) {
+    private Map<FlashMessageType, List<String>> performMessages(Map<FlashMessageType, List<String>> messages, FlashMessageType type, String message) {
         if (messages == null) {
             messages = new HashMap<>();
         }
 
         messages.computeIfAbsent(type, key -> new ArrayList<>()).add(message);
+
+        return messages;
     }
 
 }

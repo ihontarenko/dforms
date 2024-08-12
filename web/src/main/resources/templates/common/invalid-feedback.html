@@ -1,0 +1,7 @@
+{% if hasFieldErrors(formName, fieldName) %}
+<div class="invalid-feedback">
+    {% for errorMessage in getFieldErrors(formName, fieldName) %}
+        {{ errorMessage }}<br />
+    {% endfor %}
+</div>
+{% endif %}

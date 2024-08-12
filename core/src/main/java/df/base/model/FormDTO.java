@@ -1,31 +1,31 @@
 package df.base.model;
 
+import df.base.jpa.forms.FormStatus;
+import df.base.validation.AuthorizationId;
+import df.base.validation.EnumPattern;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Pattern;
 
 public class FormDTO {
 
-    @NotEmpty
-    @Size(max = 32)
     private String id;
 
     @NotEmpty
-    @Size(max = 32)
+    @AuthorizationId
     private String ownerId;
 
-    @NotEmpty
+    @NotEmpty(message = "form name is required")
     @Size(max = 32)
     private String name;
 
     @NotEmpty
-    @Size(max = 500)
+    @Size(max = 32)
     private String description;
 
     @NotNull
-    @Pattern(regexp = "ACTIVE|INACTIVE|DELETED")
-    private String status;
+    @EnumPattern(regexp = "ACTIVE|INACTIVE|DELETED")
+    private FormStatus status;
 
     public String getId() {
         return id;
@@ -59,11 +59,11 @@ public class FormDTO {
         this.description = description;
     }
 
-    public String getStatus() {
+    public FormStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(FormStatus status) {
         this.status = status;
     }
 }
