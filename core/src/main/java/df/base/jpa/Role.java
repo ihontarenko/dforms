@@ -16,11 +16,12 @@ public class Role {
     @Id
     @Column(name = "ID")
     @PrefixedId(
-            prefixValue = "URE",
+            prefixValue = "RLE",
             sequenceName = "ROLE",
-            initialValue = 100,
-            incrementBy = 10,
-            prefixGenerator = Role.IdGenerator.class
+            initialValue = 1000,
+            incrementBy = 1,
+            prefixGenerator = DefaultIdGenerator.class,
+            numberFormat = "%04d"
     )
     private String id;
 
@@ -80,13 +81,9 @@ public class Role {
     public static class IdGenerator implements IdPrefixGenerator {
 
         @Override
-        public void configure(PrefixedTableSequenceGenerator.GeneratorContext context, Object entity) {
-
-        }
-
-        @Override
-        public String generated(Object ordinalID, PrefixedId annotation, Object entity) {
-            return "%s%08x".formatted(annotation.numberFormat().formatted(ordinalID), entity.hashCode());
+        public String generate(Object ordinalID, PrefixedId annotation, Object entity) {
+            return "%s%s%s%04x".formatted(annotation.prefixValue(), annotation.prefixSeparator(),
+                    annotation.numberFormat().formatted(ordinalID), entity.hashCode()).toUpperCase();
         }
 
     }

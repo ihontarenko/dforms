@@ -1,12 +1,14 @@
 package df.web.controller;
 
 import df.base.property.ApplicationProperties;
+import df.base.security.UserInfo;
 import df.web.common.flash.FlashMessageService;
 import df.web.common.flash.FlashMessageType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -48,7 +50,7 @@ public class GlobalControllerAdvice {
                                                        Exception exception) throws IOException {
         if (!response.isCommitted()) {
             FlashMap flashMap = RequestContextUtils.getOutputFlashMap(request);
-            flashMessageService.addFlashMessage(flashMap, exception.getMessage(), FlashMessageType.ERROR);
+            flashMessageService.addMessage(flashMap, exception.getMessage(), FlashMessageType.ERROR);
             RequestContextUtils.saveOutputFlashMap(properties.getHomeUrl(), request, response);
             response.sendRedirect(properties.getHomeUrl());
         }
@@ -88,8 +90,9 @@ public class GlobalControllerAdvice {
     }
 
     @ModelAttribute
-    public void modelMapHandler(ModelMap map) {
+    public void modelMapHandler(ModelMap map, @AuthenticationPrincipal UserInfo principal) {
         map.addAttribute("locales", locales);
+        map.addAttribute("principal", principal);
     }
 
 }

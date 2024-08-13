@@ -12,10 +12,12 @@ public class Privilege {
     @Id
     @Column(name = "ID")
     @PrefixedId(
-            prefixValue = "UPE",
+            prefixValue = "PVL",
             sequenceName = "PRIVILEGE",
-            initialValue = 100,
-            incrementBy = 10
+            initialValue = 1000,
+            incrementBy = 1,
+            prefixGenerator = DefaultIdGenerator.class,
+            numberFormat = "%04d"
     )
     private String id;
 

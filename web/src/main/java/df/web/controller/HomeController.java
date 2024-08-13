@@ -30,11 +30,9 @@ public class HomeController {
         ModelAndView mav = new ModelAndView("index/home");
 
         if (status != null) {
-            flashMessage.addFlashMessage(attributes, "Welcome on board %s you are authorized using '%s' protocol!"
+            flashMessage.addMessage(attributes, "Welcome on board %s you are authorized using '%s' protocol!"
                     .formatted(principal.getName(), status.toUpperCase()), FlashMessageType.SUCCESS);
             mav.setViewName("redirect:/index/home");
-        } else {
-            flashMessage.addAttribute(mav.getModelMap(), "Project under construction", FlashMessageType.WARNING);
         }
 
         return mav;

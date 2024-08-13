@@ -19,9 +19,10 @@ public class User {
     @PrefixedId(
             prefixValue = "USR",
             sequenceName = "USER",
-            initialValue = 100,
-            incrementBy = 10,
-            prefixGenerator = UserIdPrefixGenerator.class
+            initialValue = 1000,
+            incrementBy = 1,
+            prefixGenerator = DefaultIdGenerator.class,
+            numberFormat = "%04d"
     )
     private String id;
 
@@ -148,22 +149,6 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, provider, email);
-    }
-
-    public static class UserIdPrefixGenerator implements IdPrefixGenerator {
-
-        @Override
-        public String generated(Object ordinalID, PrefixedId annotation, Object entity) {
-            if (entity instanceof User user) {
-                return "%s%s%s%s%s".formatted(
-                        annotation.prefixValue(), annotation.prefixSeparator(), "%04x".formatted(user.hashCode()).toUpperCase(),
-                        annotation.prefixSeparator(), annotation.numberFormat().formatted(ordinalID));
-            }
-
-            throw new IdentifierGenerationException("IdPrefixGenerator allow only %s entity but %s passed"
-                    .formatted(User.class.getName(), entity.getClass().getName()));
-        }
-
     }
 
 }

@@ -1,0 +1,74 @@
+{% extends "common/layout" %}
+{% block title %}Internal Users{% endblock %}
+{% block content %}
+<form method="post" action="{{ href('/user/perform') }}" enctype="multipart/form-data" class="row g-3" >
+
+    <div class="form-group">
+        <label for="form-name">Form Name</label>
+        <input name="name" type="text" class="form-control {{ ifFieldErrors('formDTO', 'name', 'is-invalid', 'is-valid') }}" id="form-name" value="{{ formDTO.name }}">
+        {% include "common/invalid-feedback" with {"formName" : "formDTO", "fieldName" : "name"} %}
+    </div>
+
+    <div class="form-group">
+        <label for="form-description">Description</label>
+        <input name="description" type="text" class="form-control {{ ifFieldErrors('formDTO', 'description', 'is-invalid', 'is-valid') }}" id="form-description" value="{{ formDTO.description }}">
+        {% include "common/invalid-feedback" with {"formName" : "formDTO", "fieldName" : "description"} %}
+    </div>
+
+    <div class="form-group">
+        <label class="d-block">Status</label>
+        <div class="btn-group" role="group">
+            <input type="radio" class="btn-check" name="status" id="ACTIVE" value="ACTIVE" autocomplete="off" checked>
+            <label class="btn btn-sm btn-outline-dark" for="ACTIVE">ACTIVE</label>
+            <input type="radio" class="btn-check" name="status" id="INACTIVE" value="INACTIVE" autocomplete="off">
+            <label class="btn btn-sm btn-outline-dark" for="INACTIVE">INACTIVE</label>
+            <input type="radio" class="btn-check" name="status" id="DELETED" value="DELETED" autocomplete="off">
+            <label class="btn btn-sm btn-outline-danger" for="DELETED">DELETED</label>
+        </div>
+        {% include "common/invalid-feedback" with {"formName" : "formDTO", "fieldName" : "status"} %}
+    </div>
+
+    <input type="hidden" name="ownerId" value="{{ principal.user.id }}">
+    <input type="hidden" name="id" value="{{ formDTO.id }}">
+
+    <div class="form-group mt-4">
+        <button class="btn btn-success" type="submit">Submit</button>
+        {% include "common/invalid-feedback" with {"formName" : "formDTO", "fieldName" : "ownerId"} %}
+    </div>
+</form>
+
+<h2 class="mt-5">Forms</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Name</th>
+            <th scope="col">Enabled</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <th scope="row">{{ form.id }}</th>
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>
+                <span class="badge {{ statusesMap.get(form.status) }}">{{ user.enabled }}</span>
+            </td>
+            <td>
+                <div class="btn-group" role="group">
+                    <button onclick="window.location = '{{ href('/user/' + user.id + '/edit') }}'"
+                            type="button" class="btn btn-sm btn-info">EDIT</button>
+                    <button onclick="window.location = '{{ href('/user/' + user.id + '/block') }}'"
+                            type="button" class="btn btn-sm btn-warning">BLOCK</button>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

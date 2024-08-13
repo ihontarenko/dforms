@@ -1,7 +1,7 @@
 package df.base.converter;
 
-import df.base.jpa.forms.Form;
-import df.base.model.FormDTO;
+import df.base.jpa.form.Form;
+import df.base.model.form.FormDTO;
 
 public class FormConverter implements Converter<Form, FormDTO> {
 

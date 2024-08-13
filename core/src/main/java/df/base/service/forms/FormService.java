@@ -1,9 +1,8 @@
 package df.base.service.forms;
 
-import df.base.jpa.Role;
 import df.base.jpa.User;
-import df.base.jpa.forms.*;
-import df.base.model.FormDTO;
+import df.base.jpa.form.*;
+import df.base.model.form.FormDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +51,13 @@ public class FormService {
     @Transactional
     public void deleteForm(Form form) {
         repository.delete(form);
+    }
+
+    @Transactional
+    public Form changeStatus(Form form, FormStatus status) {
+        form.setStatus(status);
+
+        return repository.save(form);
     }
 
 }

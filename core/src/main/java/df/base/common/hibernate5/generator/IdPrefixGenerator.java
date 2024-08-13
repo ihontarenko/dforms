@@ -15,7 +15,7 @@ public interface IdPrefixGenerator {
     default void configure(PrefixedTableSequenceGenerator.GeneratorContext context, Object entity) {
     }
 
-    default String generated(Object ordinalID, PrefixedId annotation, Object entity) {
+    default String generate(Object ordinalID, PrefixedId annotation, Object entity) {
         return annotation.prefixValue() + annotation.prefixSeparator() + annotation.numberFormat().formatted(ordinalID);
     }
 

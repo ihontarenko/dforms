@@ -86,7 +86,7 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
                 id = context.initialValue;
             }
 
-            String prefixedId = generator.generated(id, annotation, object);
+            String prefixedId = generator.generate(id, annotation, object);
 
             LOGGER.info("New ID generated {} using {} generator", prefixedId, prefixGenerator.getName());
 

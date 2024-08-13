@@ -16,16 +16,16 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class FlashMessageService {
 
-    public void addFlashMessage(RedirectAttributes redirectAttributes, BindingResult bindingResult, FlashMessageType type) {
+    public void addMessage(RedirectAttributes redirectAttributes, BindingResult bindingResult, FlashMessageType type) {
         if (bindingResult.hasFieldErrors()) {
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                addFlashMessage(redirectAttributes,
+                addMessage(redirectAttributes,
                         "%s: %s".formatted(fieldError.getField(), fieldError.getDefaultMessage()), type);
             }
         }
     }
 
-    public void addFlashMessage(FlashMap flashMap, String message, FlashMessageType type) {
+    public void addMessage(FlashMap flashMap, String message, FlashMessageType type) {
         Map<FlashMessageType, List<String>> messages = (Map<FlashMessageType, List<String>>) flashMap.get("flashMessages");
 
         messages = performMessages(messages, type, message);
@@ -33,7 +33,7 @@ public class FlashMessageService {
         flashMap.put("flashMessages", messages);
     }
 
-    public void addFlashMessage(RedirectAttributes redirectAttributes, String message, FlashMessageType type) {
+    public void addMessage(RedirectAttributes redirectAttributes, String message, FlashMessageType type) {
         Map<String, ?>                      attributes = redirectAttributes.getFlashAttributes();
         Map<FlashMessageType, List<String>> messages   = (Map<FlashMessageType, List<String>>) attributes.get("flashMessages");
 
@@ -42,7 +42,7 @@ public class FlashMessageService {
         redirectAttributes.addFlashAttribute("flashMessages", messages);
     }
 
-    public void addAttribute(ModelMap modelMap, String message, FlashMessageType type) {
+    public void addMessage(ModelMap modelMap, String message, FlashMessageType type) {
         Map<FlashMessageType, List<String>> messages = (Map<FlashMessageType, List<String>>) modelMap.getAttribute("alertMessages");
 
         messages = performMessages(messages, type, message);

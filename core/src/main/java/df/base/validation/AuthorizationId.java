@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthorizationId {
 
-    String message() default "ID do not match with authorized ID";
+    String message() default "must be equals to authorized ID";
 
     Class<?>[] groups() default {};
 
