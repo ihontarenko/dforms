@@ -63,12 +63,12 @@
             </td>
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/form/' + form.id + '/fields') }}'"
-                            type="button" class="btn btn-sm btn-success">FIELDS</button>
+                    <button onclick="window.location = '{{ href('/form/' + form.id + '/setup') }}'"
+                            type="button" class="btn btn-sm btn-success">SETUP</button>
                     <button onclick="window.location = '{{ href('/form/' + form.id + '/edit') }}'"
                             type="button" class="btn btn-sm btn-info">EDIT</button>
-                    <button onclick="window.location = '{{ href('/form/' + form.id + '/remove') }}'"
-                            type="button" class="btn btn-sm btn-warning">REMOVE</button>
+                    <button onclick="window.location = '{{ href('/form/' + form.id + '/status') }}'"
+                            type="button" class="btn btn-sm btn-warning">DELETE</button>
                 </div>
             </td>
         </tr>

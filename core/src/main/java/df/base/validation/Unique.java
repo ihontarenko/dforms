@@ -22,6 +22,8 @@ public @interface Unique {
 
     boolean keyReverse() default false;
 
+    String superUserRole() default "";
+
     String message() default "unique value constraint violation. unique: {unique}";
 
     Class<?>[] groups() default {};
