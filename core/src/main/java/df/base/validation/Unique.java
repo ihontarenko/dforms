@@ -22,7 +22,7 @@ public @interface Unique {
 
     boolean reverseExistence() default false;
 
-    String superUserRole() default "";
+    String superAuthority() default "";
 
     String message() default "unique value constraint violation. unique: {unique}";
 

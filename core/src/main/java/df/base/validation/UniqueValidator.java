@@ -8,6 +8,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.lang.reflect.Field;
@@ -23,7 +24,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
     private       String         targetField;
     private       boolean        checkUnique;
     private       boolean        keyReverse;
-    private       String         superUserRole;
+    private       String         superAuthority;
 
     public UniqueValidator(EntityManager em) {
         this.em = em;
@@ -31,7 +32,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
 
     @Override
     public void initialize(Unique annotation) {
-        this.superUserRole = annotation.superUserRole();
+        this.superAuthority = annotation.superAuthority();
         this.objectKey = annotation.keyExistence();
         this.fields = annotation.fields();
         this.entityClass = annotation.entityClass();
@@ -52,7 +53,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
 
         validationRequired = validationRequired == !keyReverse;
 
-        if (validationRequired && !superUserRole.isBlank()) {
+        if (validationRequired && !superAuthority.isBlank()) {
             validationRequired = !checkSuperUser();
         }
 
@@ -90,8 +91,8 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserInfo       principal      = (UserInfo) authentication.getPrincipal();
 
-        return principal.getUser().getRoles()
-                .stream().anyMatch(role -> role.getName().equals(superUserRole));
+        return principal.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                .anyMatch(authority -> authority.equals(superAuthority));
     }
 
     private void addConstraintViolation(ConstraintValidatorContext context) {
