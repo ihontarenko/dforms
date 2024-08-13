@@ -21,7 +21,7 @@
                     <a class="nav-link" href="{{ href('/index/about') }}">About</a>
                 </li>
                 <li class="pt-2">
-                    <span class="badge bg-light">UID: {{ principal.user.id }}</span>
+                    <span class="badge bg-primary">{{ principal.user.id }}</span>
                 </li>
             </ul>
             <form class="d-flex" method="get" action="{{ href('/ic-index/search') }}">

@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Unique {
 
-    String objectKey() default "";
+    String keyExistence() default "";
 
     String targetField();
 
@@ -20,7 +20,7 @@ public @interface Unique {
 
     boolean checkUnique() default true;
 
-    boolean keyReverse() default false;
+    boolean reverseExistence() default false;
 
     String superUserRole() default "";
 

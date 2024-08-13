@@ -3,7 +3,7 @@
     <ul class="list-unstyled ps-0">
         <li class="mb-1">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-                Home
+                Main
             </button>
             <div class="collapse show" id="home-collapse" style="">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -13,15 +13,26 @@
             </div>
         </li>
         <li class="mb-1">
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                Users (ADMIN)
+            </button>
+            <div class="collapse show" style="">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a href="{{ href('/user/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Users</a></li>
+                    <li><a href="{{ href('/user/role/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Roles</a></li>
+                    <li><a href="{{ href('/user/privilege/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Privileges</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
             <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
                 Forms
             </button>
             <div class="collapse" id="dashboard-collapse" style="">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="{{ href('/form/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Add New</a></li>
-                    <li><a href="{{ href('/form/list') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Forms</a></li>
-                    <li><a href="{{ href('/form/field/list') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Fields</a></li>
-                    <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Field Types</a></li>
+                    <li><a href="{{ href('/form/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Forms</a></li>
+                    <li><a href="{{ href('/form/field/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Fields</a></li>
+                    <li><a href="{{ href('/form/entries') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Entries</a></li>
                 </ul>
             </div>
         </li>

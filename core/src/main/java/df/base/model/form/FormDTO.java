@@ -20,7 +20,7 @@ import jakarta.validation.constraints.Size;
                 },
                 entityClass = Form.class,
                 message = "form name already taken",
-                objectKey = "id"
+                keyExistence = "id"
         ),
         @Unique(
                 targetField = "id",
@@ -31,10 +31,10 @@ import jakarta.validation.constraints.Size;
                         ),
                 },
                 entityClass = Form.class,
-                keyReverse = true,
+                reverseExistence = true,
                 checkUnique = false,
                 message = "requested form id could not be found",
-                objectKey = "id"
+                keyExistence = "id"
         ),
         @Unique(
                 targetField = "ownerId",
@@ -49,10 +49,11 @@ import jakarta.validation.constraints.Size;
                         ),
                 },
                 entityClass = Form.class,
-                keyReverse = true,
+                reverseExistence = true,
                 checkUnique = false,
                 message = "you must own this form to modify it",
-                objectKey = "id"
+                keyExistence = "id",
+                superUserRole = "ROLE_ADMIN"
         )
 })
 public class FormDTO {
@@ -67,7 +68,7 @@ public class FormDTO {
     @Size(max = 32)
     private String name;
 
-    @NotEmpty
+    @NotEmpty(message = "form description is required")
     @Size(max = 32)
     private String description;
 

@@ -32,10 +32,10 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
     @Override
     public void initialize(Unique annotation) {
         this.superUserRole = annotation.superUserRole();
-        this.objectKey = annotation.objectKey();
+        this.objectKey = annotation.keyExistence();
         this.fields = annotation.fields();
         this.entityClass = annotation.entityClass();
-        this.keyReverse = annotation.keyReverse();
+        this.keyReverse = annotation.reverseExistence();
         this.checkUnique = annotation.checkUnique();
         this.targetField = annotation.targetField();
     }
@@ -53,7 +53,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
         validationRequired = validationRequired == !keyReverse;
 
         if (validationRequired && !superUserRole.isBlank()) {
-            validationRequired = checkSuperUser();
+            validationRequired = !checkSuperUser();
         }
 
         if (validationRequired) {

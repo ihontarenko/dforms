@@ -55,9 +55,15 @@
         {% for form in forms %}
         <tr>
             <th scope="row">{{ form.id }}</th>
-            <td>{{ form.user.id }}</td>
-            <td>{{ form.description }}</td>
-            <td>{{ form.name }}</td>
+            <td>
+                <u>{{ form.user.id }}</u>
+            </td>
+            <td>
+                <i>{{ form.description }}</i>
+            </td>
+            <td>
+                <b>{{ form.name }}</b>
+            </td>
             <td>
                 <span class="badge {{ statuses.get(form.status) }}">{{ form.status }}</span>
             </td>
@@ -69,6 +75,8 @@
                             type="button" class="btn btn-sm btn-info">EDIT</button>
                     <button onclick="window.location = '{{ href('/form/' + form.id + '/status') }}'"
                             type="button" class="btn btn-sm btn-warning">DELETE</button>
+                    <button onclick="window.location = '{{ href('/form/' + form.id + '/delete') }}'"
+                            type="button" class="btn btn-sm btn-danger">DELETE PERMANENTLY</button>
                 </div>
             </td>
         </tr>
