@@ -10,19 +10,19 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Unique {
 
-    String keyExistence() default "";
+    String existence() default "";
 
-    String targetField();
+    String target();
 
     Field[] fields();
 
     Class<?> entityClass();
 
-    boolean checkUnique() default true;
+    boolean unique() default true;
 
-    boolean reverseExistence() default false;
+    boolean reverse() default false;
 
-    String superAuthority() default "";
+    String authority() default "";
 
     String message() default "unique value constraint violation. unique: {unique}";
 

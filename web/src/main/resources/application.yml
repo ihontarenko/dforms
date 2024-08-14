@@ -85,10 +85,10 @@ http-security:
   formLogin:
     processingUrl: ${http-security.securityPath}/perform
     baseUrl: ${http-security.securityPath}/login
-    successUrl: /index/home?authorizationStatus=formLogin
-    failureUrl: ${http-security.formLogin.baseUrl}?authorizationStatus=failed
+    successUrl: /index/home?authorizationStatus=login-form
+    failureUrl: ${http-security.formLogin.baseUrl}?authorizationStatus=authorization-failed
     logoutUrl: ${http-security.securityPath}/logout
-    logoutSuccessUrl: ${http-security.formLogin.baseUrl}?authorizationStatus=logoutSuccess
+    logoutSuccessUrl: ${http-security.formLogin.baseUrl}?authorizationStatus=logout-success
     username: username
     password: password
 

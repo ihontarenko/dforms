@@ -1,12 +1,13 @@
-package df.base.converter;
+package df.base.mapper.form;
 
+import df.base.mapper.Mapper;
 import df.base.jpa.form.Form;
 import df.base.model.form.FormDTO;
 
-public class FormConverter implements Converter<Form, FormDTO> {
+public class FormMapper implements Mapper<Form, FormDTO> {
 
     @Override
-    public FormDTO convert(Form source) {
+    public FormDTO map(Form source) {
         FormDTO formDTO = new FormDTO();
 
         formDTO.setId(source.getId());

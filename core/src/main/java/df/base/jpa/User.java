@@ -1,11 +1,10 @@
 package df.base.jpa;
 
-import df.base.common.hibernate5.generator.IdPrefixGenerator;
 import df.base.common.hibernate5.generator.PrefixedId;
 import df.base.security.Provider;
 import jakarta.persistence.*;
-import org.hibernate.id.IdentifierGenerationException;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -30,11 +29,8 @@ public class User {
     @Column(name = "PROVIDER", columnDefinition = "VARCHAR")
     private Provider provider;
 
-    @Column(name = "LOGIN")
-    private String login;
-
-    @Column(name = "USERNAME")
-    private String username;
+    @Column(name = "NAME")
+    private String name;
 
     @Column(name = "EMAIL")
     private String email;
@@ -44,6 +40,9 @@ public class User {
 
     @Column(name = "ENABLED")
     private boolean enabled;
+
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -69,20 +68,12 @@ public class User {
         this.provider = provider;
     }
 
-    public String getLogin() {
-        return login;
+    public String getName() {
+        return name;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -107,6 +98,22 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isLocal() {
+        return provider == Provider.LOCAL;
+    }
+
+    public boolean isOAuth2() {
+        return !isLocal();
     }
 
     public Set<Role> getRoles() {

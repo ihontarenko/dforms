@@ -30,7 +30,7 @@ public class HomeController {
         ModelAndView mav = new ModelAndView("index/home");
 
         if (status != null) {
-            flashMessage.addMessage(attributes, "Welcome on board %s you are authorized using '%s' protocol!"
+            flashMessage.addMessage(attributes, "Welcome on board %s you are authorized using '%s'!"
                     .formatted(principal.getName(), status.toUpperCase()), FlashMessageType.SUCCESS);
             mav.setViewName("redirect:/index/home");
         }

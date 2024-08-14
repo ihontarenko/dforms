@@ -1,11 +1,11 @@
 package df.base.security.oauth2;
 
-import df.base.common.function.Mapper;
 import df.base.jpa.User;
+import df.base.mapper.Mapper;
+import df.base.model.user.UserDTO;
 import df.base.security.Provider;
 import df.base.security.UserInfo;
-import df.base.security.UserRequest;
-import df.base.service.UserService;
+import df.base.service.user.UserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -29,7 +29,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oauth2User = super.loadUser(userRequest);
         User       userEntity = getProcessedUser(userRequest, oauth2User);
-        UserInfo   userInfo   = UserInfo.create(userEntity.getEmail(), userEntity.getLogin(), userEntity.getPassword(),
+        UserInfo   userInfo   = UserInfo.create(userEntity.getEmail(), userEntity.getName(), userEntity.getPassword(),
                 userService.getAuthorities(userEntity), oauth2User.getAttributes());
 
         userInfo.setUser(userEntity);
@@ -45,15 +45,15 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationException("User cannot be NULL");
         }
 
-        Mapper<OAuth2User, UserRequest> mapper = factory.getMapper(provider);
+        Mapper<OAuth2User, UserDTO> mapper = factory.getMapper(provider);
 
         if (mapper == null) {
             throw new OAuth2AuthenticationException("Unsupported provider %s".formatted(registrationId));
         }
 
-        UserRequest userRequest = mapper.map(user);
+        UserDTO userDTO = mapper.map(user);
 
-        return userService.createOrUpdate(userRequest);
+        return userService.createOrUpdate(userDTO);
     }
 
 }

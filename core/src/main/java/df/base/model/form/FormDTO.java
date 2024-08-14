@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size;
 
 @Unique.Set({
         @Unique(
-                targetField = "name",
+                target = "name",
                 fields = {
                         @Unique.Field(
                                 objectName = "name",
@@ -20,10 +20,10 @@ import jakarta.validation.constraints.Size;
                 },
                 entityClass = Form.class,
                 message = "form name already taken",
-                keyExistence = "id"
+                existence = "id"
         ),
         @Unique(
-                targetField = "id",
+                target = "id",
                 fields = {
                         @Unique.Field(
                                 objectName = "id",
@@ -31,13 +31,13 @@ import jakarta.validation.constraints.Size;
                         ),
                 },
                 entityClass = Form.class,
-                reverseExistence = true,
-                checkUnique = false,
+                reverse = true,
+                unique = false,
                 message = "requested form id could not be found",
-                keyExistence = "id"
+                existence = "id"
         ),
         @Unique(
-                targetField = "ownerId",
+                target = "ownerId",
                 fields = {
                         @Unique.Field(
                                 objectName = "id",
@@ -49,11 +49,11 @@ import jakarta.validation.constraints.Size;
                         ),
                 },
                 entityClass = Form.class,
-                reverseExistence = true,
-                checkUnique = false,
+                reverse = true,
+                unique = false,
                 message = "you must own this form to modify it",
-                keyExistence = "id",
-                superUserRole = "ROLE_ADMIN"
+                existence = "id",
+                authority = "ROLE_ADMIN"
         )
 })
 public class FormDTO {

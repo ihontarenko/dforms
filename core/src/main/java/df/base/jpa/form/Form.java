@@ -1,6 +1,7 @@
 package df.base.jpa.form;
 
 import df.base.common.hibernate5.generator.PrefixedId;
+import df.base.jpa.DefaultIdGenerator;
 import df.base.jpa.User;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
@@ -14,7 +15,7 @@ public class Form {
     @PrefixedId(
             prefixValue = "FRM",
             sequenceName = "FORM",
-            prefixGenerator = FormIdGenerator.class,
+            prefixGenerator = DefaultIdGenerator.class,
             numberFormat = "%04d",
             initialValue = 1000,
             incrementBy = 1

@@ -1,7 +1,7 @@
 package df.base.security;
 
 import df.base.jpa.User;
-import df.base.service.UserService;
+import df.base.service.user.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,13 +17,11 @@ public class UserInfoService implements UserDetailsService, UserDetailsPasswordS
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.loadUserByEmail(username);
+        User user = userService.loadUsersByEmail(username)
+                .stream().filter(User::isLocal).findFirst()
+                .orElseThrow(() -> new UsernameNotFoundException("Username %s not found".formatted(username)));
 
-        if (user == null) {
-            throw new UsernameNotFoundException("Username %s not found".formatted(username));
-        }
-
-        UserInfo userInfo = UserInfo.create(user.getEmail(), user.getLogin(), user.getPassword(),
+        UserInfo userInfo = UserInfo.create(user.getEmail(), user.getName(), user.getPassword(),
                 userService.getAuthorities(user));
 
         userInfo.setUser(user);

@@ -24,7 +24,7 @@ public class UserInfo implements UserDetails, OAuth2User, OidcUser, Authenticate
     private User                                   user;
 
     public static UserInfo create(User user, Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes) {
-        UserInfo userInfo = create(user.getEmail(), user.getLogin(), user.getPassword(), authorities, attributes, Map.of());
+        UserInfo userInfo = create(user.getEmail(), user.getName(), user.getPassword(), authorities, attributes, Map.of());
 
         userInfo.setUser(user);
 

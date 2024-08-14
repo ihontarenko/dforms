@@ -56,7 +56,11 @@ public class GlobalControllerAdvice {
         }
     }
 
-    @ExceptionHandler({Exception.class, RuntimeException.class, ClassCastException.class})
+    @ExceptionHandler({
+            Exception.class,
+            RuntimeException.class,
+            ClassCastException.class
+    })
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView globalException(Exception exception) {
         return buildMAV(exception);

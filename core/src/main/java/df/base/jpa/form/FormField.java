@@ -1,6 +1,7 @@
 package df.base.jpa.form;
 
 import df.base.common.hibernate5.generator.PrefixedId;
+import df.base.jpa.DefaultIdGenerator;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class FormField {
     @PrefixedId(
             prefixValue = "FLD",
             sequenceName = "FORM_FIELD",
-            prefixGenerator = FormIdGenerator.class,
+            prefixGenerator = DefaultIdGenerator.class,
             numberFormat = "%06d",
             initialValue = 100000,
             incrementBy = 1

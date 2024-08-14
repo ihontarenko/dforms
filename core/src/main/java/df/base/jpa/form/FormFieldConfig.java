@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class FormFieldConfig {
 
     @Id
-    @PrefixedId(prefixValue = "FFC", sequenceName = "FORM_FIELD_CONFIG")
+    @PrefixedId(prefixValue = "CFG", sequenceName = "FORM_FIELD_CONFIG")
     @Column(name = "ID")
     private String id;
 

@@ -1,4 +1,4 @@
-package df.web.controller;
+package df.web.controller.user;
 
 import df.base.security.UserInfo;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,17 +9,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/user")
-public class UserAdminController {
+@RequestMapping("/user/role")
+@PreAuthorize("hasRole('ADMIN')")
+public class RoleController {
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping(value = {"/index", "/{formId}/edit"})
+    @GetMapping("/index")
     public ModelAndView index(@AuthenticationPrincipal UserInfo principal) {
-        ModelAndView mav = new ModelAndView("users/index");
+        ModelAndView mav = new ModelAndView("user/role");
 
         mav.addObject("principal", principal);
 
         return mav;
     }
+
+    public ModelAndView modify(@AuthenticationPrincipal UserInfo principal) {
+        ModelAndView mav = new ModelAndView("user/role");
+
+        mav.addObject("principal", principal);
+
+        return mav;
+    }
+
+
 
 }

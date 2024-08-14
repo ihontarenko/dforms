@@ -2,7 +2,7 @@ package df.base.security.oauth2;
 
 import df.base.jpa.User;
 import df.base.security.UserInfo;
-import df.base.service.UserService;
+import df.base.service.user.UserService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -24,7 +24,7 @@ public class OpenIDUserService extends OidcUserService {
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         OidcUser oidcUser   = super.loadUser(userRequest);
         User     userEntity = oauth2UserService.getProcessedUser(userRequest, oidcUser);
-        UserInfo userInfo   = UserInfo.create(userEntity.getEmail(), userEntity.getLogin(), userEntity.getPassword(),
+        UserInfo userInfo   = UserInfo.create(userEntity.getEmail(), userEntity.getName(), userEntity.getPassword(),
                 userService.getAuthorities(userEntity), oidcUser.getAttributes(), oidcUser.getClaims());
 
         userInfo.setUser(userEntity);

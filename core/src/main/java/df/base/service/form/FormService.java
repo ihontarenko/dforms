@@ -1,8 +1,9 @@
-package df.base.service.forms;
+package df.base.service.form;
 
 import df.base.jpa.User;
 import df.base.jpa.form.*;
 import df.base.model.form.FormDTO;
+import df.base.service.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,17 +19,22 @@ public class FormService {
     private FormRepository repository;
 
     @Transactional(readOnly = true)
-    public Optional<Form> getFormById(String formId) {
+    public Optional<Form> getById(String formId) {
         return repository.findById(formId);
     }
 
+    public Form requireById(final String formId) {
+        return getById(formId).orElseThrow(()
+                -> new ResourceNotFoundException("Form '%s' couldn't be found".formatted(formId)));
+    }
+
     @Transactional(readOnly = true)
-    public List<Form> getAllForms() {
+    public List<Form> getAll() {
         return repository.findAll();
     }
 
     @Transactional
-    public Form createForm(User user, FormDTO formDTO) {
+    public Form create(User user, FormDTO formDTO) {
         Form form = new Form();
 
         form.setUser(user);
@@ -40,7 +46,7 @@ public class FormService {
     }
 
     @Transactional
-    public Form updateForm(Form form, FormDTO formDTO) {
+    public Form update(Form form, FormDTO formDTO) {
         form.setName(formDTO.getName());
         form.setDescription(formDTO.getDescription());
         form.setStatus(formDTO.getStatus());
@@ -49,15 +55,15 @@ public class FormService {
     }
 
     @Transactional
-    public void deleteForm(Form form) {
+    public void delete(Form form) {
         repository.delete(form);
     }
 
     @Transactional
-    public Form changeStatus(Form form, FormStatus status) {
+    public void changeStatus(Form form, FormStatus status) {
         form.setStatus(status);
 
-        return repository.save(form);
+        repository.save(form);
     }
 
 }

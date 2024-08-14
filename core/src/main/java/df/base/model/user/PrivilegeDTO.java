@@ -4,13 +4,13 @@ import df.base.jpa.Privilege;
 import df.base.validation.Unique;
 
 @Unique(
-        targetField = "name",
+        target = "name",
         fields = {
                 @Unique.Field(objectName = "name", entityName = "name")
         },
         entityClass = Privilege.class,
         message = "privilege name already taken",
-        keyExistence = "id"
+        existence = "id"
 )
 public class PrivilegeDTO {
 

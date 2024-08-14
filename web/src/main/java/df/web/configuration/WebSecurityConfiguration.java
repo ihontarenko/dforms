@@ -2,10 +2,11 @@ package df.web.configuration;
 
 import df.base.security.*;
 import df.base.security.oauth2.OAuth2UserMapperFactory;
-import df.base.security.oauth2.OAuth2UserMappers;
 import df.base.security.oauth2.OAuth2UserService;
 import df.base.security.oauth2.OpenIDUserService;
-import df.base.service.UserService;
+import df.base.security.oauth2.mapper.GithubOAuth2UserMapper;
+import df.base.security.oauth2.mapper.GoogleOAuth2UserMapper;
+import df.base.service.user.UserService;
 import df.web.property.HttpSecurityProperties;
 import df.web.property.HttpSecurityProperties.FormLoginProperties;
 import df.web.property.HttpSecurityProperties.OAuth2Properties;
@@ -128,9 +129,8 @@ public class WebSecurityConfiguration {
     public OAuth2UserMapperFactory userMapperFactory() {
         OAuth2UserMapperFactory factory = new OAuth2UserMapperFactory();
 
-        factory.addMapper(Provider.GOOGLE, OAuth2UserMappers.INSTANCE::mapGoogle);
-        factory.addMapper(Provider.FACEBOOK, OAuth2UserMappers.INSTANCE::mapFacebook);
-        factory.addMapper(Provider.GITHUB, OAuth2UserMappers.INSTANCE::mapGitHub);
+        factory.addMapper(Provider.GOOGLE, new GoogleOAuth2UserMapper());
+        factory.addMapper(Provider.GITHUB, new GithubOAuth2UserMapper());
 
         return factory;
     }

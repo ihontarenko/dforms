@@ -20,11 +20,11 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
     private final EntityManager  em;
     private       Class<?>       entityClass;
     private       Unique.Field[] fields;
-    private       String         objectKey;
-    private       String         targetField;
-    private       boolean        checkUnique;
-    private       boolean        keyReverse;
-    private       String         superAuthority;
+    private       String  existence;
+    private       String  target;
+    private       boolean unique;
+    private       boolean reverse;
+    private       String  authority;
 
     public UniqueValidator(EntityManager em) {
         this.em = em;
@@ -32,18 +32,18 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
 
     @Override
     public void initialize(Unique annotation) {
-        this.superAuthority = annotation.superAuthority();
-        this.objectKey = annotation.keyExistence();
+        this.authority = annotation.authority();
+        this.existence = annotation.existence();
         this.fields = annotation.fields();
         this.entityClass = annotation.entityClass();
-        this.keyReverse = annotation.reverseExistence();
-        this.checkUnique = annotation.checkUnique();
-        this.targetField = annotation.targetField();
+        this.reverse = annotation.reverse();
+        this.unique = annotation.unique();
+        this.target = annotation.target();
     }
 
     @Override
     public boolean isValid(Object object, ConstraintValidatorContext context) {
-        Object  idValue            = getFieldValue(object, objectKey);
+        Object  idValue            = getFieldValue(object, existence);
         boolean isValid            = true;
         boolean validationRequired = idValue == null;
 
@@ -51,9 +51,9 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
             validationRequired = ((String) idValue).isBlank();
         }
 
-        validationRequired = validationRequired == !keyReverse;
+        validationRequired = validationRequired == !reverse;
 
-        if (validationRequired && !superAuthority.isBlank()) {
+        if (validationRequired && !authority.isBlank()) {
             validationRequired = !checkSuperUser();
         }
 
@@ -84,7 +84,7 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
         TypedQuery<Object> typedQuery = em.createQuery(criteriaQuery);
         List<Object>       resultSet  = typedQuery.getResultList();
 
-        return checkUnique == (resultSet.size() == 0);
+        return unique == (resultSet.size() == 0);
     }
 
     private boolean checkSuperUser() {
@@ -92,14 +92,14 @@ public class UniqueValidator implements ConstraintValidator<Unique, Object> {
         UserInfo       principal      = (UserInfo) authentication.getPrincipal();
 
         return principal.getAuthorities().stream().map(GrantedAuthority::getAuthority)
-                .anyMatch(authority -> authority.equals(superAuthority));
+                .anyMatch(authority -> authority.equals(this.authority));
     }
 
     private void addConstraintViolation(ConstraintValidatorContext context) {
         context.disableDefaultConstraintViolation();
         String                     messageTemplate  = context.getDefaultConstraintMessageTemplate();
         ConstraintViolationBuilder violationBuilder = context.buildConstraintViolationWithTemplate(messageTemplate);
-        violationBuilder.addPropertyNode(targetField).addConstraintViolation();
+        violationBuilder.addPropertyNode(target).addConstraintViolation();
     }
 
     private Expression<?> resolveExpression(Unique.Field annotation, Root<?> root) {
