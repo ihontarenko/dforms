@@ -7,8 +7,8 @@ import df.base.mapper.form.FormMapper;
 import df.base.model.form.FormDTO;
 import df.base.security.UserInfo;
 import df.base.service.form.FormService;
+import df.web.common.flash.FlashMessage.Type;
 import df.web.common.flash.FlashMessageService;
-import df.web.common.flash.FlashMessageType;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,14 +26,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
-import static df.web.common.flash.FlashMessageType.*;
+import static df.web.common.flash.FlashMessage.Type.*;
 
 @Controller
 @RequestMapping("/form")
 public class FormController {
 
-    private final FlashMessageService flash;
-    private final FormService         service;
+    private final FlashMessageService     flash;
+    private final FormService             service;
     private final Map<FormStatus, String> statuses = new HashMap<>() {{
         put(FormStatus.ACTIVE, "bg-success");
         put(FormStatus.INACTIVE, "bg-dark");
@@ -43,16 +43,17 @@ public class FormController {
     public FormController(FlashMessageService flash, FormService service) {
         this.flash = flash;
         this.service = service;
+        service.setRedirectUrl("/form?error=exception");
     }
 
-    @GetMapping("/index")
+    @GetMapping
     public ModelAndView index(@AuthenticationPrincipal UserInfo principal) {
         ModelAndView mav     = new ModelAndView("form/index");
         FormDTO      formDTO = new FormDTO();
 
         formDTO.setOwnerId(principal.getUser().getId());
 
-        bindVariables(mav, formDTO);
+        bindAttributes(mav, formDTO);
 
         return mav;
     }
@@ -61,7 +62,7 @@ public class FormController {
     public ModelAndView index(@PathVariable(value = "formId", required = false) String formId) {
         ModelAndView mav = new ModelAndView("form/index");
 
-        bindVariables(mav, new FormMapper().map(service.requireById(formId)));
+        bindAttributes(mav, new FormMapper().map(service.requireById(formId)));
 
         return mav;
     }
@@ -77,7 +78,7 @@ public class FormController {
                     .formatted(formId), DARK);
         } else {
             flash.addMessage(attributes, "Form ID '%s' not found"
-                    .formatted(formId), FlashMessageType.ERROR);
+                    .formatted(formId), Type.ERROR);
         }
 
         return "redirect:/form/index";
@@ -111,14 +112,14 @@ public class FormController {
                 flash.addMessage(attributes, "Form ID '%s' has been successfully saved".formatted(form.getId()), SUCCESS);
             }
         } else {
-            bindVariables(mav, formDTO);
+            bindAttributes(mav, formDTO);
             mav.setViewName("form/index");
         }
 
         return mav;
     }
 
-    private void bindVariables(ModelAndView mav, FormDTO formDTO) {
+    private void bindAttributes(ModelAndView mav, FormDTO formDTO) {
         mav.addObject("formDTO", formDTO);
         mav.addObject("forms", service.getAll());
         mav.addObject("statuses", statuses);

@@ -1,0 +1,69 @@
+{% extends "common/layout" %}
+{% block title %}Role Form{% endblock %}
+{% block content %}
+<form method="post" action="{{ href('/user/role/perform') }}" enctype="multipart/form-data" class="row g-3" >
+
+    <div class="form-group">
+        <label for="form-name">Name</label>
+        <input name="name" type="text" class="form-control {{ ifFieldErrors('roleDTO', 'name', 'is-invalid', 'is-valid') }}" id="form-name" value="{{ roleDTO.name }}">
+        {% include "common/invalid-feedback" with {"formName" : "roleDTO", "fieldName" : "name"} %}
+    </div>
+
+    <div class="form-group">
+        <label class="d-block">Roles</label>
+        <div class="btn-group" role="group">
+            <fieldset>
+                {% for privilege in privileges %}
+                {% if roleDTO.privileges contains privilege.name %}
+                {% set checked = "checked" %}
+                {% else %}
+                {% set checked = "" %}
+                {% endif %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="privileges[]" value="{{ privilege.name }}" id="{{ privilege.id }}" {{checked}}>
+                    <label class="form-check-label" for="{{ privilege.id }}">
+                        {{ privilege.name }}
+                    </label>
+                </div>
+                {% endfor %}
+            </fieldset>
+        </div>
+        {% include "common/invalid-feedback" with {"formName" : "roleDTO", "fieldName" : "privileges"} %}
+    </div>
+
+    <input type="hidden" name="id" value="{{ roleDTO.id }}">
+
+    <div class="form-group mt-4">
+        <button class="btn btn-success" type="submit">Submit</button>
+    </div>
+</form>
+
+<h2 class="mt-5">Available Roles</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for role in roles %}
+        <tr>
+            <th scope="row">{{ role.id }}</th>
+            <td>{{ role.name }}</td>
+            <td>
+                <div class="btn-group" role="group">
+                    <button onclick="window.location = '{{ href('/user/role/' + role.id + '/modify') }}'"
+                            type="button" class="btn btn-sm btn-info">EDIT</button>
+                    <button onclick="window.location = '{{ href('/user/role/' + role.id + '/delete') }}'"
+                            type="button" class="btn btn-sm btn-danger">DELETE</button>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

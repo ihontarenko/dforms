@@ -16,19 +16,16 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
 
     @Override
     public boolean isValid(String password, ConstraintValidatorContext constraintValidatorContext) {
-
-        if (password == null || password.isEmpty()) {
-            return false;
+        if (password == null || password.isBlank()) {
+            return true;
         }
 
-        final IntStream characters     = password.chars();
-        boolean         hasUpperCase   = characters.anyMatch(Character::isUpperCase);
-        boolean         hasLowerCase   = characters.anyMatch(Character::isLowerCase);
-        boolean         hasDigit       = characters.anyMatch(Character::isDigit);
-        boolean         hasSpecialChar = characters.anyMatch(i -> special.indexOf(i) >= 0);
+        boolean         hasUpperCase   = password.chars().anyMatch(Character::isUpperCase);
+        boolean         hasLowerCase   = password.chars().anyMatch(Character::isLowerCase);
+        boolean         hasDigit       = password.chars().anyMatch(Character::isDigit);
+        boolean         hasSpecialChar = password.chars().anyMatch(i -> special.indexOf(i) >= 0);
 
         return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
-
     }
 
 }

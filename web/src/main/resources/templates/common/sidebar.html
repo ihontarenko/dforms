@@ -2,45 +2,37 @@
 <div class="sidebar col-md-3 col-lg-2 p-3">
     <ul class="list-unstyled ps-0">
         <li class="mb-1">
-            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-                Main
-            </button>
-            <div class="collapse show" id="home-collapse" style="">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="{{ href('/index/home') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Main Page</a></li>
-                    <li><a href="{{ href('/bean-console/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Bean Console</a></li>
-                </ul>
-            </div>
-        </li>
-        <li class="mb-1">
-            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 {{ ifActivePage('starts:/user', '', 'collapsed') }}" data-bs-toggle="collapse"
+                    data-bs-target="#user-collapse" aria-expanded="{{ ifActivePage('starts:/user', 'true', 'false') }}">
                 Users (ADMIN)
             </button>
-            <div class="collapse show" style="">
+            <div class="collapse {{ ifActivePage('starts:/user', 'show') }}" id="user-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="{{ href('/user/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Users</a></li>
-                    <li><a href="{{ href('/user/role/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Roles</a></li>
-                    <li><a href="{{ href('/user/privilege/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Privileges</a></li>
+                    <li><a href="{{ href('/user') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Users</a></li>
+                    <li><a href="{{ href('/user/role') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Roles</a></li>
+                    <li><a href="{{ href('/user/privilege') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Privileges</a></li>
                 </ul>
             </div>
         </li>
         <li class="mb-1">
-            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-                Forms
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 {{ ifActivePage('starts:/form', '', 'collapsed') }}" data-bs-toggle="collapse"
+                    data-bs-target="#form-collapse" aria-expanded="{{ ifActivePage('starts:/form', 'true', 'false') }}">
+                Forms (ADMIN)
             </button>
-            <div class="collapse" id="dashboard-collapse" style="">
+            <div class="collapse {{ ifActivePage('starts:/form', 'show') }}" id="form-collapse" style="">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    <li><a href="{{ href('/form/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Forms</a></li>
-                    <li><a href="{{ href('/form/field/index') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Fields</a></li>
+                    <li><a href="{{ href('/form') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Forms</a></li>
+                    <li><a href="{{ href('/form/field') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Fields</a></li>
                     <li><a href="{{ href('/form/entries') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Entries</a></li>
                 </ul>
             </div>
         </li>
         <li class="mb-1">
-            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
+            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 {{ ifActivePage('contains:ic-index', '', 'collapsed') }}" data-bs-toggle="collapse"
+                    data-bs-target="#ic-index-collapse" aria-expanded="{{ ifActivePage('contains:ic-index', 'true', 'false') }}">
                 IC Index
             </button>
-            <div class="collapse" id="orders-collapse">
+            <div class="collapse {{ ifActivePage('starts:/ic-index', 'show') }}" id="ic-index-collapse">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                     <li><a href="{{ href('/ic-index/new-ec') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Add New</a></li>
                     <li><a href="{{ href('/ic-index/resistors') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Resistors</a></li>
@@ -57,6 +49,7 @@
             </button>
             <div class="collapse" id="account-collapse" style="">
                 <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a href="{{ href('/user/' + principal.user.id + '/modify') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Profile</a></li>
                     <li><a href="{{ href('/secure/logout') }}" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Sign out</a></li>
                 </ul>
             </div>

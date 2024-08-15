@@ -2,24 +2,45 @@ package df.base.model.user;
 
 import df.base.jpa.User;
 import df.base.security.Provider;
+import df.base.validation.StrongPassword;
 import df.base.validation.Unique;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Unique(
-        target = "email",
-        fields = {@Unique.Field(objectName = "email", entityName = "email")},
-        entityClass = User.class,
-        message = "user with this email already registered",
-        existence = "id"
-)
+@Unique.Set({
+        @Unique(
+                target = "email",
+                fields = {@Unique.Field(objectName = "email", entityName = "email")},
+                entityClass = User.class,
+                message = "user with this email already registered",
+                existence = "id"
+        ),
+        @Unique(
+                target = "id",
+                fields = {
+                        // todo: think about improvements
+                        @Unique.Field(objectName = "id", entityName = "id"),
+                        @Unique.Field(objectName = "email", entityName = "email")
+                },
+                entityClass = User.class,
+                reverse = true,
+                unique = false,
+                message = "the requested user is invalid",
+                existence = "id"
+        )
+})
 public class UserDTO {
+
+    public static final String OAUTH2_USER_ROLE = "ROLE_OAUTH2_USER";
 
     private String id;
 
     @NotEmpty(message = "user email is required")
+    @Email
     @Size(max = 32)
     private String email;
 
@@ -29,12 +50,13 @@ public class UserDTO {
 
     private Provider provider = Provider.LOCAL;
 
+    @StrongPassword
     private String password;
 
     private boolean enabled;
 
     @NotEmpty(message = "select at least one role")
-    private List<String> roles;
+    private List<String> roles = new ArrayList<>();
 
     public String getId() {
         return id;

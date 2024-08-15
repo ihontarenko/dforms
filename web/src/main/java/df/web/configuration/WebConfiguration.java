@@ -4,6 +4,7 @@ import df.base.common.resource.ContentHashVersionStrategy;
 import df.base.configuration.ParentConfiguration;
 import df.base.property.ApplicationProperties;
 import df.web.common.pebble.PebbleExtension;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ApplicationContext;
@@ -62,8 +63,8 @@ public class WebConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public PebbleExtension pebbleExtension(ApplicationContext context) {
-        return new PebbleExtension(context);
+    public PebbleExtension pebbleExtension(ApplicationContext context, HttpServletRequest request) {
+        return new PebbleExtension(context, request);
     }
 
 }

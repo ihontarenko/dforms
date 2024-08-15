@@ -1,9 +1,17 @@
 package df.base.mapper;
 
-public interface Mapper<T, R> {
+public interface Mapper<S, D> {
 
-    R map(T source);
+    D map(S source);
 
-    T reverse(R source);
+    S reverse(D source);
+
+    default void map(S source, D destination) {
+        throw new UnsupportedOperationException();
+    }
+
+    default void reverse(D source, S destination) {
+        throw new UnsupportedOperationException();
+    }
 
 }

@@ -3,7 +3,10 @@ package df.base.service.user;
 import df.base.jpa.Role;
 import df.base.jpa.User;
 import df.base.jpa.UserRepository;
+import df.base.mapper.user.UserMapper;
 import df.base.model.user.UserDTO;
+import df.base.security.Provider;
+import df.base.service.RedirectAware;
 import df.base.service.ResourceNotFoundException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,21 +14,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static df.base.security.Provider.LOCAL;
+import static df.base.Messages.ERROR_USER_NOT_FOUND;
 
 @Service
-public class UserService {
-
-    public static final String DEFAULT_OAUTH2_USER_ROLE = "ROLE_OAUTH_USER";
-    public static final String DEFAULT_LOCAL_USER_ROLE  = "ROLE_USER";
+public class UserService implements RedirectAware {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository  repository;
     private final RoleService     roleService;
+    private       String          redirectUrl;
 
     public UserService(UserRepository repository, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.repository = repository;
@@ -46,77 +46,81 @@ public class UserService {
         return authorities;
     }
 
-    public User loadUserByEmail(String email) {
-        Optional<User> user = repository.findByEmail(email);
-
-        // todo
-
-        return user.orElse(null);
-    }
-
-    public List<User> loadUsersByEmail(String email) {
-        return repository.findAllByEmail(email);
-    }
-
-    public User createOrUpdate(UserDTO userDTO) {
-        return repository.findByEmailAndProvider(userDTO.getEmail(), userDTO.getProvider())
-                .map(u -> updateUser(u, userDTO)).orElseGet(() -> {
-                    User newUser = createUser(userDTO);
-
-                    final String roleName = (userDTO.getProvider() != null || userDTO.getProvider() != LOCAL)
-                            ? DEFAULT_OAUTH2_USER_ROLE : DEFAULT_LOCAL_USER_ROLE;
-
-                    Role defaultRole = roleService.createDefaultRole(roleName);
-
-                    newUser.addRole(defaultRole);
-
-                    repository.save(newUser);
-
-                    return newUser;
-                });
-    }
-
-    public User updateUser(User user, UserDTO userDTO) {
-        return processUser(userDTO, user);
-    }
-
-    public User createUser(UserDTO userDTO) {
-        return processUser(userDTO, new User());
+    public Optional<User> loadUserEmailAndProvider(String email, Provider provider) {
+        return repository.findByEmailAndProvider(email, provider);
     }
 
     @Transactional
-    public User processUser(UserDTO userDTO, User user) {
-        user.setName(userDTO.getName());
-        user.setEmail(userDTO.getEmail());
-        user.setProvider(userDTO.getProvider());
-        user.setEnabled(true);
+    public User createOrUpdate(UserDTO userDTO) {
+        // todo: check getId on empty string
+        User user = repository.findById(userDTO.getId())
+                .map(u -> updateUser(u, userDTO))
+                .orElseGet(() -> createUser(userDTO));
 
-        if (userDTO.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        }
+        updateUserRoles(user, userDTO);
 
-        if (user.getId() == null) {
-            user.setCreatedAt(LocalDateTime.now());
-        }
+        return user;
+    }
+
+    @Transactional
+    public void updateUserRoles(User user, UserDTO userDTO) {
+        Collection<Role> newRoles = roleService.getAllByName(userDTO.getRoles());
+        Collection<Role> oldRoles = user.getRoles();
+
+        oldRoles.clear();
+        oldRoles.addAll(newRoles);
 
         repository.save(user);
+    }
+
+    @Transactional
+    public User updateUser(User user, UserDTO userDTO) {
+        User updated = repository.save(populateUserEntity(user, userDTO));
+
+        updateUserRoles(updated, userDTO);
+
+        return updated;
+    }
+
+    @Transactional
+    public User createUser(UserDTO userDTO) {
+        User created = repository.save(populateUserEntity(new User(), userDTO));
+
+        updateUserRoles(created, userDTO);
+
+        return created;
+    }
+
+    public User populateUserEntity(User user, UserDTO userDTO) {
+        new UserMapper(passwordEncoder).reverse(userDTO, user);
 
         return user;
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getById(String name) {
-        return repository.findById(name);
+    public Optional<User> getById(String id) {
+        return id == null ? Optional.empty() : repository.findById(id);
     }
 
     @Transactional(readOnly = true)
     public User requiredById(String id) {
-        return getById(id).orElseThrow(() -> new ResourceNotFoundException("User '%s' not found".formatted(id)));
+        return getById(id).orElseThrow(()
+                -> new ResourceNotFoundException(ERROR_USER_NOT_FOUND.formatted(id), this));
     }
 
     @Transactional(readOnly = true)
     public List<User> getAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public String getRedirectUrl() {
+        return this.redirectUrl;
+    }
+
+    @Override
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 
 }

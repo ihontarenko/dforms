@@ -33,7 +33,7 @@ import jakarta.validation.constraints.Size;
                 entityClass = Form.class,
                 reverse = true,
                 unique = false,
-                message = "requested form id could not be found",
+                message = "the FORM_ID must exist",
                 existence = "id"
         ),
         @Unique(

@@ -1,14 +1,14 @@
 package df.web.controller.user;
 
+import df.base.jpa.User;
 import df.base.mapper.user.UserMapper;
 import df.base.model.user.UserDTO;
-import df.base.security.UserInfo;
+import df.base.service.ResourceNotFoundException;
 import df.base.service.user.RoleService;
 import df.base.service.user.UserService;
-import df.web.common.flash.FlashMessageService;
+import df.web.common.ControllerHelper;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,52 +18,80 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static df.base.Messages.SUCCESS_USER_SAVED;
+import static df.web.common.flash.FlashMessage.success;
+
+@SuppressWarnings({"unused"})
 @Controller
 @RequestMapping("/user")
 @PreAuthorize("hasRole('ADMIN')")
 public class UserController {
 
-    private final FlashMessageService flash;
-    private final UserService userService;
-    private final RoleService roleService;
+    private final UserService       userService;
+    private final RoleService      roleService;
+    private final ControllerHelper helper;
 
-    public UserController(FlashMessageService flash, UserService userService, RoleService roleService) {
-        this.flash = flash;
+    public UserController(ControllerHelper helper, UserService userService, RoleService roleService) {
+        this.helper = helper;
         this.userService = userService;
         this.roleService = roleService;
+
+        helper.setRedirectUrl("/user");
     }
 
-    @GetMapping("/index")
+    @GetMapping
     public ModelAndView index() {
-        ModelAndView mav = new ModelAndView("user/index");
+        bindAttributes(new UserDTO());
 
-        bindVariables(mav, new UserDTO());
+        helper.setViewName("user/index");
 
-        return mav;
+        return helper.resolveWithoutRedirect();
     }
 
     @GetMapping("/{userId}/modify")
-    public ModelAndView modify(@PathVariable("userId") String userId) {
-        ModelAndView mav = new ModelAndView("user/index");
+    public ModelAndView modify(@PathVariable("userId") String userId, RedirectAttributes attributes) {
+        helper.setViewName("user/index");
+        helper.setRedirectAttributes(attributes);
 
-        bindVariables(mav, new UserMapper().map(userService.requiredById(userId)));
+        ModelAndView mav;
+
+        try {
+            bindAttributes(new UserMapper().map(userService.requiredById(userId)));
+            mav = helper.resolveWithoutRedirect();
+        } catch (ResourceNotFoundException exception) {
+            mav = helper.redirect(exception);
+        }
 
         return mav;
     }
 
     @PostMapping("/perform")
     public ModelAndView perform(@Valid UserDTO userDTO, BindingResult result, RedirectAttributes attributes) {
-        ModelAndView mav = new ModelAndView("user/index");
+        helper.setBindingResult(result);
+        helper.setRedirectAttributes(attributes);
+        helper.setViewName("user/index");
 
-        bindVariables(mav, userDTO);
+        bindAttributes(userDTO);
 
-        return mav;
+        if (!result.hasFieldErrors()) {
+            User user = userService.createOrUpdate(userDTO);
+            helper.addMessage(success(SUCCESS_USER_SAVED.formatted(user.getId())));
+        }
+
+        return helper.resolveWithRedirect();
     }
 
-    private void bindVariables(ModelAndView mav, UserDTO userDTO) {
-        mav.addObject("userDTO", userDTO);
-        mav.addObject("users", userService.getAll());
-        mav.addObject("roles", roleService.getAll());
+    private void bindAttributes(UserDTO userDTO) {
+        Map<String, Object> attributes = new HashMap<>();
+
+        attributes.put("userDTO", userDTO);
+        attributes.put("users", userService.getAll());
+        attributes.put("roles", roleService.getAll());
+
+        helper.attributes(attributes);
     }
 
 }

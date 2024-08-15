@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class OAuth2UserService extends DefaultOAuth2UserService {
@@ -51,9 +52,16 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationException("Unsupported provider %s".formatted(registrationId));
         }
 
-        UserDTO userDTO = mapper.map(user);
+        UserDTO        userDTO    = mapper.map(user);
+        Optional<User> optional   = userService.loadUserEmailAndProvider(userDTO.getEmail(), userDTO.getProvider());
+        User           userEntity = optional.orElse(null);
 
-        return userService.createOrUpdate(userDTO);
+        if (userEntity == null) {
+            userDTO.getRoles().add(UserDTO.OAUTH2_USER_ROLE);
+            userEntity = userService.createUser(userDTO);
+        }
+
+        return userEntity;
     }
 
 }

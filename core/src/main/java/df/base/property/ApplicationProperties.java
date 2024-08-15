@@ -7,6 +7,7 @@ public class ApplicationProperties {
 
     private LocaleProperties locale;
     private String           homeUrl;
+    private String           defaultRedirectUrl;
     private ThemeProperties  theme;
 
     public String getHomeUrl() {
@@ -15,6 +16,14 @@ public class ApplicationProperties {
 
     public void setHomeUrl(String homeUrl) {
         this.homeUrl = homeUrl;
+    }
+
+    public String getDefaultRedirectUrl() {
+        return defaultRedirectUrl;
+    }
+
+    public void setDefaultRedirectUrl(String defaultRedirectUrl) {
+        this.defaultRedirectUrl = defaultRedirectUrl;
     }
 
     public LocaleProperties getLocale() {

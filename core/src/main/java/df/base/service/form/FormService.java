@@ -1,10 +1,13 @@
 package df.base.service.form;
 
+import df.base.Messages;
 import df.base.jpa.User;
-import df.base.jpa.form.*;
+import df.base.jpa.form.Form;
+import df.base.jpa.form.FormRepository;
+import df.base.jpa.form.FormStatus;
 import df.base.model.form.FormDTO;
+import df.base.service.RedirectAware;
 import df.base.service.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,10 +16,14 @@ import java.util.Optional;
 
 @SuppressWarnings({"unused"})
 @Service
-public class FormService {
+public class FormService implements RedirectAware {
 
-    @Autowired
-    private FormRepository repository;
+    private final FormRepository repository;
+    private       String         redirectUrl;
+
+    public FormService(FormRepository repository) {
+        this.repository = repository;
+    }
 
     @Transactional(readOnly = true)
     public Optional<Form> getById(String formId) {
@@ -25,7 +32,7 @@ public class FormService {
 
     public Form requireById(final String formId) {
         return getById(formId).orElseThrow(()
-                -> new ResourceNotFoundException("Form '%s' couldn't be found".formatted(formId)));
+                -> new ResourceNotFoundException(Messages.ERROR_FORM_NOT_FOUND.formatted(formId), this));
     }
 
     @Transactional(readOnly = true)
@@ -64,6 +71,16 @@ public class FormService {
         form.setStatus(status);
 
         repository.save(form);
+    }
+
+    @Override
+    public String getRedirectUrl() {
+        return this.redirectUrl;
+    }
+
+    @Override
+    public void setRedirectUrl(String defaultRedirectUrl) {
+        this.redirectUrl = defaultRedirectUrl;
     }
 
 }

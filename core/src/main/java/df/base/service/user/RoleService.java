@@ -1,8 +1,11 @@
 package df.base.service.user;
 
+import df.base.Messages;
 import df.base.jpa.Privilege;
 import df.base.jpa.Role;
 import df.base.jpa.RoleRepository;
+import df.base.model.user.RoleDTO;
+import df.base.service.RedirectAware;
 import df.base.service.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +15,11 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 @Service
-public class RoleService {
+public class RoleService implements RedirectAware {
 
     private final RoleRepository   repository;
     private final PrivilegeService privilegeService;
+    private       String          redirectUrl;
 
     public RoleService(RoleRepository repository, PrivilegeService privilegeService) {
         this.repository = repository;
@@ -23,25 +27,12 @@ public class RoleService {
     }
 
     @Transactional
-    public Role createDefaultRole(String roleName) {
-        final String privilegeName = "READ";
-
-        return repository.findByName(roleName).orElseGet(() -> {
-            Supplier<Privilege> creator   = () -> privilegeService.createPrivilege(privilegeName);
-            Role                role      = createRole(roleName);
-            Privilege           privilege = privilegeService.getByName(privilegeName).orElseGet(creator);
-
-            role.addPrivilege(privilege);
-
-            repository.save(role);
-
-            return role;
-        });
-    }
-
-    @Transactional
     public Role createRole(String roleName) {
         Role role = new Role();
+
+        if (!roleName.contains(RoleDTO.ROLE_PREFIX)) {
+            roleName = RoleDTO.ROLE_PREFIX + roleName;
+        }
 
         role.setName(roleName);
 
@@ -56,9 +47,20 @@ public class RoleService {
     }
 
     @Transactional(readOnly = true)
+    public Optional<Role> getById(String id) {
+        return repository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Role requiredById(String id) {
+        return getById(id).orElseThrow(()
+                -> new ResourceNotFoundException(Messages.ERROR_ROLE_NOT_FOUND.formatted(id), this));
+    }
+
+    @Transactional(readOnly = true)
     public Role requiredByName(String name) {
-        return getByName(name).orElseThrow(()
-                -> new ResourceNotFoundException("Role '%s' not found".formatted(name)));
+        return getById(name).orElseThrow(()
+                -> new ResourceNotFoundException(Messages.ERROR_ROLE_NOT_FOUND.formatted(name), this));
     }
 
     @Transactional(readOnly = true)
@@ -71,4 +73,18 @@ public class RoleService {
         return repository.findAllById(ids);
     }
 
+    @Transactional(readOnly = true)
+    public List<Role> getAllByName(Iterable<String> names) {
+        return repository.findByNameIn(names);
+    }
+
+    @Override
+    public String getRedirectUrl() {
+        return this.redirectUrl;
+    }
+
+    @Override
+    public void setRedirectUrl(String defaultRedirectUrl) {
+        this.redirectUrl = defaultRedirectUrl;
+    }
 }

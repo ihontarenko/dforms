@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StrongPassword {
 
-    String message() default "Password is not strong enough";
+    String message() default "password is not strong enough";
 
     Class<?>[] groups() default {};
 

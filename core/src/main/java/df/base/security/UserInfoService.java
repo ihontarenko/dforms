@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import static df.base.security.Provider.LOCAL;
+
 public class UserInfoService implements UserDetailsService, UserDetailsPasswordService {
 
     private final UserService userService;
@@ -17,8 +19,7 @@ public class UserInfoService implements UserDetailsService, UserDetailsPasswordS
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.loadUsersByEmail(username)
-                .stream().filter(User::isLocal).findFirst()
+        User user = userService.loadUserEmailAndProvider(username, LOCAL)
                 .orElseThrow(() -> new UsernameNotFoundException("Username %s not found".formatted(username)));
 
         UserInfo userInfo = UserInfo.create(user.getEmail(), user.getName(), user.getPassword(),

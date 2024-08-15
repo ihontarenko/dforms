@@ -1,9 +1,12 @@
 package df.base.service;
 
-public class ResourceNotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException implements RedirectAware {
 
-    public ResourceNotFoundException(String message) {
+    private String redirectUrl;
+
+    public ResourceNotFoundException(String message, RedirectAware redirectAware) {
         super(message);
+        setRedirectUrl(redirectAware.getRedirectUrl());
     }
 
     public ResourceNotFoundException(String message, Throwable cause) {
@@ -14,4 +17,13 @@ public class ResourceNotFoundException extends RuntimeException {
         super(cause);
     }
 
+    @Override
+    public String getRedirectUrl() {
+        return this.redirectUrl;
+    }
+
+    @Override
+    public void setRedirectUrl(String defaultRedirectUrl) {
+        this.redirectUrl = defaultRedirectUrl;
+    }
 }

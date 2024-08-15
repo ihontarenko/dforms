@@ -1,8 +1,8 @@
 package df.web.controller;
 
 import df.base.security.UserInfo;
+import df.web.common.flash.FlashMessage;
 import df.web.common.flash.FlashMessageService;
-import df.web.common.flash.FlashMessageType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +31,7 @@ public class HomeController {
 
         if (status != null) {
             flashMessage.addMessage(attributes, "Welcome on board %s you are authorized using '%s'!"
-                    .formatted(principal.getName(), status.toUpperCase()), FlashMessageType.SUCCESS);
+                    .formatted(principal.getName(), status.toUpperCase()), FlashMessage.Type.SUCCESS);
             mav.setViewName("redirect:/index/home");
         }
 

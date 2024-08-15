@@ -1,5 +1,5 @@
 {% extends "common/layout" %}
-{% block title %}Internal Users{% endblock %}
+{% block title %}User Form{% endblock %}
 {% block content %}
 <form method="post" action="{{ href('/user/perform') }}" enctype="multipart/form-data" class="row g-3" >
 
@@ -17,7 +17,7 @@
 
     <div class="form-group">
         <label for="form-password">Password</label>
-        <input name="description" type="text" class="form-control {{ ifFieldErrors('userDTO', 'password', 'is-invalid', 'is-valid') }}" id="form-password" value="{{ userDTO.password }}">
+        <input name="password" type="text" class="form-control {{ ifFieldErrors('userDTO', 'password', 'is-invalid', 'is-valid') }}" id="form-password" value="{{ userDTO.password }}">
         {% include "common/invalid-feedback" with {"formName" : "userDTO", "fieldName" : "password"} %}
     </div>
 
@@ -43,7 +43,7 @@
                         {% set checked = "" %}
                     {% endif %}
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="roles[]" value="{{ role.id }}" id="{{ role.id }}" {{checked}}>
+                        <input class="form-check-input" type="checkbox" name="roles[]" value="{{ role.name }}" id="{{ role.id }}" {{checked}}>
                         <label class="form-check-label" for="{{ role.id }}">
                             {{ role.name }}
                         </label>
@@ -55,13 +55,15 @@
     </div>
 
     <input type="hidden" name="id" value="{{ userDTO.id }}">
+    <input type="hidden" name="provider" value="{{ userDTO.provider }}">
 
     <div class="form-group mt-4">
         <button class="btn btn-success" type="submit">Submit</button>
+        {% include "common/invalid-feedback" with {"formName" : "userDTO", "fieldName" : "id"} %}
     </div>
 </form>
 
-<h2 class="mt-5">Users</h2>
+<h2 class="mt-5">Internal Users</h2>
 
 <table class="table table-hover">
     <thead>

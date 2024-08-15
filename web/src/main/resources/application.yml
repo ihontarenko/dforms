@@ -53,6 +53,7 @@ spring:
 application:
   version: 1.0-beta
   name: Dynamic Forms
+  defaultRedirectUrl: /index/home
   homeUrl: /index/home
   theme:
     cookieName: J_DF_THEME

@@ -16,15 +16,37 @@ public class SlugifyTransliterator {
     }
 
     public static String slugify(String text) {
+        return slugify(text, SpaceReplacement.UNDERSCORE);
+    }
+
+    public static String slugify(String text, SpaceReplacement replacement) {
         String transliterated = transliterate(text);
+        String normalized     = Normalizer.normalize(transliterated, Normalizer.Form.NFD);
+        String slug           = normalized.replaceAll("\\p{M}", "");
 
-        String normalized = Normalizer.normalize(transliterated, Normalizer.Form.NFD);
-        String slug = normalized.replaceAll("\\p{M}", "");
-
-        slug = slug.toLowerCase().replaceAll("[^a-z0-9]+", "-")
-                .replaceAll("^-|-$", "");
+        slug = slug.toLowerCase()
+                .replaceAll("[^a-z0-9]+", replacement.character())
+                .replaceAll("^%s|%s$"
+                        .formatted(replacement.character(), replacement.character()), replacement.character());
 
         return slug;
+    }
+
+    public enum SpaceReplacement {
+        DOT("."),
+        UNDERSCORE("_"),
+        DASH("-");
+
+        private final String character;
+
+        SpaceReplacement(String character) {
+            this.character = character;
+        }
+
+        public String character() {
+            return character;
+        }
+
     }
 
     public enum CharacterMap {

@@ -2,12 +2,15 @@ package df.web.controller;
 
 import df.base.property.ApplicationProperties;
 import df.base.security.UserInfo;
+import df.base.service.RedirectAware;
+import df.base.service.ResourceNotFoundException;
+import df.web.common.flash.FlashMessage;
 import df.web.common.flash.FlashMessageService;
-import df.web.common.flash.FlashMessageType;
+import io.pebbletemplates.pebble.error.PebbleException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -26,6 +29,9 @@ import java.io.StringWriter;
 import java.util.Locale;
 import java.util.Set;
 
+import static df.web.common.flash.FlashMessage.Type.ERROR;
+import static df.web.common.flash.FlashMessage.error;
+
 @SuppressWarnings({"unused"})
 @ControllerAdvice
 public class GlobalControllerAdvice {
@@ -41,18 +47,28 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler({
+            PebbleException.class,
             HttpRequestMethodNotSupportedException.class,
-            AuthorizationDeniedException.class,
-            NoResourceFoundException.class
+            AccessDeniedException.class,
+            NoResourceFoundException.class,
+            ResourceNotFoundException.class
     })
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     public void httpRequestMethodNotSupportedException(HttpServletRequest request, HttpServletResponse response,
                                                        Exception exception) throws IOException {
         if (!response.isCommitted()) {
-            FlashMap flashMap = RequestContextUtils.getOutputFlashMap(request);
-            flashMessageService.addMessage(flashMap, exception.getMessage(), FlashMessageType.ERROR);
-            RequestContextUtils.saveOutputFlashMap(properties.getHomeUrl(), request, response);
-            response.sendRedirect(properties.getHomeUrl());
+            FlashMap flashMap    = RequestContextUtils.getOutputFlashMap(request);
+            String   redirectUrl = properties.getHomeUrl();
+
+            flashMessageService.addMessage(flashMap, error(exception.getMessage()));
+
+            if (exception instanceof RedirectAware redirectAware && redirectAware.hasRedirectUrl()) {
+                redirectUrl = redirectAware.getRedirectUrl();
+            }
+
+            RequestContextUtils.saveOutputFlashMap(redirectUrl, request, response);
+
+            response.sendRedirect(redirectUrl);
         }
     }
 
