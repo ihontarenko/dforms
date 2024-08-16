@@ -1,9 +1,7 @@
 package df.base.jpa;
 
-import df.base.common.hibernate5.generator.PrefixedId;
+import df.base.common.hibernate.generator.PrefixedId;
 import jakarta.persistence.*;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "SECURITY_PRIVILEGES")

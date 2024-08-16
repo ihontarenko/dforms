@@ -3,10 +3,12 @@ package df.base.service.user;
 import df.base.Messages;
 import df.base.jpa.Privilege;
 import df.base.jpa.PrivilegeRepository;
+import df.base.mapper.user.PrivilegeMapper;
+import df.base.model.user.PrivilegeDTO;
 import df.base.service.RedirectAware;
 import df.base.service.ResourceNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,10 +24,15 @@ public class PrivilegeService implements RedirectAware {
     }
 
     @Transactional
-    public Privilege createPrivilege(String privilegeName) {
-        Privilege privilege = new Privilege();
+    public Privilege createOrUpdate(PrivilegeDTO privilegeDTO) {
+        return getById(privilegeDTO.getId())
+                .map(entity -> update(entity, privilegeDTO))
+                .orElseGet(() -> create(privilegeDTO));
+    }
 
-        privilege.setName(privilegeName);
+    @Transactional
+    public Privilege create(PrivilegeDTO privilegeDTO) {
+        Privilege privilege = new PrivilegeMapper().reverse(privilegeDTO);
 
         repository.save(privilege);
 
@@ -33,19 +40,33 @@ public class PrivilegeService implements RedirectAware {
     }
 
     @Transactional
-    public Optional<Privilege> getByName(String name) {
-        return repository.findByName(name);
+    public Privilege update(Privilege privilege, PrivilegeDTO privilegeDTO) {
+        new PrivilegeMapper().reverse(privilegeDTO, privilege);
+
+        repository.save(privilege);
+
+        return privilege;
     }
 
-    @Transactional
-    public Privilege requiredByName(String name) {
-        return getByName(name).orElseThrow(()
-                -> new ResourceNotFoundException(Messages.ERROR_PRIVILEGE_NOT_FOUND.formatted(name), this));
+    @Transactional(readOnly = true)
+    public Optional<Privilege> getById(String id) {
+        return repository.findById(id);
     }
 
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    @Transactional(readOnly = true)
+    public Privilege requireById(String id) {
+        return getById(id).orElseThrow(()
+                -> new ResourceNotFoundException(Messages.ERROR_PRIVILEGE_NOT_FOUND.formatted(id), this));
+    }
+
+    @Transactional(readOnly = true)
     public List<Privilege> getAll() {
         return repository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Privilege> getAllByName(Iterable<String> names) {
+        return repository.findByNameIn(names);
     }
 
     @Override
@@ -54,7 +75,7 @@ public class PrivilegeService implements RedirectAware {
     }
 
     @Override
-    public void setRedirectUrl(String defaultRedirectUrl) {
-        this.redirectUrl = defaultRedirectUrl;
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 }

@@ -10,11 +10,7 @@ public class FormMapper implements Mapper<Form, FormDTO> {
     public FormDTO map(Form source) {
         FormDTO formDTO = new FormDTO();
 
-        formDTO.setId(source.getId());
-        formDTO.setName(source.getName());
-        formDTO.setDescription(source.getDescription());
-        formDTO.setStatus(source.getStatus());
-        formDTO.setOwnerId(source.getUser().getId());
+        map(source, formDTO);
 
         return formDTO;
     }
@@ -23,11 +19,25 @@ public class FormMapper implements Mapper<Form, FormDTO> {
     public Form reverse(FormDTO source) {
         Form form = new Form();
 
-        form.setName(source.getName());
-        form.setDescription(source.getDescription());
-        form.setStatus(source.getStatus());
+        reverse(source, form);
 
         return form;
+    }
+
+    @Override
+    public void map(Form source, FormDTO destination) {
+        destination.setId(source.getId());
+        destination.setOwnerId(source.getUser().getId());
+        destination.setName(source.getName());
+        destination.setDescription(source.getDescription());
+        destination.setStatus(source.getStatus());
+    }
+
+    @Override
+    public void reverse(FormDTO source, Form destination) {
+        destination.setName(source.getName());
+        destination.setDescription(source.getDescription());
+        destination.setStatus(source.getStatus());
     }
 
 }

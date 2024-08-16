@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static df.base.Messages.SUCCESS_ROLE_SAVED;
-import static df.base.Messages.SUCCESS_USER_SAVED;
 import static df.web.common.flash.FlashMessage.success;
 
 @Controller
@@ -77,7 +76,7 @@ public class RoleController {
         bindAttributes(roleDTO);
 
         if (!result.hasFieldErrors()) {
-            Role role = roleService.createRole(roleDTO.getName());
+            Role role = roleService.createOrUpdate(roleDTO);
             helper.addMessage(success(SUCCESS_ROLE_SAVED.formatted(role.getId())));
         }
 

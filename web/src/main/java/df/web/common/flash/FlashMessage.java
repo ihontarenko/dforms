@@ -26,6 +26,10 @@ public class FlashMessage {
         return new FlashMessage(message, Type.SUCCESS);
     }
 
+    public static FlashMessage warning(String message) {
+        return new FlashMessage(message, Type.WARNING);
+    }
+
     public static FlashMessage error(String message) {
         return new FlashMessage(message, Type.ERROR);
     }

@@ -1,9 +1,8 @@
 package df.base.validation;
 
+import df.base.validation.constrain.StrongPassword;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
-import java.util.stream.IntStream;
 
 public class StrongPasswordValidator implements ConstraintValidator<StrongPassword, String> {
 

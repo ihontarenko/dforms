@@ -1,6 +1,6 @@
 package df.base.jpa.form;
 
-import df.base.common.hibernate5.generator.PrefixedId;
+import df.base.common.hibernate.generator.PrefixedId;
 import df.base.jpa.DefaultIdGenerator;
 import df.base.jpa.User;
 import jakarta.persistence.*;

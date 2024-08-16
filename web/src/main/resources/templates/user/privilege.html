@@ -1,0 +1,47 @@
+{% extends "common/layout" %}
+{% block title %}Privilege Form{% endblock %}
+{% block content %}
+<form method="post" action="{{ href('/user/privilege/perform') }}" enctype="multipart/form-data" class="row g-3" >
+
+    <div class="form-group">
+        <label for="form-name">Name</label>
+        <input name="name" type="text" class="form-control {{ ifFieldErrors('privilegeDTO', 'name', 'is-invalid', 'is-valid') }}" id="form-name" value="{{ privilegeDTO.name }}">
+        {% include "common/invalid-feedback" with {"formName" : "privilegeDTO", "fieldName" : "name"} %}
+    </div>
+
+    <input type="hidden" name="id" value="{{ privilegeDTO.id }}">
+
+    <div class="form-group mt-4">
+        <button class="btn btn-success" type="submit">Submit</button>
+    </div>
+</form>
+
+<h2 class="mt-5">Available Privileges</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for privilege in privileges %}
+        <tr>
+            <th scope="row">{{ privilege.id }}</th>
+            <td>{{ privilege.name }}</td>
+            <td>
+                <div class="btn-group" role="group">
+                    <button onclick="window.location = '{{ href('/user/privilege/' + privilege.id + '/modify') }}'"
+                            type="button" class="btn btn-sm btn-info">EDIT</button>
+                    <button onclick="window.location = '{{ href('/user/privilege/' + privilege.id + '/delete') }}'"
+                            type="button" class="btn btn-sm btn-danger">DELETE</button>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

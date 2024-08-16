@@ -1,19 +1,38 @@
 package df.base.model.user;
 
 import df.base.jpa.Privilege;
-import df.base.validation.Unique;
+import df.base.common.jpa.FieldSet;
+import df.base.validation.constrain.ResourceExistence;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
-@Unique.Set({
-        @Unique(
+import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
+
+@ResourceExistence.Set({
+        // validation for new privilege
+        @ResourceExistence(
                 target = "name",
-                fields = {@Unique.Field(objectName = "name", entityName = "name")},
+                fields = {@FieldSet(objectName = "name", entityName = "name")},
                 entityClass = Privilege.class,
-                message = "privilege name already taken",
+                message = "privilege name already taken (new)",
                 existence = "id"
         ),
-        @Unique(
+        // validation for existed privilege
+        @ResourceExistence(
+                target = "name",
+                fields = {
+                        @FieldSet(objectName = "id", entityName = "id", comparison = NOT_EQUAL),
+                        @FieldSet(objectName = "name", entityName = "name")
+                },
+                entityClass = Privilege.class,
+                reverse = true,
+                message = "privilege name already taken (upd)",
+                existence = "id"
+        ),
+        // validation on passed id in request
+        @ResourceExistence(
                 target = "id",
-                fields = {@Unique.Field(objectName = "id", entityName = "id")},
+                fields = {@FieldSet(objectName = "id", entityName = "id")},
                 entityClass = Privilege.class,
                 reverse = true,
                 unique = false,
@@ -24,6 +43,9 @@ import df.base.validation.Unique;
 public class PrivilegeDTO {
 
     private String id;
+
+    @NotEmpty(message = "privilege name is required")
+    @Size(max = 32)
     private String name;
 
     public String getId() {

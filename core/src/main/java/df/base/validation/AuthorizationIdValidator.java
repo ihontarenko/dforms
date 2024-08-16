@@ -1,6 +1,7 @@
 package df.base.validation;
 
 import df.base.security.UserInfo;
+import df.base.validation.constrain.AuthorizationId;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.security.core.Authentication;

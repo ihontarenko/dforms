@@ -1,7 +1,7 @@
 package df.base.jpa;
 
-import df.base.common.hibernate5.generator.IdPrefixGenerator;
-import df.base.common.hibernate5.generator.PrefixedId;
+import df.base.common.hibernate.generator.IdPrefixGenerator;
+import df.base.common.hibernate.generator.PrefixedId;
 
 import java.util.Random;
 

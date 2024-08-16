@@ -2,8 +2,9 @@ package df.base.model.user;
 
 import df.base.jpa.User;
 import df.base.security.Provider;
-import df.base.validation.StrongPassword;
-import df.base.validation.Unique;
+import df.base.common.jpa.FieldSet;
+import df.base.validation.constrain.StrongPassword;
+import df.base.validation.constrain.ResourceExistence;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -11,25 +12,27 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-@Unique.Set({
-        @Unique(
+import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
+
+@ResourceExistence.Set({
+        // validate an email for new users
+        @ResourceExistence(
                 target = "email",
-                fields = {@Unique.Field(objectName = "email", entityName = "email")},
+                fields = {@FieldSet(objectName = "email", entityName = "email")},
                 entityClass = User.class,
-                message = "user with this email already registered",
+                message = "user with this email already registered (new)",
                 existence = "id"
         ),
-        @Unique(
-                target = "id",
+        // validate for updating existing user
+        @ResourceExistence(
+                target = "email",
                 fields = {
-                        // todo: think about improvements
-                        @Unique.Field(objectName = "id", entityName = "id"),
-                        @Unique.Field(objectName = "email", entityName = "email")
+                        @FieldSet(objectName = "id", entityName = "id", comparison = NOT_EQUAL),
+                        @FieldSet(objectName = "email", entityName = "email")
                 },
                 entityClass = User.class,
                 reverse = true,
-                unique = false,
-                message = "the requested user is invalid",
+                message = "user with this email already registered (upd)",
                 existence = "id"
         )
 })

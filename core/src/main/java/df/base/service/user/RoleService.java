@@ -10,16 +10,17 @@ import df.base.service.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
+@SuppressWarnings({"unused"})
 @Service
 public class RoleService implements RedirectAware {
 
     private final RoleRepository   repository;
     private final PrivilegeService privilegeService;
-    private       String          redirectUrl;
+    private       String           redirectUrl;
 
     public RoleService(RoleRepository repository, PrivilegeService privilegeService) {
         this.repository = repository;
@@ -27,8 +28,16 @@ public class RoleService implements RedirectAware {
     }
 
     @Transactional
-    public Role createRole(String roleName) {
-        Role role = new Role();
+    public Role createOrUpdate(RoleDTO roleDTO) {
+        return getById(roleDTO.getId())
+                .map(entity -> update(entity, roleDTO))
+                .orElseGet(() -> create(roleDTO));
+    }
+
+    @Transactional
+    public Role create(RoleDTO roleDTO) {
+        Role   role     = new Role();
+        String roleName = roleDTO.getName();
 
         if (!roleName.contains(RoleDTO.ROLE_PREFIX)) {
             roleName = RoleDTO.ROLE_PREFIX + roleName;
@@ -38,7 +47,35 @@ public class RoleService implements RedirectAware {
 
         repository.save(role);
 
+        updateRolePrivileges(role, roleDTO);
+
         return role;
+    }
+
+    @Transactional
+    public Role update(Role role, RoleDTO roleDTO) {
+        String roleName = roleDTO.getName();
+
+        if (!roleName.startsWith(RoleDTO.ROLE_PREFIX)) {
+            roleName = RoleDTO.ROLE_PREFIX + roleName;
+        }
+
+        role.setName(roleName);
+
+        repository.save(role);
+
+        return updateRolePrivileges(role, roleDTO);
+    }
+
+    @Transactional
+    public Role updateRolePrivileges(Role role, RoleDTO roleDTO) {
+        Collection<Privilege> newPrivileges = privilegeService.getAllByName(roleDTO.getPrivileges());
+        Collection<Privilege> oldPrivileges = role.getPrivileges();
+
+        oldPrivileges.clear();
+        oldPrivileges.addAll(newPrivileges);
+
+        return repository.save(role);
     }
 
     @Transactional(readOnly = true)
@@ -84,7 +121,7 @@ public class RoleService implements RedirectAware {
     }
 
     @Override
-    public void setRedirectUrl(String defaultRedirectUrl) {
-        this.redirectUrl = defaultRedirectUrl;
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 }

@@ -1,24 +1,41 @@
 package df.base.model.user;
 
 import df.base.jpa.Role;
-import df.base.validation.Unique;
+import df.base.common.jpa.FieldSet;
+import df.base.validation.constrain.ResourceExistence;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-@Unique.Set({
-        @Unique(
+import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
+
+@ResourceExistence.Set({
+        // validation for new roles
+        @ResourceExistence(
                 target = "name",
-                fields = {@Unique.Field(objectName = "name", entityName = "name")},
+                fields = {@FieldSet(objectName = "name", entityName = "name")},
                 entityClass = Role.class,
-                message = "role name already taken",
+                message = "role name already taken (new)",
                 existence = "id"
         ),
-        @Unique(
+        // validation for existed roles
+        @ResourceExistence(
+                target = "name",
+                fields = {
+                        @FieldSet(objectName = "id", entityName = "id", comparison = NOT_EQUAL),
+                        @FieldSet(objectName = "name", entityName = "name")
+                },
+                entityClass = Role.class,
+                reverse = true,
+                message = "role name already taken (upd)",
+                existence = "id"
+        ),
+        // validation on passed id in request
+        @ResourceExistence(
                 target = "id",
-                fields = {@Unique.Field(objectName = "id", entityName = "id")},
+                fields = {@FieldSet(objectName = "id", entityName = "id")},
                 entityClass = Role.class,
                 reverse = true,
                 unique = false,
