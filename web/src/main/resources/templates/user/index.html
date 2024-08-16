@@ -84,14 +84,19 @@
             <td>{{ user.email }}</td>
             <td>{{ user.name }}</td>
             <td>
-                <span class="badge bg-dark">{{ user.enabled }}</span>
+                <span class="badge bg-{{ user.enabled ? 'dark' : 'danger' }}">{{ user.enabled }}</span>
             </td>
             <td>
                 <div class="btn-group" role="group">
                     <button onclick="window.location = '{{ href('/user/' + user.id + '/modify') }}'"
                             type="button" class="btn btn-sm btn-info">EDIT</button>
+                    {% if user.enabled %}
                     <button onclick="window.location = '{{ href('/user/' + user.id + '/block') }}'"
                             type="button" class="btn btn-sm btn-warning">BLOCK</button>
+                    {% else %}
+                    <button onclick="window.location = '{{ href('/user/' + user.id + '/unblock') }}'"
+                            type="button" class="btn btn-sm btn-success">UNBLOCK</button>
+                    {% endif %}
                 </div>
             </td>
         </tr>

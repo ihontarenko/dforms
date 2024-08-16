@@ -2,33 +2,44 @@ package df.base.model.form;
 
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormStatus;
-import df.base.validation.AuthorizationId;
-import df.base.validation.EnumPattern;
-import df.base.validation.Unique;
+import df.base.common.jpa.FieldSet;
+import df.base.validation.constrain.AuthorizationId;
+import df.base.validation.constrain.EnumPattern;
+import df.base.validation.constrain.Unique;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import static df.base.common.jpa.FieldSet.Comparison.NEQ;
+
 @Unique.Set({
+        // validation for creating new form
         @Unique(
                 target = "name",
                 fields = {
-                        @Unique.Field(
-                                objectName = "name",
-                                entityName = "name"
-                        )
+                        @FieldSet(objectName = "name", entityName = "name")
                 },
                 entityClass = Form.class,
                 message = "form name already taken",
                 existence = "id"
         ),
+        // validation for updating existing form
+        @Unique(
+                target = "name",
+                fields = {
+                        @FieldSet(objectName = "name", entityName = "name"),
+                        @FieldSet(objectName = "id", entityName = "id", comparison = NEQ)
+                },
+                entityClass = Form.class,
+                message = "form name already taken",
+                existence = "id",
+                reverse = true
+        ),
+        // check if request form id is correct
         @Unique(
                 target = "id",
                 fields = {
-                        @Unique.Field(
-                                objectName = "id",
-                                entityName = "id"
-                        ),
+                        @FieldSet(objectName = "id", entityName = "id")
                 },
                 entityClass = Form.class,
                 reverse = true,
@@ -36,17 +47,13 @@ import jakarta.validation.constraints.Size;
                 message = "the FORM_ID must exist",
                 existence = "id"
         ),
+        // check if the request form belongs to the requested user ID
+        // skip for ROLE_ADMIN users
         @Unique(
                 target = "ownerId",
                 fields = {
-                        @Unique.Field(
-                                objectName = "id",
-                                entityName = "id"
-                        ),
-                        @Unique.Field(
-                                objectName = "ownerId",
-                                entityName = "user.id"
-                        ),
+                        @FieldSet(objectName = "id", entityName = "id"),
+                        @FieldSet(objectName = "ownerId", entityName = "user.id"),
                 },
                 entityClass = Form.class,
                 reverse = true,

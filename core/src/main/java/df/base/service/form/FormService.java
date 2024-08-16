@@ -5,6 +5,7 @@ import df.base.jpa.User;
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormRepository;
 import df.base.jpa.form.FormStatus;
+import df.base.mapper.form.FormMapper;
 import df.base.model.form.FormDTO;
 import df.base.service.RedirectAware;
 import df.base.service.ResourceNotFoundException;
@@ -41,22 +42,24 @@ public class FormService implements RedirectAware {
     }
 
     @Transactional
+    public Form createOrUpdate(FormDTO formDTO, User user) {
+        return getById(formDTO.getId())
+                .map(f -> update(f, formDTO))
+                .orElseGet(() -> create(user, formDTO));
+    }
+
+    @Transactional
     public Form create(User user, FormDTO formDTO) {
-        Form form = new Form();
+        Form form = new FormMapper().reverse(formDTO);
 
         form.setUser(user);
-        form.setName(formDTO.getName());
-        form.setDescription(formDTO.getDescription());
-        form.setStatus(formDTO.getStatus());
 
         return repository.save(form);
     }
 
     @Transactional
     public Form update(Form form, FormDTO formDTO) {
-        form.setName(formDTO.getName());
-        form.setDescription(formDTO.getDescription());
-        form.setStatus(formDTO.getStatus());
+        new FormMapper().reverse(formDTO, form);
 
         return repository.save(form);
     }

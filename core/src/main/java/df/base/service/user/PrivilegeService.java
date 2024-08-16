@@ -5,8 +5,8 @@ import df.base.jpa.Privilege;
 import df.base.jpa.PrivilegeRepository;
 import df.base.service.RedirectAware;
 import df.base.service.ResourceNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,9 +43,14 @@ public class PrivilegeService implements RedirectAware {
                 -> new ResourceNotFoundException(Messages.ERROR_PRIVILEGE_NOT_FOUND.formatted(name), this));
     }
 
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<Privilege> getAll() {
         return repository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Privilege> getAllByName(Iterable<String> names) {
+        return repository.findByNameIn(names);
     }
 
     @Override
@@ -54,7 +59,7 @@ public class PrivilegeService implements RedirectAware {
     }
 
     @Override
-    public void setRedirectUrl(String defaultRedirectUrl) {
-        this.redirectUrl = defaultRedirectUrl;
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 }

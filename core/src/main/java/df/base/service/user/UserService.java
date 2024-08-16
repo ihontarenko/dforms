@@ -103,7 +103,7 @@ public class UserService implements RedirectAware {
     }
 
     @Transactional(readOnly = true)
-    public User requiredById(String id) {
+    public User requireById(String id) {
         return getById(id).orElseThrow(()
                 -> new ResourceNotFoundException(ERROR_USER_NOT_FOUND.formatted(id), this));
     }

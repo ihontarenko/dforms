@@ -73,10 +73,16 @@
                             type="button" class="btn btn-sm btn-success">SETUP</button>
                     <button onclick="window.location = '{{ href('/form/' + form.id + '/modify') }}'"
                             type="button" class="btn btn-sm btn-info">MODIFY</button>
-                    <button onclick="window.location = '{{ href('/form/' + form.id + '/status/deleted') }}'"
-                            type="button" class="btn btn-sm btn-warning">DELETE</button>
-                    <button onclick="window.location = '{{ href('/form/' + form.id + '/delete') }}'"
-                            type="button" class="btn btn-sm btn-danger">DELETE PERMANENTLY</button>
+                    <button type="button" class="btn btn-sm btn-danger">STATUS</button>
+                    <div class="btn-group" role="group">
+                        <button id="status" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu" aria-labelledby="status" style="">
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/active') }}">STATUS ACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/inactive') }}">STATUS INACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/deleted') }}">STATUS DELETE</a>
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/delete') }}">DELETE PERMANENTLY</a>
+                        </div>
+                    </div>
                 </div>
             </td>
         </tr>

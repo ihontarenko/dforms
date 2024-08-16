@@ -1,5 +1,6 @@
-package df.base.validation;
+package df.base.validation.constrain;
 
+import df.base.validation.StrongPasswordValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -8,15 +9,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = AuthorizationIdValidator.class)
+@Constraint(validatedBy = StrongPasswordValidator.class)
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AuthorizationId {
+public @interface StrongPassword {
 
-    String message() default "must be equals to authorized ID";
+    String message() default "password is not strong enough";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
+    String special() default "!@#$%^&*()_+";
 
 }

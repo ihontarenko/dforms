@@ -17,7 +17,12 @@ public interface Messages {
     String ERROR_MAPPER_PASSWORD_ENCODER_IS_REQUIRED = "'PasswordEncoder' is required";
 
     // Success Messages
-    String SUCCESS_USER_SAVED = "User '%s' successfully saved";
-    String SUCCESS_ROLE_SAVED = "Role '%s' successfully saved";
+    // User, Role, Privilege
+    String SUCCESS_USER_SAVED   = "User '%s' successfully saved";
+    String SUCCESS_ROLE_SAVED   = "Role '%s' successfully saved";
+    // Form
+    String SUCCESS_FORM_SAVED          = "Form '%s' successfully saved";
+    String SUCCESS_FORM_STATUS_CHANGED = "Form status '%s' successfully updated to '%s'";
+    String SUCCESS_FORM_DELETED        = "Form '%s' successfully deleted";
 
 }

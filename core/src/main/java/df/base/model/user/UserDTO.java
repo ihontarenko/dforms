@@ -2,8 +2,9 @@ package df.base.model.user;
 
 import df.base.jpa.User;
 import df.base.security.Provider;
-import df.base.validation.StrongPassword;
-import df.base.validation.Unique;
+import df.base.common.jpa.FieldSet;
+import df.base.validation.constrain.StrongPassword;
+import df.base.validation.constrain.Unique;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -11,25 +12,27 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
+import static df.base.common.jpa.FieldSet.Comparison.NEQ;
+
 @Unique.Set({
+        // validate an email for new users
         @Unique(
                 target = "email",
-                fields = {@Unique.Field(objectName = "email", entityName = "email")},
+                fields = {@FieldSet(objectName = "email", entityName = "email")},
                 entityClass = User.class,
                 message = "user with this email already registered",
                 existence = "id"
         ),
+        // validate for updating existing user
         @Unique(
-                target = "id",
+                target = "email",
                 fields = {
-                        // todo: think about improvements
-                        @Unique.Field(objectName = "id", entityName = "id"),
-                        @Unique.Field(objectName = "email", entityName = "email")
+                        @FieldSet(objectName = "id", entityName = "id", comparison = NEQ),
+                        @FieldSet(objectName = "email", entityName = "email")
                 },
                 entityClass = User.class,
                 reverse = true,
-                unique = false,
-                message = "the requested user is invalid",
+                message = "user e-mail already taken another user",
                 existence = "id"
         )
 })

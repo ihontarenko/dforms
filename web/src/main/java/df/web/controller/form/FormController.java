@@ -1,19 +1,18 @@
 package df.web.controller.form;
 
-import df.base.jpa.User;
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormStatus;
 import df.base.mapper.form.FormMapper;
 import df.base.model.form.FormDTO;
 import df.base.security.UserInfo;
+import df.base.service.ResourceNotFoundException;
 import df.base.service.form.FormService;
-import df.web.common.flash.FlashMessage.Type;
-import df.web.common.flash.FlashMessageService;
-import jakarta.validation.Valid;
+import df.web.common.ControllerHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,107 +21,122 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
-import static df.web.common.flash.FlashMessage.Type.*;
+import static df.base.Messages.*;
+import static df.web.common.flash.FlashMessage.*;
 
 @Controller
 @RequestMapping("/form")
 public class FormController {
 
-    private final FlashMessageService     flash;
     private final FormService             service;
-    private final Map<FormStatus, String> statuses = new HashMap<>() {{
-        put(FormStatus.ACTIVE, "bg-success");
-        put(FormStatus.INACTIVE, "bg-dark");
-        put(FormStatus.DELETED, "bg-danger");
-    }};
+    private final ControllerHelper        helper;
 
-    public FormController(FlashMessageService flash, FormService service) {
-        this.flash = flash;
+    public FormController(FormService service, ControllerHelper helper) {
         this.service = service;
+        this.helper = helper;
         service.setRedirectUrl("/form?error=exception");
+        helper.setRedirectUrl("/form?status=submitSuccess");
     }
 
     @GetMapping
     public ModelAndView index(@AuthenticationPrincipal UserInfo principal) {
-        ModelAndView mav     = new ModelAndView("form/index");
-        FormDTO      formDTO = new FormDTO();
+        helper.setViewName("form/index");
 
-        formDTO.setOwnerId(principal.getUser().getId());
+        bindAttributes(new FormDTO() {{
+            setOwnerId(principal.getUser().getId());
+        }});
 
-        bindAttributes(mav, formDTO);
-
-        return mav;
+        return helper.resolveWithoutRedirect();
     }
 
     @GetMapping("/{formId}/modify")
-    public ModelAndView index(@PathVariable(value = "formId", required = false) String formId) {
-        ModelAndView mav = new ModelAndView("form/index");
+    public ModelAndView modify(@PathVariable("formId") String formId, RedirectAttributes attributes) {
+        helper.setViewName("form/index");
+        helper.setRedirectAttributes(attributes);
 
-        bindAttributes(mav, new FormMapper().map(service.requireById(formId)));
+        ModelAndView mav;
+
+        try {
+            bindAttributes(new FormMapper().map(service.requireById(formId)));
+            mav = helper.resolveWithoutRedirect();
+        } catch (ResourceNotFoundException exception) {
+            mav = helper.redirect(exception);
+        }
 
         return mav;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{formId}/delete")
-    public String remove(@PathVariable("formId") String formId, RedirectAttributes attributes) {
+    public ModelAndView remove(@PathVariable("formId") String formId, RedirectAttributes attributes) {
         Optional<Form> result = service.getById(formId);
 
         if (result.isPresent()) {
             service.delete(result.get());
-            flash.addMessage(attributes, "Form ID '%s' has been permanently deleted"
-                    .formatted(formId), DARK);
+            helper.addMessage(warning(SUCCESS_FORM_DELETED
+                    .formatted(formId)));
         } else {
-            flash.addMessage(attributes, "Form ID '%s' not found"
-                    .formatted(formId), Type.ERROR);
+            helper.addMessage(error(ERROR_FORM_NOT_FOUND
+                    .formatted(formId)));
         }
 
-        return "redirect:/form/index";
+        helper.setRedirectAttributes(attributes);
+
+        return helper.redirect();
     }
 
     @GetMapping("/{formId}/status/{status}")
-    public String status(@PathVariable("formId") String formId, @PathVariable("status") String status,
-                         RedirectAttributes attributes) {
+    public ModelAndView status(@PathVariable("formId") String formId,
+                               @PathVariable("status") String status,
+                               RedirectAttributes attributes) {
         Optional<Form> result = service.getById(formId);
 
         if (result.isPresent()) {
-            service.changeStatus(result.get(), FormStatus.valueOf(status.toUpperCase(Locale.ROOT)));
-            flash.addMessage(attributes, "Form ID '%s' has been successfully updated".formatted(formId), NOTICE);
+            service.changeStatus(result.get(), FormStatus.valueOf(status.toUpperCase()));
+            helper.addMessage(warning(SUCCESS_FORM_STATUS_CHANGED
+                    .formatted(formId, status.toUpperCase())));
         } else {
-            flash.addMessage(attributes, "Form ID '%s' not found".formatted(formId), WARNING);
+            helper.addMessage(error(ERROR_FORM_NOT_FOUND
+                    .formatted(formId)));
         }
 
-        return "redirect:/form/index";
+        helper.setRedirectAttributes(attributes);
+
+        return helper.redirect();
     }
 
     @PostMapping("/perform")
-    public ModelAndView perform(@Valid FormDTO formDTO, BindingResult result, RedirectAttributes attributes,
+    public ModelAndView perform(@Validated FormDTO formDTO, BindingResult result, RedirectAttributes attributes,
                                 @AuthenticationPrincipal UserInfo principal) {
-        ModelAndView mav  = new ModelAndView("redirect:/form/index");
-        User         user = principal.getUser();
+        helper.setBindingResult(result);
+        helper.setRedirectAttributes(attributes);
+        helper.setViewName("form/index");
+
+        bindAttributes(formDTO);
 
         if (!result.hasFieldErrors()) {
-            if (formDTO.getId() != null) {
-                Form form = service.getById(formDTO.getId())
-                        .map(f -> service.update(f, formDTO)).orElseGet(() -> service.create(user, formDTO));
-                flash.addMessage(attributes, "Form ID '%s' has been successfully saved".formatted(form.getId()), SUCCESS);
-            }
-        } else {
-            bindAttributes(mav, formDTO);
-            mav.setViewName("form/index");
+            Form form = service.createOrUpdate(formDTO, principal.getUser());
+            helper.addMessage(success(SUCCESS_FORM_SAVED.formatted(form.getDescription())));
         }
 
-        return mav;
+        return helper.resolveWithRedirect();
     }
 
-    private void bindAttributes(ModelAndView mav, FormDTO formDTO) {
-        mav.addObject("formDTO", formDTO);
-        mav.addObject("forms", service.getAll());
-        mav.addObject("statuses", statuses);
+    private void bindAttributes(FormDTO formDTO) {
+        Map<String, Object> attributes = new HashMap<>();
+
+        attributes.put("formDTO", formDTO);
+        attributes.put("forms", service.getAll());
+        attributes.put("statuses", new HashMap<>() {{
+            put(FormStatus.ACTIVE, "bg-success");
+            put(FormStatus.INACTIVE, "bg-dark");
+            put(FormStatus.DELETED, "bg-danger");
+        }});
+
+        helper.attributes(attributes);
     }
 
 }

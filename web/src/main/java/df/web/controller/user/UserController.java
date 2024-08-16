@@ -30,7 +30,7 @@ import static df.web.common.flash.FlashMessage.success;
 @PreAuthorize("hasRole('ADMIN')")
 public class UserController {
 
-    private final UserService       userService;
+    private final UserService      userService;
     private final RoleService      roleService;
     private final ControllerHelper helper;
 
@@ -59,7 +59,7 @@ public class UserController {
         ModelAndView mav;
 
         try {
-            bindAttributes(new UserMapper().map(userService.requiredById(userId)));
+            bindAttributes(new UserMapper().map(userService.requireById(userId)));
             mav = helper.resolveWithoutRedirect();
         } catch (ResourceNotFoundException exception) {
             mav = helper.redirect(exception);

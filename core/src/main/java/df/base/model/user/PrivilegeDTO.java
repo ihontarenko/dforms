@@ -1,19 +1,20 @@
 package df.base.model.user;
 
 import df.base.jpa.Privilege;
-import df.base.validation.Unique;
+import df.base.common.jpa.FieldSet;
+import df.base.validation.constrain.Unique;
 
 @Unique.Set({
         @Unique(
                 target = "name",
-                fields = {@Unique.Field(objectName = "name", entityName = "name")},
+                fields = {@FieldSet(objectName = "name", entityName = "name")},
                 entityClass = Privilege.class,
                 message = "privilege name already taken",
                 existence = "id"
         ),
         @Unique(
                 target = "id",
-                fields = {@Unique.Field(objectName = "id", entityName = "id")},
+                fields = {@FieldSet(objectName = "id", entityName = "id")},
                 entityClass = Privilege.class,
                 reverse = true,
                 unique = false,

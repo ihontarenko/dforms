@@ -1,5 +1,7 @@
-package df.base.validation;
+package df.base.validation.constrain;
 
+import df.base.common.jpa.FieldSet;
+import df.base.validation.UniqueValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -14,7 +16,7 @@ public @interface Unique {
 
     String target();
 
-    Field[] fields();
+    FieldSet[] fields();
 
     Class<?> entityClass();
 
@@ -36,17 +38,6 @@ public @interface Unique {
     @interface Set {
 
         Unique[] value();
-
-    }
-
-    @Target({ElementType.TYPE})
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @interface Field {
-
-        String objectName();
-
-        String entityName() default "";
 
     }
 
