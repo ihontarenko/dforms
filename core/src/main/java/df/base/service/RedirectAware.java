@@ -8,6 +8,6 @@ public interface RedirectAware {
 
     String getRedirectUrl();
 
-    void setRedirectUrl(String defaultRedirectUrl);
+    void setRedirectUrl(String redirectUrl);
 
 }

@@ -5,6 +5,7 @@ import df.base.jpa.form.Form;
 import df.base.jpa.form.FormConfig;
 import df.base.jpa.form.FormConfigRepository;
 import df.base.model.form.FormConfigDTO;
+import df.base.service.RedirectAware;
 import df.base.service.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,12 @@ import java.util.Optional;
 import static df.base.Messages.FORM_CONFIG_NOT_FOUND;
 
 @Service
-public class FormConfigService {
+public class FormConfigService implements RedirectAware {
 
     @Autowired
     private FormConfigRepository repository;
+
+    private String redirectUrl;
 
     @Transactional
     public FormConfig create(Form form, FormConfigDTO formConfigDTO) {
@@ -78,4 +81,15 @@ public class FormConfigService {
         return getByName(name)
                 .orElseThrow(() -> new ResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(name), this));
     }
+
+    @Override
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    @Override
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
 }
