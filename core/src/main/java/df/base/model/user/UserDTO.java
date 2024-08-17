@@ -31,7 +31,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
                         @FieldSet(objectName = "email", entityName = "email")
                 },
                 entityClass = User.class,
-                reverse = true,
+                invert = true,
                 message = "user with this email already registered (upd)",
                 existence = "id"
         )

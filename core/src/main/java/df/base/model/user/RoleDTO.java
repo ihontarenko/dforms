@@ -28,7 +28,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
                         @FieldSet(objectName = "name", entityName = "name")
                 },
                 entityClass = Role.class,
-                reverse = true,
+                invert = true,
                 message = "role name already taken (upd)",
                 existence = "id"
         ),
@@ -37,7 +37,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
                 target = "id",
                 fields = {@FieldSet(objectName = "id", entityName = "id")},
                 entityClass = Role.class,
-                reverse = true,
+                invert = true,
                 unique = false,
                 message = "the ROLE_ID must exist",
                 existence = "id"

@@ -22,7 +22,7 @@ public @interface ResourceExistence {
 
     boolean unique() default true;
 
-    boolean reverse() default false;
+    boolean invert() default false;
 
     String authority() default "";
 

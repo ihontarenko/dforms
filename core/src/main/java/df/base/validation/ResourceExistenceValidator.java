@@ -1,5 +1,6 @@
 package df.base.validation;
 
+import df.base.common.application_context.ReflectionUtils;
 import df.base.common.jpa.FieldSet;
 import df.base.common.jpa.JpaHelper;
 import df.base.security.UserInfo;
@@ -23,7 +24,7 @@ public class ResourceExistenceValidator implements ConstraintValidator<ResourceE
     private       String     existence;
     private       String     target;
     private       boolean    unique;
-    private       boolean    reverse;
+    private       boolean    invert;
     private       String     authority;
 
     public ResourceExistenceValidator(JpaHelper jpaHelper) {
@@ -36,14 +37,14 @@ public class ResourceExistenceValidator implements ConstraintValidator<ResourceE
         this.existence = annotation.existence();
         this.fields = annotation.fields();
         this.entityClass = annotation.entityClass();
-        this.reverse = annotation.reverse();
+        this.invert = annotation.invert();
         this.unique = annotation.unique();
         this.target = annotation.target();
     }
 
     @Override
     public boolean isValid(Object object, ConstraintValidatorContext context) {
-        Object  idValue            = jpaHelper.objectValue(object, existence);
+        Object  idValue            = ReflectionUtils.getFieldValue(object, existence);
         boolean isValid            = true;
         boolean validationRequired = idValue == null;
 
@@ -51,7 +52,7 @@ public class ResourceExistenceValidator implements ConstraintValidator<ResourceE
             validationRequired = ((String) idValue).isBlank();
         }
 
-        validationRequired = validationRequired == !reverse;
+        validationRequired = validationRequired == !invert;
 
         if (validationRequired && !authority.isBlank()) {
             Authentication    authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -79,16 +80,6 @@ public class ResourceExistenceValidator implements ConstraintValidator<ResourceE
         List<Object>       resultSet  = typedQuery.getResultList();
 
         return unique == (resultSet.size() == 0);
-    }
-
-    private boolean isAuthorityGranted() {
-        Authentication    authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserInfo          principal      = (UserInfo) authentication.getPrincipal();
-        Predicate<String> predicate      = authority -> authority.equals(this.authority);
-
-        return principal.getAuthorities()
-                .stream().map(GrantedAuthority::getAuthority)
-                .anyMatch(predicate.negate());
     }
 
     private void addConstraintViolation(ConstraintValidatorContext context) {

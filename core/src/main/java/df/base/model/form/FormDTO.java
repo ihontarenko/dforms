@@ -33,7 +33,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
                 entityClass = Form.class,
                 message = "[UPD]: form name already taken",
                 existence = "id",
-                reverse = true
+                invert = true
         ),
         // check if request form id is correct
         @ResourceExistence(
@@ -42,7 +42,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
                         @FieldSet(objectName = "id", entityName = "id")
                 },
                 entityClass = Form.class,
-                reverse = true,
+                invert = true,
                 unique = false,
                 message = "the FORM_ID must exist",
                 existence = "id"
@@ -56,7 +56,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
                         @FieldSet(objectName = "ownerId", entityName = "user.id"),
                 },
                 entityClass = Form.class,
-                reverse = true,
+                invert = true,
                 unique = false,
                 message = "you must own this form to modify it",
                 existence = "id",

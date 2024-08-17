@@ -1,12 +1,12 @@
 package df.base.common.jpa;
 
+import df.base.common.application_context.ReflectionUtils;
 import df.base.common.jpa.FieldSet.Comparison;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -77,18 +77,7 @@ public final class JpaHelper {
     }
 
     public Object objectValue(Object object, String name) {
-        Class<?> targetClass = object.getClass();
-        Object   fieldValue  = null;
-
-        try {
-            Field field = targetClass.getDeclaredField(name);
-            field.setAccessible(true);
-            fieldValue = field.get(object);
-        } catch (NoSuchFieldException | IllegalAccessException ignore) {
-
-        }
-
-        return fieldValue;
+        return ReflectionUtils.getFieldValue(object, name);
     }
 
 }

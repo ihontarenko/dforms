@@ -9,10 +9,10 @@ import df.base.common.application_context.bean.processor.PropertyValueBeanProces
 import df.base.common.application_context.sandbox.User;
 import df.base.common.application_context.sandbox.services.Storage;
 
-public class Application {
+public class ApplicationContextExample {
 
     public static void main(String... arguments) {
-        ApplicationContext context = AnnotationApplicationContext.run(Application.class);
+        ApplicationContext context = AnnotationApplicationContext.run(ApplicationContextExample.class);
 
         context.addBeanProcessor(new LoggingBeanProcessor(System.out::println));
         context.addBeanProcessor(new ApplicationContextAwareBeanProcessor());

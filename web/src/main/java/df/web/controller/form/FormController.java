@@ -31,8 +31,8 @@ import static df.web.common.flash.FlashMessage.*;
 @RequestMapping("/form")
 public class FormController {
 
-    private final FormService             service;
-    private final ControllerHelper        helper;
+    private final FormService      service;
+    private final ControllerHelper helper;
 
     public FormController(FormService service, ControllerHelper helper) {
         this.service = service;

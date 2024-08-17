@@ -1,5 +1,7 @@
 package df.base.common.application_context.scanner.filter.type;
 
+import java.lang.reflect.Modifier;
+
 public class AccessModifierClassFilter implements TypeFilter {
 
     private final int     modifiers;
@@ -16,7 +18,10 @@ public class AccessModifierClassFilter implements TypeFilter {
 
     @Override
     public boolean accept(Class<?> object) {
-        return invert == ((object.getModifiers() & modifiers) == 0);
+        boolean skipInterface = !object.isInterface() && ((modifiers & Modifier.ABSTRACT) == 0);
+        boolean isApplicable  = (object.getModifiers() & modifiers) == 0;
+
+        return invert == (isApplicable && skipInterface);
     }
 
 }

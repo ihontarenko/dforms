@@ -144,7 +144,17 @@ abstract public class ReflectionUtils {
         return value;
     }
 
-    public static void setField(Object object, Field field, Object value) {
+    private static Optional<Field> getField(Class<?> targetClass, String fieldName) {
+        try {
+            Field field = targetClass.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return Optional.of(field);
+        } catch (NoSuchFieldException e) {
+            return Optional.empty();
+        }
+    }
+
+    public static void setFieldValue(Object object, Field field, Object value) {
         try {
             field.setAccessible(true);
             field.set(object, value);
@@ -152,7 +162,7 @@ abstract public class ReflectionUtils {
         }
     }
 
-    public static Object getField(Object object, Field field) {
+    public static Object getFieldValue(Object object, Field field) {
         Object value = null;
 
         try {
@@ -164,5 +174,15 @@ abstract public class ReflectionUtils {
         return value;
     }
 
+    public static Object getFieldValue(Object object, String fieldName) {
+        return getField(object.getClass(), fieldName)
+                .map(field -> getFieldValue(object, field))
+                .orElse(null);
+    }
+
+    public static void setFieldValue(Object object, String fieldName, Object value) {
+        getField(object.getClass(), fieldName)
+                .ifPresent(field -> setFieldValue(object, field, value));
+    }
 
 }

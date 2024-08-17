@@ -25,7 +25,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
                         @FieldSet(objectName = "name", entityName = "name")
                 },
                 entityClass = Privilege.class,
-                reverse = true,
+                invert = true,
                 message = "privilege name already taken (upd)",
                 existence = "id"
         ),
@@ -34,7 +34,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
                 target = "id",
                 fields = {@FieldSet(objectName = "id", entityName = "id")},
                 entityClass = Privilege.class,
-                reverse = true,
+                invert = true,
                 unique = false,
                 message = "the PRIVILEGE_ID must exist",
                 existence = "id"
