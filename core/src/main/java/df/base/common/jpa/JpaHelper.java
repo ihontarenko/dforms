@@ -32,7 +32,7 @@ public final class JpaHelper {
     }
 
     public List<Predicate> createPredicates(FieldSet[] fields, CriteriaBuilder builder, Root<?> root, Object object) {
-        List<Predicate>       predicates      = new ArrayList<>();
+        List<Predicate> predicates = new ArrayList<>();
 
         for (FieldSet field : fields) {
             Object        value      = objectValue(object, field.objectName());
