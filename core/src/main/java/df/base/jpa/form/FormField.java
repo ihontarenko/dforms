@@ -42,16 +42,19 @@ public class FormField {
     @Column(name = "STATUS", nullable = false)
     private FieldStatus status;
 
-    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parentField", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<FormFieldAssociation> child;
+
+    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<FormFieldOption> options;
 
-    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<FormFieldAttribute> attributes;
 
-    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<FormFieldConfig> configs;
 
-    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<FormFieldDefaultValue> defaultValues;
 
     public String getId() {
@@ -104,6 +107,14 @@ public class FormField {
 
     public FieldStatus getStatus() {
         return status;
+    }
+
+    public List<FormFieldAssociation> getChild() {
+        return child;
+    }
+
+    public void setChild(List<FormFieldAssociation> child) {
+        this.child = child;
     }
 
     public void setStatus(FieldStatus status) {

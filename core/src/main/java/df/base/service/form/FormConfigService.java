@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static df.base.Messages.FORM_CONFIG_NOT_FOUND;
 
+@SuppressWarnings({"unused"})
 @Service
 public class FormConfigService implements RedirectAware {
 
@@ -36,11 +37,11 @@ public class FormConfigService implements RedirectAware {
     }
 
     @Transactional
-    public FormConfig update(FormConfig formConfig, FormConfigDTO formConfigDTO) {
-        formConfig.setConfigName(formConfigDTO.getConfigName());
-        formConfig.setConfigValue(formConfigDTO.getConfigValue());
+    public FormConfig update(FormConfig config, FormConfigDTO configDTO) {
+        config.setConfigName(configDTO.getConfigName());
+        config.setConfigValue(configDTO.getConfigValue());
 
-        return repository.save(formConfig);
+        return repository.save(config);
     }
 
     @Transactional
