@@ -1,7 +1,8 @@
 package df.web.controller.form;
 
-import df.base.model.form.FormDTO;
-import df.web.common.flash.FlashMessageService;
+import df.base.jpa.form.ElementType;
+import df.base.model.form.FormFieldDTO;
+import df.web.common.ControllerHelper;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -10,28 +11,50 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/form/field")
 public class FormFieldController {
 
-    private final FlashMessageService flashMessage;
+    private final ControllerHelper helper;
 
-    public FormFieldController(FlashMessageService flashMessage) {
-        this.flashMessage = flashMessage;
+    public FormFieldController(ControllerHelper helper) {
+        this.helper = helper;
+        helper.setRedirectUrl("/form/field");
     }
 
-    @GetMapping("/add")
+    @GetMapping
     public ModelAndView form() {
-        return new ModelAndView("forms/add_form");
+        helper.setViewName("form/field");
+
+        bindAttributes(new FormFieldDTO());
+
+        return helper.resolveWithoutRedirect();
     }
 
     @PostMapping("/perform")
-    public String perform(@ModelAttribute @Valid FormDTO formDTO, BindingResult result) {
-        System.out.println(formDTO);
-        System.out.println(result);
+    public ModelAndView perform(@ModelAttribute @Valid FormFieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
+        helper.setBindingResult(result);
+        helper.setRedirectAttributes(attributes);
 
-        return "redirect:/forms/add";
+        helper.setViewName("form/field");
+
+        bindAttributes(fieldDTO);
+
+        return helper.resolveWithRedirect();
+    }
+
+    private void bindAttributes(FormFieldDTO fieldDTO) {
+        Map<String, Object> attributes = new HashMap<>();
+
+        attributes.put("fieldDTO", fieldDTO);
+        attributes.put("elementTypes", ElementType.values());
+
+        helper.attributes(attributes);
     }
 
 }

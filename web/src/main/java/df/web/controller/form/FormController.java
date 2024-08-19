@@ -8,6 +8,7 @@ import df.base.security.UserInfo;
 import df.base.service.ResourceNotFoundException;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
+import df.web.common.flash.FlashMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static df.base.Messages.*;
 import static df.web.common.flash.FlashMessage.*;
@@ -38,7 +41,7 @@ public class FormController {
         this.service = service;
         this.helper = helper;
         service.setRedirectUrl("/form?error=exception");
-        helper.setRedirectUrl("/form?status=submitSuccess");
+        helper.setRedirectUrl("/form");
     }
 
     @GetMapping
@@ -93,17 +96,23 @@ public class FormController {
                                @PathVariable("status") String status,
                                RedirectAttributes attributes) {
         Optional<Form> result = service.getById(formId);
+        helper.setRedirectAttributes(attributes);
 
         if (result.isPresent()) {
-            service.changeStatus(result.get(), FormStatus.valueOf(status.toUpperCase()));
-            helper.addMessage(warning(SUCCESS_FORM_STATUS_CHANGED
-                    .formatted(formId, status.toUpperCase())));
+            FormStatus formStatus = FormStatus.valueOf(status.toUpperCase());
+            EnumMap<FormStatus, Function<String, FlashMessage>> messages = new EnumMap<>(FormStatus.class) {{
+                put(FormStatus.ACTIVE, FlashMessage::success);
+                put(FormStatus.INACTIVE, FlashMessage::dark);
+                put(FormStatus.DELETED, FlashMessage::error);
+            }};
+            service.changeStatus(result.get(), formStatus);
+            helper.addMessage(messages.get(formStatus).apply(
+                    SUCCESS_FORM_STATUS_CHANGED
+                            .formatted(formId, formStatus)));
         } else {
             helper.addMessage(error(ERROR_FORM_NOT_FOUND
                     .formatted(formId)));
         }
-
-        helper.setRedirectAttributes(attributes);
 
         return helper.redirect();
     }

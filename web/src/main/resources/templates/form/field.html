@@ -1,0 +1,94 @@
+{% extends "common/layout" %}
+{% block title %}Field{% endblock %}
+{% block content %}
+<form method="post" action="{{ href('/form/field/perform') }}" enctype="multipart/field-data" class="row g-3" >
+
+    <div class="form-group">
+        <label for="field-name">Form Name</label>
+        <input name="name" type="text" class="field-control {{ ifFieldErrors('fieldDTO', 'name', 'is-invalid', 'is-valid') }}" id="field-name" value="{{ fieldDTO.name }}">
+        {% include "common/invalid-feedback" with {"formName" : "fieldDTO", "fieldName" : "name"} %}
+    </div>
+
+    <div class="form-group">
+        <label for="field-description">Description</label>
+        <input name="description" type="text" class="field-control {{ ifFieldErrors('fieldDTO', 'description', 'is-invalid', 'is-valid') }}" id="field-description" value="{{ fieldDTO.description }}">
+        {% include "common/invalid-feedback" with {"formName" : "fieldDTO", "fieldName" : "description"} %}
+    </div>
+
+    <div class="form-group">
+        <label class="d-block">Status</label>
+        <div class="btn-group" role="group">
+            <input type="radio" class="btn-check" name="status" id="ACTIVE" value="ACTIVE" autocomplete="off" checked>
+            <label class="btn btn-sm btn-outline-dark" for="ACTIVE">ACTIVE</label>
+            <input type="radio" class="btn-check" name="status" id="INACTIVE" value="INACTIVE" autocomplete="off">
+            <label class="btn btn-sm btn-outline-dark" for="INACTIVE">INACTIVE</label>
+            <input type="radio" class="btn-check" name="status" id="DELETED" value="DELETED" autocomplete="off">
+            <label class="btn btn-sm btn-outline-danger" for="DELETED">DELETED</label>
+        </div>
+        {% include "common/invalid-feedback" with {"formName" : "fieldDTO", "fieldName" : "status"} %}
+    </div>
+
+    <input type="hidden" name="ownerId" value="{{ fieldDTO.ownerId }}">
+    <input type="hidden" name="id" value="{{ fieldDTO.id }}">
+
+    <div class="form-group mt-4">
+        <button class="btn btn-success" type="submit">Submit</button>
+        {% include "common/invalid-feedback" with {"formName" : "fieldDTO", "fieldName" : "id"} %}
+    </div>
+</form>
+
+<h2 class="mt-5">Allowed Fields</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Description</th>
+            <th scope="col">Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for form in forms %}
+        <tr>
+            <th scope="row">{{ form.id }}</th>
+            <td>
+                <u>{{ form.user.id }}</u>
+            </td>
+            <td>
+                <i>{{ form.description }}</i>
+            </td>
+            <td>
+                <b>{{ form.name }}</b>
+            </td>
+            <td>
+                <span class="badge {{ statuses.get(form.status) }}">{{ form.status }}</span>
+            </td>
+            <td>
+                <div class="btn-group" role="group">
+                    <button onclick="window.location = '{{ href('/form/' + form.id + '/setup') }}'"
+                            type="button" class="btn btn-sm btn-light">SETUP</button>
+                    <button onclick="window.location = '{{ href('/form/' + form.id + '/configure') }}'"
+                            type="button" class="btn btn-sm btn-secondary">CONFIGURE</button>
+                    <button onclick="window.location = '{{ href('/form/' + form.id + '/modify') }}'"
+                            type="button" class="btn btn-sm btn-info">MODIFY</button>
+                    <button type="button" class="btn btn-sm btn-danger">STATUS</button>
+                    <div class="btn-group" role="group">
+                        <button id="status" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu" aria-labelledby="status" style="">
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/active') }}">STATUS ACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/inactive') }}">STATUS INACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/deleted') }}">STATUS DELETE</a>
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/delete') }}">DELETE PERMANENTLY</a>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

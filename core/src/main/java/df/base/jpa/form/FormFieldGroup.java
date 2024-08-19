@@ -1,20 +1,23 @@
 package df.base.jpa.form;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import df.base.common.hibernate.generator.PrefixedId;
+import df.base.jpa.DefaultIdGenerator;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "FORM_FIELD_ASSOCIATION")
-public class FormFieldAssociation {
+@Table(name = "DF_FORM_FIELD_GROUP")
+public class FormFieldGroup {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @PrefixedId(
+            prefixValue = "GRP",
+            sequenceName = "FORM_FIELD_GROUP",
+            prefixGenerator = DefaultIdGenerator.class,
+            numberFormat = "%06d",
+            initialValue = 100000,
+            incrementBy = 1
+    )
+    @Column(name = "ID")
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)

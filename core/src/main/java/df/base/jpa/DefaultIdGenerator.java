@@ -3,6 +3,8 @@ package df.base.jpa;
 import df.base.common.hibernate.generator.IdPrefixGenerator;
 import df.base.common.hibernate.generator.PrefixedId;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class DefaultIdGenerator implements IdPrefixGenerator {
@@ -12,13 +14,13 @@ public class DefaultIdGenerator implements IdPrefixGenerator {
         String prefix    = annotation.prefixValue();
         String separator = annotation.prefixSeparator();
         String id        = annotation.numberFormat().formatted(ordinalID);
-        String hash      = "%04x".formatted(getRandomInt());
+        String hash      = "%x".formatted(getHash());
 
         return "%s%s%s%s%s".formatted(prefix, separator, hash, separator, id).toUpperCase();
     }
 
-    private int getRandomInt() {
-        return new Random().nextInt(0xFFFF - 0x1000) + 0x1000;
+    private long getHash() {
+        return Long.parseLong(LocalDateTime.now().format(DateTimeFormatter.ofPattern("ssmmHHuuMMdd")));
     }
 
 }

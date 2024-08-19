@@ -10,7 +10,7 @@ import java.util.List;
 public class FormEntry {
 
     @Id
-    @PrefixedId(prefixValue = "FEY", sequenceName = "FORM_ENTRY")
+    @PrefixedId(prefixValue = "ENTRY", sequenceName = "FORM_ENTRY")
     @Column(name = "ID")
     private String id;
 

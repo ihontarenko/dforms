@@ -43,7 +43,7 @@ public class FormField {
     private FieldStatus status;
 
     @OneToMany(mappedBy = "parentField", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<FormFieldAssociation> child;
+    private List<FormFieldGroup> child;
 
     @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<FormFieldOption> options;
@@ -109,11 +109,11 @@ public class FormField {
         return status;
     }
 
-    public List<FormFieldAssociation> getChild() {
+    public List<FormFieldGroup> getChild() {
         return child;
     }
 
-    public void setChild(List<FormFieldAssociation> child) {
+    public void setChild(List<FormFieldGroup> child) {
         this.child = child;
     }
 
