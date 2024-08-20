@@ -1,6 +1,6 @@
 package df.base.validation;
 
-import df.base.common.application_context.ReflectionUtils;
+import df.base.common.jbm.ReflectionUtils;
 import df.base.common.jpa.FieldSet;
 import df.base.common.jpa.JpaHelper;
 import df.base.security.UserInfo;

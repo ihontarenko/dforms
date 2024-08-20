@@ -9,6 +9,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "SECURITY_ROLES")
+@NamedEntityGraph(
+        name = EntityGraphConstants.ROLE_WITH_PRIVILEGE,
+        attributeNodes = @NamedAttributeNode("privileges")
+)
 public class Role {
 
     @Id
@@ -26,7 +30,7 @@ public class Role {
     @Column(name = "ROLE")
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "SECURITY_ROLES_PRIVILEGES",
             inverseJoinColumns = @JoinColumn(name = "PRIVILEGE_ID"),

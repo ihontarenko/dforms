@@ -21,9 +21,13 @@ public class FormField {
     @Column(name = "ID")
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "FORM_ID", nullable = false)
-    private Form form;
+    @ManyToMany
+    @JoinTable(
+            name = "DF_FORM_FIELD_MAPPING",
+            joinColumns = @JoinColumn(name = "FIELD_ID"),
+            inverseJoinColumns = @JoinColumn(name = "FORM_ID")
+    )
+    private List<Form> forms;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ELEMENT_TYPE", nullable = false)
@@ -42,19 +46,19 @@ public class FormField {
     @Column(name = "STATUS", nullable = false)
     private FieldStatus status;
 
-    @OneToMany(mappedBy = "parentField", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parentField", fetch = FetchType.LAZY)
     private List<FormFieldGroup> child;
 
-    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
     private List<FormFieldOption> options;
 
-    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
     private List<FormFieldAttribute> attributes;
 
-    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
     private List<FormFieldConfig> configs;
 
-    @OneToMany(mappedBy = "formField", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
     private List<FormFieldDefaultValue> defaultValues;
 
     public String getId() {
@@ -65,12 +69,12 @@ public class FormField {
         this.id = id;
     }
 
-    public Form getForm() {
-        return form;
+    public List<Form> getForms() {
+        return forms;
     }
 
-    public void setForm(Form form) {
-        this.form = form;
+    public void setForms(List<Form> forms) {
+        this.forms = forms;
     }
 
     public ElementType getElementType() {

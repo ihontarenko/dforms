@@ -11,6 +11,10 @@ import java.util.Set;
 
 @Entity
 @Table(name = "SECURITY_USERS")
+@NamedEntityGraph(
+        name = EntityGraphConstants.USER_WITH_ROLES,
+        attributeNodes = @NamedAttributeNode("roles")
+)
 public class User {
 
     @Id
@@ -44,7 +48,7 @@ public class User {
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "SECURITY_USERS_ROLES",
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID"),

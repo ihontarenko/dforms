@@ -3,7 +3,6 @@ package df.base;
 public interface Messages {
 
     // Database Error Messages
-    String ERROR_ACCESS_DENIED_NOT_OWNER = "You do not have access to edit this from because you are not owner";
     String ERROR_USER_NOT_FOUND          = "User '%s' not found";
     String ERROR_FORM_NOT_FOUND          = "Form '%s' not found";
     String ERROR_PRIVILEGE_NOT_FOUND     = "Privilege '%s' not found";

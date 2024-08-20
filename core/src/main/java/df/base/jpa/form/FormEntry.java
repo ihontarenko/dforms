@@ -2,11 +2,27 @@ package df.base.jpa.form;
 
 import df.base.common.hibernate.generator.PrefixedId;
 import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 import java.util.List;
 
+import static df.base.jpa.EntityGraphConstants.FORM_WITH_ENTRIES_WITH_FIELD_ENTRIES;
+import static df.base.jpa.EntityGraphConstants.FORM_WITH_FIELD_ENTRIES_FIELD;
+
 @Entity
 @Table(name = "DF_FORM_ENTRIES")
+@NamedEntityGraph(
+        name = FORM_WITH_ENTRIES_WITH_FIELD_ENTRIES,
+        attributeNodes = {
+                @NamedAttributeNode(value = "fieldEntries", subgraph = FORM_WITH_FIELD_ENTRIES_FIELD)
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = FORM_WITH_FIELD_ENTRIES_FIELD,
+                        attributeNodes = @NamedAttributeNode("formField")
+                )
+        }
+)
 public class FormEntry {
 
     @Id
@@ -21,7 +37,7 @@ public class FormEntry {
     @Column(name = "CREATED_AT", nullable = false, updatable = false, insertable = false)
     private Timestamp createdAt;
 
-    @OneToMany(mappedBy = "formEntry", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "formEntry", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<FormFieldEntry> fieldEntries;
 
     public String getId() {

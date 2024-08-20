@@ -1,6 +1,7 @@
 package df.base.jpa;
 
 import df.base.security.Provider;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
+
+    @EntityGraph(EntityGraphConstants.USER_WITH_ROLES)
+    List<User> findAll();
 
     Optional<User> findByEmail(String email);
 

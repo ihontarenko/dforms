@@ -1,6 +1,6 @@
 package df.web.controller.form;
 
-import df.base.jpa.form.ElementType;
+import df.base.jpa.form.*;
 import df.base.model.form.FormFieldDTO;
 import df.web.common.ControllerHelper;
 import jakarta.validation.Valid;
@@ -14,16 +14,19 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/form/field")
 public class FormFieldController {
 
-    private final ControllerHelper helper;
+    private final ControllerHelper    helper;
+    private final FormEntryRepository repository;
 
-    public FormFieldController(ControllerHelper helper) {
+    public FormFieldController(ControllerHelper helper, FormEntryRepository repository) {
         this.helper = helper;
+        this.repository = repository;
         helper.setRedirectUrl("/form/field");
     }
 
@@ -32,6 +35,10 @@ public class FormFieldController {
         helper.setViewName("form/field");
 
         bindAttributes(new FormFieldDTO());
+
+        List<FormEntry> formEntries = repository.findAllByForm(new Form(){{
+            setId("test");
+        }});
 
         return helper.resolveWithoutRedirect();
     }

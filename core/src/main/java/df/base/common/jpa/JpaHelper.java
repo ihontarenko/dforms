@@ -1,6 +1,6 @@
 package df.base.common.jpa;
 
-import df.base.common.application_context.ReflectionUtils;
+import df.base.common.jbm.ReflectionUtils;
 import df.base.common.jpa.FieldSet.Comparison;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;

@@ -4,7 +4,6 @@ import df.base.property.ApplicationProperties;
 import df.base.security.UserInfo;
 import df.base.service.RedirectAware;
 import df.base.service.ResourceNotFoundException;
-import df.web.common.flash.FlashMessage;
 import df.web.common.flash.FlashMessageService;
 import io.pebbletemplates.pebble.error.PebbleException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +28,6 @@ import java.io.StringWriter;
 import java.util.Locale;
 import java.util.Set;
 
-import static df.web.common.flash.FlashMessage.Type.ERROR;
 import static df.web.common.flash.FlashMessage.error;
 
 @SuppressWarnings({"unused"})
@@ -37,8 +35,8 @@ import static df.web.common.flash.FlashMessage.error;
 public class GlobalControllerAdvice {
 
     private final ApplicationProperties properties;
-    private final Set<Locale> locales;
-    private final FlashMessageService flashMessageService;
+    private final Set<Locale>           locales;
+    private final FlashMessageService   flashMessageService;
 
     public GlobalControllerAdvice(ApplicationProperties properties, Set<Locale> locales, FlashMessageService flashMessageService) {
         this.properties = properties;
@@ -111,6 +109,7 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute
     public void modelMapHandler(ModelMap map, @AuthenticationPrincipal UserInfo principal) {
+//        map.addAttribute("statistics", queryStatistics);
         map.addAttribute("locales", locales);
         map.addAttribute("principal", principal);
     }

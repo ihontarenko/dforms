@@ -2,13 +2,21 @@ package df.base.jpa.form;
 
 import df.base.common.hibernate.generator.PrefixedId;
 import df.base.jpa.DefaultIdGenerator;
+import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.User;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
 
 @Entity
 @Table(name = "DF_FORMS")
+@NamedEntityGraph(
+        name = EntityGraphConstants.FORM_WITH_USER,
+        attributeNodes = @NamedAttributeNode("user")
+)
 public class Form {
 
     @Id
@@ -43,7 +51,7 @@ public class Form {
     @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FormConfig> configs;
 
-    @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(mappedBy = "forms", fetch = FetchType.LAZY)
     private List<FormField> fields;
 
     @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -111,6 +119,10 @@ public class Form {
 
     public void setFields(List<FormField> fields) {
         this.fields = fields;
+    }
+
+    public void addField(FormField field) {
+        this.fields.add(requireNonNull(field));
     }
 
     public List<FormEntry> getEntries() {

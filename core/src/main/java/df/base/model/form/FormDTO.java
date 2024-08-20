@@ -28,7 +28,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
                 target = "name",
                 fields = {
                         @FieldSet(objectName = "name", entityName = "name"),
-                        @FieldSet(objectName = "id", entityName = "user.id", comparison = NOT_EQUAL)
+                        @FieldSet(objectName = "id", entityName = "id", comparison = NOT_EQUAL)
                 },
                 entityClass = Form.class,
                 message = "[UPD]: form name already taken",
