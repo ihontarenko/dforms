@@ -1,6 +1,6 @@
 package df.base.validation;
 
-import df.base.validation.constrain.ValueOfEnum;
+import df.base.validation.constraint.ValueOfEnum;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

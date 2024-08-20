@@ -2,12 +2,23 @@ package df.base.common.validation;
 
 public interface Validator<T> {
 
-    void initialize(ValidatorBundle.Configuration configuration);
+    String UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE = "'%s' UNSUPPORTED CALL";
 
-    ValidationResult validate(T value);
+    default void initialize(Configuration configuration) {
+        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE
+                .formatted(this.getClass().getSimpleName()));
+    }
 
-    void validate(T value, ValidationResult result);
+    default void validate(T value) {
+        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE
+                .formatted(this.getClass().getSimpleName()));
+    }
 
-    void addChild(Validator<T> child);
+    default void addChild(Validator<T> child) {
+        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE
+                .formatted(this.getClass().getSimpleName()));
+    }
+
+
 
 }

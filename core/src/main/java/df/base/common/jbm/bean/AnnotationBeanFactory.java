@@ -1,5 +1,7 @@
 package df.base.common.jbm.bean;
 
+import df.base.common.jbm.ClassUtils;
+import df.base.common.jbm.StringUtils;
 import df.base.common.jbm.bean.context.JbmContext;
 import df.base.common.jbm.bean.creation.BeanCreationStrategy;
 import df.base.common.jbm.bean.creation.ConstructorBeanCreationStrategy;
@@ -18,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static df.base.common.jbm.ClassUtils.getShortName;
+import static df.base.common.jbm.StringUtils.underscored;
 import static java.util.stream.Collectors.joining;
 import static df.base.common.jbm.ReflectionUtils.findFirstAnnotatedConstructor;
 import static df.base.common.jbm.ReflectionUtils.findFirstConstructor;
@@ -126,6 +130,9 @@ public class AnnotationBeanFactory implements BeanFactory {
                     "UNFORTUNATELY, THE STRATEGY FAILED TO CREATE THE BEAN OF TYPE: " + definition.getBeanClass());
         }
 
+        LOGGER.info("CREATED: BEAN [%s] STRATEGY [%s]"
+                .formatted(definition.getBeanName(), underscored(getShortName(strategy.getClass()), true)));
+
         // pass bean for processors
         for (BeanProcessor processor : processors) {
             processor.process(instance, getApplicationContext());
@@ -157,6 +164,9 @@ public class AnnotationBeanFactory implements BeanFactory {
     public BeanDefinition createBeanDefinition(Class<?> interfaceType, List<Class<?>> subClasses) {
         String                beanName   = getBeanName(interfaceType);
         DefaultBeanDefinition definition = new DefaultBeanDefinition(beanName, interfaceType);
+
+        // interface cannot be a true bean
+        definition.setBeanScope(Scope.NON_BEAN);
 
         for (Class<?> subClass : subClasses) {
             BeanDefinition subClassDefinition = createBeanDefinition(subClass);
@@ -199,8 +209,10 @@ public class AnnotationBeanFactory implements BeanFactory {
 
         if (klass.isAnnotationPresent(Bean.class)) {
             definition.setBeanScope(klass.getAnnotation(Bean.class).scope());
+        } else if (klass.isAnnotationPresent(BeanScope.class)) {
+            definition.setBeanScope(klass.getAnnotation(BeanScope.class).value());
         } else {
-            definition.setBeanScope(Scope.NON_BEAN);
+            definition.setBeanScope(Scope.SINGLETON);
         }
 
         return definition;

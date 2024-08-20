@@ -1,4 +1,4 @@
-package df.base.validation.constrain;
+package df.base.validation.constraint;
 
 import df.base.common.jpa.FieldSet;
 import df.base.validation.ResourceExistenceValidator;

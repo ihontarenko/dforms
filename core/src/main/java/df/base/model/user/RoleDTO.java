@@ -2,7 +2,7 @@ package df.base.model.user;
 
 import df.base.jpa.Role;
 import df.base.common.jpa.FieldSet;
-import df.base.validation.constrain.ResourceExistence;
+import df.base.validation.constraint.ResourceExistence;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;

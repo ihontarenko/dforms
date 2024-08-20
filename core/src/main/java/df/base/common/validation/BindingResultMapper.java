@@ -4,30 +4,28 @@ import df.base.mapper.Mapper;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-public final class BindingResultMapper implements Mapper<ValidationResult, BindingResult> {
+import java.util.List;
 
-    public static void convertToBindingResult(ValidationResult validationResult, BindingResult bindingResult) {
-
-    }
+public final class BindingResultMapper implements Mapper<List<ErrorMessage>, BindingResult> {
 
     @Override
-    public void map(ValidationResult source, BindingResult destination) {
-        for (ErrorMessage error : source.getErrors()) {
+    public void map(List<ErrorMessage> source, BindingResult destination) {
+        for (ErrorMessage error : source) {
             destination.addError(new FieldError(
                     destination.getObjectName(),
-                    null,
-                    null
+                    error.getPointer(),
+                    error.getDetail()
             ));
         }
     }
 
     @Override
-    public BindingResult map(ValidationResult source) {
-        return null;
+    public BindingResult map(List<ErrorMessage> source) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public ValidationResult reverse(BindingResult source) {
+    public List<ErrorMessage> reverse(BindingResult source) {
         throw new UnsupportedOperationException();
     }
 

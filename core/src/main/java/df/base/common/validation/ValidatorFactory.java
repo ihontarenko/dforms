@@ -1,58 +1,29 @@
 package df.base.common.validation;
 
 import df.base.common.jbm.bean.Bean;
-import org.yaml.snakeyaml.Yaml;
+import df.base.common.validation.builder.ValidationBuilder;
+import df.base.common.validation.loader.ConfigurationLoader;
 
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import static java.util.Objects.requireNonNull;
+
 @Bean
-public class ValidatorFactory<T> {
+public class ValidatorFactory {
 
-    private final Map<String, List<Validator<?>>> validators = new HashMap<>();
+    private final Map<String, ValidatorHolder> holders = new HashMap<>();
 
-    public void loadValidator(String yamlFile) {
-        Yaml        yaml   = new Yaml();
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
-        try (InputStream inputStream = loader.getResourceAsStream(yamlFile)) {
-            ValidatorBundle bundle = yaml.loadAs(inputStream, ValidatorBundle.class);
-
-            if (bundle == null || bundle.getValidators().isEmpty()) {
-                throw new ValidatorException("INVALID OR EMPTY CONFIGURATION");
-            }
-
-            List<ValidatorBundle.Configuration> configurations = bundle.getValidators();
-
-            for (ValidatorBundle.Configuration configuration : configurations) {
-                validators.computeIfAbsent(yamlFile, key -> new ArrayList<>())
-                        .add(createValidator(configuration));
-            }
-        } catch (Exception e) {
-            throw new ValidatorException("FAILED TO LOAD VALIDATION CONFIGURATION", e);
-        }
+    public void loadValidatorHolder(String yamlFile) {
+        Configuration.Collection configuration = new ConfigurationLoader().load(yamlFile);
+        ValidatorHolder          holder        = new ValidationBuilder().build(configuration);
+        holders.put(holder.getName(), holder);
     }
 
-    @SuppressWarnings({"unchecked"})
-    private Validator<T> createValidator(ValidatorBundle.Configuration config) {
-        try {
-            Class<?>     validatorClass = Class.forName(config.getValidator());
-            Validator<T> validator      = (Validator<T>) validatorClass.getDeclaredConstructor().newInstance();
-
-            validator.initialize(config);
-
-            if (config.getChildren() != null && !config.getChildren().isEmpty()) {
-                for (ValidatorBundle.Configuration child : config.getChildren()) {
-                    validator.addChild(createValidator(child));
-                }
-            }
-
-            return validator;
-        } catch (Exception e) {
-            throw new ValidatorException("FAILED TO CREATE VALIDATOR INSTANCE", e);
-        }
+    public ValidatorHolder getValidatorHolder(String holderName) {
+        return requireNonNull(holders.get(holderName), "VALIDATOR HOLDER '%s' COULD NOT BE FOUND"
+                .formatted(holderName));
     }
+
+
 }

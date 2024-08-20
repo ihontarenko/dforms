@@ -4,6 +4,7 @@ import df.base.common.jbm.bean.context.AnnotationJbmContext;
 import df.base.common.jbm.bean.context.JbmContext;
 import df.base.common.resource.ContentHashVersionStrategy;
 import df.base.common.validation.Validator;
+import df.base.common.validation.ValidatorFactory;
 import df.base.configuration.ParentConfiguration;
 import df.base.property.ApplicationProperties;
 import df.web.common.pebble.PebbleExtension;
@@ -74,6 +75,11 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Bean
     public JbmContext jbmContextValidation() {
         return AnnotationJbmContext.run(Validator.class);
+    }
+
+    @Bean
+    public ValidatorFactory<?> validatorFactory(JbmContext jbmContext) {
+        return jbmContext.getBean(ValidatorFactory.class);
     }
 
 }

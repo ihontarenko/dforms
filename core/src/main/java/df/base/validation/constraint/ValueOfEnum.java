@@ -1,4 +1,4 @@
-package df.base.validation.constrain;
+package df.base.validation.constraint;
 
 import df.base.validation.ValueOfEnumValidator;
 import jakarta.validation.Constraint;

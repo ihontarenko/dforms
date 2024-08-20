@@ -4,7 +4,7 @@ import df.base.common.jbm.ReflectionUtils;
 import df.base.common.jpa.FieldSet;
 import df.base.common.jpa.JpaHelper;
 import df.base.security.UserInfo;
-import df.base.validation.constrain.ResourceExistence;
+import df.base.validation.constraint.ResourceExistence;
 import jakarta.persistence.TypedQuery;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

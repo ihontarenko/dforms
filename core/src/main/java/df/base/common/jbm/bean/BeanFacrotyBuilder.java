@@ -31,14 +31,17 @@ public class BeanFacrotyBuilder implements Builder<BeanFactory> {
         // scanning classes @Bean annotated
         Set<Class<?>> candidates = scanBeanClasses(classes);
 
-        LOGGER.info("BEAN CLASSES CANDIDATES: %d".formatted(candidates.size()));
+        LOGGER.info("BEAN CANDIDATES FOUND: %d".formatted(candidates.size()));
 
         for (Class<?> candidate : candidates) {
 
-            LOGGER.debug("CANDIDATE: %s".formatted(candidate.getName()));
+            LOGGER.debug("CURRENT CANDIDATE: %s".formatted(candidate.getName()));
 
             // is bean interface founded
             if (candidate.isInterface()) {
+
+                LOGGER.info("A CANDIDATE BEAN IS AN INTERFACE. SCAN CHILD CLASSES: %d".formatted(candidates.size()));
+
                 // find all classes implemented current interface
                 List<Class<?>> subClasses = new ArrayList<>();
                 for (Class<?> subClass : scanPackagesWithFilter(new SubclassClassFilter(candidate), classes)) {
