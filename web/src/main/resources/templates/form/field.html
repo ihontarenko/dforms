@@ -4,15 +4,34 @@
 <form method="post" action="{{ href('/form/field/perform') }}" enctype="multipart/field-data" class="row g-3" >
 
     <div class="form-group">
-        <label for="field-name">Form Name</label>
-        <input name="name" type="text" class="form-control {{ ifFieldErrors('fieldDTO', 'name', 'is-invalid', 'is-valid') }}" id="field-name" value="{{ fieldDTO.name }}">
-        {% include "common/invalid-feedback" with {"formName" : "fieldDTO", "fieldName" : "name"} %}
+        <label for="field-name">Field Name</label>
+        <input name="name" type="text" class="form-control {{ ifFieldErrors('formFieldDTO', 'name', 'is-invalid', 'is-valid') }}" id="field-name" value="{{ fieldDTO.name }}">
+        {% include "common/invalid-feedback" with {"formName" : "formFieldDTO", "fieldName" : "name"} %}
+    </div>
+
+    <div class="form-group">
+        <label for="field-label">Field Label</label>
+        <input name="label" type="text" class="form-control {{ ifFieldErrors('formFieldDTO', 'label', 'is-invalid', 'is-valid') }}" id="field-label" value="{{ fieldDTO.label }}">
+        {% include "common/invalid-feedback" with {"formName" : "formFieldDTO", "fieldName" : "label"} %}
     </div>
 
     <div class="form-group">
         <label for="field-description">Description</label>
-        <input name="description" type="text" class="form-control {{ ifFieldErrors('fieldDTO', 'description', 'is-invalid', 'is-valid') }}" id="field-description" value="{{ fieldDTO.description }}">
-        {% include "common/invalid-feedback" with {"formName" : "fieldDTO", "fieldName" : "description"} %}
+        <input name="description" type="text" class="form-control {{ ifFieldErrors('formFieldDTO', 'description', 'is-invalid', 'is-valid') }}" id="field-description" value="{{ fieldDTO.description }}">
+        {% include "common/invalid-feedback" with {"formName" : "formFieldDTO", "fieldName" : "description"} %}
+    </div>
+
+    <div class="form-group">
+        <label class="d-block">Element Type</label>
+        {% for elementType in elementTypes %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="elementType" id="ELEMENT_TYPE_{{ elementType }}" value="{{ elementType }}" {% if elementType equals formFieldDTO.elementType %}checked{% endif %}>
+            <label class="form-check-label" for="ELEMENT_TYPE_{{ elementType }}">
+                {{ elementType }}
+            </label>
+        </div>
+        {% endfor %}
+        {% include "common/invalid-feedback" with {"formName" : "formFieldDTO", "fieldName" : "elementType"} %}
     </div>
 
     <div class="form-group">
@@ -25,7 +44,7 @@
             <input type="radio" class="btn-check" name="status" id="DELETED" value="DELETED" autocomplete="off">
             <label class="btn btn-sm btn-outline-danger" for="DELETED">DELETED</label>
         </div>
-        {% include "common/invalid-feedback" with {"formName" : "fieldDTO", "fieldName" : "status"} %}
+        {% include "common/invalid-feedback" with {"formName" : "formFieldDTO", "fieldName" : "status"} %}
     </div>
 
     <input type="hidden" name="ownerId" value="{{ fieldDTO.ownerId }}">
@@ -43,45 +62,45 @@
     <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Owner</th>
-            <th scope="col">Description</th>
             <th scope="col">Name</th>
-            <th scope="col">Status</th>
+            <th scope="col">Label</th>
+            <th scope="col">Description</th>
+            <th scope="col">Element Type</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
-        {% for form in forms %}
+        {% for field in fields %}
         <tr>
-            <th scope="row">{{ form.id }}</th>
+            <th scope="row">{{ field.id }}</th>
             <td>
-                <u>{{ form.user.id }}</u>
+                <b>{{ field.name }}</b>
             </td>
             <td>
-                <i>{{ form.description }}</i>
+                <u>{{ field.label }}</u>
             </td>
             <td>
-                <b>{{ form.name }}</b>
+                <i>{{ field.description }}</i>
             </td>
+
             <td>
-                <span class="badge {{ statuses.get(form.status) }}">{{ form.status }}</span>
+                <i>{{ field.elementType }}</i>
             </td>
+
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/form/' + form.id + '/setup') }}'"
-                            type="button" class="btn btn-sm btn-light">SETUP</button>
-                    <button onclick="window.location = '{{ href('/form/' + form.id + '/configure') }}'"
+                    <button onclick="window.location = '{{ href('/form/field/' + field.id + '/configure') }}'"
                             type="button" class="btn btn-sm btn-secondary">CONFIGURE</button>
-                    <button onclick="window.location = '{{ href('/form/' + form.id + '/modify') }}'"
+                    <button onclick="window.location = '{{ href('/form/field/' + field.id + '/modify') }}'"
                             type="button" class="btn btn-sm btn-info">MODIFY</button>
                     <button type="button" class="btn btn-sm btn-danger">STATUS</button>
                     <div class="btn-group" role="group">
                         <button id="status" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                         <div class="dropdown-menu" aria-labelledby="status" style="">
-                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/active') }}">STATUS ACTIVE</a>
-                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/inactive') }}">STATUS INACTIVE</a>
-                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/deleted') }}">STATUS DELETE</a>
-                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/delete') }}">DELETE PERMANENTLY</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/status/active') }}">STATUS ACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/status/inactive') }}">STATUS INACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/status/deleted') }}">STATUS DELETE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/delete') }}">DELETE PERMANENTLY</a>
                         </div>
                     </div>
                 </div>

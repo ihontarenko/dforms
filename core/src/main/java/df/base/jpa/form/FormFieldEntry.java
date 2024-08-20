@@ -17,7 +17,7 @@ public class FormFieldEntry {
     private FormEntry formEntry;
 
     @ManyToOne
-    @JoinColumn(name = "FORM_FIELD_ID", nullable = false)
+    @JoinColumn(name = "FIELD_ID", nullable = false)
     private FormField formField;
 
     @Column(name = "VALUE", nullable = false)

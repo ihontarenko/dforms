@@ -35,14 +35,18 @@ public final class JpaHelper {
         List<Predicate> predicates = new ArrayList<>();
 
         for (FieldSet field : fields) {
-            Object        value      = objectValue(object, field.objectName());
-            Expression<?> expression = resolveExpression(field.entityName(), root);
+            Expression<?> expression = resolveExpression(field.entityField(), root);
+            Object        value      = resolveObjectValue(object, field);
             Predicate     predicate  = resolveQueryExpression(field.comparison(), builder).apply(expression, value);
 
             predicates.add(predicate);
         }
 
         return predicates;
+    }
+
+    private Object resolveObjectValue(Object object, FieldSet field) {
+        return field.objectValue().isBlank() ? objectValue(object, field.objectField()) : field.objectValue();
     }
 
     private BiFunction<Expression<?>, Object, Predicate> resolveQueryExpression(Comparison comparison,

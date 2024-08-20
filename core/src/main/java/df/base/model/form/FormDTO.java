@@ -17,7 +17,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
         @ResourceExistence(
                 target = "name",
                 fields = {
-                        @FieldSet(objectName = "name", entityName = "name")
+                        @FieldSet(objectField = "name", entityField = "name")
                 },
                 entityClass = Form.class,
                 message = "[NEW]: form name already taken",
@@ -27,8 +27,8 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
         @ResourceExistence(
                 target = "name",
                 fields = {
-                        @FieldSet(objectName = "name", entityName = "name"),
-                        @FieldSet(objectName = "id", entityName = "id", comparison = NOT_EQUAL)
+                        @FieldSet(objectField = "name", entityField = "name"),
+                        @FieldSet(objectField = "id", entityField = "id", comparison = NOT_EQUAL)
                 },
                 entityClass = Form.class,
                 message = "[UPD]: form name already taken",
@@ -39,7 +39,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
         @ResourceExistence(
                 target = "id",
                 fields = {
-                        @FieldSet(objectName = "id", entityName = "id")
+                        @FieldSet(objectField = "id", entityField = "id")
                 },
                 entityClass = Form.class,
                 invert = true,
@@ -49,18 +49,19 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
         ),
         // check if the request form belongs to the requested user ID
         // skip for ROLE_ADMIN users
+        // TODO: if replace 'ownerId' to any value validation will pass but it shouldn't
         @ResourceExistence(
                 target = "ownerId",
                 fields = {
-                        @FieldSet(objectName = "id", entityName = "id"),
-                        @FieldSet(objectName = "ownerId", entityName = "user.id"),
+                        @FieldSet(objectField = "id", entityField = "id"),
+                        @FieldSet(objectField = "ownerId", entityField = "user.id"),
                 },
                 entityClass = Form.class,
                 invert = true,
                 unique = false,
                 message = "you must own this form to modify it",
-                existence = "id",
-                authority = "ROLE_ADMIN"
+                existence = "id"
+//                authority = "ROLE_ADMIN"
         )
 })
 public class FormDTO {
@@ -68,7 +69,7 @@ public class FormDTO {
     private String id;
 
     @NotEmpty
-    @AuthorizationId
+//    @AuthorizationId
     private String ownerId;
 
     @NotEmpty(message = "form name is required")

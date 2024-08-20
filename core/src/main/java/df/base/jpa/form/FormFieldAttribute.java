@@ -13,7 +13,7 @@ public class FormFieldAttribute {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "FORM_FIELD_ID", nullable = false)
+    @JoinColumn(name = "FIELD_ID", nullable = false)
     private FormField formField;
 
     @Column(name = "NAME", nullable = false)

@@ -2,7 +2,7 @@ package df.base.common.validation;
 
 import java.util.List;
 
-public class ValidatorHolder implements Validator {
+public class ValidatorHolder {
 
     private final String                  name;
     private       List<Validator<Object>> validators;

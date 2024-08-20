@@ -12,7 +12,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
         // validation for new privilege
         @ResourceExistence(
                 target = "name",
-                fields = {@FieldSet(objectName = "name", entityName = "name")},
+                fields = {@FieldSet(objectField = "name", entityField = "name")},
                 entityClass = Privilege.class,
                 message = "privilege name already taken (new)",
                 existence = "id"
@@ -21,8 +21,8 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
         @ResourceExistence(
                 target = "name",
                 fields = {
-                        @FieldSet(objectName = "id", entityName = "id", comparison = NOT_EQUAL),
-                        @FieldSet(objectName = "name", entityName = "name")
+                        @FieldSet(objectField = "id", entityField = "id", comparison = NOT_EQUAL),
+                        @FieldSet(objectField = "name", entityField = "name")
                 },
                 entityClass = Privilege.class,
                 invert = true,
@@ -32,7 +32,7 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
         // validation on passed id in request
         @ResourceExistence(
                 target = "id",
-                fields = {@FieldSet(objectName = "id", entityName = "id")},
+                fields = {@FieldSet(objectField = "id", entityField = "id")},
                 entityClass = Privilege.class,
                 invert = true,
                 unique = false,

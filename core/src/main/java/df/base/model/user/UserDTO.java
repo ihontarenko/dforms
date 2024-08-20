@@ -18,21 +18,21 @@ import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
         // validate an email for new users
         @ResourceExistence(
                 target = "email",
-                fields = {@FieldSet(objectName = "email", entityName = "email")},
+                fields = {@FieldSet(objectField = "email", entityField = "email")},
                 entityClass = User.class,
-                message = "user with this email already registered (new)",
+                message = "[UPD]: user with this email already registered",
                 existence = "id"
         ),
         // validate for updating existing user
         @ResourceExistence(
                 target = "email",
                 fields = {
-                        @FieldSet(objectName = "id", entityName = "id", comparison = NOT_EQUAL),
-                        @FieldSet(objectName = "email", entityName = "email")
+                        @FieldSet(objectField = "id", entityField = "id", comparison = NOT_EQUAL),
+                        @FieldSet(objectField = "email", entityField = "email")
                 },
                 entityClass = User.class,
                 invert = true,
-                message = "user with this email already registered (upd)",
+                message = "[UPD]: user with this email already registered",
                 existence = "id"
         )
 })

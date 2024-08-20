@@ -1,0 +1,79 @@
+package df.base.service.form;
+
+import df.base.jpa.form.FormField;
+import df.base.jpa.form.FormFieldRepository;
+import df.base.mapper.form.FormFieldMapper;
+import df.base.model.form.FormFieldDTO;
+import df.base.service.RedirectAware;
+import df.base.service.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+import static df.base.Messages.FORM_FIELD_NOT_FOUND;
+
+@SuppressWarnings({"unused"})
+@Service
+public class FormFieldService implements RedirectAware {
+
+    @Autowired
+    private FormFieldRepository repository;
+
+    private String redirectUrl;
+
+    @Transactional
+    public FormField create(FormFieldDTO fieldDTO) {
+        return repository.save(new FormFieldMapper().reverse(fieldDTO));
+    }
+
+    @Transactional
+    public FormField update(FormField field, FormFieldDTO fieldDTO) {
+        new FormFieldMapper().reverse(fieldDTO, field);
+
+        return repository.save(field);
+    }
+
+    @Transactional
+    public FormField createOrUpdate(FormFieldDTO fieldDTO) {
+        Optional<FormField> optional = getById(fieldDTO.getId());
+        FormField           field;
+
+        if (optional.isPresent()) {
+            field = update(optional.get(), fieldDTO);
+        } else {
+            field = create(fieldDTO);
+        }
+
+        return field;
+    }
+
+    @Transactional(readOnly = true)
+    public List<FormField> getAll() {
+        return repository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<FormField> getById(String id) {
+        return repository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public FormField requireById(String id) {
+        return getById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(FORM_FIELD_NOT_FOUND.formatted(id), this));
+    }
+
+    @Override
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    @Override
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
+}

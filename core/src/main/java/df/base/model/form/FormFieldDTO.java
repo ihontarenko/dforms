@@ -1,19 +1,43 @@
 package df.base.model.form;
 
+import df.base.common.jpa.FieldSet;
+import df.base.jpa.form.FormField;
+import df.base.validation.constraint.ResourceExistence;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
+
+@ResourceExistence.Set({
+        // validation for creating new form
+        @ResourceExistence(
+                target = "name",
+                fields = {
+                        @FieldSet(objectField = "name", entityField = "name")
+                },
+                entityClass = FormField.class,
+                message = "[NEW]: field with this name already taken",
+                existence = "id"
+        ),
+        // validation for updating existing form
+        @ResourceExistence(
+                target = "name",
+                fields = {
+                        @FieldSet(objectField = "name", entityField = "name"),
+                        @FieldSet(objectField = "id", entityField = "id", comparison = NOT_EQUAL)
+                },
+                entityClass = FormField.class,
+                message = "[UPD]: field with this name already taken",
+                existence = "id",
+                invert = true
+        )
+})
 public class FormFieldDTO {
 
-    @NotEmpty
     @Size(max = 32)
     private String id;
-
-    @NotEmpty
-    @Size(max = 32)
-    private String formId;
 
     @NotNull
     @Pattern(regexp = "TEXT|NUMBER|SELECT|RADIO|CHECKBOX|TEXTAREA|DATE|EMAIL|URL")
@@ -40,14 +64,6 @@ public class FormFieldDTO {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getFormId() {
-        return formId;
-    }
-
-    public void setFormId(String formId) {
-        this.formId = formId;
     }
 
     public String getElementType() {

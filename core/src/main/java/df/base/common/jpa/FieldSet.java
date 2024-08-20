@@ -7,9 +7,11 @@ import java.lang.annotation.*;
 @Documented
 public @interface FieldSet {
 
-    String objectName();
+    String objectField() default "";
 
-    String entityName() default "";
+    String objectValue() default "";
+
+    String entityField() default "";
 
     Comparison comparison() default Comparison.EQUAL;
 

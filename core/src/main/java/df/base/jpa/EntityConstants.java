@@ -132,8 +132,8 @@ public final class EntityConstants {
     public static final String FIELD_FORM_FIELD_ATTRIBUTES_ID = "id";
     public static final String COLUMN_FORM_FIELD_ATTRIBUTES_ID = "ID";
 
-    public static final String FIELD_FORM_FIELD_ATTRIBUTES_FORM_FIELD_ID = "formFieldId";
-    public static final String COLUMN_FORM_FIELD_ATTRIBUTES_FORM_FIELD_ID = "FORM_FIELD_ID";
+    public static final String FIELD_FORM_FIELD_ATTRIBUTES_FIELD_ID = "formFieldId";
+    public static final String COLUMN_FORM_FIELD_ATTRIBUTES_FIELD_ID = "FIELD_ID";
 
     public static final String FIELD_FORM_FIELD_ATTRIBUTES_NAME = "name";
     public static final String COLUMN_FORM_FIELD_ATTRIBUTES_NAME = "NAME";
@@ -145,8 +145,8 @@ public final class EntityConstants {
     public static final String FIELD_FORM_FIELD_CONFIG_ID = "id";
     public static final String COLUMN_FORM_FIELD_CONFIG_ID = "ID";
 
-    public static final String FIELD_FORM_FIELD_CONFIG_FORM_FIELD_ID = "formFieldId";
-    public static final String COLUMN_FORM_FIELD_CONFIG_FORM_FIELD_ID = "FORM_FIELD_ID";
+    public static final String FIELD_FORM_FIELD_CONFIG_FIELD_ID = "formFieldId";
+    public static final String COLUMN_FORM_FIELD_CONFIG_FIELD_ID = "FIELD_ID";
 
     public static final String FIELD_FORM_FIELD_CONFIG_CONFIG_NAME = "configName";
     public static final String COLUMN_FORM_FIELD_CONFIG_CONFIG_NAME = "CONFIG_NAME";
