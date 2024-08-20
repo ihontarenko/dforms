@@ -16,7 +16,7 @@ management:
 logging:
   level:
     org.springframework.security: DEBUG
-#    org.hibernate.SQL: DEBUG
+    df.base.common.jbm: DEBUG
 #    org.hibernate.type: TRACE
 #    org.hibernate.hql: DEBUG
 # Endpoints

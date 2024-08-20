@@ -61,7 +61,6 @@ public class ParentConfiguration implements WebMvcConfigurer {
         source.setResourceLoader(resolver);
         source.addBasenames("classpath:locale/main", "classpath:locale/text", "classpath:locale/messages");
         source.setFallbackToSystemLocale(true);
-//        source.setDefaultEncoding("ISO-8859-1");
         source.setDefaultEncoding("UTF-8");
 
         return source;

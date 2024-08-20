@@ -1,6 +1,6 @@
 package df.base.common.jbm.bean.context;
 
-public interface ApplicationContextAware {
+public interface JbmContextAware {
 
     void setApplicationContext(JbmContext context);
 

@@ -2,6 +2,8 @@ package df.base.common.jbm.bean;
 
 import df.base.common.jbm.Builder;
 import df.base.common.jbm.scanner.filter.type.SubclassClassFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -15,7 +17,8 @@ import static df.base.common.jbm.bean.BeanClassScanner.METHOD_BEAN_ANNOTATED_CLA
 
 public class BeanFacrotyBuilder implements Builder<BeanFactory> {
 
-    private final Class<?>[] classes;
+    private static final Logger     LOGGER = LoggerFactory.getLogger(BeanFacrotyBuilder.class);
+    private final        Class<?>[] classes;
 
     public BeanFacrotyBuilder(Class<?>[] classes) {
         this.classes = classes;
@@ -27,7 +30,13 @@ public class BeanFacrotyBuilder implements Builder<BeanFactory> {
 
         // scanning classes @Bean annotated
         Set<Class<?>> candidates = scanBeanClasses(classes);
+
+        LOGGER.info("BEAN CLASSES CANDIDATES: %d".formatted(candidates.size()));
+
         for (Class<?> candidate : candidates) {
+
+            LOGGER.debug("CANDIDATE: %s".formatted(candidate.getName()));
+
             // is bean interface founded
             if (candidate.isInterface()) {
                 // find all classes implemented current interface

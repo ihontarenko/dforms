@@ -1,20 +1,22 @@
 package df.base.common;
 
 public enum ValueHolder {
+
     HOLDER(new ThreadLocal<>());
 
-    private final ThreadLocal<String> local;
+    private final ThreadLocal<Object> local;
 
-    ValueHolder(ThreadLocal<String> local) {
+    ValueHolder(ThreadLocal<Object> local) {
         this.local = local;
     }
 
-    public void set(String value) {
+    public <T> void set(T value) {
         local.set(value);
     }
 
-    public String get() {
-        return local.get();
+    @SuppressWarnings({"unchecked"})
+    public <T> T get() {
+        return (T) local.get();
     }
 
     public boolean has() {

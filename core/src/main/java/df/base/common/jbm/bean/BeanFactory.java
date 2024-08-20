@@ -1,7 +1,7 @@
 package df.base.common.jbm.bean;
 
 import df.base.common.jbm.ClassUtils;
-import df.base.common.jbm.bean.context.ApplicationContextAware;
+import df.base.common.jbm.bean.context.JbmContextAware;
 import df.base.common.jbm.bean.definition.BeanDefinition;
 import df.base.common.jbm.bean.processor.Processable;
 
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static df.base.common.jbm.StringUtils.underscored;
 
-public interface BeanFactory extends Processable, ApplicationContextAware {
+public interface BeanFactory extends Processable, JbmContextAware {
 
     default String getBeanName(AnnotatedElement element, Class<? extends Annotation> annotationType) {
         String value = null;

@@ -5,11 +5,11 @@ import df.base.common.jbm.bean.BeanFactory;
 import df.base.common.jbm.bean.processor.BeanProcessor;
 import df.base.common.jbm.bean.processor.Processable;
 
-public class AnnotationApplicationContext implements JbmContext, Processable {
+public class AnnotationJbmContext implements JbmContext, Processable {
 
     private final BeanFactory factory;
 
-    private AnnotationApplicationContext(BeanFactory factory) {
+    private AnnotationJbmContext(BeanFactory factory) {
         this.factory = factory;
         this.factory.setApplicationContext(this);
     }
@@ -18,7 +18,7 @@ public class AnnotationApplicationContext implements JbmContext, Processable {
         Class<?>[]  root    = classes == null ? new Class<?>[]{JbmContext.class} : classes;
         BeanFactory factory = new BeanFacrotyBuilder(root).build();
 
-        return new AnnotationApplicationContext(factory);
+        return new AnnotationJbmContext(factory);
     }
 
     @Override

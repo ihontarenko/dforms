@@ -3,10 +3,10 @@ package df.base.common.jbm.example.services;
 import df.base.common.jbm.bean.Bean;
 import df.base.common.jbm.bean.Scope;
 import df.base.common.jbm.bean.context.JbmContext;
-import df.base.common.jbm.bean.context.ApplicationContextAware;
+import df.base.common.jbm.bean.context.JbmContextAware;
 
 @Bean(scope = Scope.PROTOTYPE)
-public class ServiceB implements ApplicationContextAware, ServiceInterface {
+public class ServiceB implements JbmContextAware, ServiceInterface {
 
     private JbmContext context;
 

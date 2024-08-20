@@ -1,5 +1,6 @@
 package df.base.common.validation;
 
+import df.base.common.jbm.bean.Bean;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Bean
 public class ValidatorFactory<T> {
 
     private final Map<String, List<Validator<?>>> validators = new HashMap<>();

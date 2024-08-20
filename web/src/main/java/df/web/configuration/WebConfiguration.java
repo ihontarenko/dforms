@@ -1,6 +1,9 @@
 package df.web.configuration;
 
+import df.base.common.jbm.bean.context.AnnotationJbmContext;
+import df.base.common.jbm.bean.context.JbmContext;
 import df.base.common.resource.ContentHashVersionStrategy;
+import df.base.common.validation.Validator;
 import df.base.configuration.ParentConfiguration;
 import df.base.property.ApplicationProperties;
 import df.web.common.pebble.PebbleExtension;
@@ -19,6 +22,7 @@ import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 import static java.util.Objects.requireNonNull;
 
+@SuppressWarnings("unused")
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan("df.web")
@@ -65,6 +69,11 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Bean
     public PebbleExtension pebbleExtension(ApplicationContext context, HttpServletRequest request) {
         return new PebbleExtension(context, request);
+    }
+
+    @Bean
+    public JbmContext jbmContextValidation() {
+        return AnnotationJbmContext.run(Validator.class);
     }
 
 }

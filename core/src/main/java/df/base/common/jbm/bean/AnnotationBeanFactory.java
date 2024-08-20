@@ -7,6 +7,8 @@ import df.base.common.jbm.bean.creation.MethodBeanCreationStrategy;
 import df.base.common.jbm.bean.creation.SupplierBeanCreationStrategy;
 import df.base.common.jbm.bean.definition.*;
 import df.base.common.jbm.bean.processor.BeanProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -22,13 +24,15 @@ import static df.base.common.jbm.ReflectionUtils.findFirstConstructor;
 
 public class AnnotationBeanFactory implements BeanFactory {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BeanFactory.class);
+
     private final Map<String, BeanDefinition>  definitions;
     private final Map<String, Object>          beans;
     private final Map<Class<?>, List<String>>  names;
     private final BeanCreationStrategyResolver resolver;
-    private final List<BeanProcessor>  processors = new ArrayList<>();
-    private       JbmContext           context;
-    private final List<BeanDefinition> visitor;
+    private final List<BeanProcessor>          processors = new ArrayList<>();
+    private final List<BeanDefinition>         visitor;
+    private       JbmContext                   context;
 
     public AnnotationBeanFactory() {
         this.beans = new ConcurrentHashMap<>();
