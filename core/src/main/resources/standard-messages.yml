@@ -2,20 +2,20 @@ name: STANDARD
 messages:
   NOT_NULL:
     message: "Field cannot be null"
-    detail: "The field {target} is required and cannot be null."
+    pointer: name
+    detail: "The field '${pointer}' is required and cannot be null."
     contexts:
-      USERNAME:
+      USER_FORM:
         message: "Username is required"
-        detail: "The username must be provided and cannot be null."
+        pointer: username
+        detail: "The '${pointer}' must be provided and cannot be null."
 
-  STRING_IS_BLANK:
+  NOT_EMPTY:
     message: "Field cannot be blank"
-    detail: "The field {target} cannot be blank."
+    pointer: name
+    detail: "The field '${pointer}' cannot be blank."
 
   UNSUPPORTED_CHARACTERS:
     message: "Field contains unsupported characters"
-    detail: "The field {target} contains characters that are not allowed."
-
-  LOWER_CASE_CHARACTER_UNSUPPORTED:
-    message: "Lowercase characters are not supported"
-    detail: "The field {target} must contain only uppercase characters."
+    pointer: name
+    detail: "The field '${pointer}' contains characters that are not allowed."

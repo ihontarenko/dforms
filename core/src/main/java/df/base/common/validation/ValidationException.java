@@ -2,28 +2,28 @@ package df.base.common.validation;
 
 public class ValidationException extends RuntimeException {
 
-    private final String errorCode;
-    private final String errorContext;
+    private final ErrorCode    errorCode;
+    private final ErrorContext errorContext;
 
-    public ValidationException(String errorCode, String errorContext, Throwable cause) {
+    public ValidationException(ErrorCode errorCode, ErrorContext errorContext, Throwable cause) {
         super(cause);
         this.errorContext = errorContext;
         this.errorCode = errorCode;
     }
 
-    public ValidationException(String errorCode) {
+    public ValidationException(ErrorCode errorCode) {
         this(errorCode, null);
     }
 
-    public ValidationException(String errorCode, String errorContext) {
+    public ValidationException(ErrorCode errorCode, ErrorContext errorContext) {
         this(errorCode, errorContext, null);
     }
 
-    public String getErrorCode() {
+    public ErrorCode getErrorCode() {
         return errorCode;
     }
 
-    public String getErrorContext() {
+    public ErrorContext getErrorContext() {
         return errorContext;
     }
 }

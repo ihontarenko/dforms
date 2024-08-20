@@ -15,6 +15,7 @@
         <hikari-cp.version>5.0.1</hikari-cp.version>
         <flyway-maven-plugin.version>8.5.2</flyway-maven-plugin.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <apache-commons-text.version>1.12.0</apache-commons-text.version>
     </properties>
 
     <dependencyManagement>
@@ -45,6 +46,13 @@
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
+            <!-- Apache Common Text -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${apache-commons-text.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

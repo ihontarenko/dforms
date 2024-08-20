@@ -5,9 +5,11 @@ import org.springframework.validation.BindingResult;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.Objects.requireNonNullElseGet;
+import static java.util.Optional.ofNullable;
 
 public final class ValidationManager {
 
@@ -39,10 +41,10 @@ public final class ValidationManager {
                         .formatted(exception.getErrorCode()));
 
                 Map<String, ErrorMessage> contextMessages = message.getContexts();
+                ErrorContext              errorContext    = exception.getErrorContext();
 
-                if (exception.getErrorContext() != null && contextMessages.containsKey(exception.getErrorContext())) {
-                    merge(message, contextMessages.get(exception.getErrorContext()));
-                }
+                ofNullable(contextMessages.get(errorContext.name()))
+                        .ifPresent(m -> merge(message, contextMessages.get(errorContext.name())));
 
                 messages.add(message);
             }

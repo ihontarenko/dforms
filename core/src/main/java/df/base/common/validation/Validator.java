@@ -1,5 +1,7 @@
 package df.base.common.validation;
 
+import java.util.Map;
+
 public interface Validator<T> {
 
     String UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE = "'%s' UNSUPPORTED CALL";
@@ -19,6 +21,6 @@ public interface Validator<T> {
                 .formatted(this.getClass().getSimpleName()));
     }
 
-
+    Map<String, String> configurationMap();
 
 }
