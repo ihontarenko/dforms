@@ -185,4 +185,17 @@ abstract public class ReflectionUtils {
                 .ifPresent(field -> setFieldValue(object, field, value));
     }
 
+    public static List<Method> extractStaticMethods(Class<?> clazz) {
+        Method[]     methods       = clazz.getMethods();
+        List<Method> staticMethods = new ArrayList<>(methods.length);
+
+        for (Method method : methods) {
+            if (Modifier.isStatic(method.getModifiers())) {
+                staticMethods.add(method);
+            }
+        }
+
+        return staticMethods;
+    }
+
 }

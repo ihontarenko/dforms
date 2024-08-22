@@ -1,46 +1,46 @@
 package df.base.model.user;
 
 import df.base.jpa.Role;
-import df.base.common.jpa.FieldSet;
-import df.base.validation.constraint.ResourceExistence;
+import df.base.validation.Fields;
+import df.base.validation.constraint.JpaResource;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
+import static df.base.validation.Fields.Comparison.NOT_EQUAL;
 
-@ResourceExistence.Set({
+@JpaResource.List({
         // validation for new roles
-        @ResourceExistence(
+        @JpaResource(
                 target = "name",
-                fields = {@FieldSet(objectField = "name", entityField = "name")},
+                fields = {@Fields(objectField = "name", entityField = "name")},
                 entityClass = Role.class,
                 message = "role name already taken (new)",
-                existence = "id"
+                applier = "id"
         ),
         // validation for existed roles
-        @ResourceExistence(
+        @JpaResource(
                 target = "name",
                 fields = {
-                        @FieldSet(objectField = "id", entityField = "id", comparison = NOT_EQUAL),
-                        @FieldSet(objectField = "name", entityField = "name")
+                        @Fields(objectField = "id", entityField = "id", comparison = NOT_EQUAL),
+                        @Fields(objectField = "name", entityField = "name")
                 },
                 entityClass = Role.class,
                 invert = true,
                 message = "role name already taken (upd)",
-                existence = "id"
+                applier = "id"
         ),
         // validation on passed id in request
-        @ResourceExistence(
+        @JpaResource(
                 target = "id",
-                fields = {@FieldSet(objectField = "id", entityField = "id")},
+                fields = {@Fields(objectField = "id", entityField = "id")},
                 entityClass = Role.class,
                 invert = true,
                 unique = false,
                 message = "the ROLE_ID must exist",
-                existence = "id"
+                applier = "id"
         )
 })
 public class RoleDTO {

@@ -1,75 +1,81 @@
 package df.base.model.form;
 
+import df.base.common.support.JpaCriteria;
+import df.base.validation.Fields;
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormStatus;
-import df.base.common.jpa.FieldSet;
-import df.base.validation.constraint.AuthorizationId;
+import df.base.validation.Fields.Value;
 import df.base.validation.constraint.EnumPattern;
-import df.base.validation.constraint.ResourceExistence;
+import df.base.validation.constraint.JpaResource;
+import df.base.validation.constraint.SpELConstraint;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
+import static df.base.validation.Fields.ValueType.FIELD_NAME;
 
-@ResourceExistence.Set({
+@JpaResource.List({
         // validation for creating new form
-        @ResourceExistence(
+        @JpaResource(
                 target = "name",
                 fields = {
-                        @FieldSet(objectField = "name", entityField = "name")
+                        @Fields(
+                                objectValue = @Value(value = "name", type = FIELD_NAME),
+                                entityField = "name")
                 },
                 entityClass = Form.class,
                 message = "[NEW]: form name already taken",
-                existence = "id"
+                applier = "#!hasText(id)" // for new records
         ),
         // validation for updating existing form
-        @ResourceExistence(
+        @JpaResource(
                 target = "name",
                 fields = {
-                        @FieldSet(objectField = "name", entityField = "name"),
-                        @FieldSet(objectField = "id", entityField = "id", comparison = NOT_EQUAL)
+                        @Fields(
+                                objectValue = @Value(value = "name", type = FIELD_NAME),
+                                entityField = "name"
+                        ),
+                        @Fields(
+                                objectValue = @Value(value = "id", type = FIELD_NAME),
+                                entityField = "id",
+                                comparison = JpaCriteria.Comparison.NOT_EQUAL
+                        )
                 },
                 entityClass = Form.class,
                 message = "[UPD]: form name already taken",
-                existence = "id",
-                invert = true
+                applier = "#hasText(id)" // for existing records
         ),
         // check if request form id is correct
-        @ResourceExistence(
+        @JpaResource(
                 target = "id",
                 fields = {
-                        @FieldSet(objectField = "id", entityField = "id")
+                        @Fields(
+                                objectValue = @Value(value = "id", type = FIELD_NAME),
+                                entityField = "id"
+                        )
                 },
                 entityClass = Form.class,
-                invert = true,
-                unique = false,
                 message = "the FORM_ID must exist",
-                existence = "id"
+                applier = "id"
         ),
-        // check if the request form belongs to the requested user ID
-        // skip for ROLE_ADMIN users
-        // TODO: if replace 'ownerId' to any value validation will pass but it shouldn't
-        @ResourceExistence(
-                target = "ownerId",
-                fields = {
-                        @FieldSet(objectField = "id", entityField = "id"),
-                        @FieldSet(objectField = "ownerId", entityField = "user.id"),
-                },
-                entityClass = Form.class,
-                invert = true,
-                unique = false,
-                message = "you must own this form to modify it",
-                existence = "id"
-//                authority = "ROLE_ADMIN"
-        )
+})
+@SpELConstraint.List(value = {
+        @SpELConstraint(
+                target = "id",
+                // applier = "!#hasRole('ADMIN')",
+                applier = "id != null && !id.isBlank()",
+                value = "@formService.isOwner(id, #authentication.principal)",
+                message = "no-no-no... you must be owner or super-user to modify other people's forms"),
+        @SpELConstraint(
+                target = "id",
+                value = "#isPrincipal(ownerId)",
+                message = "ownerId should be equals to authorized ID")
 })
 public class FormDTO {
 
     private String id;
 
     @NotEmpty
-//    @AuthorizationId
     private String ownerId;
 
     @NotEmpty(message = "form name is required")

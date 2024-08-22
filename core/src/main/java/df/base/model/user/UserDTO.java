@@ -2,8 +2,8 @@ package df.base.model.user;
 
 import df.base.jpa.User;
 import df.base.security.Provider;
-import df.base.common.jpa.FieldSet;
-import df.base.validation.constraint.ResourceExistence;
+import df.base.validation.Fields;
+import df.base.validation.constraint.JpaResource;
 import df.base.validation.constraint.StrongPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -12,28 +12,28 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
+import static df.base.validation.Fields.Comparison.NOT_EQUAL;
 
-@ResourceExistence.Set({
+@JpaResource.List({
         // validate an email for new users
-        @ResourceExistence(
+        @JpaResource(
                 target = "email",
-                fields = {@FieldSet(objectField = "email", entityField = "email")},
+                fields = {@Fields(objectField = "email", entityField = "email")},
                 entityClass = User.class,
                 message = "[UPD]: user with this email already registered",
-                existence = "id"
+                applier = "id"
         ),
         // validate for updating existing user
-        @ResourceExistence(
+        @JpaResource(
                 target = "email",
                 fields = {
-                        @FieldSet(objectField = "id", entityField = "id", comparison = NOT_EQUAL),
-                        @FieldSet(objectField = "email", entityField = "email")
+                        @Fields(objectField = "id", entityField = "id", comparison = NOT_EQUAL),
+                        @Fields(objectField = "email", entityField = "email")
                 },
                 entityClass = User.class,
                 invert = true,
                 message = "[UPD]: user with this email already registered",
-                existence = "id"
+                applier = "id"
         )
 })
 public class UserDTO {

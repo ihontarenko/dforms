@@ -1,43 +1,43 @@
 package df.base.model.user;
 
 import df.base.jpa.Privilege;
-import df.base.common.jpa.FieldSet;
-import df.base.validation.constraint.ResourceExistence;
+import df.base.validation.Fields;
+import df.base.validation.constraint.JpaResource;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
+import static df.base.validation.Fields.Comparison.NOT_EQUAL;
 
-@ResourceExistence.Set({
+@JpaResource.List({
         // validation for new privilege
-        @ResourceExistence(
+        @JpaResource(
                 target = "name",
-                fields = {@FieldSet(objectField = "name", entityField = "name")},
+                fields = {@Fields(objectField = "name", entityField = "name")},
                 entityClass = Privilege.class,
                 message = "privilege name already taken (new)",
-                existence = "id"
+                applier = "id"
         ),
         // validation for existed privilege
-        @ResourceExistence(
+        @JpaResource(
                 target = "name",
                 fields = {
-                        @FieldSet(objectField = "id", entityField = "id", comparison = NOT_EQUAL),
-                        @FieldSet(objectField = "name", entityField = "name")
+                        @Fields(objectField = "id", entityField = "id", comparison = NOT_EQUAL),
+                        @Fields(objectField = "name", entityField = "name")
                 },
                 entityClass = Privilege.class,
                 invert = true,
                 message = "privilege name already taken (upd)",
-                existence = "id"
+                applier = "id"
         ),
         // validation on passed id in request
-        @ResourceExistence(
+        @JpaResource(
                 target = "id",
-                fields = {@FieldSet(objectField = "id", entityField = "id")},
+                fields = {@Fields(objectField = "id", entityField = "id")},
                 entityClass = Privilege.class,
                 invert = true,
                 unique = false,
                 message = "the PRIVILEGE_ID must exist",
-                existence = "id"
+                applier = "id"
         )
 })
 public class PrivilegeDTO {

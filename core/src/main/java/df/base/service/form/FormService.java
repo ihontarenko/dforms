@@ -7,6 +7,7 @@ import df.base.jpa.form.FormRepository;
 import df.base.jpa.form.FormStatus;
 import df.base.mapper.form.FormMapper;
 import df.base.model.form.FormDTO;
+import df.base.security.UserInfo;
 import df.base.service.RedirectAware;
 import df.base.service.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ public class FormService implements RedirectAware {
 
     public FormService(FormRepository repository) {
         this.repository = repository;
+    }
+
+    public boolean isOwner(String formId, UserInfo principal) {
+        return getById(formId).map(form -> form.getUser().equals(principal.getUser())).orElse(false);
     }
 
     @Transactional(readOnly = true)

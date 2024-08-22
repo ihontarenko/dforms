@@ -129,7 +129,7 @@ public class FormController {
 
         bindAttributes(formDTO);
 
-        if (!result.hasFieldErrors()) {
+        if (!result.hasErrors()) {
             Form form = service.createOrUpdate(formDTO, principal.getUser());
             helper.addMessage(success(SUCCESS_FORM_SAVED.formatted(form.getDescription())));
         }

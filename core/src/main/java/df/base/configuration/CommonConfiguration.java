@@ -31,24 +31,23 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static df.base.utils.Strings.substringBetween;
-import static java.lang.String.format;
-
 @Configuration
 @EnableAutoConfiguration
 @EnableJpaRepositories(basePackages = Constants.ENTITY_PACKAGE_TO_SCAN)
 @ComponentScan(basePackages = {Constants.BASE_PACKAGE_TO_SCAN})
 @EnableConfigurationProperties
 @ConfigurationPropertiesScan(basePackages = {"df.base.property"})
-public class ParentConfiguration implements WebMvcConfigurer {
+public class CommonConfiguration implements WebMvcConfigurer {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(ParentConfiguration.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(CommonConfiguration.class);
 
     @Bean
     public Translator translator(MessageSource messageSource, BeansHolder holder) {
         Translator translator = new Translator(messageSource);
 
         holder.set(Translator.class, translator);
+
+        LOGGER.info("CREATE {} BEAN", Translator.class.getName());
 
         return translator;
     }
@@ -62,6 +61,8 @@ public class ParentConfiguration implements WebMvcConfigurer {
         source.addBasenames("classpath:locale/main", "classpath:locale/text", "classpath:locale/messages");
         source.setFallbackToSystemLocale(true);
         source.setDefaultEncoding("UTF-8");
+
+        LOGGER.info("CREATE {} BEAN", ReloadableResourceBundleMessageSource.class.getName());
 
         return source;
     }
@@ -103,6 +104,8 @@ public class ParentConfiguration implements WebMvcConfigurer {
 
         locales.removeIf(Objects::isNull);
         locales.add(Locale.getDefault());
+
+        LOGGER.info("AVAILABLE LOCALES: {}", locales);
 
         return locales;
     }

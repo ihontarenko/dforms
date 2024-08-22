@@ -1,36 +1,36 @@
 package df.base.model.form;
 
-import df.base.common.jpa.FieldSet;
+import df.base.validation.Fields;
 import df.base.jpa.form.FormField;
-import df.base.validation.constraint.ResourceExistence;
+import df.base.validation.constraint.JpaResource;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import static df.base.common.jpa.FieldSet.Comparison.NOT_EQUAL;
+import static df.base.validation.Fields.Comparison.NOT_EQUAL;
 
-@ResourceExistence.Set({
+@JpaResource.List({
         // validation for creating new form
-        @ResourceExistence(
+        @JpaResource(
                 target = "name",
                 fields = {
-                        @FieldSet(objectField = "name", entityField = "name")
+                        @Fields(objectField = "name", entityField = "name")
                 },
                 entityClass = FormField.class,
                 message = "[NEW]: field with this name already taken",
-                existence = "id"
+                applier = "id"
         ),
         // validation for updating existing form
-        @ResourceExistence(
+        @JpaResource(
                 target = "name",
                 fields = {
-                        @FieldSet(objectField = "name", entityField = "name"),
-                        @FieldSet(objectField = "id", entityField = "id", comparison = NOT_EQUAL)
+                        @Fields(objectField = "name", entityField = "name"),
+                        @Fields(objectField = "id", entityField = "id", comparison = NOT_EQUAL)
                 },
                 entityClass = FormField.class,
                 message = "[UPD]: field with this name already taken",
-                existence = "id",
+                applier = "id",
                 invert = true
         )
 })

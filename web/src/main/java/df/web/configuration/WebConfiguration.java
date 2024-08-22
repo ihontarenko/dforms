@@ -4,7 +4,7 @@ import df.base.common.jbm.bean.context.AnnotationJbmContext;
 import df.base.common.jbm.bean.context.JbmContext;
 import df.base.common.resource.ContentHashVersionStrategy;
 import df.base.common.validation.Validator;
-import df.base.configuration.ParentConfiguration;
+import df.base.configuration.CommonConfiguration;
 import df.base.property.ApplicationProperties;
 import df.web.common.pebble.PebbleExtension;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@ import static java.util.Objects.requireNonNull;
 @EnableAutoConfiguration
 @ComponentScan("df.web")
 @ConfigurationPropertiesScan(basePackages = {"df.web.property"})
-@Import(ParentConfiguration.class)
+@Import(CommonConfiguration.class)
 public class WebConfiguration implements WebMvcConfigurer {
 
     private final ApplicationContext    context;

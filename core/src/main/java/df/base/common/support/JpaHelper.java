@@ -1,7 +1,5 @@
-package df.base.common.jpa;
+package df.base.common.support;
 
-import df.base.common.jbm.ReflectionUtils;
-import df.base.common.jpa.FieldSet.Comparison;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
@@ -16,28 +14,28 @@ public final class JpaHelper {
 
     public final EntityManager em;
 
-    public JpaHelper(EntityManager em) {
+    public JpaHelper(EntityManager em, SpELEvaluator evaluator) {
         this.em = em;
     }
 
     @SuppressWarnings({"unchecked"})
-    public <E> TypedQuery<E> createTypedQuery(Class<E> entityClass, FieldSet[] fields, Object object) {
+    public <E> TypedQuery<E> createTypedQuery(Class<E> entityClass, JpaCriteria[] criteria) {
         CriteriaBuilder       builder = em.getCriteriaBuilder();
         CriteriaQuery<Object> query   = builder.createQuery();
         Root<E>               root    = query.from(entityClass);
 
-        query.where(createPredicates(fields, builder, root, object).toArray(Predicate[]::new));
+        query.where(createPredicates(criteria, builder, root).toArray(Predicate[]::new));
 
         return (TypedQuery<E>) em.createQuery(query);
     }
 
-    public List<Predicate> createPredicates(FieldSet[] fields, CriteriaBuilder builder, Root<?> root, Object object) {
+    public List<Predicate> createPredicates(JpaCriteria[] criteria, CriteriaBuilder builder, Root<?> root) {
         List<Predicate> predicates = new ArrayList<>();
 
-        for (FieldSet field : fields) {
-            Expression<?> expression = resolveExpression(field.entityField(), root);
-            Object        value      = resolveObjectValue(object, field);
-            Predicate     predicate  = resolveQueryExpression(field.comparison(), builder).apply(expression, value);
+        for (JpaCriteria jpaCriteria : criteria) {
+            Expression<?> expression = resolveExpression(jpaCriteria.entityField(), root);
+            Predicate     predicate  = resolveQueryExpression(jpaCriteria.comparison(), builder)
+                    .apply(expression, jpaCriteria.entityValue());
 
             predicates.add(predicate);
         }
@@ -45,11 +43,7 @@ public final class JpaHelper {
         return predicates;
     }
 
-    private Object resolveObjectValue(Object object, FieldSet field) {
-        return field.objectValue().isBlank() ? objectValue(object, field.objectField()) : field.objectValue();
-    }
-
-    private BiFunction<Expression<?>, Object, Predicate> resolveQueryExpression(Comparison comparison,
+    private BiFunction<Expression<?>, Object, Predicate> resolveQueryExpression(JpaCriteria.Comparison comparison,
                                                                                 CriteriaBuilder builder) {
         return switch (comparison) {
             case GTE -> (expression, object)
@@ -78,10 +72,6 @@ public final class JpaHelper {
         }
 
         return from.get(paths[paths.length - 1]);
-    }
-
-    public Object objectValue(Object object, String name) {
-        return ReflectionUtils.getFieldValue(object, name);
     }
 
 }
