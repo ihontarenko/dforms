@@ -23,6 +23,9 @@
                 <li class="pt-2">
                     <span class="badge bg-primary">{{ principal.user.id }}</span>
                 </li>
+                <li class="p-2">
+                    <span class="badge bg-danger">DB Queries: {{ queryCounter.queryCount }}</span>
+                </li>
             </ul>
             <form class="d-flex" method="get" action="{{ href('/ic-index/search') }}">
                 <input class="form-control me-sm-2" type="search" placeholder="Search" name="keyword">

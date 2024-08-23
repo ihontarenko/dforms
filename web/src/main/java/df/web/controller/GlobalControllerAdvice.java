@@ -1,5 +1,6 @@
 package df.web.controller;
 
+import df.base.common.aj.HibernateSQLLoggingAspect;
 import df.base.property.ApplicationProperties;
 import df.base.security.UserInfo;
 import df.base.service.RedirectAware;
@@ -36,12 +37,15 @@ public class GlobalControllerAdvice {
 
     private final ApplicationProperties properties;
     private final Set<Locale>           locales;
-    private final FlashMessageService   flashMessageService;
+    private final FlashMessageService       flash;
+    private final HibernateSQLLoggingAspect queryCounter;
 
-    public GlobalControllerAdvice(ApplicationProperties properties, Set<Locale> locales, FlashMessageService flashMessageService) {
+    public GlobalControllerAdvice(ApplicationProperties properties, Set<Locale> locales,
+                                  FlashMessageService flash, HibernateSQLLoggingAspect queryCounter) {
         this.properties = properties;
         this.locales = locales;
-        this.flashMessageService = flashMessageService;
+        this.flash = flash;
+        this.queryCounter = queryCounter;
     }
 
     @ExceptionHandler({
@@ -58,7 +62,7 @@ public class GlobalControllerAdvice {
             FlashMap flashMap    = RequestContextUtils.getOutputFlashMap(request);
             String   redirectUrl = properties.getHomeUrl();
 
-            flashMessageService.addMessage(flashMap, error(exception.getMessage()));
+            flash.addMessage(flashMap, error(exception.getMessage()));
 
             if (exception instanceof RedirectAware redirectAware && redirectAware.hasRedirectUrl()) {
                 redirectUrl = redirectAware.getRedirectUrl();
@@ -108,8 +112,8 @@ public class GlobalControllerAdvice {
     }
 
     @ModelAttribute
-    public void modelMapHandler(ModelMap map, @AuthenticationPrincipal UserInfo principal) {
-//        map.addAttribute("statistics", queryStatistics);
+    public void modelMapHandler(HttpServletRequest request, ModelMap map, @AuthenticationPrincipal UserInfo principal) {
+        map.addAttribute("queryCounter", queryCounter);
         map.addAttribute("locales", locales);
         map.addAttribute("principal", principal);
     }
