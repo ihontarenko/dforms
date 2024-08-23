@@ -27,10 +27,6 @@ public class FormService implements RedirectAware {
         this.repository = repository;
     }
 
-    public boolean isOwner(String formId, UserInfo principal) {
-        return getById(formId).map(form -> form.getUser().equals(principal.getUser())).orElse(false);
-    }
-
     @Transactional(readOnly = true)
     public Optional<Form> getById(String formId) {
         return repository.findById(formId);

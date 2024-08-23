@@ -44,16 +44,16 @@ public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
     }
 
     private Object resolveObjectValue(Object object, Fields fields) {
-        ValueType type  = fields.objectValue().type();
-        String    value = fields.objectValue().value();
+        ValueType type     = fields.objectValue().type();
+        String    rawValue = fields.objectValue().value();
 
         return switch (type) {
             case SPEL_EXPRESSION -> {
                 ExpressionParser parser = new SpelExpressionParser();
-                yield evaluator.evaluate(parser.parseExpression(value), Object.class);
+                yield evaluator.evaluate(parser.parseExpression(rawValue), Object.class);
             }
-            case RAW_VALUE -> value;
-            case FIELD_NAME -> getFieldValue(object, value);
+            case RAW_VALUE -> rawValue;
+            case FIELD_NAME -> getFieldValue(object, rawValue);
         };
     }
 

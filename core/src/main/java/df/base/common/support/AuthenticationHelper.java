@@ -16,6 +16,10 @@ public class AuthenticationHelper {
                 .anyMatch(authority -> authority.getAuthority().equals("ROLE_" + role));
     }
 
+    public static boolean noRole(String role) {
+        return !hasRole(role);
+    }
+
     public static boolean isPrincipal(String userId) {
         return ((UserInfo)AUTHENTICATION.getPrincipal()).getUser().getId().equals(userId);
     }
@@ -26,6 +30,10 @@ public class AuthenticationHelper {
 
     public static User getAuthorizedUser() {
         return getPrincipal().getUser();
+    }
+
+    public static String getUserId() {
+        return getAuthorizedUser().getId();
     }
 
 }

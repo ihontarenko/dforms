@@ -12,7 +12,11 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface JpaResource {
 
+    // SpEL expression
     String applier() default "";
+
+    // SpEL expression
+    String predicate() default "#result.empty";
 
     String target();
 

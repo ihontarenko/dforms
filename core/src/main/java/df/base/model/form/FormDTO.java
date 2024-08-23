@@ -24,8 +24,8 @@ import static df.base.validation.Fields.ValueType.FIELD_NAME;
                                 entityField = "name")
                 },
                 entityClass = Form.class,
-                message = "[NEW]: form name already taken",
-                applier = "#!hasText(id)" // for new records
+                // message = "[NEW]: form name already taken",
+                applier = "!#hasText(id)" // for new records
         ),
         // validation for updating existing form
         @JpaResource(
@@ -56,15 +56,15 @@ import static df.base.validation.Fields.ValueType.FIELD_NAME;
                 },
                 entityClass = Form.class,
                 message = "the FORM_ID must exist",
-                applier = "id"
+                applier = "#hasText(id)",
+                predicate = "!#result.empty"
         ),
 })
 @SpELConstraint.List(value = {
         @SpELConstraint(
                 target = "id",
-                // applier = "!#hasRole('ADMIN')",
-                applier = "id != null && !id.isBlank()",
-                value = "@formService.isOwner(id, #authentication.principal)",
+                applier = "#hasText(id) && #noRole('SUPER_USER')",
+                value = "@formRepository.existsByIdAndUser(id, #getAuthorizedUser())",
                 message = "no-no-no... you must be owner or super-user to modify other people's forms"),
         @SpELConstraint(
                 target = "id",

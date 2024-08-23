@@ -1,5 +1,6 @@
 package df.base.model.form;
 
+import df.base.common.support.JpaCriteria;
 import df.base.validation.Fields;
 import df.base.jpa.form.FormField;
 import df.base.validation.constraint.JpaResource;
@@ -8,30 +9,36 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import static df.base.validation.Fields.Comparison.NOT_EQUAL;
+import static df.base.validation.Fields.ValueType.FIELD_NAME;
 
 @JpaResource.List({
         // validation for creating new form
         @JpaResource(
                 target = "name",
                 fields = {
-                        @Fields(objectField = "name", entityField = "name")
+                        @Fields(
+                                objectValue = @Fields.Value(value = "name", type = FIELD_NAME),
+                                entityField = "name")
                 },
                 entityClass = FormField.class,
                 message = "[NEW]: field with this name already taken",
-                applier = "id"
+                applier = "!#hasText(id)"
         ),
         // validation for updating existing form
         @JpaResource(
                 target = "name",
                 fields = {
-                        @Fields(objectField = "name", entityField = "name"),
-                        @Fields(objectField = "id", entityField = "id", comparison = NOT_EQUAL)
+                        @Fields(
+                                objectValue = @Fields.Value(value = "name", type = FIELD_NAME),
+                                entityField = "name"),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
+                                comparison = JpaCriteria.Comparison.NOT_EQUAL,
+                                entityField = "id")
                 },
                 entityClass = FormField.class,
                 message = "[UPD]: field with this name already taken",
-                applier = "id",
-                invert = true
+                applier = "#hasText(id)"
         )
 })
 public class FormFieldDTO {

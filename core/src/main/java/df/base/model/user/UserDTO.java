@@ -1,5 +1,6 @@
 package df.base.model.user;
 
+import df.base.common.support.JpaCriteria;
 import df.base.jpa.User;
 import df.base.security.Provider;
 import df.base.validation.Fields;
@@ -12,28 +13,36 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-import static df.base.validation.Fields.Comparison.NOT_EQUAL;
+import static df.base.validation.Fields.ValueType.FIELD_NAME;
 
 @JpaResource.List({
         // validate an email for new users
         @JpaResource(
                 target = "email",
-                fields = {@Fields(objectField = "email", entityField = "email")},
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "email", type = FIELD_NAME),
+                                entityField = "email")
+                },
                 entityClass = User.class,
                 message = "[UPD]: user with this email already registered",
-                applier = "id"
+                applier = "!#hasText(id)"
         ),
         // validate for updating existing user
         @JpaResource(
                 target = "email",
                 fields = {
-                        @Fields(objectField = "id", entityField = "id", comparison = NOT_EQUAL),
-                        @Fields(objectField = "email", entityField = "email")
+                        @Fields(
+                                objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
+                                entityField = "id",
+                                comparison = JpaCriteria.Comparison.NOT_EQUAL),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "email", type = FIELD_NAME),
+                                entityField = "email")
                 },
                 entityClass = User.class,
-                invert = true,
                 message = "[UPD]: user with this email already registered",
-                applier = "id"
+                applier = "#hasText(id)"
         )
 })
 public class UserDTO {

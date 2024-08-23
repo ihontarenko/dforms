@@ -1,6 +1,5 @@
 package df.base.validation;
 
-import df.base.common.jbm.ReflectionUtils;
 import df.base.common.support.JpaCriteria;
 import df.base.common.support.JpaCriteriaMapper;
 import df.base.common.support.JpaHelper;
@@ -15,6 +14,9 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.emptyMap;
 
 public class JpaResourceValidator implements ConstraintValidator<JpaResource, Object> {
 
@@ -23,6 +25,7 @@ public class JpaResourceValidator implements ConstraintValidator<JpaResource, Ob
     private       Class<?>      entityClass;
     private       Fields[]      fields;
     private       String        applier;
+    private       String        predicate;
     private       String        target;
 
     public JpaResourceValidator(JpaHelper jpaHelper, SpELEvaluator evaluator) {
@@ -36,18 +39,16 @@ public class JpaResourceValidator implements ConstraintValidator<JpaResource, Ob
         this.fields = annotation.fields();
         this.entityClass = annotation.entityClass();
         this.target = annotation.target();
+        this.predicate = annotation.predicate();
     }
 
     @Override
     public boolean isValid(Object object, ConstraintValidatorContext context) {
-        Object  idValue            = ReflectionUtils.getFieldValue(object, applier);
-        boolean isValid            = true;
-        boolean require = idValue == null;
+        boolean isValid = true;
+        boolean require = true;
 
         if (StringUtils.hasText(applier)) {
-            SpelExpressionParser parser     = new SpelExpressionParser();
-            Expression           expression = parser.parseExpression(applier);
-            require = evaluator.evaluate(expression, Boolean.class);
+            require = evaluateExpression(object, applier, emptyMap());
         }
 
         if (require) {
@@ -64,9 +65,9 @@ public class JpaResourceValidator implements ConstraintValidator<JpaResource, Ob
     private boolean doValidate(Object object) {
         JpaCriteria[]      jpaCriteria = new JpaCriteriaMapper(evaluator, object).map(fields);
         TypedQuery<Object> typedQuery  = jpaHelper.createTypedQuery((Class<Object>) entityClass, jpaCriteria);
-        List<Object>       resultSet   = typedQuery.getResultList();
+        List<Object>       result      = typedQuery.getResultList();
 
-        return resultSet.size() == 0;
+        return evaluateExpression(object, predicate, Map.of("result", result));
     }
 
     private void addConstraintViolation(ConstraintValidatorContext context) {
@@ -74,6 +75,23 @@ public class JpaResourceValidator implements ConstraintValidator<JpaResource, Ob
         String                     messageTemplate  = context.getDefaultConstraintMessageTemplate();
         ConstraintViolationBuilder violationBuilder = context.buildConstraintViolationWithTemplate(messageTemplate);
         violationBuilder.addPropertyNode(target).addConstraintViolation();
+    }
+
+    private boolean evaluateExpression(Object object, String spel, Map<String, Object> variables) {
+        SpelExpressionParser parser     = new SpelExpressionParser();
+        Expression           expression = parser.parseExpression(spel);
+
+        evaluator.initialize(ctx -> {
+            ctx.setRootObject(object);
+            ctx.setVariables(variables);
+        });
+        boolean require = evaluator.evaluate(expression, Boolean.class);
+        evaluator.uninitialize(ctx -> {
+            ctx.setRootObject(null);
+            variables.forEach((key, value) -> ctx.setVariable(key, null));
+        });
+
+        return require;
     }
 
 }
