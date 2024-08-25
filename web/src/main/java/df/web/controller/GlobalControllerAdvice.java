@@ -1,6 +1,5 @@
 package df.web.controller;
 
-import df.base.common.aj.HibernateSQLLoggingAspect;
 import df.base.property.ApplicationProperties;
 import df.base.security.UserInfo;
 import df.base.service.RedirectAware;
@@ -38,14 +37,12 @@ public class GlobalControllerAdvice {
     private final ApplicationProperties properties;
     private final Set<Locale>           locales;
     private final FlashMessageService       flash;
-    private final HibernateSQLLoggingAspect queryCounter;
 
     public GlobalControllerAdvice(ApplicationProperties properties, Set<Locale> locales,
-                                  FlashMessageService flash, HibernateSQLLoggingAspect queryCounter) {
+                                  FlashMessageService flash) {
         this.properties = properties;
         this.locales = locales;
         this.flash = flash;
-        this.queryCounter = queryCounter;
     }
 
     @ExceptionHandler({
@@ -113,7 +110,6 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute
     public void modelMapHandler(HttpServletRequest request, ModelMap map, @AuthenticationPrincipal UserInfo principal) {
-        map.addAttribute("queryCounter", queryCounter);
         map.addAttribute("locales", locales);
         map.addAttribute("principal", principal);
     }

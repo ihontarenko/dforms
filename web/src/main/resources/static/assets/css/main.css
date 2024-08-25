@@ -1,3 +1,4 @@
-.form-group .invalid-feedback, .form-group .valid-feedback {
+.form-group .invalid-feedback, .form-group .valid-feedback,
+.form-floating .invalid-feedback, .form-floating .valid-feedback{
     display: block;
 }

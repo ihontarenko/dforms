@@ -1,7 +1,7 @@
-package df.base.validation;
+package df.base.validation.hibernate;
 
 import df.base.common.support.SpELEvaluator;
-import df.base.validation.constraint.SpELConstraint;
+import df.base.validation.hibernate.constraint.SpELConstraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.expression.Expression;

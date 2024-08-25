@@ -83,6 +83,16 @@ public class FormConfigService implements RedirectAware {
                 .orElseThrow(() -> new ResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(name), this));
     }
 
+    @Transactional(readOnly = true)
+    public List<FormConfig> getAllByFormId(String formId) {
+        return repository.findAllByFormId(formId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<FormConfig> getAllByForm(Form form) {
+        return repository.findAllByForm(form);
+    }
+
     @Override
     public String getRedirectUrl() {
         return redirectUrl;

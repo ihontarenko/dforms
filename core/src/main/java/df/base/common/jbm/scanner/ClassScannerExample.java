@@ -3,7 +3,7 @@ package df.base.common.jbm.scanner;
 import df.base.common.jbm.filter.FilteringMode;
 import df.base.common.jbm.scanner.filter.type.AccessModifierClassFilter;
 import df.base.common.jbm.scanner.filter.type.SubclassClassFilter;
-import df.base.common.validation.Validator;
+import df.base.common.validation_x.Validator;
 
 import java.lang.reflect.Modifier;
 import java.util.Set;

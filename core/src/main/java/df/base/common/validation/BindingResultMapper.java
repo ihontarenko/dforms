@@ -1,5 +1,6 @@
 package df.base.common.validation;
 
+import df.base.common.validation.ErrorMessage;
 import df.base.mapper.Mapper;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;

@@ -3,9 +3,9 @@ package df.base.model.user;
 import df.base.common.support.JpaCriteria;
 import df.base.jpa.User;
 import df.base.security.Provider;
-import df.base.validation.Fields;
-import df.base.validation.constraint.JpaResource;
-import df.base.validation.constraint.StrongPassword;
+import df.base.validation.hibernate.Fields;
+import df.base.validation.hibernate.constraint.JpaResource;
+import df.base.validation.hibernate.constraint.StrongPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-import static df.base.validation.Fields.ValueType.FIELD_NAME;
+import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
 
 @JpaResource.List({
         // validate an email for new users

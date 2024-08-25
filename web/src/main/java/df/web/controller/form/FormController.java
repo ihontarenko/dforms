@@ -75,21 +75,38 @@ public class FormController {
         return mav;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/perform")
+    public ModelAndView perform(@Validated FormDTO formDTO, BindingResult result, RedirectAttributes attributes,
+                                @AuthenticationPrincipal UserInfo principal) {
+        helper.setBindingResult(result);
+        helper.setRedirectAttributes(attributes);
+        helper.setViewName("form/index");
+
+        bindAttributes(formDTO);
+
+        if (!result.hasErrors()) {
+            Form form = service.createOrUpdate(formDTO, principal.getUser());
+            helper.addMessage(success(SUCCESS_FORM_SAVED.formatted(form.getDescription())));
+        }
+
+        return helper.resolveWithRedirect();
+    }
+
+    @PreAuthorize("hasRole('SUPER_USER')")
     @GetMapping("/{formId}/delete")
     public ModelAndView remove(@PathVariable("formId") String formId, RedirectAttributes attributes) {
+        helper.setRedirectAttributes(attributes);
+
         Optional<Form> result = service.getById(formId);
 
         if (result.isPresent()) {
             service.delete(result.get());
-            helper.addMessage(warning(SUCCESS_FORM_DELETED
+            helper.addMessage(error(SUCCESS_FORM_DELETED
                     .formatted(formId)));
         } else {
-            helper.addMessage(error(ERROR_FORM_NOT_FOUND
+            helper.addMessage(warning(ERROR_FORM_NOT_FOUND
                     .formatted(formId)));
         }
-
-        helper.setRedirectAttributes(attributes);
 
         return helper.redirect();
     }
@@ -118,23 +135,6 @@ public class FormController {
         }
 
         return helper.redirect();
-    }
-
-    @PostMapping("/perform")
-    public ModelAndView perform(@Validated FormDTO formDTO, BindingResult result, RedirectAttributes attributes,
-                                @AuthenticationPrincipal UserInfo principal) {
-        helper.setBindingResult(result);
-        helper.setRedirectAttributes(attributes);
-        helper.setViewName("form/index");
-
-        bindAttributes(formDTO);
-
-        if (!result.hasErrors()) {
-            Form form = service.createOrUpdate(formDTO, principal.getUser());
-            helper.addMessage(success(SUCCESS_FORM_SAVED.formatted(form.getDescription())));
-        }
-
-        return helper.resolveWithRedirect();
     }
 
     private void bindAttributes(FormDTO formDTO) {

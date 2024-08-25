@@ -1,18 +1,18 @@
 package df.base.model.form;
 
 import df.base.common.support.JpaCriteria;
-import df.base.validation.Fields;
+import df.base.validation.hibernate.Fields;
 import df.base.jpa.form.FormField;
-import df.base.validation.constraint.JpaResource;
+import df.base.validation.hibernate.constraint.JpaResource;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import static df.base.validation.Fields.ValueType.FIELD_NAME;
+import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
 
 @JpaResource.List({
-        // validation for creating new form
+        // validation for creating new field
         @JpaResource(
                 target = "name",
                 fields = {
@@ -24,7 +24,7 @@ import static df.base.validation.Fields.ValueType.FIELD_NAME;
                 message = "[NEW]: field with this name already taken",
                 applier = "!#hasText(id)"
         ),
-        // validation for updating existing form
+        // validation for updating existing field
         @JpaResource(
                 target = "name",
                 fields = {

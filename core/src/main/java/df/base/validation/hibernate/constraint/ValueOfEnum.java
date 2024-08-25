@@ -1,6 +1,6 @@
-package df.base.validation.constraint;
+package df.base.validation.hibernate.constraint;
 
-import df.base.validation.ValueOfEnumValidator;
+import df.base.validation.hibernate.ValueOfEnumValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

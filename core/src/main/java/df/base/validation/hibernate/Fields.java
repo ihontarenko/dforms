@@ -1,4 +1,4 @@
-package df.base.validation;
+package df.base.validation.hibernate;
 
 import df.base.common.support.JpaCriteria;
 

@@ -1,12 +1,87 @@
 package df.base.model.form;
 
+import df.base.common.support.JpaCriteria;
+import df.base.jpa.form.FormConfig;
+import df.base.validation.hibernate.Fields;
+import df.base.validation.hibernate.constraint.JpaResource;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
+
+// todo: check on redundant validators
+@JpaResource.List({
+        // validation for creating new config
+        @JpaResource(
+                target = "configName",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "configName", type = FIELD_NAME),
+                                entityField = "configName")
+                },
+                entityClass = FormConfig.class,
+                message = "[NEW]: configuration with this key already taken",
+                applier = "!#hasText(id)"
+        ),
+        // validation for updating existing config
+        @JpaResource(
+                target = "configName",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "configName", type = FIELD_NAME),
+                                entityField = "configName"),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
+                                entityField = "id",
+                                comparison = JpaCriteria.Comparison.NOT_EQUAL)
+                },
+                entityClass = FormConfig.class,
+                message = "[UPD]: configuration with this key already taken",
+                applier = "#hasText(id)"
+        ),
+        @JpaResource(
+                target = "formId",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "formId", type = FIELD_NAME),
+                                entityField = "form.id")
+                },
+                entityClass = FormConfig.class,
+                message = "the ID of the requested form does not exist",
+                applier = "#hasText(formId)",
+                predicate = "!#result.empty"
+        ),
+        @JpaResource(
+                target = "formId",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "formId", type = FIELD_NAME),
+                                entityField = "form.id"),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
+                                entityField = "id")
+                },
+                entityClass = FormConfig.class,
+                message = "the current configuration does not belong to the requested form ID",
+                applier = "#hasText(id) && #hasText(formId)",
+                predicate = "!#result.empty"
+        ),
+        // check if request config id is correct
+        @JpaResource(
+                target = "id",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
+                                entityField = "id")
+                },
+                entityClass = FormConfig.class,
+                message = "unable to update configuration for non-existent entry",
+                applier = "#hasText(id)",
+                predicate = "!#result.empty"
+        ),
+})
 public class FormConfigDTO {
 
-    @NotEmpty
-    @Size(max = 32)
     private String id;
 
     @NotEmpty

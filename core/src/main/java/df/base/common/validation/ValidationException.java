@@ -1,5 +1,8 @@
 package df.base.common.validation;
 
+import df.base.common.validation.ErrorCode;
+import df.base.common.validation.ErrorContext;
+
 public class ValidationException extends RuntimeException {
 
     private final ErrorCode    errorCode;

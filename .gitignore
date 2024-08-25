@@ -24,4 +24,5 @@ output/
 .DS_Store
 *.private.properties
 *sensitive.yml
+application-public.properties
 *.db

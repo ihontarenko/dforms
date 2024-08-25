@@ -1,18 +1,18 @@
 package df.base.model.form;
 
 import df.base.common.support.JpaCriteria;
-import df.base.validation.Fields;
+import df.base.validation.hibernate.Fields;
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormStatus;
-import df.base.validation.Fields.Value;
-import df.base.validation.constraint.EnumPattern;
-import df.base.validation.constraint.JpaResource;
-import df.base.validation.constraint.SpELConstraint;
+import df.base.validation.hibernate.Fields.Value;
+import df.base.validation.hibernate.constraint.EnumPattern;
+import df.base.validation.hibernate.constraint.JpaResource;
+import df.base.validation.hibernate.constraint.SpELConstraint;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import static df.base.validation.Fields.ValueType.FIELD_NAME;
+import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
 
 @JpaResource.List({
         // validation for creating new form
@@ -33,13 +33,11 @@ import static df.base.validation.Fields.ValueType.FIELD_NAME;
                 fields = {
                         @Fields(
                                 objectValue = @Value(value = "name", type = FIELD_NAME),
-                                entityField = "name"
-                        ),
+                                entityField = "name"),
                         @Fields(
                                 objectValue = @Value(value = "id", type = FIELD_NAME),
                                 entityField = "id",
-                                comparison = JpaCriteria.Comparison.NOT_EQUAL
-                        )
+                                comparison = JpaCriteria.Comparison.NOT_EQUAL)
                 },
                 entityClass = Form.class,
                 message = "[UPD]: form name already taken",
@@ -51,8 +49,7 @@ import static df.base.validation.Fields.ValueType.FIELD_NAME;
                 fields = {
                         @Fields(
                                 objectValue = @Value(value = "id", type = FIELD_NAME),
-                                entityField = "id"
-                        )
+                                entityField = "id")
                 },
                 entityClass = Form.class,
                 message = "the FORM_ID must exist",

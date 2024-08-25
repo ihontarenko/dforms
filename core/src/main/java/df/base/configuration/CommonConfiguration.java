@@ -2,9 +2,7 @@ package df.base.configuration;
 
 import df.base.Constants;
 import df.base.common.BeansHolder;
-import df.base.common.aj.HibernateSQLLoggingAspect;
 import df.base.common.i18n.Translator;
-import df.base.common.interceptor.HibernateSQLLoggingInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +20,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -113,15 +110,9 @@ public class CommonConfiguration implements WebMvcConfigurer {
         return locales;
     }
 
-    @Bean
-    public HandlerInterceptor queryCountInterceptor(HibernateSQLLoggingAspect loggingAspect) {
-        return new HibernateSQLLoggingInterceptor(loggingAspect);
-    }
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
-        registry.addInterceptor(queryCountInterceptor());
     }
 
 }

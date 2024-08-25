@@ -1,0 +1,5 @@
+spring:
+  config:
+    import:
+      - classpath:db/data-source-h2.properties
+      - classpath:db/h2.properties

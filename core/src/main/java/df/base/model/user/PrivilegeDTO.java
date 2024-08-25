@@ -2,12 +2,12 @@ package df.base.model.user;
 
 import df.base.common.support.JpaCriteria;
 import df.base.jpa.Privilege;
-import df.base.validation.Fields;
-import df.base.validation.constraint.JpaResource;
+import df.base.validation.hibernate.Fields;
+import df.base.validation.hibernate.constraint.JpaResource;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-import static df.base.validation.Fields.ValueType.FIELD_NAME;
+import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
 
 @JpaResource.List({
         // validation for new privilege

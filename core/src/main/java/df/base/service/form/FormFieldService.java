@@ -1,7 +1,6 @@
 package df.base.service.form;
 
-import df.base.jpa.form.FormField;
-import df.base.jpa.form.FormFieldRepository;
+import df.base.jpa.form.*;
 import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;
 import df.base.service.RedirectAware;
@@ -23,6 +22,22 @@ public class FormFieldService implements RedirectAware {
     private FormFieldRepository repository;
 
     private String redirectUrl;
+
+    @Transactional(readOnly = true)
+    public List<FormField> getAll() {
+        return repository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<FormField> getById(String id) {
+        return repository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public FormField requireById(String id) {
+        return getById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(FORM_FIELD_NOT_FOUND.formatted(id), this));
+    }
 
     @Transactional
     public FormField create(FormFieldDTO fieldDTO) {
@@ -50,20 +65,16 @@ public class FormFieldService implements RedirectAware {
         return field;
     }
 
-    @Transactional(readOnly = true)
-    public List<FormField> getAll() {
-        return repository.findAll();
+    @Transactional
+    public void changeStatus(FormField field, FieldStatus status) {
+        field.setStatus(status);
+
+        repository.save(field);
     }
 
-    @Transactional(readOnly = true)
-    public Optional<FormField> getById(String id) {
-        return repository.findById(id);
-    }
-
-    @Transactional(readOnly = true)
-    public FormField requireById(String id) {
-        return getById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(FORM_FIELD_NOT_FOUND.formatted(id), this));
+    @Transactional
+    public void delete(FormField field) {
+        repository.delete(field);
     }
 
     @Override

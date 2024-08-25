@@ -5,9 +5,10 @@ public interface Messages {
     // Database Error Messages
     String ERROR_USER_NOT_FOUND      = "User '%s' not found";
     String ERROR_FORM_NOT_FOUND      = "Form '%s' not found";
+    String ERROR_FIELD_NOT_FOUND     = "Field '%s' not found";
     String ERROR_PRIVILEGE_NOT_FOUND = "Privilege '%s' not found";
     String ERROR_ROLE_NOT_FOUND      = "Role '%s' not found";
-    String FORM_CONFIG_NOT_FOUND     = "Form-Config '%s' not found";
+    String FORM_CONFIG_NOT_FOUND     = "Configuration '%s' not found";
     String FORM_FIELD_NOT_FOUND      = "Form-Field '%s' not found";
 
     // Services Errors
@@ -22,13 +23,16 @@ public interface Messages {
 
     // Success Messages
     // User, Role, Privilege
-    String SUCCESS_USER_SAVED          = "User '%s' successfully saved";
-    String SUCCESS_ROLE_SAVED          = "Role '%s' successfully saved";
-    String SUCCESS_PRIVILEGE_SAVED     = "Privilege '%s' successfully saved";
+    String SUCCESS_USER_SAVED           = "User '%s' successfully saved";
+    String SUCCESS_ROLE_SAVED           = "Role '%s' successfully saved";
+    String SUCCESS_PRIVILEGE_SAVED      = "Privilege '%s' successfully saved";
     // Form
-    String SUCCESS_FORM_SAVED          = "Form '%s' successfully saved";
-    String SUCCESS_FIELD_SAVED         = "Form-Field '%s' successfully saved";
-    String SUCCESS_FORM_STATUS_CHANGED = "Form status '%s' successfully updated to '%s'";
-    String SUCCESS_FORM_DELETED        = "Form '%s' successfully deleted";
+    String SUCCESS_FORM_SAVED           = "Form '%s' successfully saved";
+    String SUCCESS_FORM_STATUS_CHANGED  = "Form status '%s' successfully updated to '%s'";
+    String SUCCESS_FORM_DELETED         = "Form '%s' successfully deleted";
+    String SUCCESS_FIELD_SAVED          = "Field '%s' successfully saved";
+    String SUCCESS_FIELD_STATUS_CHANGED = "Field status '%s' successfully updated to '%s'";
+    String SUCCESS_FIELD_DELETED        = "Field '%s' successfully permanently deleted!";
+    String SUCCESS_FORM_CONFIG_SAVED    = "Configuration '%s' successfully saved";
 
 }

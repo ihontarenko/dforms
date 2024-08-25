@@ -1,6 +1,6 @@
-package df.base.validation.constraint;
+package df.base.validation.hibernate.constraint;
 
-import df.base.validation.StrongPasswordValidator;
+import df.base.validation.hibernate.StrongPasswordValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

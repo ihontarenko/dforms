@@ -1,25 +1,28 @@
 package df.web.controller.form;
 
-import df.base.jpa.form.*;
+import df.base.jpa.form.ElementType;
+import df.base.jpa.form.FieldStatus;
+import df.base.jpa.form.FormField;
+import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;
+import df.base.service.ResourceNotFoundException;
 import df.base.service.form.FormFieldService;
 import df.web.common.ControllerHelper;
+import df.web.common.flash.FlashMessage;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 
-import static df.base.Messages.SUCCESS_FIELD_SAVED;
-import static df.web.common.flash.FlashMessage.success;
+import static df.base.Messages.*;
+import static df.web.common.flash.FlashMessage.*;
+import static df.web.common.flash.FlashMessage.error;
 
 @Controller
 @RequestMapping("/form/field")
@@ -27,12 +30,11 @@ public class FormFieldController {
 
     private final ControllerHelper    helper;
     private final FormFieldService    service;
-    private final FormEntryRepository repository;
 
-    public FormFieldController(ControllerHelper helper, FormFieldService service, FormEntryRepository repository) {
+    public FormFieldController(ControllerHelper helper, FormFieldService service) {
         this.service = service;
         this.helper = helper;
-        this.repository = repository;
+        service.setRedirectUrl("/form/field");
         helper.setRedirectUrl("/form/field");
     }
 
@@ -42,15 +44,28 @@ public class FormFieldController {
 
         bindAttributes(new FormFieldDTO());
 
-        List<FormEntry> formEntries = repository.findAllByForm(new Form(){{
-            setId("test");
-        }});
-
         return helper.resolveWithoutRedirect();
     }
 
+    @GetMapping("/{fieldId}/modify")
+    public ModelAndView modify(@PathVariable("fieldId") String fieldId, RedirectAttributes attributes) {
+        helper.setViewName("form/field");
+        helper.setRedirectAttributes(attributes);
+
+        ModelAndView mav;
+
+        try {
+            bindAttributes(new FormFieldMapper().map(service.requireById(fieldId)));
+            mav = helper.resolveWithoutRedirect();
+        } catch (ResourceNotFoundException exception) {
+            mav = helper.redirect(exception);
+        }
+
+        return mav;
+    }
+
     @PostMapping("/perform")
-    public ModelAndView perform(@ModelAttribute @Valid FormFieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
+    public ModelAndView perform(@ModelAttribute("fieldDTO") @Valid FormFieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
         helper.setViewName("form/field");
@@ -65,12 +80,58 @@ public class FormFieldController {
         return helper.resolveWithRedirect();
     }
 
+    @PreAuthorize("hasRole('SUPER_USER')")
+    @GetMapping("/{fieldId}/delete")
+    public ModelAndView remove(@PathVariable("fieldId") String fieldId, RedirectAttributes attributes) {
+        helper.setRedirectAttributes(attributes);
+
+        Optional<FormField> result = service.getById(fieldId);
+
+        if (result.isPresent()) {
+            service.delete(result.get());
+            helper.addMessage(error(SUCCESS_FIELD_DELETED
+                    .formatted(fieldId)));
+        } else {
+            helper.addMessage(warning(ERROR_FIELD_NOT_FOUND
+                    .formatted(fieldId)));
+        }
+
+        return helper.redirect();
+    }
+
+    @GetMapping("/{fieldId}/status/{status}")
+    public ModelAndView status(@PathVariable("fieldId") String fieldId,
+                               @PathVariable("status") String status,
+                               RedirectAttributes attributes) {
+        Optional<FormField> result = service.getById(fieldId);
+        helper.setRedirectAttributes(attributes);
+
+        if (result.isPresent()) {
+            FieldStatus formStatus = FieldStatus.valueOf(status.toUpperCase());
+            EnumMap<FieldStatus, Function<String, FlashMessage>> messages = new EnumMap<>(FieldStatus.class) {{
+                put(FieldStatus.ACTIVE, FlashMessage::success);
+                put(FieldStatus.INACTIVE, FlashMessage::dark);
+                put(FieldStatus.DELETED, FlashMessage::error);
+            }};
+            service.changeStatus(result.get(), formStatus);
+            helper.addMessage(messages.get(formStatus).apply(
+                    SUCCESS_FIELD_STATUS_CHANGED
+                            .formatted(fieldId, formStatus)));
+        } else {
+            helper.addMessage(error(ERROR_FIELD_NOT_FOUND
+                    .formatted(fieldId)));
+        }
+
+        return helper.redirect();
+    }
+
     private void bindAttributes(FormFieldDTO fieldDTO) {
         Map<String, Object> attributes = new HashMap<>();
 
         attributes.put("fieldDTO", fieldDTO);
         attributes.put("elementTypes", ElementType.values());
         attributes.put("fields", service.getAll());
+        attributes.put("fieldStatuses", FieldStatus.values());
 
         helper.attributes(attributes);
     }
