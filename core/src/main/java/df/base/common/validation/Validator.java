@@ -9,11 +9,6 @@ public interface Validator {
                 .formatted(this.getClass().getSimpleName()));
     }
 
-    default void validate(Object object, Errors errors) {
-        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE
-                .formatted(this.getClass().getSimpleName()));
-    }
-
     boolean supports(Class<?> objectType);
 
 }

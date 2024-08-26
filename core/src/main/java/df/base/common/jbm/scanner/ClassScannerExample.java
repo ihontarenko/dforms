@@ -3,7 +3,6 @@ package df.base.common.jbm.scanner;
 import df.base.common.jbm.filter.FilteringMode;
 import df.base.common.jbm.scanner.filter.type.AccessModifierClassFilter;
 import df.base.common.jbm.scanner.filter.type.SubclassClassFilter;
-import df.base.common.validation_x.Validator;
 
 import java.lang.reflect.Modifier;
 import java.util.Set;
@@ -27,7 +26,6 @@ public class ClassScannerExample {
 //        scanner.addFilter(Class::isInterface);
 //        scanner.addFilter(Class::isAnnotation);
 //        scanner.addIncludeFilter(new AnnotationClassFilter(FunctionalInterface.class));
-        scanner.addFilter(new SubclassClassFilter(Validator.class));
 //        scanner.addFilter(new SubclassClassFilter(BeanDefinition.class));
         scanner.addFilter(new AccessModifierClassFilter(Modifier.ABSTRACT, true));
 

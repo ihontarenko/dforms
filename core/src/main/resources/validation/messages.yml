@@ -1,0 +1,19 @@
+validation:
+  DEFAULT:
+    messages:
+
+      NOT_NULL:
+        message: "Field cannot be null"
+        pointer: name
+
+      NOT_EMPTY:
+        message: "Field cannot be blank"
+        pointer: name
+        context:
+          FORM_NAME:
+            message: "Form name cannot be NULL"
+            pointer: formName
+
+      UNSUPPORTED:
+        message: "Field contains unsupported characters"
+        pointer: name

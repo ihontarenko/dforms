@@ -3,12 +3,11 @@ package df.web.controller.form;
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormConfig;
 import df.base.model.form.FormConfigDTO;
-import df.base.security.UserInfo;
+import df.base.property.ValidationMessages;
 import df.base.service.form.FormConfigService;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
 import jakarta.validation.Valid;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +27,15 @@ public class FormConfigController {
     private final FormConfigService configService;
     private final FormService       formService;
     private final ControllerHelper  helper;
+    private final ValidationMessages validationMessages;
 
-    public FormConfigController(FormConfigService configService, FormService formService, ControllerHelper helper) {
+    public FormConfigController(FormConfigService configService, FormService formService, ControllerHelper helper,
+                                ValidationMessages validationMessages) {
+        this.validationMessages = validationMessages;
         this.helper = helper;
         this.configService = configService;
         this.formService = formService;
+
         configService.setRedirectUrl("/form/config");
         helper.setRedirectUrl("/form/config");
     }
@@ -49,7 +52,8 @@ public class FormConfigController {
     }
 
     @PostMapping("/{formId}/perform")
-    public ModelAndView perform(@ModelAttribute("configDTO") @Valid FormConfigDTO configDTO, BindingResult result, RedirectAttributes attributes) {
+    public ModelAndView perform(@ModelAttribute("configDTO") @Valid FormConfigDTO configDTO, BindingResult result,
+                                RedirectAttributes attributes) {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
         helper.setViewName("form/config");

@@ -1,6 +1,5 @@
 package df.web.controller.form;
 
-import df.base.common.jbm.bean.context.JbmContext;
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormStatus;
 import df.base.mapper.form.FormMapper;
@@ -37,12 +36,11 @@ public class FormController {
 
     private final FormService      service;
     private final ControllerHelper helper;
-    private final JbmContext       jbmContext;
 
-    public FormController(FormService service, ControllerHelper helper, JbmContext jbmContext) {
+    public FormController(FormService service, ControllerHelper helper) {
         this.service = service;
         this.helper = helper;
-        this.jbmContext = jbmContext;
+
         service.setRedirectUrl("/form?error=exception");
         helper.setRedirectUrl("/form");
     }

@@ -12,13 +12,6 @@ public class ObjectNotNullValidator implements Validator {
     }
 
     @Override
-    public void validate(Object value, Errors errors) {
-        if (value == null) {
-            errors.add(new ErrorMessage());
-        }
-    }
-
-    @Override
     public boolean supports(Class<?> objectType) {
         return true;
     }

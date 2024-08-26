@@ -1,6 +1,5 @@
 package df.base.common.validation;
 
-import df.base.common.validation.ErrorMessage;
 import df.base.mapper.Mapper;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -14,8 +13,8 @@ public final class BindingResultMapper implements Mapper<List<ErrorMessage>, Bin
         for (ErrorMessage error : source) {
             destination.addError(new FieldError(
                     destination.getObjectName(),
-                    error.getPointer(),
-                    error.getDetail()
+                    error.pointer(),
+                    error.message()
             ));
         }
     }
