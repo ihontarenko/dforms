@@ -1,11 +1,9 @@
 package df.base.mapper.user;
 
-import df.base.Messages;
 import df.base.jpa.Role;
 import df.base.jpa.User;
-import df.base.mapper.Mapper;
+import df.base.common.Mapper;
 import df.base.model.user.UserDTO;
-import df.base.utils.SlugifyTransliterator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;

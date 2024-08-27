@@ -18,7 +18,7 @@ public @interface JpaResource {
     // SpEL expression
     String predicate() default "#result.empty";
 
-    String target();
+    String pointer();
 
     Fields[] fields();
 

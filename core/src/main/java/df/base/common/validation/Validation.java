@@ -8,56 +8,40 @@ import java.util.function.Consumer;
 
 public class Validation {
 
+    private       List<Validator> validators = new ArrayList<>();
     private final String          name;
-    private       List<Validator> validators;
+    private final MessageResolver resolver;
 
-    public Validation(String name) {
+    public Validation(String name, MessageResolver resolver) {
         this.name = name;
+        this.resolver = resolver;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<Validator> getValidators() {
-        return validators;
-    }
-
-    public void setValidators(List<Validator> validators) {
-        this.validators = validators;
-    }
-
     public void addValidator(Validator validator) {
         this.validators.add(validator);
     }
 
-    public void validate(Object object) {
-
-    }
-
-    public void validate(Object object, BindingResult result) {
-
-/*        List<ErrorMessage>      messages   = new ArrayList<>();
+    public Errors validate(Object object) {
+        Errors errors = new Errors();
 
         for (Validator validator : validators) {
             try {
                 validator.validate(object);
             } catch (ValidationException exception) {
-                ErrorMessage message = this.messages.getMessages().get(exception.getErrorCode());
-
-                requireNonNull(message, "NO ERROR MESSAGE FOUND FOR '%s' CODE"
-                        .formatted(exception.getErrorCode()));
-
-                Map<String, ErrorMessage> contextMessages = message.getContexts();
-                ErrorContext              errorContext    = exception.getErrorContext();
-
-                ofNullable(contextMessages.get(errorContext.name()))
-                        .ifPresent(m -> merge(message, contextMessages.get(errorContext.name())));
-
-                messages.add(message);
+                ErrorMessage message = resolver.resolve(name, exception.getErrorCode(), exception.getErrorContext());
+                errors.add(message);
             }
-        }*/
+        }
 
+        return errors;
+    }
+
+    public void validate(Object object, BindingResult result) {
+        new BindingResultMapper().map(validate(object), result);
     }
 
     public void configure(Consumer<Validation> consumer) {

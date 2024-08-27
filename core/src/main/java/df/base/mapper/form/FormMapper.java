@@ -1,6 +1,6 @@
 package df.base.mapper.form;
 
-import df.base.mapper.Mapper;
+import df.base.common.Mapper;
 import df.base.jpa.form.Form;
 import df.base.model.form.FormDTO;
 

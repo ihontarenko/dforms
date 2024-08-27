@@ -1,9 +1,8 @@
 package df.base.mapper.user;
 
 import df.base.jpa.Privilege;
-import df.base.mapper.Mapper;
+import df.base.common.Mapper;
 import df.base.model.user.PrivilegeDTO;
-import df.base.utils.SlugifyTransliterator;
 
 import static df.base.utils.SlugifyTransliterator.slugify;
 

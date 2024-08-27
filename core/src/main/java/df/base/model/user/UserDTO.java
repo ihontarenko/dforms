@@ -18,7 +18,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
 @JpaResource.List({
         // validate an email for new users
         @JpaResource(
-                target = "email",
+                pointer = "email",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "email", type = FIELD_NAME),
@@ -30,7 +30,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
         ),
         // validate for updating existing user
         @JpaResource(
-                target = "email",
+                pointer = "email",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "id", type = FIELD_NAME),

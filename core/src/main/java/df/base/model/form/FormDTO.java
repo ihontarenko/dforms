@@ -17,7 +17,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
 @JpaResource.List({
         // validation for creating new form
         @JpaResource(
-                target = "name",
+                pointer = "name",
                 fields = {
                         @Fields(
                                 objectValue = @Value(value = "name", type = FIELD_NAME),
@@ -29,7 +29,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
         ),
         // validation for updating existing form
         @JpaResource(
-                target = "name",
+                pointer = "name",
                 fields = {
                         @Fields(
                                 objectValue = @Value(value = "name", type = FIELD_NAME),
@@ -45,7 +45,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
         ),
         // check if request form id is correct
         @JpaResource(
-                target = "id",
+                pointer = "id",
                 fields = {
                         @Fields(
                                 objectValue = @Value(value = "id", type = FIELD_NAME),
@@ -59,12 +59,12 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
 })
 @SpELConstraint.List(value = {
         @SpELConstraint(
-                target = "id",
+                pointer = "id",
                 applier = "#hasText(id) && #noRole('SUPER_USER')",
                 value = "@formRepository.existsByIdAndUser(id, #getAuthorizedUser())",
                 message = "no-no-no... you must be owner or super-user to modify other people's forms"),
         @SpELConstraint(
-                target = "id",
+                pointer = "id",
                 value = "#isPrincipal(ownerId)",
                 message = "ownerId should be equals to authorized ID")
 })

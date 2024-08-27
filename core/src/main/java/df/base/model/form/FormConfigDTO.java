@@ -1,6 +1,7 @@
 package df.base.model.form;
 
 import df.base.common.support.JpaCriteria;
+import df.base.jpa.form.Form;
 import df.base.jpa.form.FormConfig;
 import df.base.validation.hibernate.Fields;
 import df.base.validation.hibernate.constraint.JpaResource;
@@ -13,11 +14,15 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
 @JpaResource.List({
         // validation for creating new config
         @JpaResource(
-                target = "configName",
+                pointer = "configName",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "configName", type = FIELD_NAME),
-                                entityField = "configName")
+                                entityField = "configName"),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "formId", type = FIELD_NAME),
+                                entityField = "form.id"),
+
                 },
                 entityClass = FormConfig.class,
                 message = "[NEW]: configuration with this key already taken",
@@ -25,7 +30,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
         ),
         // validation for updating existing config
         @JpaResource(
-                target = "configName",
+                pointer = "configName",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "configName", type = FIELD_NAME),
@@ -33,26 +38,29 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
                         @Fields(
                                 objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
                                 entityField = "id",
-                                comparison = JpaCriteria.Comparison.NOT_EQUAL)
+                                comparison = JpaCriteria.Comparison.NOT_EQUAL),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "formId", type = FIELD_NAME),
+                                entityField = "form.id"),
                 },
                 entityClass = FormConfig.class,
-                message = "[UPD]: configuration with this key already taken",
+                message = "[UPD]: configuration with this key already taken for this form",
                 applier = "#hasText(id)"
         ),
         @JpaResource(
-                target = "formId",
+                pointer = "formId",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "formId", type = FIELD_NAME),
-                                entityField = "form.id")
+                                entityField = "id")
                 },
-                entityClass = FormConfig.class,
-                message = "the ID of the requested form does not exist",
-                applier = "#hasText(formId)",
+                entityClass = Form.class,
+                message = "[NEW]: the ID of the requested form does not exist",
+                applier = "#hasText(formId) && !#hasText(id)",
                 predicate = "!#result.empty"
         ),
         @JpaResource(
-                target = "formId",
+                pointer = "formId",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "formId", type = FIELD_NAME),
@@ -62,13 +70,13 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
                                 entityField = "id")
                 },
                 entityClass = FormConfig.class,
-                message = "the current configuration does not belong to the requested form ID",
+                message = "[UPD]: the current configuration does not belong to the requested form ID",
                 applier = "#hasText(id) && #hasText(formId)",
                 predicate = "!#result.empty"
         ),
         // check if request config id is correct
         @JpaResource(
-                target = "id",
+                pointer = "id",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "id", type = FIELD_NAME),

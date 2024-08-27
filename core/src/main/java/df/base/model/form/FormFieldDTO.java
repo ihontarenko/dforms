@@ -14,7 +14,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
 @JpaResource.List({
         // validation for creating new field
         @JpaResource(
-                target = "name",
+                pointer = "name",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "name", type = FIELD_NAME),
@@ -26,7 +26,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
         ),
         // validation for updating existing field
         @JpaResource(
-                target = "name",
+                pointer = "name",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "name", type = FIELD_NAME),

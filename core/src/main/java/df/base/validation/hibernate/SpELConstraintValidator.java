@@ -19,8 +19,8 @@ public class SpELConstraintValidator implements ConstraintValidator<SpELConstrai
 
     private final SpELEvaluator spel;
     private       Expression    expression;
-    private       Expression applier;
-    private       String     target;
+    private       Expression    applier;
+    private       String        pointer;
 
     public SpELConstraintValidator(SpELEvaluator spel) {
         this.spel = spel;
@@ -30,7 +30,7 @@ public class SpELConstraintValidator implements ConstraintValidator<SpELConstrai
     public void initialize(SpELConstraint constraint) {
         ExpressionParser parser = new SpelExpressionParser();
 
-        target = constraint.target();
+        pointer = constraint.pointer();
         expression = parser.parseExpression(constraint.value());
 
         if (StringUtils.hasText(constraint.applier())) {
@@ -71,7 +71,7 @@ public class SpELConstraintValidator implements ConstraintValidator<SpELConstrai
         context.disableDefaultConstraintViolation();
         String                                                messageTemplate  = context.getDefaultConstraintMessageTemplate();
         ConstraintValidatorContext.ConstraintViolationBuilder violationBuilder = context.buildConstraintViolationWithTemplate(messageTemplate);
-        violationBuilder.addPropertyNode(requireNonNull(target)).addConstraintViolation();
+        violationBuilder.addPropertyNode(requireNonNull(pointer)).addConstraintViolation();
     }
 
 }

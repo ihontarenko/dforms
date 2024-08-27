@@ -17,6 +17,11 @@ public class ValidationMessages {
         this.validation = validation;
     }
 
+    public Map<String, Message> getMessages(String packageName) {
+        return validation.computeIfAbsent(packageName, key -> new MessageCollection())
+                .getMessages();
+    }
+
     public static class MessageCollection {
 
         private Map<String, Message> messages;
@@ -35,6 +40,7 @@ public class ValidationMessages {
 
         private String message;
         private String pointer;
+        private String code;
         private Map<String, Message> context;
 
         public Map<String, Message> getContext() {
@@ -61,6 +67,13 @@ public class ValidationMessages {
             this.pointer = pointer;
         }
 
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
     }
 
 }

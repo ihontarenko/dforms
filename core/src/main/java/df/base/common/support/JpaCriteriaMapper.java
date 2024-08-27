@@ -1,6 +1,6 @@
 package df.base.common.support;
 
-import df.base.mapper.Mapper;
+import df.base.common.Mapper;
 import df.base.validation.hibernate.Fields;
 import df.base.validation.hibernate.Fields.ValueType;
 import org.springframework.expression.ExpressionParser;

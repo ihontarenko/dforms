@@ -1,6 +1,6 @@
 package df.base.common.validation;
 
-public record ErrorMessage(ErrorCode code, String message, String pointer) {
+public record ErrorMessage(String code, String message, String pointer) {
 
     @Override
     public String toString() {

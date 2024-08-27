@@ -1,4 +1,4 @@
-package df.base.mapper;
+package df.base.common;
 
 public interface Mapper<S, D> {
 

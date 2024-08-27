@@ -25,8 +25,8 @@ public class JpaResourceValidator implements ConstraintValidator<JpaResource, Ob
     private       Class<?>      entityClass;
     private       Fields[]      fields;
     private       String        applier;
-    private       String        predicate;
-    private       String        target;
+    private       String predicate;
+    private       String pointer;
 
     public JpaResourceValidator(JpaHelper jpaHelper, SpELEvaluator evaluator) {
         this.jpaHelper = jpaHelper;
@@ -38,7 +38,7 @@ public class JpaResourceValidator implements ConstraintValidator<JpaResource, Ob
         this.applier = annotation.applier();
         this.fields = annotation.fields();
         this.entityClass = annotation.entityClass();
-        this.target = annotation.target();
+        this.pointer = annotation.pointer();
         this.predicate = annotation.predicate();
     }
 
@@ -74,7 +74,7 @@ public class JpaResourceValidator implements ConstraintValidator<JpaResource, Ob
         context.disableDefaultConstraintViolation();
         String                     messageTemplate  = context.getDefaultConstraintMessageTemplate();
         ConstraintViolationBuilder violationBuilder = context.buildConstraintViolationWithTemplate(messageTemplate);
-        violationBuilder.addPropertyNode(target).addConstraintViolation();
+        violationBuilder.addPropertyNode(pointer).addConstraintViolation();
     }
 
     private boolean evaluateExpression(Object object, String spel, Map<String, Object> variables) {

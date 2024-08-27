@@ -13,7 +13,7 @@ public @interface SpELConstraint {
 
     String value();
 
-    String target();
+    String pointer();
 
     String applier() default "";
 

@@ -2,8 +2,10 @@ package df.web.controller.form;
 
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormConfig;
+import df.base.mapper.form.FormConfigMapper;
+import df.base.mapper.form.FormMapper;
 import df.base.model.form.FormConfigDTO;
-import df.base.property.ValidationMessages;
+import df.base.service.ResourceNotFoundException;
 import df.base.service.form.FormConfigService;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
@@ -27,17 +29,14 @@ public class FormConfigController {
     private final FormConfigService configService;
     private final FormService       formService;
     private final ControllerHelper  helper;
-    private final ValidationMessages validationMessages;
 
-    public FormConfigController(FormConfigService configService, FormService formService, ControllerHelper helper,
-                                ValidationMessages validationMessages) {
-        this.validationMessages = validationMessages;
+    public FormConfigController(FormConfigService configService, FormService formService, ControllerHelper helper) {
         this.helper = helper;
         this.configService = configService;
         this.formService = formService;
 
-        configService.setRedirectUrl("/form/config");
-        helper.setRedirectUrl("/form/config");
+        configService.setRedirectUrl("/form");
+        helper.setRedirectUrl("/form");
     }
 
     @GetMapping("/{formId}")
@@ -49,6 +48,23 @@ public class FormConfigController {
         }});
 
         return helper.resolveWithoutRedirect();
+    }
+
+    @GetMapping("/{configId}/modify")
+    public ModelAndView modify(@PathVariable("configId") String configId, RedirectAttributes attributes) {
+        helper.setViewName("form/config");
+        helper.setRedirectAttributes(attributes);
+
+        ModelAndView mav;
+
+        try {
+            bindAttributes(new FormConfigMapper().map(configService.requireById(configId)));
+            mav = helper.resolveWithoutRedirect();
+        } catch (ResourceNotFoundException exception) {
+            mav = helper.redirect(exception);
+        }
+
+        return mav;
     }
 
     @PostMapping("/{formId}/perform")

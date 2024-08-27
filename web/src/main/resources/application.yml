@@ -84,6 +84,7 @@ http-security:
     - "/js/**"
     - "/css/**"
     - "/images/**"
+    - "/favicon.ico"
 
   formLogin:
     processingUrl: ${http-security.securityPath}/perform

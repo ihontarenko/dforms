@@ -12,7 +12,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
 @JpaResource.List({
         // validation for new privilege
         @JpaResource(
-                target = "name",
+                pointer = "name",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "name", type = FIELD_NAME),
@@ -24,7 +24,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
         ),
         // validation for existed privilege
         @JpaResource(
-                target = "name",
+                pointer = "name",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
@@ -40,7 +40,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
         ),
         // validation on passed id in request
         @JpaResource(
-                target = "id",
+                pointer = "id",
                 fields = {
                         @Fields(
                                 objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
