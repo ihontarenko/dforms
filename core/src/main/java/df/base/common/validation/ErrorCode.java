@@ -6,7 +6,7 @@ public interface ErrorCode {
 
     enum Default implements ErrorCode {
 
-        NULL_OBJECT
+        NULL_OBJECT, STRING_BLANK
 
     }
 

@@ -1,13 +1,15 @@
-package df.base.validation.custom;
+package df.base.validation.custom.validator;
 
 import df.base.common.validation.*;
 
-public class ObjectNotNullValidator implements Validator {
+import static df.base.common.validation.ErrorCode.Default.NULL_OBJECT;
+
+public class NotNullValidator implements Validator {
 
     @Override
     public void validate(Object object) throws ValidationException {
         if (object == null) {
-            throw new ValidationException(ErrorCode.Default.NULL_OBJECT);
+            throw new ValidationException(NULL_OBJECT);
         }
     }
 

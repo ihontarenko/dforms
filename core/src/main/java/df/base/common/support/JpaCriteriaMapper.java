@@ -13,10 +13,10 @@ import static df.base.common.jbm.ReflectionUtils.getFieldValue;
 
 public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
 
-    private final SpELEvaluator evaluator;
+    private final SpelEvaluator evaluator;
     private final Object        object;
 
-    public JpaCriteriaMapper(SpELEvaluator evaluator, Object object) {
+    public JpaCriteriaMapper(SpelEvaluator evaluator, Object object) {
         this.evaluator = evaluator;
         this.object = object;
     }

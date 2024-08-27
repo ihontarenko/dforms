@@ -2,11 +2,11 @@ validation:
   DEFAULT:
     messages:
 
-      NOT_NULL:
+      NULL_OBJECT:
         message: "Field cannot be null"
         pointer: name
 
-      NOT_EMPTY:
+      STRING_BLANK:
         message: "Field cannot be blank"
         pointer: name
         context:
@@ -14,6 +14,6 @@ validation:
             message: "Form name cannot be NULL"
             pointer: formName
 
-      UNSUPPORTED:
+      UNSUPPORTED_CHARACTERS:
         message: "Field contains unsupported characters"
         pointer: name

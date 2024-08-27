@@ -1,8 +1,12 @@
 package df.web.configuration;
 
 import df.base.common.resource.ContentHashVersionStrategy;
+import df.base.common.validation.MessageResolver;
+import df.base.common.validation.Validation;
 import df.base.configuration.CommonConfiguration;
 import df.base.property.ApplicationProperties;
+import df.base.validation.custom.validator.NotBlankValidator;
+import df.base.validation.custom.validator.NotNullValidator;
 import df.web.common.pebble.PebbleExtension;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -66,6 +70,16 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Bean
     public PebbleExtension pebbleExtension(ApplicationContext context, HttpServletRequest request) {
         return new PebbleExtension(context, request);
+    }
+
+    @Bean
+    public Validation commonValidation(MessageResolver messageResolver, ApplicationContext context) {
+        Validation validation = new Validation("DEFAULT", messageResolver, context);
+
+        validation.addValidator(new NotNullValidator());
+        validation.addValidator(new NotBlankValidator());
+
+        return validation;
     }
 
 }

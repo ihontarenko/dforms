@@ -3,7 +3,7 @@ package df.base.validation.hibernate;
 import df.base.common.support.JpaCriteria;
 import df.base.common.support.JpaCriteriaMapper;
 import df.base.common.support.JpaHelper;
-import df.base.common.support.SpELEvaluator;
+import df.base.common.support.SpelEvaluator;
 import df.base.validation.hibernate.constraint.JpaResource;
 import jakarta.persistence.TypedQuery;
 import jakarta.validation.ConstraintValidator;
@@ -21,14 +21,14 @@ import static java.util.Collections.emptyMap;
 public class JpaResourceValidator implements ConstraintValidator<JpaResource, Object> {
 
     private final JpaHelper     jpaHelper;
-    private final SpELEvaluator evaluator;
+    private final SpelEvaluator evaluator;
     private       Class<?>      entityClass;
     private       Fields[]      fields;
     private       String        applier;
     private       String predicate;
     private       String pointer;
 
-    public JpaResourceValidator(JpaHelper jpaHelper, SpELEvaluator evaluator) {
+    public JpaResourceValidator(JpaHelper jpaHelper, SpelEvaluator evaluator) {
         this.jpaHelper = jpaHelper;
         this.evaluator = evaluator;
     }

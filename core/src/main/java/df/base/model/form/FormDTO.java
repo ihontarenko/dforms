@@ -7,7 +7,7 @@ import df.base.jpa.form.FormStatus;
 import df.base.validation.hibernate.Fields.Value;
 import df.base.validation.hibernate.constraint.EnumPattern;
 import df.base.validation.hibernate.constraint.JpaResource;
-import df.base.validation.hibernate.constraint.SpELConstraint;
+import df.base.validation.hibernate.constraint.SpelConstraint;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -57,13 +57,13 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
                 predicate = "!#result.empty"
         ),
 })
-@SpELConstraint.List(value = {
-        @SpELConstraint(
+@SpelConstraint.List(value = {
+        @SpelConstraint(
                 pointer = "id",
                 applier = "#hasText(id) && #noRole('SUPER_USER')",
                 value = "@formRepository.existsByIdAndUser(id, #getAuthorizedUser())",
                 message = "no-no-no... you must be owner or super-user to modify other people's forms"),
-        @SpELConstraint(
+        @SpelConstraint(
                 pointer = "id",
                 value = "#isPrincipal(ownerId)",
                 message = "ownerId should be equals to authorized ID")

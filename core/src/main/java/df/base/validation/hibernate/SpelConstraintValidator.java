@@ -1,7 +1,7 @@
 package df.base.validation.hibernate;
 
-import df.base.common.support.SpELEvaluator;
-import df.base.validation.hibernate.constraint.SpELConstraint;
+import df.base.common.support.SpelEvaluator;
+import df.base.validation.hibernate.constraint.SpelConstraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.expression.Expression;
@@ -15,19 +15,19 @@ import static java.util.Objects.requireNonNull;
 /**
  * @link https://github.com/jirutka/validator-spring
  */
-public class SpELConstraintValidator implements ConstraintValidator<SpELConstraint, Object> {
+public class SpelConstraintValidator implements ConstraintValidator<SpelConstraint, Object> {
 
-    private final SpELEvaluator spel;
+    private final SpelEvaluator spel;
     private       Expression    expression;
     private       Expression    applier;
     private       String        pointer;
 
-    public SpELConstraintValidator(SpELEvaluator spel) {
+    public SpelConstraintValidator(SpelEvaluator spel) {
         this.spel = spel;
     }
 
     @Override
-    public void initialize(SpELConstraint constraint) {
+    public void initialize(SpelConstraint constraint) {
         ExpressionParser parser = new SpelExpressionParser();
 
         pointer = constraint.pointer();

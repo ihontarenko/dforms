@@ -22,7 +22,7 @@ import static java.util.Objects.requireNonNullElse;
 
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SpELEvaluator {
+public class SpelEvaluator {
 
     public static final  RuntimeException                    INITIALIZE_EVALUATION_CONTEXT_EXCEPTION
             = new IllegalStateException("INITIALIZE EVALUATION CONTEXT BEFORE CALL UNINITIALIZER");
@@ -41,7 +41,7 @@ public class SpELEvaluator {
     private final StandardEvaluationContext evaluationContext;
     private       boolean                   initialized = false;
 
-    public SpELEvaluator(BeanFactory factory) {
+    public SpelEvaluator(BeanFactory factory) {
         this.factory = factory;
         evaluationContext = createEvaluationContext();
     }

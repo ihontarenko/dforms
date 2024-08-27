@@ -1,15 +1,15 @@
 package df.base.validation.hibernate.constraint;
 
-import df.base.validation.hibernate.SpELConstraintValidator;
+import df.base.validation.hibernate.SpelConstraintValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
-@Constraint(validatedBy = {SpELConstraintValidator.class})
+@Constraint(validatedBy = {SpelConstraintValidator.class})
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SpELConstraint {
+public @interface SpelConstraint {
 
     String value();
 
@@ -30,7 +30,7 @@ public @interface SpELConstraint {
     @Documented
     @interface List {
 
-        SpELConstraint[] value();
+        SpelConstraint[] value();
 
     }
 
