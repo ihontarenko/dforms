@@ -1,9 +1,9 @@
 package df.base.validation.hibernate;
 
-import df.base.common.support.JpaCriteria;
-import df.base.common.support.JpaCriteriaMapper;
-import df.base.common.support.JpaHelper;
-import df.base.common.support.SpelEvaluator;
+import df.base.internal.support.JpaCriteria;
+import df.base.internal.support.JpaCriteriaMapper;
+import df.base.internal.support.JpaHelper;
+import df.base.internal.support.SpelEvaluator;
 import df.base.validation.hibernate.constraint.JpaResource;
 import jakarta.persistence.TypedQuery;
 import jakarta.validation.ConstraintValidator;

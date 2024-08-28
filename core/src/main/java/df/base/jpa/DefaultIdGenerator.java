@@ -1,11 +1,10 @@
 package df.base.jpa;
 
-import df.base.common.hibernate.generator.IdPrefixGenerator;
-import df.base.common.hibernate.generator.PrefixedId;
+import df.base.internal.hibernate.generator.IdPrefixGenerator;
+import df.base.internal.hibernate.generator.PrefixedId;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 public class DefaultIdGenerator implements IdPrefixGenerator {
 

@@ -1,8 +1,8 @@
 package df.base.validation.custom.validator;
 
-import df.base.common.validation.*;
+import df.base.internal.validation.*;
 
-import static df.base.common.validation.ErrorCode.Default.NULL_OBJECT;
+import static df.base.internal.validation.ErrorCode.Default.NULL_OBJECT;
 
 public class NotNullValidator implements Validator {
 

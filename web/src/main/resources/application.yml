@@ -16,7 +16,7 @@ management:
 logging:
   level:
     org.springframework.security: DEBUG
-    df.base.common.jbm: DEBUG
+    df.base.internal.jbm: DEBUG
 # Endpoints
 endpoints:
   shutdown:

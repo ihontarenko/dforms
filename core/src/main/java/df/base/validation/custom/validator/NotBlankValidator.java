@@ -1,9 +1,9 @@
 package df.base.validation.custom.validator;
 
-import df.base.common.validation.ValidationException;
-import df.base.common.validation.Validator;
+import df.base.internal.validation.ValidationException;
+import df.base.internal.validation.Validator;
 
-import static df.base.common.validation.ErrorCode.Default.STRING_BLANK;
+import static df.base.internal.validation.ErrorCode.Default.STRING_BLANK;
 
 public class NotBlankValidator implements Validator {
 

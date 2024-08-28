@@ -1,7 +1,7 @@
 package df.base.configuration;
 
 import df.base.Constants;
-import df.base.common.hibernate.naming.EnhancementPhysicalNamingStrategy;
+import df.base.internal.hibernate.naming.EnhancementPhysicalNamingStrategy;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;

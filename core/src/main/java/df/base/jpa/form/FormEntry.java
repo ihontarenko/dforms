@@ -1,6 +1,6 @@
 package df.base.jpa.form;
 
-import df.base.common.hibernate.generator.PrefixedId;
+import df.base.internal.hibernate.generator.PrefixedId;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;

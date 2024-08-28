@@ -1,8 +1,8 @@
 package df.web.configuration;
 
-import df.base.common.resource.ContentHashVersionStrategy;
-import df.base.common.validation.MessageResolver;
-import df.base.common.validation.Validation;
+import df.base.internal.resource.ContentHashVersionStrategy;
+import df.base.internal.validation.MessageResolver;
+import df.base.internal.validation.Validation;
 import df.base.configuration.CommonConfiguration;
 import df.base.property.ApplicationProperties;
 import df.base.validation.custom.validator.NotBlankValidator;

@@ -1,12 +1,8 @@
 package df.base.jpa;
 
-import df.base.common.hibernate.generator.IdPrefixGenerator;
-import df.base.common.hibernate.generator.PrefixedId;
-import df.base.common.hibernate.generator.PrefixedTableSequenceGenerator;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+import df.base.internal.hibernate.generator.IdPrefixGenerator;
+import df.base.internal.hibernate.generator.PrefixedId;
+import df.base.internal.hibernate.generator.PrefixedTableSequenceGenerator;
 
 import static java.util.Objects.requireNonNull;
 

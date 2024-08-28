@@ -1,6 +1,6 @@
 package df.base.jpa;
 
-import df.base.common.hibernate.generator.PrefixedId;
+import df.base.internal.hibernate.generator.PrefixedId;
 import df.base.security.Provider;
 import jakarta.persistence.*;
 

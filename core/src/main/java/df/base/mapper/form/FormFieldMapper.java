@@ -3,7 +3,7 @@ package df.base.mapper.form;
 import df.base.jpa.form.ElementType;
 import df.base.jpa.form.FieldStatus;
 import df.base.jpa.form.FormField;
-import df.base.common.Mapper;
+import df.base.internal.Mapper;
 import df.base.model.form.FormFieldDTO;
 
 public class FormFieldMapper implements Mapper<FormField, FormFieldDTO> {

@@ -1,6 +1,6 @@
 package df.web.controller;
 
-import df.base.common.validation.Validation;
+import df.base.internal.validation.Validation;
 import df.base.security.UserInfo;
 import df.web.common.flash.FlashMessage;
 import df.web.common.flash.FlashMessageService;

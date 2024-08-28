@@ -1,7 +1,7 @@
 package df.base.jpa;
 
-import df.base.common.hibernate.generator.IdPrefixGenerator;
-import df.base.common.hibernate.generator.PrefixedId;
+import df.base.internal.hibernate.generator.IdPrefixGenerator;
+import df.base.internal.hibernate.generator.PrefixedId;
 import jakarta.persistence.*;
 
 import java.util.HashSet;

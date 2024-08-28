@@ -2,7 +2,7 @@ package df.base.mapper.user;
 
 import df.base.jpa.Privilege;
 import df.base.jpa.Role;
-import df.base.common.Mapper;
+import df.base.internal.Mapper;
 import df.base.model.user.RoleDTO;
 
 import static java.util.stream.Collectors.toList;

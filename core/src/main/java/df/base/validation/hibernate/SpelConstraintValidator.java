@@ -1,6 +1,6 @@
 package df.base.validation.hibernate;
 
-import df.base.common.support.SpelEvaluator;
+import df.base.internal.support.SpelEvaluator;
 import df.base.validation.hibernate.constraint.SpelConstraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

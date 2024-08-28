@@ -1,13 +1,12 @@
 package df.base.jpa.form;
 
-import df.base.common.hibernate.generator.PrefixedId;
+import df.base.internal.hibernate.generator.PrefixedId;
 import df.base.jpa.DefaultIdGenerator;
 import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.User;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 

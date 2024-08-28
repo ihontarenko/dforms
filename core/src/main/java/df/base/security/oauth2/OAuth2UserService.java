@@ -1,7 +1,7 @@
 package df.base.security.oauth2;
 
 import df.base.jpa.User;
-import df.base.common.Mapper;
+import df.base.internal.Mapper;
 import df.base.model.user.UserDTO;
 import df.base.security.Provider;
 import df.base.security.UserInfo;
