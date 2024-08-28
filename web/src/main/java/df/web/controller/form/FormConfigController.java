@@ -3,7 +3,6 @@ package df.web.controller.form;
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormConfig;
 import df.base.mapper.form.FormConfigMapper;
-import df.base.mapper.form.FormMapper;
 import df.base.model.form.FormConfigDTO;
 import df.base.service.ResourceNotFoundException;
 import df.base.service.form.FormConfigService;
@@ -73,6 +72,7 @@ public class FormConfigController {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
         helper.setViewName("form/config");
+        helper.setRedirectUrl("/form/config/%s".formatted(configDTO.getFormId()));
 
         bindAttributes(configDTO);
 

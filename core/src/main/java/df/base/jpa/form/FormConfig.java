@@ -19,6 +19,7 @@ public class FormConfig implements EntityNameAware {
             prefixValue = "CFG",
             sequenceName = "FORM_CONFIG",
             prefixGenerator = NamedEntityIdGenerator.class,
+            incrementBy = 1,
             numberFormat = "%d")
     @Column(name = "ID")
     private String id;

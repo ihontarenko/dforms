@@ -2,21 +2,24 @@ package df.base.jpa.form;
 
 import df.base.common.hibernate.generator.PrefixedId;
 import df.base.jpa.DefaultIdGenerator;
+import df.base.jpa.EntityNameAware;
+import df.base.jpa.NamedEntityIdGenerator;
 import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "DF_FORM_FIELDS")
-public class FormField {
+public class FormField implements EntityNameAware {
 
     @Id
     @PrefixedId(
-            prefixValue = "FLD",
+            prefixValue = "F",
             sequenceName = "FORM_FIELD",
-            prefixGenerator = DefaultIdGenerator.class,
-            numberFormat = "%06d",
-            initialValue = 100000,
-            incrementBy = 1
+            prefixGenerator = NamedEntityIdGenerator.class,
+            numberFormat = "%04d",
+            initialValue = 1000,
+            incrementBy = 1,
+            prefixSeparator = "_"
     )
     @Column(name = "ID")
     private String id;
