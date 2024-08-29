@@ -30,25 +30,23 @@
             <td>
                 <i>{{ field.description }}</i>
             </td>
-
             <td>
                 <i>{{ field.elementType }}</i>
             </td>
-
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/form/field/configure' + field.id) }}'"
+                    <button onclick="window.location = '{{ href('/form/field/configure/' + field.id) }}'"
                             type="button" class="btn btn-sm btn-secondary">CONFIGURE</button>
-                    <button onclick="window.location = '{{ href('/form/field/modify' + field.id) }}'"
+                    <button onclick="window.location = '{{ href('/form/field/modify/' + field.id) }}'"
                             type="button" class="btn btn-sm btn-info">MODIFY</button>
                     <button type="button" class="btn btn-sm btn-danger">STATUS</button>
                     <div class="btn-group" role="group">
                         <button id="status" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                         <div class="dropdown-menu" aria-labelledby="status" style="">
-                            <a class="dropdown-item" href="{{ href('/form/field/status/active' + field.id) }}">STATUS ACTIVE</a>
-                            <a class="dropdown-item" href="{{ href('/form/field/status/inactive'+ field.id) }}">STATUS INACTIVE</a>
-                            <a class="dropdown-item" href="{{ href('/form/field/status/deleted' + field.id) }}">STATUS DELETE</a>
-                            <a class="dropdown-item" href="{{ href('/form/field/delete' + field.id) }}">DELETE PERMANENTLY</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/status/active/' + field.id) }}">STATUS ACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/status/inactive/'+ field.id) }}">STATUS INACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/status/deleted/' + field.id) }}">STATUS DELETE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/remove/' + field.id) }}">REMOVE</a>
                         </div>
                     </div>
                 </div>

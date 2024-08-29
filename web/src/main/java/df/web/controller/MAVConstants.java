@@ -2,6 +2,11 @@ package df.web.controller;
 
 public interface MAVConstants {
 
+    // form
+    String VIEW_FORM_INDEX      = "form/index";
+    String REQUEST_MAPPING_FORM = "/form";
+    String REDIRECT_FORM        = REQUEST_MAPPING_FORM;
+
     // form config
     String VIEW_FORM_CONFIG            = "form/config";
     String REQUEST_MAPPING_FORM_CONFIG = "/form/config";

@@ -23,7 +23,7 @@ public interface DefaultOperations<DTO> {
     ModelAndView perform(@ModelAttribute("itemDTO") @Valid DTO itemDTO, BindingResult result, RedirectAttributes attributes);
 
     @PreAuthorize("hasRole('SUPER_USER')")
-    @GetMapping("/delete/{itemId}")
+    @GetMapping("/remove/{itemId}")
     ModelAndView remove(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
 
     @GetMapping("/status/{status}/{itemId}")

@@ -25,7 +25,6 @@ import static df.web.common.flash.FlashMessage.*;
 import static df.web.common.flash.FlashMessage.error;
 
 @Controller
-@RequestMapping(MAVConstants.REQUEST_MAPPING_FORM_FIELD)
 public class FormFieldController implements FormFieldOperations {
 
     private final ControllerHelper    helper;
@@ -57,14 +56,14 @@ public class FormFieldController implements FormFieldOperations {
     }
 
     @Override
-    public ModelAndView modify(@PathVariable("fieldId") String fieldId, RedirectAttributes attributes) {
+    public ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes) {
         helper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
         helper.setRedirectAttributes(attributes);
 
         ModelAndView mav;
 
         try {
-            bindAttributes(new FormFieldMapper().map(service.requireById(fieldId)));
+            bindAttributes(new FormFieldMapper().map(service.requireById(itemId)));
             mav = helper.resolveWithoutRedirect();
         } catch (ResourceNotFoundException exception) {
             mav = helper.redirect(exception);
@@ -90,26 +89,26 @@ public class FormFieldController implements FormFieldOperations {
     }
 
     @Override
-    public ModelAndView remove(@PathVariable("fieldId") String fieldId, RedirectAttributes attributes) {
+    public ModelAndView remove(@PathVariable("itemId") String itemId, RedirectAttributes attributes) {
         helper.setRedirectAttributes(attributes);
 
-        Optional<FormField> result = service.getById(fieldId);
+        Optional<FormField> result = service.getById(itemId);
 
         if (result.isPresent()) {
             service.delete(result.get());
-            helper.addMessage(error(SUCCESS_FIELD_DELETED.formatted(fieldId)));
+            helper.addMessage(error(SUCCESS_FIELD_DELETED.formatted(itemId)));
         } else {
-            helper.addMessage(warning(ERROR_FIELD_NOT_FOUND.formatted(fieldId)));
+            helper.addMessage(warning(ERROR_FIELD_NOT_FOUND.formatted(itemId)));
         }
 
         return helper.redirect();
     }
 
     @Override
-    public ModelAndView status(@PathVariable("fieldId") String fieldId,
+    public ModelAndView status(@PathVariable("itemId") String itemId,
                                @PathVariable("status") String status,
                                RedirectAttributes attributes) {
-        Optional<FormField> result = service.getById(fieldId);
+        Optional<FormField> result = service.getById(itemId);
         helper.setRedirectAttributes(attributes);
 
         if (result.isPresent()) {
@@ -122,10 +121,10 @@ public class FormFieldController implements FormFieldOperations {
             service.changeStatus(result.get(), formStatus);
             helper.addMessage(messages.get(formStatus).apply(
                     SUCCESS_FIELD_STATUS_CHANGED
-                            .formatted(fieldId, formStatus)));
+                            .formatted(itemId, formStatus)));
         } else {
             helper.addMessage(error(ERROR_FIELD_NOT_FOUND
-                    .formatted(fieldId)));
+                    .formatted(itemId)));
         }
 
         return helper.redirect();

@@ -13,7 +13,7 @@ public class FormField implements EntityNameAware, ProtectedEntity {
 
     @Id
     @PrefixedId(
-            prefixValue = "F",
+            prefixValue = "FF",
             sequenceName = "FORM_FIELD",
             prefixGenerator = NamedEntityIdGenerator.class,
             numberFormat = "%04d",

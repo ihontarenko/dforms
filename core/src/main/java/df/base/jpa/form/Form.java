@@ -1,9 +1,7 @@
 package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
-import df.base.jpa.DefaultIdGenerator;
-import df.base.jpa.EntityGraphConstants;
-import df.base.jpa.User;
+import df.base.jpa.*;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,16 +14,17 @@ import static java.util.Objects.requireNonNull;
         name = EntityGraphConstants.FORM_WITH_USER,
         attributeNodes = @NamedAttributeNode("user")
 )
-public class Form {
+public class Form implements EntityNameAware {
 
     @Id
     @PrefixedId(
-            prefixValue = "FRM",
+            prefixValue = "DF",
             sequenceName = "FORM",
-            prefixGenerator = DefaultIdGenerator.class,
+            prefixGenerator = NamedEntityIdGenerator.class,
             numberFormat = "%04d",
             initialValue = 1000,
-            incrementBy = 1
+            incrementBy = 1,
+            prefixSeparator = "_"
     )
     @Column(name = "ID")
     private String id;
