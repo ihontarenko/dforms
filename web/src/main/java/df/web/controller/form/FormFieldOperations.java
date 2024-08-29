@@ -35,7 +35,7 @@ public interface FormFieldOperations extends DefaultOperations<FormFieldDTO> {
     @Breadcrumbs({
             @Item(label = "Home", url = "/"),
             @Item(label = "Fields", url = "/form/field"),
-            @Item(label = "Edit Field [#{itemId}]")
+            @Item(label = "Modify '{itemId}'")
     })
     ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
 

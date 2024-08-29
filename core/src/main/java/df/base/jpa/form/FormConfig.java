@@ -16,11 +16,13 @@ public class FormConfig implements EntityNameAware {
 
     @Id
     @PrefixedId(
-            prefixValue = "CFG",
+            prefixValue = "C",
             sequenceName = "FORM_CONFIG",
             prefixGenerator = NamedEntityIdGenerator.class,
+            numberFormat = "%04d",
+            initialValue = 1000,
             incrementBy = 1,
-            numberFormat = "%d")
+            prefixSeparator = "_")
     @Column(name = "ID")
     private String id;
 

@@ -18,7 +18,7 @@ public class Form implements EntityNameAware {
 
     @Id
     @PrefixedId(
-            prefixValue = "DF",
+            prefixValue = "D",
             sequenceName = "FORM",
             prefixGenerator = NamedEntityIdGenerator.class,
             numberFormat = "%04d",

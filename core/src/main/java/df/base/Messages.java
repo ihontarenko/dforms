@@ -34,5 +34,6 @@ public interface Messages {
     String SUCCESS_FIELD_STATUS_CHANGED = "Field status '%s' successfully updated to '%s'";
     String SUCCESS_FIELD_DELETED        = "Field '%s' successfully permanently deleted!";
     String SUCCESS_FORM_CONFIG_SAVED    = "Configuration '%s' successfully saved";
+    String SUCCESS_FORM_CONFIG_DELETED    = "Configuration '%s' successfully permanently deleted!";
 
 }

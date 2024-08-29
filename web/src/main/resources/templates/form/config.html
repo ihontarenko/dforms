@@ -1,5 +1,5 @@
 {% extends "common/layout" %}
-{% block title %}Configure Form #{{configDTO.formId}}{% endblock %}
+{% block title %}Configure Form '{{ itemDTO.formId }}'{% endblock %}
 {% block content %}
 
 <div class="card bg-light mb-3">
@@ -10,32 +10,32 @@
     </div>
 </div>
 
-<form method="post" action="{{ href('/form/config/' + configDTO.formId + '/perform') }}" enctype="multipart/form-data" class="row g-3" >
+<form method="post" action="{{ href('/form/config/perform') }}" enctype="multipart/form-data" class="row g-3" >
 
     <div class="row g-3">
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="text" class="form-control {{ ifFieldErrors('configDTO', 'configName', 'is-invalid', 'is-valid') }}" id="config-name" name="configName" value="{{configDTO.configName}}">
+                <input type="text" class="form-control {{ ifFieldErrors('itemDTO', 'configName', 'is-invalid', 'is-valid') }}" id="config-name" name="configName" value="{{itemDTO.configName}}">
                 <label for="config-name">Config Name</label>
-                {% include "common/invalid-feedback" with {"formName" : "configDTO", "fieldName" : "configName"} %}
+                {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "configName"} %}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="text" class="form-control {{ ifFieldErrors('configDTO', 'configValue', 'is-invalid', 'is-valid') }}" id="config-value" name="configValue" value="{{configDTO.configValue}}">
+                <input type="text" class="form-control {{ ifFieldErrors('itemDTO', 'configValue', 'is-invalid', 'is-valid') }}" id="config-value" name="configValue" value="{{itemDTO.configValue}}">
                 <label for="config-value">Config Value</label>
-                {% include "common/invalid-feedback" with {"formName" : "configDTO", "fieldName" : "configValue"} %}
+                {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "configValue"} %}
             </div>
         </div>
     </div>
 
-    <input type="hidden" name="formId" value="{{ configDTO.formId }}">
-    <input type="hidden" name="id" value="{{ configDTO.id }}">
+    <input type="hidden" name="formId" value="{{ itemDTO.formId }}">
+    <input type="hidden" name="id" value="{{ itemDTO.id }}">
 
     <div class="form-group mt-4">
         <button class="btn btn-success" type="submit">Submit</button>
-        {% include "common/invalid-feedback" with {"formName" : "configDTO", "fieldName" : "id"} %}
-        {% include "common/invalid-feedback" with {"formName" : "configDTO", "fieldName" : "formId"} %}
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "id"} %}
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "formId"} %}
     </div>
 </form>
 
@@ -62,10 +62,10 @@
             </td>
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/form/config/' + config.id + '/modify') }}'"
+                    <button onclick="window.location = '{{ href('/form/config/modify/' + config.id) }}'"
                             type="button" class="btn btn-sm btn-info">MODIFY</button>
-                    <button onclick="window.location = '{{ href('/form/config/' + config.id + '/delete') }}'"
-                            type="button" class="btn btn-sm btn-danger">DELETE</button>
+                    <button onclick="window.location = '{{ href('/form/config/remove/' + config.id) }}'"
+                            type="button" class="btn btn-sm btn-danger">REMOVE</button>
                 </div>
             </td>
         </tr>

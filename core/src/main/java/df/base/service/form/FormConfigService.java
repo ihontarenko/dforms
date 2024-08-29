@@ -99,6 +99,21 @@ public class FormConfigService implements ServiceInterface<String, FormConfigDTO
         return repository.findAllByForm(form);
     }
 
+    @Transactional
+    public void delete(FormConfig config) {
+        repository.delete(config);
+    }
+
+    @Transactional
+    public void deleteIfExists(String id) {
+        getById(id).ifPresent(this::delete);
+    }
+
+    @Transactional
+    public void deleteIfExists(FormConfig config) {
+        Optional.ofNullable(config).ifPresent(this::delete);
+    }
+
     @Override
     public String getRedirectUrl() {
         return redirectUrl;

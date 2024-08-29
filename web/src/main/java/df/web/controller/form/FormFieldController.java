@@ -56,7 +56,7 @@ public class FormFieldController implements FormFieldOperations {
     }
 
     @Override
-    public ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes) {
+    public ModelAndView modify(String itemId, RedirectAttributes attributes) {
         helper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
         helper.setRedirectAttributes(attributes);
 
@@ -73,7 +73,7 @@ public class FormFieldController implements FormFieldOperations {
     }
 
     @Override
-    public ModelAndView perform(@ModelAttribute("fieldDTO") @Valid FormFieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
+    public ModelAndView perform(FormFieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
         helper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
@@ -89,7 +89,7 @@ public class FormFieldController implements FormFieldOperations {
     }
 
     @Override
-    public ModelAndView remove(@PathVariable("itemId") String itemId, RedirectAttributes attributes) {
+    public ModelAndView remove(String itemId, RedirectAttributes attributes) {
         helper.setRedirectAttributes(attributes);
 
         Optional<FormField> result = service.getById(itemId);
@@ -105,9 +105,7 @@ public class FormFieldController implements FormFieldOperations {
     }
 
     @Override
-    public ModelAndView status(@PathVariable("itemId") String itemId,
-                               @PathVariable("status") String status,
-                               RedirectAttributes attributes) {
+    public ModelAndView status(String itemId, String status, RedirectAttributes attributes) {
         Optional<FormField> result = service.getById(itemId);
         helper.setRedirectAttributes(attributes);
 
@@ -130,10 +128,10 @@ public class FormFieldController implements FormFieldOperations {
         return helper.redirect();
     }
 
-    private void bindAttributes(FormFieldDTO fieldDTO) {
+    private void bindAttributes(FormFieldDTO itemDTO) {
         Map<String, Object> attributes = new HashMap<>();
 
-        attributes.put("fieldDTO", fieldDTO);
+        attributes.put("itemDTO", itemDTO);
         attributes.put("elementTypes", ElementType.values());
         attributes.put("fields", service.getAll());
         attributes.put("fieldStatuses", FieldStatus.values());

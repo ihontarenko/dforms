@@ -12,7 +12,7 @@ public class ProtectDeleteListener implements PreDeleteEventListener {
         Object object = event.getEntity();
 
         if (object instanceof ProtectedEntity entity) {
-            return entity.nonRemovable();
+//            return entity.nonRemovable();
         }
 
         return false;

@@ -8,7 +8,7 @@ import static java.util.Objects.requireNonNull;
 
 public class NamedEntityIdGenerator implements IdPrefixGenerator {
 
-    @Override
+    /*@Override
     public void configure(PrefixedTableSequenceGenerator.GeneratorContext context, Object entity) {
         ensureType(EntityNameAware.class, entity);
 
@@ -16,7 +16,7 @@ public class NamedEntityIdGenerator implements IdPrefixGenerator {
 
         context.sequenceName("%s_%s"
                 .formatted(context.sequenceName(), requireNonNull(entityNameAware.getName()).toUpperCase()));
-    }
+    }*/
 
     @Override
     public String generate(Object ordinalID, PrefixedId annotation, Object entity) {
@@ -26,9 +26,9 @@ public class NamedEntityIdGenerator implements IdPrefixGenerator {
         String          prefix          = annotation.prefixValue();
         String          separator       = annotation.prefixSeparator();
         String          id              = annotation.numberFormat().formatted(ordinalID);
-        String          name            = requireNonNull(entityNameAware.getName()).toUpperCase();
+        String          name            = requireNonNull(entityNameAware.getName()).toLowerCase();
 
-        return prefix + separator + name + separator + id;
+        return (prefix + separator + name + separator + id).toLowerCase();
     }
 
 }

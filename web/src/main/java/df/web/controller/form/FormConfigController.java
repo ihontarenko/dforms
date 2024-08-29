@@ -8,22 +8,22 @@ import df.base.service.ResourceNotFoundException;
 import df.base.service.form.FormConfigService;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
-import jakarta.validation.Valid;
+import df.web.controller.MAVConstants;
+import jakarta.servlet.FilterConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-import static df.base.Messages.SUCCESS_FORM_CONFIG_SAVED;
-import static df.web.common.flash.FlashMessage.success;
+import static df.base.Messages.*;
+import static df.web.common.flash.FlashMessage.*;
 
 @Controller
-@RequestMapping("/form/config")
-public class FormConfigController {
+public class FormConfigController implements FormConfigOperations {
 
     private final FormConfigService configService;
     private final FormService       formService;
@@ -38,9 +38,9 @@ public class FormConfigController {
         helper.setRedirectUrl("/form");
     }
 
-    @GetMapping("/{formId}")
-    public ModelAndView index(@PathVariable("formId") String formId) {
-        helper.setViewName("form/config");
+    @Override
+    public ModelAndView index(String formId) {
+        helper.setViewName(MAVConstants.VIEW_FORM_CONFIG);
 
         bindAttributes(new FormConfigDTO(){{
             setFormId(formId);
@@ -49,9 +49,9 @@ public class FormConfigController {
         return helper.resolveWithoutRedirect();
     }
 
-    @GetMapping("/{configId}/modify")
-    public ModelAndView modify(@PathVariable("configId") String configId, RedirectAttributes attributes) {
-        helper.setViewName("form/config");
+    @Override
+    public ModelAndView modify(String configId, RedirectAttributes attributes) {
+        helper.setViewName(MAVConstants.VIEW_FORM_CONFIG);
         helper.setRedirectAttributes(attributes);
 
         ModelAndView mav;
@@ -66,13 +66,13 @@ public class FormConfigController {
         return mav;
     }
 
-    @PostMapping("/{formId}/perform")
-    public ModelAndView perform(@ModelAttribute("configDTO") @Valid FormConfigDTO configDTO, BindingResult result,
+    @Override
+    public ModelAndView perform(FormConfigDTO configDTO, BindingResult result,
                                 RedirectAttributes attributes) {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
-        helper.setViewName("form/config");
-        helper.setRedirectUrl("/form/config/%s".formatted(configDTO.getFormId()));
+        helper.setViewName(MAVConstants.VIEW_FORM_CONFIG);
+        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(configDTO.getFormId()));
 
         bindAttributes(configDTO);
 
@@ -86,11 +86,25 @@ public class FormConfigController {
         return helper.resolveWithRedirect();
     }
 
-    private void bindAttributes(FormConfigDTO configDTO) {
-        Map<String, Object> attributes = new HashMap<>();
-        Form                form       = formService.requireById(configDTO.getFormId());
+    @Override
+    public ModelAndView remove(String itemId, RedirectAttributes attributes) {
+        Optional<FormConfig> config = configService.getById(itemId);
+        String               formId = config.map(c -> c.getForm().getId()).orElse(null);
 
-        attributes.put("configDTO", configDTO);
+        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(formId));
+        helper.setRedirectAttributes(attributes);
+        helper.addMessage(error(SUCCESS_FORM_CONFIG_DELETED.formatted(itemId)));
+
+        configService.deleteIfExists(config.orElse(null));
+
+        return helper.redirect();
+    }
+
+    private void bindAttributes(FormConfigDTO itemDTO) {
+        Map<String, Object> attributes = new HashMap<>();
+        Form                form       = formService.requireById(itemDTO.getFormId());
+
+        attributes.put("itemDTO", itemDTO);
         attributes.put("configurations", configService.getAllByForm(form));
         attributes.put("form", form);
 

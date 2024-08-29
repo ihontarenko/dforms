@@ -14,7 +14,7 @@ public final class JpaHelper {
 
     public final EntityManager em;
 
-    public JpaHelper(EntityManager em, SpelEvaluator evaluator) {
+    public JpaHelper(EntityManager em) {
         this.em = em;
     }
 

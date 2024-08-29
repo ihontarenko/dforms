@@ -61,7 +61,7 @@ public class FormController implements FormOperations {
     }
 
     @Override
-    public ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes) {
+    public ModelAndView modify(String itemId, RedirectAttributes attributes) {
         helper.setViewName(MAVConstants.VIEW_FORM_INDEX);
         helper.setRedirectAttributes(attributes);
 
@@ -96,7 +96,7 @@ public class FormController implements FormOperations {
     }
 
     @Override
-    public ModelAndView remove(@PathVariable("itemId") String itemId, RedirectAttributes attributes) {
+    public ModelAndView remove(String itemId, RedirectAttributes attributes) {
         helper.setRedirectAttributes(attributes);
 
         Optional<Form> result = service.getById(itemId);

@@ -11,22 +11,43 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public interface DefaultOperations<DTO> {
 
     @GetMapping
-    ModelAndView index();
+    default ModelAndView index() {
+        throw new UnsupportedOperationException();
+    }
+
+    @GetMapping("/{ownerId}")
+    default ModelAndView index(@PathVariable("ownerId") String ownerId) {
+        throw new UnsupportedOperationException();
+    }
 
     @GetMapping("/create")
-    ModelAndView create();
+    default ModelAndView create() {
+        throw new UnsupportedOperationException();
+    }
 
     @GetMapping("/modify/{itemId}")
-    ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
+    default ModelAndView modify(@PathVariable("itemId") String itemId,
+                                RedirectAttributes attributes) {
+        throw new UnsupportedOperationException();
+    }
 
     @PostMapping("/perform")
-    ModelAndView perform(@ModelAttribute("itemDTO") @Valid DTO itemDTO, BindingResult result, RedirectAttributes attributes);
+    default ModelAndView perform(@ModelAttribute("itemDTO") @Valid DTO itemDTO,
+                                 BindingResult result, RedirectAttributes attributes) {
+        throw new UnsupportedOperationException();
+    }
 
     @PreAuthorize("hasRole('SUPER_USER')")
     @GetMapping("/remove/{itemId}")
-    ModelAndView remove(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
+    default ModelAndView remove(@PathVariable("itemId") String itemId,
+                                RedirectAttributes attributes) {
+        throw new UnsupportedOperationException();
+    }
 
     @GetMapping("/status/{status}/{itemId}")
-    ModelAndView status(@PathVariable("itemId") String itemId, @PathVariable("status") String status, RedirectAttributes attributes);
+    default ModelAndView status(@PathVariable("itemId") String itemId, @PathVariable("status") String status,
+                                RedirectAttributes attributes) {
+        throw new UnsupportedOperationException();
+    }
 
 }

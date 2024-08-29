@@ -25,8 +25,8 @@ public class JpaResourceValidator implements ConstraintValidator<JpaResource, Ob
     private       Class<?>      entityClass;
     private       Fields[]      fields;
     private       String        applier;
-    private       String predicate;
-    private       String pointer;
+    private       String        predicate;
+    private       String        pointer;
 
     public JpaResourceValidator(JpaHelper jpaHelper, SpelEvaluator evaluator) {
         this.jpaHelper = jpaHelper;
