@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 @EntityScan(Constants.ENTITY_PACKAGE_TO_SCAN)
 public class HibernateConfiguration {

@@ -1,0 +1,62 @@
+{% extends "common/layout" %}
+{% block title %}Field{% endblock %}
+{% block headerButtons %}
+<div class="btn-group pt-2" role="group">
+    <button onclick="window.location = '/form/field'" type="button" class="btn btn-sm btn-primary">AVAILABLE FIELDS</button>
+</div>
+{% endblock %}
+{% block content %}
+<form method="post" action="{{ href('/form/field/perform') }}" enctype="multipart/form-data" class="row g-3" >
+
+    <div class="form-group">
+        <label for="field-name">Field Name</label>
+        <input name="name" type="text" class="form-control {{ ifFieldErrors('itemDTO', 'name', 'is-invalid', 'is-valid') }}" id="field-name" value="{{ itemDTO.name }}">
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "name"} %}
+    </div>
+
+    <div class="form-group">
+        <label for="field-label">Field Label</label>
+        <input name="label" type="text" class="form-control {{ ifFieldErrors('itemDTO', 'label', 'is-invalid', 'is-valid') }}" id="field-label" value="{{ itemDTO.label }}">
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "label"} %}
+    </div>
+
+    <div class="form-group">
+        <label for="field-description">Description</label>
+        <input name="description" type="text" class="form-control {{ ifFieldErrors('itemDTO', 'description', 'is-invalid', 'is-valid') }}" id="field-description" value="{{ itemDTO.description }}">
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "description"} %}
+    </div>
+
+    <div class="form-group">
+        <label class="d-block">Element Type</label>
+        {% for elementType in elementTypes %}
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="elementType" id="ELEMENT_TYPE_{{ elementType }}" value="{{ elementType }}" {% if elementType equals itemDTO.elementType %}checked{% endif %}>
+            <label class="form-check-label" for="ELEMENT_TYPE_{{ elementType }}">
+                {{ elementType }}
+            </label>
+        </div>
+        {% endfor %}
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "elementType"} %}
+    </div>
+
+    <div class="form-group">
+        <label class="d-block">Status</label>
+        <div class="btn-group" role="group">
+            {% for status in fieldStatuses %}
+            <input type="radio" class="btn-check" name="status" id="{{ status }}" value="{{ status }}" autocomplete="off" {% if status equals itemDTO.status %}checked{% endif %}>
+            <label class="btn btn-sm btn-outline-dark" for="{{ status }}">{{ status }}</label>
+            {% endfor %}
+        </div>
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "status"} %}
+    </div>
+
+    <input type="hidden" name="ownerId" value="{{ itemDTO.ownerId }}">
+    <input type="hidden" name="id" value="{{ itemDTO.id }}">
+
+    <div class="form-group mt-4">
+        <button class="btn btn-success" type="submit">Submit</button>
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "id"} %}
+    </div>
+</form>
+
+{% endblock %}

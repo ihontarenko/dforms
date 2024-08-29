@@ -1,0 +1,61 @@
+{% extends "common/layout" %}
+{% block title %}Available Fields{% endblock %}
+{% block headerButtons %}
+<div class="btn-group pt-2" role="group">
+    <button onclick="window.location = '/form/field/create'" type="button" class="btn btn-sm btn-success">CREATE FIELD</button>
+</div>
+{% endblock %}
+{% block content %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Label</th>
+            <th scope="col">Description</th>
+            <th scope="col">Element Type</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for field in fields %}
+        <tr>
+            <th scope="row">{{ field.id }}</th>
+            <td>
+                <b>{{ field.name }}</b>
+            </td>
+            <td>
+                <u>{{ field.label }}</u>
+            </td>
+            <td>
+                <i>{{ field.description }}</i>
+            </td>
+
+            <td>
+                <i>{{ field.elementType }}</i>
+            </td>
+
+            <td>
+                <div class="btn-group" role="group">
+                    <button onclick="window.location = '{{ href('/form/field/configure' + field.id) }}'"
+                            type="button" class="btn btn-sm btn-secondary">CONFIGURE</button>
+                    <button onclick="window.location = '{{ href('/form/field/modify' + field.id) }}'"
+                            type="button" class="btn btn-sm btn-info">MODIFY</button>
+                    <button type="button" class="btn btn-sm btn-danger">STATUS</button>
+                    <div class="btn-group" role="group">
+                        <button id="status" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu" aria-labelledby="status" style="">
+                            <a class="dropdown-item" href="{{ href('/form/field/status/active' + field.id) }}">STATUS ACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/status/inactive'+ field.id) }}">STATUS INACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/status/deleted' + field.id) }}">STATUS DELETE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/delete' + field.id) }}">DELETE PERMANENTLY</a>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

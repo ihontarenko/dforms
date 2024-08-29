@@ -9,8 +9,8 @@ import df.base.service.ResourceNotFoundException;
 import df.base.service.form.FormFieldService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
+import df.web.controller.MAVConstants;
 import jakarta.validation.Valid;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +25,8 @@ import static df.web.common.flash.FlashMessage.*;
 import static df.web.common.flash.FlashMessage.error;
 
 @Controller
-@RequestMapping("/form/field")
-public class FormFieldController {
+@RequestMapping(MAVConstants.REQUEST_MAPPING_FORM_FIELD)
+public class FormFieldController implements FormFieldOperations {
 
     private final ControllerHelper    helper;
     private final FormFieldService    service;
@@ -34,22 +34,31 @@ public class FormFieldController {
     public FormFieldController(ControllerHelper helper, FormFieldService service) {
         this.service = service;
         this.helper = helper;
-        service.setRedirectUrl("/form/field");
-        helper.setRedirectUrl("/form/field");
+        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
+        service.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
     }
 
-    @GetMapping
-    public ModelAndView form() {
-        helper.setViewName("form/field");
+    @Override
+    public ModelAndView index() {
+        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_LIST);
 
         bindAttributes(new FormFieldDTO());
 
         return helper.resolveWithoutRedirect();
     }
 
-    @GetMapping("/{fieldId}/modify")
+    @Override
+    public ModelAndView create() {
+        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
+
+        bindAttributes(new FormFieldDTO());
+
+        return helper.resolveWithoutRedirect();
+    }
+
+    @Override
     public ModelAndView modify(@PathVariable("fieldId") String fieldId, RedirectAttributes attributes) {
-        helper.setViewName("form/field");
+        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
         helper.setRedirectAttributes(attributes);
 
         ModelAndView mav;
@@ -64,11 +73,11 @@ public class FormFieldController {
         return mav;
     }
 
-    @PostMapping("/perform")
+    @Override
     public ModelAndView perform(@ModelAttribute("fieldDTO") @Valid FormFieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
-        helper.setViewName("form/field");
+        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
 
         bindAttributes(fieldDTO);
 
@@ -80,8 +89,7 @@ public class FormFieldController {
         return helper.resolveWithRedirect();
     }
 
-    @PreAuthorize("hasRole('SUPER_USER')")
-    @GetMapping("/{fieldId}/delete")
+    @Override
     public ModelAndView remove(@PathVariable("fieldId") String fieldId, RedirectAttributes attributes) {
         helper.setRedirectAttributes(attributes);
 
@@ -89,17 +97,15 @@ public class FormFieldController {
 
         if (result.isPresent()) {
             service.delete(result.get());
-            helper.addMessage(error(SUCCESS_FIELD_DELETED
-                    .formatted(fieldId)));
+            helper.addMessage(error(SUCCESS_FIELD_DELETED.formatted(fieldId)));
         } else {
-            helper.addMessage(warning(ERROR_FIELD_NOT_FOUND
-                    .formatted(fieldId)));
+            helper.addMessage(warning(ERROR_FIELD_NOT_FOUND.formatted(fieldId)));
         }
 
         return helper.redirect();
     }
 
-    @GetMapping("/{fieldId}/status/{status}")
+    @Override
     public ModelAndView status(@PathVariable("fieldId") String fieldId,
                                @PathVariable("status") String status,
                                RedirectAttributes attributes) {

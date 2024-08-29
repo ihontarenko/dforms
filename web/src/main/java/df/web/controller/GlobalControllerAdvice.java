@@ -1,5 +1,6 @@
 package df.web.controller;
 
+import df.base.internal.breadcrumb.BreadcrumbService;
 import df.base.property.ApplicationProperties;
 import df.base.security.UserInfo;
 import df.base.service.RedirectAware;
@@ -36,12 +37,14 @@ public class GlobalControllerAdvice {
 
     private final ApplicationProperties properties;
     private final Set<Locale>           locales;
-    private final FlashMessageService       flash;
+    private final BreadcrumbService     breadcrumbs;
+    private final FlashMessageService   flash;
 
     public GlobalControllerAdvice(ApplicationProperties properties, Set<Locale> locales,
-                                  FlashMessageService flash) {
+                                  BreadcrumbService breadcrumbs, FlashMessageService flash) {
         this.properties = properties;
         this.locales = locales;
+        this.breadcrumbs = breadcrumbs;
         this.flash = flash;
     }
 
@@ -110,6 +113,7 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute
     public void modelMapHandler(HttpServletRequest request, ModelMap map, @AuthenticationPrincipal UserInfo principal) {
+        map.addAttribute("breadcrumbs", breadcrumbs.getBreadcrumbsForRequest(request));
         map.addAttribute("locales", locales);
         map.addAttribute("principal", principal);
     }

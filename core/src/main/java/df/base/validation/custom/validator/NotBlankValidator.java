@@ -14,9 +14,4 @@ public class NotBlankValidator implements Validator {
         }
     }
 
-    @Override
-    public boolean supports(Class<?> objectType) {
-        return true;
-    }
-
 }

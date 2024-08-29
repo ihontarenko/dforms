@@ -13,9 +13,4 @@ public class NotNullValidator implements Validator {
         }
     }
 
-    @Override
-    public boolean supports(Class<?> objectType) {
-        return true;
-    }
-
 }

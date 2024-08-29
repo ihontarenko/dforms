@@ -2,13 +2,10 @@ package df.base.internal.validation;
 
 public interface Validator {
 
-    String UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE = "'%s' UNSUPPORTED CALL";
+    void validate(Object object);
 
-    default void validate(Object object) throws ValidationException {
-        throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_MESSAGE
-                .formatted(this.getClass().getSimpleName()));
+    default boolean supports(Class<?> objectType) {
+        return true;
     }
-
-    boolean supports(Class<?> objectType);
 
 }

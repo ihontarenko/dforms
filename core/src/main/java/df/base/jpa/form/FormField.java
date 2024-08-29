@@ -1,6 +1,7 @@
 package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
+import df.base.internal.hibernate.support.ProtectedEntity;
 import df.base.jpa.EntityNameAware;
 import df.base.jpa.NamedEntityIdGenerator;
 import jakarta.persistence.*;
@@ -8,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "DF_FORM_FIELDS")
-public class FormField implements EntityNameAware {
+public class FormField implements EntityNameAware, ProtectedEntity {
 
     @Id
     @PrefixedId(
@@ -158,5 +159,11 @@ public class FormField implements EntityNameAware {
     public void setDefaultValues(List<FormFieldDefaultValue> defaultValues) {
         this.defaultValues = defaultValues;
     }
+
+    @Override
+    public boolean nonRemovable() {
+        return forms != null && forms.size() > 0;
+    }
+
 }
 

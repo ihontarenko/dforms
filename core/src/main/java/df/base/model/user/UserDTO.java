@@ -25,7 +25,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
                                 entityField = "email")
                 },
                 entityClass = User.class,
-                message = "[UPD]: user with this email already registered",
+                message = "[NEW]: user with this email already registered",
                 applier = "!#hasText(id)"
         ),
         // validate for updating existing user

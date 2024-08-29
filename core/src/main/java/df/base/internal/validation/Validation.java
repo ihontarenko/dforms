@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static java.util.Optional.ofNullable;
+
 public class Validation {
 
     private final AutowireCapableBeanFactory beanFactory;
@@ -29,17 +31,24 @@ public class Validation {
         this.validators.add(validator);
     }
 
+    @SuppressWarnings({"all"})
     public Errors validate(Object object) {
         Errors errors = new Errors();
 
         for (Validator validator : validators) {
-            try {
-                beanFactory.autowireBean(validator);
-                validator.validate(object);
-            } catch (ValidationException exception) {
-                ErrorMessage message = resolver.resolve(name, exception.getErrorCode(), exception.getErrorContext());
-                errors.add(message);
+
+            Class<?> objectType = object == null ? Object.class : object.getClass();
+
+            if (validator.supports(objectType)) {
+                try {
+                    beanFactory.autowireBean(validator);
+                    validator.validate(object);
+                } catch (ValidationException exception) {
+                    ErrorMessage message = resolver.resolve(name, exception.getErrorCode(), exception.getErrorContext());
+                    errors.add(message);
+                }
             }
+
         }
 
         return errors;
