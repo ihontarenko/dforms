@@ -4,7 +4,7 @@ import df.base.internal.breadcrumb.BreadcrumbService;
 import df.base.property.ApplicationProperties;
 import df.base.security.UserInfo;
 import df.base.service.RedirectAware;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import df.web.common.flash.FlashMessageService;
 import io.pebbletemplates.pebble.error.PebbleException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,7 +53,7 @@ public class GlobalControllerAdvice {
             HttpRequestMethodNotSupportedException.class,
             AccessDeniedException.class,
             NoResourceFoundException.class,
-            ResourceNotFoundException.class
+            JpaResourceNotFoundException.class
     })
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     public void httpRequestMethodNotSupportedException(HttpServletRequest request, HttpServletResponse response,

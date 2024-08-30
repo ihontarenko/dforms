@@ -3,7 +3,7 @@ package df.web.controller.user;
 import df.base.jpa.Role;
 import df.base.mapper.user.RoleMapper;
 import df.base.model.user.RoleDTO;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import df.base.service.user.PrivilegeService;
 import df.base.service.user.RoleService;
 import df.web.common.ControllerHelper;
@@ -53,7 +53,7 @@ public class RoleController implements RoleOperations {
         try {
             bindAttributes(new RoleMapper().map(roleService.requiredById(roleId)));
             mav = controllerHelper.resolveWithoutRedirect();
-        } catch (ResourceNotFoundException exception) {
+        } catch (JpaResourceNotFoundException exception) {
             mav = controllerHelper.redirect(exception);
         }
 

@@ -5,15 +5,13 @@ import df.base.jpa.form.FieldStatus;
 import df.base.jpa.form.FormField;
 import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import df.base.service.form.FormFieldService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
 import df.web.controller.MAVConstants;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,46 +25,46 @@ import static df.web.common.flash.FlashMessage.error;
 @Controller
 public class FormFieldController implements FormFieldOperations {
 
-    private final ControllerHelper    helper;
-    private final FormFieldService    service;
+    private final ControllerHelper controllerHelper;
+    private final FormFieldService fieldService;
 
-    public FormFieldController(ControllerHelper helper, FormFieldService service) {
-        this.service = service;
-        this.helper = helper;
-        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
-        service.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
+    public FormFieldController(ControllerHelper controllerHelper, FormFieldService fieldService) {
+        this.fieldService = fieldService;
+        this.controllerHelper = controllerHelper;
+        controllerHelper.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
+        fieldService.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
     }
 
     @Override
     public ModelAndView index() {
-        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_LIST);
+        controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_LIST);
 
         bindAttributes(new FormFieldDTO());
 
-        return helper.resolveWithoutRedirect();
+        return controllerHelper.resolveWithoutRedirect();
     }
 
     @Override
     public ModelAndView create() {
-        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
+        controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
 
         bindAttributes(new FormFieldDTO());
 
-        return helper.resolveWithoutRedirect();
+        return controllerHelper.resolveWithoutRedirect();
     }
 
     @Override
     public ModelAndView modify(String itemId, RedirectAttributes attributes) {
-        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
-        helper.setRedirectAttributes(attributes);
+        controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
+        controllerHelper.setRedirectAttributes(attributes);
 
         ModelAndView mav;
 
         try {
-            bindAttributes(new FormFieldMapper().map(service.requireById(itemId)));
-            mav = helper.resolveWithoutRedirect();
-        } catch (ResourceNotFoundException exception) {
-            mav = helper.redirect(exception);
+            bindAttributes(new FormFieldMapper().map(fieldService.requireById(itemId)));
+            mav = controllerHelper.resolveWithoutRedirect();
+        } catch (JpaResourceNotFoundException exception) {
+            mav = controllerHelper.redirect(exception);
         }
 
         return mav;
@@ -74,40 +72,40 @@ public class FormFieldController implements FormFieldOperations {
 
     @Override
     public ModelAndView perform(FormFieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
-        helper.setBindingResult(result);
-        helper.setRedirectAttributes(attributes);
-        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
+        controllerHelper.setBindingResult(result);
+        controllerHelper.setRedirectAttributes(attributes);
+        controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
 
         bindAttributes(fieldDTO);
 
         if (!result.hasFieldErrors()) {
-            FormField field = service.createOrUpdate(fieldDTO);
-            helper.addMessage(success(SUCCESS_FIELD_SAVED.formatted(field.getLabel())));
+            FormField field = fieldService.createOrUpdate(fieldDTO);
+            controllerHelper.addMessage(success(SUCCESS_FIELD_SAVED.formatted(field.getLabel())));
         }
 
-        return helper.resolveWithRedirect();
+        return controllerHelper.resolveWithRedirect();
     }
 
     @Override
     public ModelAndView remove(String itemId, RedirectAttributes attributes) {
-        helper.setRedirectAttributes(attributes);
+        controllerHelper.setRedirectAttributes(attributes);
 
-        Optional<FormField> result = service.getById(itemId);
+        Optional<FormField> result = fieldService.getById(itemId);
 
         if (result.isPresent()) {
-            service.delete(result.get());
-            helper.addMessage(error(SUCCESS_FIELD_DELETED.formatted(itemId)));
+            fieldService.delete(result.get());
+            controllerHelper.addMessage(error(SUCCESS_FIELD_DELETED.formatted(itemId)));
         } else {
-            helper.addMessage(warning(ERROR_FIELD_NOT_FOUND.formatted(itemId)));
+            controllerHelper.addMessage(warning(ERROR_FIELD_NOT_FOUND.formatted(itemId)));
         }
 
-        return helper.redirect();
+        return controllerHelper.redirect();
     }
 
     @Override
     public ModelAndView status(String itemId, String status, RedirectAttributes attributes) {
-        Optional<FormField> result = service.getById(itemId);
-        helper.setRedirectAttributes(attributes);
+        Optional<FormField> result = fieldService.getById(itemId);
+        controllerHelper.setRedirectAttributes(attributes);
 
         if (result.isPresent()) {
             FieldStatus formStatus = FieldStatus.valueOf(status.toUpperCase());
@@ -116,16 +114,16 @@ public class FormFieldController implements FormFieldOperations {
                 put(FieldStatus.INACTIVE, FlashMessage::dark);
                 put(FieldStatus.DELETED, FlashMessage::error);
             }};
-            service.changeStatus(result.get(), formStatus);
-            helper.addMessage(messages.get(formStatus).apply(
+            fieldService.changeStatus(result.get(), formStatus);
+            controllerHelper.addMessage(messages.get(formStatus).apply(
                     SUCCESS_FIELD_STATUS_CHANGED
                             .formatted(itemId, formStatus)));
         } else {
-            helper.addMessage(error(ERROR_FIELD_NOT_FOUND
+            controllerHelper.addMessage(error(ERROR_FIELD_NOT_FOUND
                     .formatted(itemId)));
         }
 
-        return helper.redirect();
+        return controllerHelper.redirect();
     }
 
     private void bindAttributes(FormFieldDTO itemDTO) {
@@ -133,10 +131,10 @@ public class FormFieldController implements FormFieldOperations {
 
         attributes.put("itemDTO", itemDTO);
         attributes.put("elementTypes", ElementType.values());
-        attributes.put("fields", service.getAll());
+        attributes.put("fields", fieldService.getAll());
         attributes.put("fieldStatuses", FieldStatus.values());
 
-        helper.attributes(attributes);
+        controllerHelper.attributes(attributes);
     }
 
 }

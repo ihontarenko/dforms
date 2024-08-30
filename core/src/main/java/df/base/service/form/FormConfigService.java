@@ -4,7 +4,7 @@ import df.base.jpa.form.Form;
 import df.base.jpa.form.FormConfig;
 import df.base.jpa.form.FormConfigRepository;
 import df.base.model.form.FormConfigDTO;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,7 +75,7 @@ public class FormConfigService implements ServiceInterface<String, FormConfigDTO
     @Transactional(readOnly = true)
     public FormConfig requireById(String id) {
         return getById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(id), this));
+                .orElseThrow(() -> new JpaResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(id), this));
     }
 
     @Transactional(readOnly = true)
@@ -86,7 +86,7 @@ public class FormConfigService implements ServiceInterface<String, FormConfigDTO
     @Transactional(readOnly = true)
     public FormConfig requireByName(String name) {
         return getByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(name), this));
+                .orElseThrow(() -> new JpaResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(name), this));
     }
 
     @Transactional(readOnly = true)

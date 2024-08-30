@@ -4,12 +4,11 @@ import df.base.jpa.form.Form;
 import df.base.jpa.form.FormConfig;
 import df.base.mapper.form.FormConfigMapper;
 import df.base.model.form.FormConfigDTO;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import df.base.service.form.FormConfigService;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
-import jakarta.servlet.FilterConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
@@ -59,7 +58,7 @@ public class FormConfigController implements FormConfigOperations {
         try {
             bindAttributes(new FormConfigMapper().map(configService.requireById(configId)));
             mav = helper.resolveWithoutRedirect();
-        } catch (ResourceNotFoundException exception) {
+        } catch (JpaResourceNotFoundException exception) {
             mav = helper.redirect(exception);
         }
 

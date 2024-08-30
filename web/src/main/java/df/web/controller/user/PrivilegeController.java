@@ -3,7 +3,7 @@ package df.web.controller.user;
 import df.base.jpa.Privilege;
 import df.base.mapper.user.PrivilegeMapper;
 import df.base.model.user.PrivilegeDTO;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import df.base.service.user.PrivilegeService;
 import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
@@ -50,7 +50,7 @@ public class PrivilegeController implements PrivilegeOperations {
         try {
             bindAttributes(new PrivilegeMapper().map(privilegeService.requireById(privilegeId)));
             mav = controllerHelper.resolveWithoutRedirect();
-        } catch (ResourceNotFoundException exception) {
+        } catch (JpaResourceNotFoundException exception) {
             mav = controllerHelper.redirect(exception);
         }
 

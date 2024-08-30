@@ -5,7 +5,7 @@ import df.base.jpa.form.FormStatus;
 import df.base.mapper.form.FormMapper;
 import df.base.model.form.FormDTO;
 import df.base.security.UserInfo;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
@@ -31,20 +31,20 @@ import static df.web.common.flash.FlashMessage.*;
 @Controller
 public class FormController implements FormOperations {
 
-    private final FormService      service;
-    private final ControllerHelper helper;
+    private final FormService      formService;
+    private final ControllerHelper controllerHelper;
 
-    public FormController(FormService service, ControllerHelper helper) {
-        this.service = service;
-        this.helper = helper;
+    public FormController(FormService formService, ControllerHelper controllerHelper) {
+        this.formService = formService;
+        this.controllerHelper = controllerHelper;
 
-        service.setRedirectUrl(MAVConstants.REDIRECT_FORM);
-        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM);
+        formService.setRedirectUrl(MAVConstants.REDIRECT_FORM);
+        controllerHelper.setRedirectUrl(MAVConstants.REDIRECT_FORM);
     }
 
     @Override
     public ModelAndView index() {
-        helper.setViewName(MAVConstants.VIEW_FORM_INDEX);
+        controllerHelper.setViewName(MAVConstants.VIEW_FORM_INDEX);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -52,26 +52,21 @@ public class FormController implements FormOperations {
             setOwnerId(((UserInfo) authentication.getPrincipal()).getUser().getId());
         }});
 
-        return helper.resolveWithoutRedirect();
-    }
-
-    @Override
-    public ModelAndView create() {
-        return null;
+        return controllerHelper.resolveWithoutRedirect();
     }
 
     @Override
     public ModelAndView modify(String itemId, RedirectAttributes attributes) {
-        helper.setViewName(MAVConstants.VIEW_FORM_INDEX);
-        helper.setRedirectAttributes(attributes);
+        controllerHelper.setViewName(MAVConstants.VIEW_FORM_INDEX);
+        controllerHelper.setRedirectAttributes(attributes);
 
         ModelAndView mav;
 
         try {
-            bindAttributes(new FormMapper().map(service.requireById(itemId)));
-            mav = helper.resolveWithoutRedirect();
-        } catch (ResourceNotFoundException exception) {
-            mav = helper.redirect(exception);
+            bindAttributes(new FormMapper().map(formService.requireById(itemId)));
+            mav = controllerHelper.resolveWithoutRedirect();
+        } catch (JpaResourceNotFoundException exception) {
+            mav = controllerHelper.redirect(exception);
         }
 
         return mav;
@@ -79,46 +74,46 @@ public class FormController implements FormOperations {
 
     @Override
     public ModelAndView perform(@Validated FormDTO itemDTO, BindingResult result, RedirectAttributes attributes) {
-        helper.setBindingResult(result);
-        helper.setRedirectAttributes(attributes);
-        helper.setViewName(MAVConstants.VIEW_FORM_INDEX);
+        controllerHelper.setBindingResult(result);
+        controllerHelper.setRedirectAttributes(attributes);
+        controllerHelper.setViewName(MAVConstants.VIEW_FORM_INDEX);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         bindAttributes(itemDTO);
 
         if (!result.hasErrors()) {
-            Form form = service.createOrUpdate(itemDTO, ((UserInfo) authentication.getPrincipal()).getUser());
-            helper.addMessage(success(SUCCESS_FORM_SAVED.formatted(form.getDescription())));
+            Form form = formService.createOrUpdate(itemDTO, ((UserInfo) authentication.getPrincipal()).getUser());
+            controllerHelper.addMessage(success(SUCCESS_FORM_SAVED.formatted(form.getDescription())));
         }
 
-        return helper.resolveWithRedirect();
+        return controllerHelper.resolveWithRedirect();
     }
 
     @Override
     public ModelAndView remove(String itemId, RedirectAttributes attributes) {
-        helper.setRedirectAttributes(attributes);
+        controllerHelper.setRedirectAttributes(attributes);
 
-        Optional<Form> result = service.getById(itemId);
+        Optional<Form> result = formService.getById(itemId);
 
         if (result.isPresent()) {
-            service.delete(result.get());
-            helper.addMessage(error(SUCCESS_FORM_DELETED
+            formService.delete(result.get());
+            controllerHelper.addMessage(error(SUCCESS_FORM_DELETED
                     .formatted(itemId)));
         } else {
-            helper.addMessage(warning(ERROR_FORM_NOT_FOUND
+            controllerHelper.addMessage(warning(ERROR_FORM_NOT_FOUND
                     .formatted(itemId)));
         }
 
-        return helper.redirect();
+        return controllerHelper.redirect();
     }
 
     @Override
     public ModelAndView status(@PathVariable("itemId") String itemId,
                                @PathVariable("status") String status,
                                RedirectAttributes attributes) {
-        Optional<Form> result = service.getById(itemId);
-        helper.setRedirectAttributes(attributes);
+        Optional<Form> result = formService.getById(itemId);
+        controllerHelper.setRedirectAttributes(attributes);
 
         if (result.isPresent()) {
             FormStatus formStatus = FormStatus.valueOf(status.toUpperCase());
@@ -127,30 +122,30 @@ public class FormController implements FormOperations {
                 put(FormStatus.INACTIVE, FlashMessage::dark);
                 put(FormStatus.DELETED, FlashMessage::error);
             }};
-            service.changeStatus(result.get(), formStatus);
-            helper.addMessage(messages.get(formStatus).apply(
+            formService.changeStatus(result.get(), formStatus);
+            controllerHelper.addMessage(messages.get(formStatus).apply(
                     SUCCESS_FORM_STATUS_CHANGED
                             .formatted(itemId, formStatus)));
         } else {
-            helper.addMessage(error(ERROR_FORM_NOT_FOUND
+            controllerHelper.addMessage(error(ERROR_FORM_NOT_FOUND
                     .formatted(itemId)));
         }
 
-        return helper.redirect();
+        return controllerHelper.redirect();
     }
 
     private void bindAttributes(FormDTO itemDTO) {
         Map<String, Object> attributes = new HashMap<>();
 
         attributes.put("formDTO", itemDTO);
-        attributes.put("forms", service.getAll());
+        attributes.put("forms", formService.getAll());
         attributes.put("statuses", new HashMap<>() {{
             put(FormStatus.ACTIVE, "bg-success");
             put(FormStatus.INACTIVE, "bg-dark");
             put(FormStatus.DELETED, "bg-danger");
         }});
 
-        helper.attributes(attributes);
+        controllerHelper.attributes(attributes);
     }
 
 }

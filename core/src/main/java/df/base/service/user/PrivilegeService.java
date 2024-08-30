@@ -6,7 +6,7 @@ import df.base.jpa.PrivilegeRepository;
 import df.base.mapper.user.PrivilegeMapper;
 import df.base.model.user.PrivilegeDTO;
 import df.base.service.RedirectAware;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +56,7 @@ public class PrivilegeService implements RedirectAware {
     @Transactional(readOnly = true)
     public Privilege requireById(String id) {
         return getById(id).orElseThrow(()
-                -> new ResourceNotFoundException(Messages.ERROR_PRIVILEGE_NOT_FOUND.formatted(id), this));
+                -> new JpaResourceNotFoundException(Messages.ERROR_PRIVILEGE_NOT_FOUND.formatted(id), this));
     }
 
     @Transactional(readOnly = true)

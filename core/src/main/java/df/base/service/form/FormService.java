@@ -7,9 +7,8 @@ import df.base.jpa.form.FormRepository;
 import df.base.jpa.form.FormStatus;
 import df.base.mapper.form.FormMapper;
 import df.base.model.form.FormDTO;
-import df.base.security.UserInfo;
 import df.base.service.RedirectAware;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +33,7 @@ public class FormService implements RedirectAware {
 
     public Form requireById(final String formId) {
         return getById(formId).orElseThrow(()
-                -> new ResourceNotFoundException(Messages.ERROR_FORM_NOT_FOUND.formatted(formId), this));
+                -> new JpaResourceNotFoundException(Messages.ERROR_FORM_NOT_FOUND.formatted(formId), this));
     }
 
     @Transactional(readOnly = true)

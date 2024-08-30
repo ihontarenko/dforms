@@ -6,7 +6,7 @@ import df.base.jpa.Role;
 import df.base.jpa.RoleRepository;
 import df.base.model.user.RoleDTO;
 import df.base.service.RedirectAware;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -91,13 +91,13 @@ public class RoleService implements RedirectAware {
     @Transactional(readOnly = true)
     public Role requiredById(String id) {
         return getById(id).orElseThrow(()
-                -> new ResourceNotFoundException(Messages.ERROR_ROLE_NOT_FOUND.formatted(id), this));
+                -> new JpaResourceNotFoundException(Messages.ERROR_ROLE_NOT_FOUND.formatted(id), this));
     }
 
     @Transactional(readOnly = true)
     public Role requiredByName(String name) {
         return getById(name).orElseThrow(()
-                -> new ResourceNotFoundException(Messages.ERROR_ROLE_NOT_FOUND.formatted(name), this));
+                -> new JpaResourceNotFoundException(Messages.ERROR_ROLE_NOT_FOUND.formatted(name), this));
     }
 
     @Transactional(readOnly = true)

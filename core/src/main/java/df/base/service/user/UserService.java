@@ -7,7 +7,7 @@ import df.base.mapper.user.UserMapper;
 import df.base.model.user.UserDTO;
 import df.base.security.Provider;
 import df.base.service.RedirectAware;
-import df.base.service.ResourceNotFoundException;
+import df.base.service.JpaResourceNotFoundException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -105,7 +105,7 @@ public class UserService implements RedirectAware {
     @Transactional(readOnly = true)
     public User requireById(String id) {
         return getById(id).orElseThrow(()
-                -> new ResourceNotFoundException(ERROR_USER_NOT_FOUND.formatted(id), this));
+                -> new JpaResourceNotFoundException(ERROR_USER_NOT_FOUND.formatted(id), this));
     }
 
     @Transactional(readOnly = true)
