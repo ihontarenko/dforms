@@ -5,17 +5,18 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "SECURITY_PRIVILEGES")
-public class Privilege {
+public class Privilege implements EntityNameAware {
 
     @Id
     @Column(name = "ID")
     @PrefixedId(
-            prefixValue = "PVL",
+            prefixValue = "P",
             sequenceName = "PRIVILEGE",
+            prefixGenerator = NamedEntityIdGenerator.class,
+            numberFormat = "%04d",
             initialValue = 1000,
             incrementBy = 1,
-            prefixGenerator = DefaultIdGenerator.class,
-            numberFormat = "%04d"
+            prefixSeparator = "_"
     )
     private String id;
 

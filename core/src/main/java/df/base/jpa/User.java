@@ -15,17 +15,18 @@ import java.util.Set;
         name = EntityGraphConstants.USER_WITH_ROLES,
         attributeNodes = @NamedAttributeNode("roles")
 )
-public class User {
+public class User implements EntityNameAware {
 
     @Id
     @Column(name = "ID")
     @PrefixedId(
-            prefixValue = "USR",
+            prefixValue = "U",
             sequenceName = "USER",
+            prefixGenerator = NamedEntityIdGenerator.class,
+            numberFormat = "%04d",
             initialValue = 1000,
             incrementBy = 1,
-            prefixGenerator = DefaultIdGenerator.class,
-            numberFormat = "%04d"
+            prefixSeparator = "_"
     )
     private String id;
 

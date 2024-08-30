@@ -5,8 +5,8 @@
 
     <div class="form-group">
         <label for="form-name">Name</label>
-        <input name="name" type="text" class="form-control {{ ifFieldErrors('roleDTO', 'name', 'is-invalid', 'is-valid') }}" id="form-name" value="{{ roleDTO.name }}">
-        {% include "common/invalid-feedback" with {"formName" : "roleDTO", "fieldName" : "name"} %}
+        <input name="name" type="text" class="form-control {{ ifFieldErrors('itemDTO', 'name', 'is-invalid', 'is-valid') }}" id="form-name" value="{{ itemDTO.name }}">
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "name"} %}
     </div>
 
     <div class="form-group">
@@ -14,7 +14,7 @@
         <div class="btn-group" role="group">
             <fieldset>
                 {% for privilege in privileges %}
-                {% if roleDTO.privileges contains privilege.name %}
+                {% if itemDTO.privileges contains privilege.name %}
                 {% set checked = "checked" %}
                 {% else %}
                 {% set checked = "" %}
@@ -28,10 +28,10 @@
                 {% endfor %}
             </fieldset>
         </div>
-        {% include "common/invalid-feedback" with {"formName" : "roleDTO", "fieldName" : "privileges"} %}
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "privileges"} %}
     </div>
 
-    <input type="hidden" name="id" value="{{ roleDTO.id }}">
+    <input type="hidden" name="id" value="{{ itemDTO.id }}">
 
     <div class="form-group mt-4">
         <button class="btn btn-success" type="submit">Submit</button>
@@ -55,9 +55,9 @@
             <td>{{ role.name }}</td>
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/user/role/' + role.id + '/modify') }}'"
+                    <button onclick="window.location = '{{ href('/user/role/modify/' + role.id) }}'"
                             type="button" class="btn btn-sm btn-info">EDIT</button>
-                    <button onclick="window.location = '{{ href('/user/role/' + role.id + '/delete') }}'"
+                    <button onclick="window.location = '{{ href('/user/role/remove/' + role.id) }}'"
                             type="button" class="btn btn-sm btn-danger">DELETE</button>
                 </div>
             </td>

@@ -5,20 +5,20 @@
 
     <div class="form-group">
         <label for="form-email">User E-mail</label>
-        <input name="email" type="text" class="form-control {{ ifFieldErrors('userDTO', 'email', 'is-invalid', 'is-valid') }}" id="form-email" value="{{ userDTO.email }}">
-        {% include "common/invalid-feedback" with {"formName" : "userDTO", "fieldName" : "email"} %}
+        <input name="email" type="text" class="form-control {{ ifFieldErrors('itemDTO', 'email', 'is-invalid', 'is-valid') }}" id="form-email" value="{{ itemDTO.email }}">
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "email"} %}
     </div>
 
     <div class="form-group">
         <label for="form-name">Name</label>
-        <input name="name" type="text" class="form-control {{ ifFieldErrors('userDTO', 'name', 'is-invalid', 'is-valid') }}" id="form-name" value="{{ userDTO.name }}">
-        {% include "common/invalid-feedback" with {"formName" : "userDTO", "fieldName" : "name"} %}
+        <input name="name" type="text" class="form-control {{ ifFieldErrors('itemDTO', 'name', 'is-invalid', 'is-valid') }}" id="form-name" value="{{ itemDTO.name }}">
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "name"} %}
     </div>
 
     <div class="form-group">
         <label for="form-password">Password</label>
-        <input name="password" type="text" class="form-control {{ ifFieldErrors('userDTO', 'password', 'is-invalid', 'is-valid') }}" id="form-password" value="{{ userDTO.password }}">
-        {% include "common/invalid-feedback" with {"formName" : "userDTO", "fieldName" : "password"} %}
+        <input name="password" type="text" class="form-control {{ ifFieldErrors('itemDTO', 'password', 'is-invalid', 'is-valid') }}" id="form-password" value="{{ itemDTO.password }}">
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "password"} %}
     </div>
 
     <div class="form-group">
@@ -29,7 +29,7 @@
             <input type="radio" class="btn-check" name="enabled" id="DISABLED" value="false" autocomplete="off">
             <label class="btn btn-sm btn-outline-danger" for="DISABLED">DISABLED</label>
         </div>
-        {% include "common/invalid-feedback" with {"formName" : "userDTO", "fieldName" : "status"} %}
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "status"} %}
     </div>
 
     <div class="form-group">
@@ -37,7 +37,7 @@
         <div class="btn-group" role="group">
             <fieldset>
                 {% for role in roles %}
-                    {% if userDTO.roles contains role.name %}
+                    {% if itemDTO.roles contains role.name %}
                         {% set checked = "checked" %}
                     {% else %}
                         {% set checked = "" %}
@@ -51,15 +51,15 @@
                 {% endfor %}
             </fieldset>
         </div>
-        {% include "common/invalid-feedback" with {"formName" : "userDTO", "fieldName" : "roles"} %}
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "roles"} %}
     </div>
 
-    <input type="hidden" name="id" value="{{ userDTO.id }}">
-    <input type="hidden" name="provider" value="{{ userDTO.provider }}">
+    <input type="hidden" name="id" value="{{ itemDTO.id }}">
+    <input type="hidden" name="provider" value="{{ itemDTO.provider }}">
 
     <div class="form-group mt-4">
         <button class="btn btn-success" type="submit">Submit</button>
-        {% include "common/invalid-feedback" with {"formName" : "userDTO", "fieldName" : "id"} %}
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "id"} %}
     </div>
 </form>
 
@@ -88,13 +88,13 @@
             </td>
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/user/' + user.id + '/modify') }}'"
+                    <button onclick="window.location = '{{ href('/user/modify/' + user.id) }}'"
                             type="button" class="btn btn-sm btn-info">EDIT</button>
                     {% if user.enabled %}
-                    <button onclick="window.location = '{{ href('/user/' + user.id + '/block') }}'"
+                    <button onclick="window.location = '{{ href('/user/block/' + user.id) }}'"
                             type="button" class="btn btn-sm btn-warning">BLOCK</button>
                     {% else %}
-                    <button onclick="window.location = '{{ href('/user/' + user.id + '/unblock') }}'"
+                    <button onclick="window.location = '{{ href('/user/unblock/' + user.id) }}'"
                             type="button" class="btn btn-sm btn-success">UNBLOCK</button>
                     {% endif %}
                 </div>

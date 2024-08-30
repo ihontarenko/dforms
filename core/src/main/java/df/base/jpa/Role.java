@@ -13,17 +13,18 @@ import java.util.Set;
         name = EntityGraphConstants.ROLE_WITH_PRIVILEGE,
         attributeNodes = @NamedAttributeNode("privileges")
 )
-public class Role {
+public class Role implements EntityNameAware {
 
     @Id
     @Column(name = "ID")
     @PrefixedId(
-            prefixValue = "RLE",
+            prefixValue = "R",
             sequenceName = "ROLE",
+            prefixGenerator = NamedEntityIdGenerator.class,
+            numberFormat = "%04d",
             initialValue = 1000,
             incrementBy = 1,
-            prefixGenerator = DefaultIdGenerator.class,
-            numberFormat = "%04d"
+            prefixSeparator = "_"
     )
     private String id;
 

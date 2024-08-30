@@ -3,7 +3,9 @@ package df.base.jpa;
 import df.base.internal.hibernate.generator.IdPrefixGenerator;
 import df.base.internal.hibernate.generator.PrefixedId;
 import df.base.internal.hibernate.generator.PrefixedTableSequenceGenerator;
+import df.base.utils.SlugifyTransliterator;
 
+import static df.base.utils.SlugifyTransliterator.slugify;
 import static java.util.Objects.requireNonNull;
 
 public class NamedEntityIdGenerator implements IdPrefixGenerator {
@@ -26,7 +28,7 @@ public class NamedEntityIdGenerator implements IdPrefixGenerator {
         String          prefix          = annotation.prefixValue();
         String          separator       = annotation.prefixSeparator();
         String          id              = annotation.numberFormat().formatted(ordinalID);
-        String          name            = requireNonNull(entityNameAware.getName()).toLowerCase();
+        String          name            = slugify(requireNonNull(entityNameAware.getName())).toLowerCase();
 
         return (prefix + separator + name + separator + id).toLowerCase();
     }

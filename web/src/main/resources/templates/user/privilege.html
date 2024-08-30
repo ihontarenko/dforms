@@ -5,11 +5,11 @@
 
     <div class="form-group">
         <label for="form-name">Name</label>
-        <input name="name" type="text" class="form-control {{ ifFieldErrors('privilegeDTO', 'name', 'is-invalid', 'is-valid') }}" id="form-name" value="{{ privilegeDTO.name }}">
-        {% include "common/invalid-feedback" with {"formName" : "privilegeDTO", "fieldName" : "name"} %}
+        <input name="name" type="text" class="form-control {{ ifFieldErrors('itemDTO', 'name', 'is-invalid', 'is-valid') }}" id="form-name" value="{{ itemDTO.name }}">
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "name"} %}
     </div>
 
-    <input type="hidden" name="id" value="{{ privilegeDTO.id }}">
+    <input type="hidden" name="id" value="{{ itemDTO.id }}">
 
     <div class="form-group mt-4">
         <button class="btn btn-success" type="submit">Submit</button>
@@ -33,9 +33,9 @@
             <td>{{ privilege.name }}</td>
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/user/privilege/' + privilege.id + '/modify') }}'"
+                    <button onclick="window.location = '{{ href('/user/privilege/modify/' + privilege.id) }}'"
                             type="button" class="btn btn-sm btn-info">EDIT</button>
-                    <button onclick="window.location = '{{ href('/user/privilege/' + privilege.id + '/delete') }}'"
+                    <button onclick="window.location = '{{ href('/user/privilege/remove/' + privilege.id) }}'"
                             type="button" class="btn btn-sm btn-danger">DELETE</button>
                 </div>
             </td>
