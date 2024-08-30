@@ -1,0 +1,19 @@
+breadcrumbs:
+  - path: "/form/{formId}"
+    items:
+      - label: "Home"
+        url: "/"
+      - label: "Forms"
+        url: "/form"
+      - label: "Form Details {formId}"
+        url: "/form/{formId}"
+  - path: "/form/config/{configId}"
+    items:
+      - label: "Home"
+        url: "/"
+      - label: "Forms"
+        url: "/form"
+      - label: "Form Details {formId}"
+        url: "/form/{formId}"
+     - label: "Edit Configuration"
+        url: "/form/config/{configId}"
