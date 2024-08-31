@@ -137,7 +137,7 @@ public class FormController implements FormOperations {
     private void bindAttributes(FormDTO itemDTO) {
         Map<String, Object> attributes = new HashMap<>();
 
-        attributes.put("formDTO", itemDTO);
+        attributes.put("itemDTO", itemDTO);
         attributes.put("forms", formService.getAll());
         attributes.put("statuses", new HashMap<>() {{
             put(FormStatus.ACTIVE, "bg-success");

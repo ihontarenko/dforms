@@ -1,6 +1,6 @@
 package df.base.model.form;
 
-import df.base.internal.support.JpaCriteria;
+import df.base.internal.support.jpa.JpaCriteria;
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormConfig;
 import df.base.validation.hibernate.Fields;

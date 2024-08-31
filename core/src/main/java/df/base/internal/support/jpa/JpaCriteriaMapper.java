@@ -1,6 +1,7 @@
-package df.base.internal.support;
+package df.base.internal.support.jpa;
 
 import df.base.internal.Mapper;
+import df.base.internal.support.SpelEvaluator;
 import df.base.validation.hibernate.Fields;
 import df.base.validation.hibernate.Fields.ValueType;
 import org.springframework.expression.ExpressionParser;

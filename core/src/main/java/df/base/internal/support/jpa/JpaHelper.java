@@ -1,4 +1,4 @@
-package df.base.internal.support;
+package df.base.internal.support.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;

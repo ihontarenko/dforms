@@ -12,6 +12,10 @@ public class EntityGraphConstants {
     public static final String FORM_WITH_FIELD_ENTRIES_FIELD        = "FormFieldEntries.withField";
     public static final String FORM_CONFIG_WITH_FORM                = "FormConfig.withFormOnly";
 
+    // Form Graph
+    public static final String FORM_FIELD_WITH_CONFIGS     = "FormFieldConfig.withRelatedConfig";
+    public static final String FORM_FIELD_WITH_ALL_RELATED = "FormFieldConfig.withAllRelated";
+
     private EntityGraphConstants() {
     }
 

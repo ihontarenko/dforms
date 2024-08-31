@@ -1,6 +1,6 @@
 package df.base.validation.hibernate;
 
-import df.base.internal.support.JpaCriteria;
+import df.base.internal.support.jpa.JpaCriteria;
 
 import java.lang.annotation.*;
 

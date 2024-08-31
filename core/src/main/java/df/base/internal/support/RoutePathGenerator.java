@@ -1,6 +1,7 @@
 package df.base.internal.support;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -18,7 +19,7 @@ public class RoutePathGenerator {
 
     private final Map<String, String> routeCache = new HashMap<>();
 
-    public RoutePathGenerator(RequestMappingHandlerMapping handlerMapping) {
+    public RoutePathGenerator(@Qualifier("requestMappingHandlerMapping") RequestMappingHandlerMapping handlerMapping) {
         this.handlerMapping = handlerMapping;
     }
 

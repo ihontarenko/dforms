@@ -2,6 +2,7 @@ package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
 import df.base.internal.hibernate.support.ProtectedEntity;
+import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.EntityNameAware;
 import df.base.jpa.NamedEntityIdGenerator;
 import jakarta.persistence.*;
@@ -9,6 +10,20 @@ import java.util.List;
 
 @Entity
 @Table(name = "DF_FORM_FIELDS")
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = EntityGraphConstants.FORM_FIELD_WITH_CONFIGS,
+                attributeNodes = @NamedAttributeNode("configs")
+        ),
+        @NamedEntityGraph(
+                name = EntityGraphConstants.FORM_FIELD_WITH_ALL_RELATED,
+                attributeNodes = {
+                        @NamedAttributeNode("configs"),
+                        @NamedAttributeNode("attributes"),
+                        @NamedAttributeNode("options")
+                }
+        )
+})
 public class FormField implements EntityNameAware, ProtectedEntity {
 
     @Id

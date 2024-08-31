@@ -1,4 +1,4 @@
-package df.base.internal.support;
+package df.base.internal.support.jpa;
 
 @SuppressWarnings({"unused"})
 public interface JpaCriteria {

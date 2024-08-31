@@ -1,6 +1,6 @@
 package df.base.model.user;
 
-import df.base.internal.support.JpaCriteria;
+import df.base.internal.support.jpa.JpaCriteria;
 import df.base.jpa.User;
 import df.base.security.Provider;
 import df.base.validation.hibernate.Fields;

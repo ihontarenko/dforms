@@ -30,7 +30,7 @@ public class FormFieldService implements RedirectAware {
 
     @Transactional(readOnly = true)
     public Optional<FormField> getById(String id) {
-        return repository.findById(id);
+        return repository.findByIdWithAllRelated(id);
     }
 
     @Transactional(readOnly = true)
