@@ -1,5 +1,6 @@
 package df.base.service.form;
 
+import df.base.internal.spring.data.jpa.entity.extention.EntityGraph;
 import df.base.jpa.form.*;
 import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;
@@ -27,7 +28,7 @@ public class FormFieldService implements RedirectAware {
 
     @Transactional(readOnly = true)
     public List<FormField> getAll() {
-        return repository.findAll();
+        return repository.findAll(new EntityGraph(){});
     }
 
     @Transactional(readOnly = true)

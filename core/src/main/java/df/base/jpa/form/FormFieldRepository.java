@@ -1,8 +1,8 @@
 package df.base.jpa.form;
 
+import df.base.internal.spring.data.jpa.entity.extention.ExtendedJpaRepository;
 import df.base.jpa.EntityGraphConstants;
 import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface FormFieldRepository extends JpaRepository<FormField, String> {
+public interface FormFieldRepository extends ExtendedJpaRepository<FormField, String> {
 
 //    @Override
 //    @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_CONFIGS)

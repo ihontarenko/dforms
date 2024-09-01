@@ -3,6 +3,7 @@ package df.base.configuration;
 import df.base.Constants;
 import df.base.internal.BeansHolder;
 import df.base.internal.i18n.Translator;
+import df.base.internal.spring.data.jpa.entity.extention.support.EntityGraphJpaRepositoryFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,10 +34,14 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableAutoConfiguration
-@EnableJpaRepositories(basePackages = Constants.ENTITY_PACKAGE_TO_SCAN)
-@ComponentScan(basePackages = {Constants.BASE_PACKAGE_TO_SCAN})
+@EnableJpaRepositories(
+        basePackages = Constants.ENTITY_PACKAGE_TO_SCAN,
+        repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class)
+@ComponentScan(basePackages = {
+        Constants.BASE_PACKAGE_TO_SCAN})
 @EnableConfigurationProperties
-@ConfigurationPropertiesScan(basePackages = {"df.base.property"})
+@ConfigurationPropertiesScan(basePackages = {
+        "df.base.property"})
 public class CommonConfiguration implements WebMvcConfigurer {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(CommonConfiguration.class);
