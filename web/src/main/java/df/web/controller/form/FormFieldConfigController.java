@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static df.base.Messages.SUCCESS_FORM_CONFIG_DELETED;
-import static df.base.Messages.SUCCESS_FORM_CONFIG_SAVED;
+import static df.base.Messages.SUCCESS_CONFIG_DELETED;
+import static df.base.Messages.SUCCESS_CONFIG_SAVED;
 import static df.web.common.flash.FlashMessage.error;
 import static df.web.common.flash.FlashMessage.success;
 
@@ -39,11 +39,11 @@ public class FormFieldConfigController implements FormFieldConfigOperations {
     }
 
     @Override
-    public ModelAndView index(String formId) {
+    public ModelAndView index(String fieldId) {
         helper.setViewName(MAVConstants.VIEW_FORM_FIELD_CONFIG);
 
         bindAttributes(new FormFieldConfigDTO(){{
-            setFormFieldId(formId);
+            setFormFieldId(fieldId);
         }});
 
         return helper.resolveWithoutRedirect();
@@ -74,13 +74,13 @@ public class FormFieldConfigController implements FormFieldConfigOperations {
         helper.setViewName(MAVConstants.VIEW_FORM_FIELD_CONFIG);
         helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(configDTO.getFormFieldId()));
 
-        bindAttributes(configDTO);
-
         if (!result.hasErrors()) {
             FormFieldConfig config = configService
                     .createOrUpdate(fieldService.requireById(configDTO.getFormFieldId()), configDTO);
-            helper.addMessage(success(SUCCESS_FORM_CONFIG_SAVED
+            helper.addMessage(success(SUCCESS_CONFIG_SAVED
                     .formatted(config.getConfigName())));
+        } else {
+            bindAttributes(configDTO);
         }
 
         return helper.resolveWithRedirect();
@@ -93,7 +93,7 @@ public class FormFieldConfigController implements FormFieldConfigOperations {
 
         helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(fieldId));
         helper.setRedirectAttributes(attributes);
-        helper.addMessage(error(SUCCESS_FORM_CONFIG_DELETED.formatted(itemId)));
+        helper.addMessage(error(SUCCESS_CONFIG_DELETED.formatted(itemId)));
 
         configService.deleteIfExists(config.orElse(null));
 
@@ -106,7 +106,7 @@ public class FormFieldConfigController implements FormFieldConfigOperations {
 
         attributes.put("itemDTO", itemDTO);
         attributes.put("configurations", configService.getAllByField(field));
-        attributes.put("form", field);
+        attributes.put("field", field);
 
         helper.attributes(attributes);
     }

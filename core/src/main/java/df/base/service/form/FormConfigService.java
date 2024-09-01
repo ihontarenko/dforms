@@ -11,9 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static df.base.Messages.FORM_CONFIG_NOT_FOUND;
+import static df.base.Messages.REQUIRED_ID_CANNOT_BE_NULL;
+import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
 @Service
@@ -48,11 +51,10 @@ public class FormConfigService implements ServiceInterface<String, FormConfigDTO
     @Override
     @Transactional
     public FormConfig createOrUpdate(Form form, FormConfigDTO configDTO) {
-        Optional<FormConfig> existingConfig = StringUtils.hasText(configDTO.getId())
-                ? getById(configDTO.getId()) : Optional.empty();
+        Optional<FormConfig> config = getById(configDTO.getId());
 
-        if (existingConfig.isPresent()) {
-            return update(existingConfig.get(), configDTO);
+        if (config.isPresent()) {
+            return update(config.get(), configDTO);
         } else {
             return create(form, configDTO);
         }
@@ -67,14 +69,14 @@ public class FormConfigService implements ServiceInterface<String, FormConfigDTO
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<FormConfig> getById(String formConfigId) {
-        return repository.findById(formConfigId);
+    public Optional<FormConfig> getById(String id) {
+        return StringUtils.hasText(id) ? repository.findById(id) : Optional.empty();
     }
 
     @Override
     @Transactional(readOnly = true)
     public FormConfig requireById(String id) {
-        return getById(id)
+        return getById(requireNonNull(id, REQUIRED_ID_CANNOT_BE_NULL))
                 .orElseThrow(() -> new JpaResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(id), this));
     }
 

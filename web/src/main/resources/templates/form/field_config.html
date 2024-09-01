@@ -1,0 +1,76 @@
+{% extends "common/layout" %}
+{% block title %}Configure FIeld '{{ itemDTO.fieldId }}'{% endblock %}
+{% block content %}
+
+<div class="card bg-light mb-3">
+    <div class="card-header">ID: <b>{{field.id}}</b></div>
+    <div class="card-body">
+        <h4 class="card-title">{{field.description}}</h4>
+        <p class="card-text">{{field.name}}</p>
+    </div>
+</div>
+
+<form method="post" action="{{ href('/form/field/config/perform') }}" enctype="multipart/form-data" class="row g-3" >
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="text" class="form-control {{ ifFieldErrors('itemDTO', 'configName', 'is-invalid', 'is-valid') }}" id="config-name" name="configName" value="{{itemDTO.configName}}">
+                <label for="config-name">Config Name</label>
+                {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "configName"} %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating">
+                <input type="text" class="form-control {{ ifFieldErrors('itemDTO', 'configValue', 'is-invalid', 'is-valid') }}" id="config-value" name="configValue" value="{{itemDTO.configValue}}">
+                <label for="config-value">Config Value</label>
+                {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "configValue"} %}
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="fieldId" value="{{ itemDTO.fieldId }}">
+    <input type="hidden" name="id" value="{{ itemDTO.id }}">
+
+    <div class="form-group mt-4">
+        <button class="btn btn-success" type="submit">Submit</button>
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "id"} %}
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "fieldId"} %}
+    </div>
+</form>
+
+<h2 class="mt-5">Configurations</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Value</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for config in configurations %}
+        <tr>
+            <th scope="row">{{ config.id }}</th>
+            <td>
+                <u>{{ config.configName }}</u>
+            </td>
+            <td>
+                <i>{{ config.configValue }}</i>
+            </td>
+            <td>
+                <div class="btn-group" role="group">
+                    <button onclick="window.location = '{{ href('/form/field/config/modify/' + config.id) }}'"
+                            type="button" class="btn btn-sm btn-info">MODIFY</button>
+                    <button onclick="window.location = '{{ href('/form/field/config/remove/' + config.id) }}'"
+                            type="button" class="btn btn-sm btn-danger">REMOVE</button>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

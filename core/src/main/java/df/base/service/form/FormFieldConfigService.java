@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static df.base.Messages.FORM_CONFIG_NOT_FOUND;
+import static df.base.Messages.REQUIRED_ID_CANNOT_BE_NULL;
+import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
 @Service
@@ -48,15 +49,13 @@ public class FormFieldConfigService implements ServiceInterface<String, FormFiel
     @Override
     @Transactional
     public FormFieldConfig createOrUpdate(FormField field, FormFieldConfigDTO configDTO) {
-        Optional<FormFieldConfig> existingConfig = StringUtils.hasText(configDTO.getId())
-                ? getById(configDTO.getId()) : Optional.empty();
+        Optional<FormFieldConfig> config = getById(configDTO.getId());
 
-        if (existingConfig.isPresent()) {
-            return update(existingConfig.get(), configDTO);
+        if (config.isPresent()) {
+            return update(config.get(), configDTO);
         } else {
             return create(field, configDTO);
         }
-
     }
 
     @Override
@@ -67,25 +66,25 @@ public class FormFieldConfigService implements ServiceInterface<String, FormFiel
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<FormFieldConfig> getById(String formConfigId) {
-        return repository.findById(formConfigId);
+    public Optional<FormFieldConfig> getById(String id) {
+        return StringUtils.hasText(id) ? repository.findById(id) : Optional.empty();
     }
 
     @Override
     @Transactional(readOnly = true)
     public FormFieldConfig requireById(String id) {
-        return getById(id)
+        return getById(requireNonNull(id, REQUIRED_ID_CANNOT_BE_NULL))
                 .orElseThrow(() -> new JpaResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(id), this));
     }
 
     @Transactional(readOnly = true)
-    public List<FormFieldConfig> getAllByFormId(String formId) {
-        return repository.findAllByFormId(formId);
+    public List<FormFieldConfig> getAllByFieldId(String fieldId) {
+        return repository.findAllByFormFieldId(fieldId);
     }
 
     @Transactional(readOnly = true)
     public List<FormFieldConfig> getAllByField(FormField field) {
-        return repository.findAllByField(field);
+        return repository.findAllByFormField(field);
     }
 
     @Transactional

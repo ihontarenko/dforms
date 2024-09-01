@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static df.base.Messages.ERROR_USER_NOT_FOUND;
 
+// todo: implement ServiceInterface
 @Service
 public class UserService implements RedirectAware {
 
@@ -54,8 +55,8 @@ public class UserService implements RedirectAware {
     public User createOrUpdate(UserDTO userDTO) {
         // todo: check getId on empty string
         User user = repository.findById(userDTO.getId())
-                .map(u -> updateUser(u, userDTO))
-                .orElseGet(() -> createUser(userDTO));
+                .map(u -> update(u, userDTO))
+                .orElseGet(() -> create(userDTO));
 
         updateUserRoles(user, userDTO);
 
@@ -74,7 +75,7 @@ public class UserService implements RedirectAware {
     }
 
     @Transactional
-    public User updateUser(User user, UserDTO userDTO) {
+    public User update(User user, UserDTO userDTO) {
         User updated = repository.save(populateUserEntity(user, userDTO));
 
         updateUserRoles(updated, userDTO);
@@ -83,7 +84,7 @@ public class UserService implements RedirectAware {
     }
 
     @Transactional
-    public User createUser(UserDTO userDTO) {
+    public User create(UserDTO userDTO) {
         User created = repository.save(populateUserEntity(new User(), userDTO));
 
         updateUserRoles(created, userDTO);

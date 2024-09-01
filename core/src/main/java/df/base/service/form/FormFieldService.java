@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static df.base.Messages.FORM_FIELD_NOT_FOUND;
+import static df.base.Messages.REQUIRED_ID_CANNOT_BE_NULL;
+import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
 @Service
@@ -30,12 +32,12 @@ public class FormFieldService implements RedirectAware {
 
     @Transactional(readOnly = true)
     public Optional<FormField> getById(String id) {
-        return repository.findByIdWithAllRelated(id);
+        return id == null ? Optional.empty() : repository.findById(id);
     }
 
     @Transactional(readOnly = true)
     public FormField requireById(String id) {
-        return getById(id)
+        return getById(requireNonNull(id, REQUIRED_ID_CANNOT_BE_NULL))
                 .orElseThrow(() -> new JpaResourceNotFoundException(FORM_FIELD_NOT_FOUND.formatted(id), this));
     }
 

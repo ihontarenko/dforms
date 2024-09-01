@@ -58,7 +58,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
         if (userEntity == null) {
             userDTO.getRoles().add(UserDTO.OAUTH2_USER_ROLE);
-            userEntity = userService.createUser(userDTO);
+            userEntity = userService.create(userDTO);
         }
 
         return userEntity;

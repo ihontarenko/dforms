@@ -6,7 +6,7 @@ import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.EntityNameAware;
 import df.base.jpa.NamedEntityIdGenerator;
 import jakarta.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "DF_FORM_FIELDS")
@@ -45,7 +45,7 @@ public class FormField implements EntityNameAware, ProtectedEntity {
             joinColumns = @JoinColumn(name = "FIELD_ID"),
             inverseJoinColumns = @JoinColumn(name = "FORM_ID")
     )
-    private List<Form> forms;
+    private Set<Form> forms;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ELEMENT_TYPE", nullable = false)
@@ -65,19 +65,19 @@ public class FormField implements EntityNameAware, ProtectedEntity {
     private FieldStatus status;
 
     @OneToMany(mappedBy = "parentField", fetch = FetchType.LAZY)
-    private List<FormFieldGroup> child;
+    private Set<FormFieldGroup> child;
 
     @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
-    private List<FormFieldOption> options;
+    private Set<FormFieldOption> options;
 
     @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
-    private List<FormFieldAttribute> attributes;
+    private Set<FormFieldAttribute> attributes;
 
     @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
-    private List<FormFieldConfig> configs;
+    private Set<FormFieldConfig> configs;
 
     @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
-    private List<FormFieldDefaultValue> defaultValues;
+    private Set<FormFieldDefaultValue> defaultValues;
 
     public String getId() {
         return id;
@@ -87,11 +87,11 @@ public class FormField implements EntityNameAware, ProtectedEntity {
         this.id = id;
     }
 
-    public List<Form> getForms() {
+    public Set<Form> getForms() {
         return forms;
     }
 
-    public void setForms(List<Form> forms) {
+    public void setForms(Set<Form> forms) {
         this.forms = forms;
     }
 
@@ -131,11 +131,11 @@ public class FormField implements EntityNameAware, ProtectedEntity {
         return status;
     }
 
-    public List<FormFieldGroup> getChild() {
+    public Set<FormFieldGroup> getChild() {
         return child;
     }
 
-    public void setChild(List<FormFieldGroup> child) {
+    public void setChild(Set<FormFieldGroup> child) {
         this.child = child;
     }
 
@@ -143,35 +143,35 @@ public class FormField implements EntityNameAware, ProtectedEntity {
         this.status = status;
     }
 
-    public List<FormFieldOption> getOptions() {
+    public Set<FormFieldOption> getOptions() {
         return options;
     }
 
-    public void setOptions(List<FormFieldOption> options) {
+    public void setOptions(Set<FormFieldOption> options) {
         this.options = options;
     }
 
-    public List<FormFieldAttribute> getAttributes() {
+    public Set<FormFieldAttribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<FormFieldAttribute> attributes) {
+    public void setAttributes(Set<FormFieldAttribute> attributes) {
         this.attributes = attributes;
     }
 
-    public List<FormFieldConfig> getConfigs() {
+    public Set<FormFieldConfig> getConfigs() {
         return configs;
     }
 
-    public void setConfigs(List<FormFieldConfig> configs) {
+    public void setConfigs(Set<FormFieldConfig> configs) {
         this.configs = configs;
     }
 
-    public List<FormFieldDefaultValue> getDefaultValues() {
+    public Set<FormFieldDefaultValue> getDefaultValues() {
         return defaultValues;
     }
 
-    public void setDefaultValues(List<FormFieldDefaultValue> defaultValues) {
+    public void setDefaultValues(Set<FormFieldDefaultValue> defaultValues) {
         this.defaultValues = defaultValues;
     }
 

@@ -4,7 +4,7 @@ import df.base.internal.hibernate.generator.PrefixedId;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.Set;
 
 import static df.base.jpa.EntityGraphConstants.FORM_WITH_ENTRIES_WITH_FIELD_ENTRIES;
 import static df.base.jpa.EntityGraphConstants.FORM_WITH_FIELD_ENTRIES_FIELD;
@@ -38,7 +38,7 @@ public class FormEntry {
     private Timestamp createdAt;
 
     @OneToMany(mappedBy = "formEntry", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<FormFieldEntry> fieldEntries;
+    private Set<FormFieldEntry> fieldEntries;
 
     public String getId() {
         return id;
@@ -64,11 +64,11 @@ public class FormEntry {
         this.createdAt = createdAt;
     }
 
-    public List<FormFieldEntry> getFieldEntries() {
+    public Set<FormFieldEntry> getFieldEntries() {
         return fieldEntries;
     }
 
-    public void setFieldEntries(List<FormFieldEntry> fieldEntries) {
+    public void setFieldEntries(Set<FormFieldEntry> fieldEntries) {
         this.fieldEntries = fieldEntries;
     }
 }

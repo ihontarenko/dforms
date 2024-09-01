@@ -1,14 +1,28 @@
 package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
+import df.base.jpa.EntityGraphConstants;
+import df.base.jpa.EntityNameAware;
+import df.base.jpa.NamedEntityIdGenerator;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "DF_FORM_FIELD_CONFIG")
-public class FormFieldConfig {
+@NamedEntityGraph(
+        name = EntityGraphConstants.FORM_FIELD_CONFIG_WITH_FIELD,
+        attributeNodes = @NamedAttributeNode("formField")
+)
+public class FormFieldConfig implements EntityNameAware {
 
     @Id
-    @PrefixedId(prefixValue = "CFG", sequenceName = "FORM_FIELD_CONFIG")
+    @PrefixedId(
+            prefixValue = "CFG",
+            sequenceName = "FORM_FIELD_CONFIG",
+            prefixGenerator = NamedEntityIdGenerator.class,
+            numberFormat = "%06d",
+            incrementBy = 1,
+            prefixSeparator = "_"
+    )
     @Column(name = "ID")
     private String id;
 
@@ -52,6 +66,11 @@ public class FormFieldConfig {
 
     public void setConfigValue(String configValue) {
         this.configValue = configValue;
+    }
+
+    @Override
+    public String getName() {
+        return getConfigName();
     }
 }
 

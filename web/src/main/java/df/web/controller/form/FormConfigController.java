@@ -78,7 +78,7 @@ public class FormConfigController implements FormConfigOperations {
         if (!result.hasErrors()) {
             FormConfig config = configService
                     .createOrUpdate(formService.requireById(configDTO.getFormId()), configDTO);
-            helper.addMessage(success(SUCCESS_FORM_CONFIG_SAVED
+            helper.addMessage(success(SUCCESS_CONFIG_SAVED
                     .formatted(config.getConfigName())));
         }
 
@@ -92,7 +92,7 @@ public class FormConfigController implements FormConfigOperations {
 
         helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(formId));
         helper.setRedirectAttributes(attributes);
-        helper.addMessage(error(SUCCESS_FORM_CONFIG_DELETED.formatted(itemId)));
+        helper.addMessage(error(SUCCESS_CONFIG_DELETED.formatted(itemId)));
 
         configService.deleteIfExists(config.orElse(null));
 
