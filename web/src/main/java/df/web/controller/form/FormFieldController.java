@@ -1,6 +1,6 @@
 package df.web.controller.form;
 
-import df.base.internal.spring.jpa.entity_graph.EntityGraph;
+import df.base.internal.spring.jpa.entity_graph.domain.EntityGraph;
 import df.base.jpa.form.ElementType;
 import df.base.jpa.form.FieldStatus;
 import df.base.jpa.form.FormField;

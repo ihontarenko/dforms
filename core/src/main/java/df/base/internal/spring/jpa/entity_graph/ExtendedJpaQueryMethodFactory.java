@@ -18,7 +18,7 @@ public class ExtendedJpaQueryMethodFactory implements JpaQueryMethodFactory {
 
     @Override
     public JpaQueryMethod build(Method method, RepositoryMetadata metadata, ProjectionFactory factory) {
-        return new ExtendedJpaQueryMethod(method, metadata, factory, extractor);
+        return new QueryMethod(method, metadata, factory, extractor);
     }
 
 }

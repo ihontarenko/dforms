@@ -1,6 +1,6 @@
 package df.base.service.form;
 
-import df.base.internal.spring.jpa.entity_graph.EntityGraph;
+import df.base.internal.spring.jpa.entity_graph.domain.EntityGraph;
 import df.base.jpa.form.*;
 import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;

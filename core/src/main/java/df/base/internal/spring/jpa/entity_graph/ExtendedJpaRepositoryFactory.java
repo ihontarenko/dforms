@@ -11,14 +11,14 @@ public class ExtendedJpaRepositoryFactory extends JpaRepositoryFactory {
     public ExtendedJpaRepositoryFactory(EntityManager em) {
         super(em);
         addRepositoryProxyPostProcessor((factory, ri)
-                -> factory.addAdvice(new ProxyPostProcessor(em, ri.getDomainType())));
+                -> factory.addAdvice(new EntityGraphRepositoryProxy(em, ri.getDomainType())));
         setQueryMethodFactory(new ExtendedJpaQueryMethodFactory(
                 PersistenceProvider.fromEntityManager(em)));
     }
 
     @Override
     protected Class<?> getRepositoryBaseClass(RepositoryMetadata metadata) {
-        return ExtendedSimpleJpaRepository.class;
+        return EntityGraphJpaRepository.class;
     }
 
 }

@@ -8,12 +8,12 @@ import org.springframework.data.util.TypeInformation;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class ExtendedJpaParameters extends JpaParameters {
+public class Parameters extends JpaParameters {
 
     private static final List<? extends Class<?>> SPECIAL_PARAMETERS = Stream.of(ExtendedParameterTypes.values())
             .map(ExtendedParameterTypes::type).toList();
 
-    public ExtendedJpaParameters(ParametersSource source) {
+    public Parameters(ParametersSource source) {
         super(source, parameter -> new Parameter(parameter, source.getDomainTypeInformation()));
     }
 

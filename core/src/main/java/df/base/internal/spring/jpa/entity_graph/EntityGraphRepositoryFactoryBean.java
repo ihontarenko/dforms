@@ -7,10 +7,10 @@ import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
 
-public class ExtendedJpaRepositoryFactoryBean<R extends Repository<T, I>, T, I>
+public class EntityGraphRepositoryFactoryBean<R extends Repository<T, I>, T, I>
         extends JpaRepositoryFactoryBean<R, T, I> {
 
-    public ExtendedJpaRepositoryFactoryBean(Class<? extends R> repositoryInterface) {
+    public EntityGraphRepositoryFactoryBean(Class<? extends R> repositoryInterface) {
         super(repositoryInterface);
     }
 

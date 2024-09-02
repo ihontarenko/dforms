@@ -23,6 +23,6 @@ public interface FormFieldRepository extends ExtendedJpaRepository<FormField, St
     @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_ALL_RELATED)
     Optional<FormField> findById(@Param("id") String id);
 
-    Optional<FormField> findByStatus(FieldStatus status, df.base.internal.spring.jpa.entity_graph.EntityGraph graph);
+    Optional<FormField> findByStatus(FieldStatus status, df.base.internal.spring.jpa.entity_graph.domain.EntityGraph graph);
 
 }
