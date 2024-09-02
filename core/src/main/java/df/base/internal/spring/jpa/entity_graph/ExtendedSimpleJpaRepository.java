@@ -1,7 +1,5 @@
-package df.base.internal.spring.data.jpa.entity.extention.support;
+package df.base.internal.spring.jpa.entity_graph;
 
-import df.base.internal.spring.data.jpa.entity.extention.EntityGraph;
-import df.base.internal.spring.data.jpa.entity.extention.ExtendedJpaRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;

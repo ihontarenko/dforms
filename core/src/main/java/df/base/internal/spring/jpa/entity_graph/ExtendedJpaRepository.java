@@ -1,4 +1,4 @@
-package df.base.internal.spring.data.jpa.entity.extention;
+package df.base.internal.spring.jpa.entity_graph;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

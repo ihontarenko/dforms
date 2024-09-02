@@ -1,8 +1,10 @@
 package df.web.controller.form;
 
+import df.base.internal.spring.jpa.entity_graph.EntityGraph;
 import df.base.jpa.form.ElementType;
 import df.base.jpa.form.FieldStatus;
 import df.base.jpa.form.FormField;
+import df.base.jpa.form.FormFieldRepository;
 import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;
 import df.base.service.JpaResourceNotFoundException;
@@ -28,9 +30,13 @@ public class FormFieldController implements FormFieldOperations {
     private final ControllerHelper controllerHelper;
     private final FormFieldService fieldService;
 
-    public FormFieldController(ControllerHelper controllerHelper, FormFieldService fieldService) {
+    // todo: test
+    private final FormFieldRepository repository;
+
+    public FormFieldController(ControllerHelper controllerHelper, FormFieldService fieldService, FormFieldRepository repository) {
         this.fieldService = fieldService;
         this.controllerHelper = controllerHelper;
+        this.repository = repository;
         controllerHelper.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
         fieldService.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
     }
@@ -40,6 +46,8 @@ public class FormFieldController implements FormFieldOperations {
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_LIST);
 
         bindAttributes(new FormFieldDTO());
+
+        repository.findByStatus(FieldStatus.ACTIVE, new EntityGraph(){});
 
         return controllerHelper.resolveWithoutRedirect();
     }

@@ -3,7 +3,7 @@ package df.base.configuration;
 import df.base.Constants;
 import df.base.internal.BeansHolder;
 import df.base.internal.i18n.Translator;
-import df.base.internal.spring.data.jpa.entity.extention.support.EntityGraphJpaRepositoryFactoryBean;
+import df.base.internal.spring.jpa.entity_graph.ExtendedJpaRepositoryFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @EnableAutoConfiguration
 @EnableJpaRepositories(
         basePackages = Constants.ENTITY_PACKAGE_TO_SCAN,
-        repositoryFactoryBeanClass = EntityGraphJpaRepositoryFactoryBean.class)
+        repositoryFactoryBeanClass = ExtendedJpaRepositoryFactoryBean.class)
 @ComponentScan(basePackages = {
         Constants.BASE_PACKAGE_TO_SCAN})
 @EnableConfigurationProperties

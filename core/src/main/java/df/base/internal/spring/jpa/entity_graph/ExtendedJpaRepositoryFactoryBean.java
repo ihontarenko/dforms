@@ -1,16 +1,16 @@
-package df.base.internal.spring.data.jpa.entity.extention.support;
+package df.base.internal.spring.jpa.entity_graph;
 
 import jakarta.persistence.EntityManager;
+import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
-import static df.base.internal.spring.data.jpa.entity.extention.support.RepositoryEntityManagerInjector.proxy;
 
-public class EntityGraphJpaRepositoryFactoryBean<R extends Repository<T, I>, T, I>
+public class ExtendedJpaRepositoryFactoryBean<R extends Repository<T, I>, T, I>
         extends JpaRepositoryFactoryBean<R, T, I> {
 
-    public EntityGraphJpaRepositoryFactoryBean(Class<? extends R> repositoryInterface) {
+    public ExtendedJpaRepositoryFactoryBean(Class<? extends R> repositoryInterface) {
         super(repositoryInterface);
     }
 
@@ -21,7 +21,11 @@ public class EntityGraphJpaRepositoryFactoryBean<R extends Repository<T, I>, T, 
 
     @Override
     public void setEntityManager(EntityManager em) {
-        super.setEntityManager(proxy(em));
+        ProxyFactory factory = new ProxyFactory(em);
+
+        factory.addAdvice(new EntityManagerProxy());
+
+        super.setEntityManager((EntityManager) factory.getProxy());
     }
 
 }

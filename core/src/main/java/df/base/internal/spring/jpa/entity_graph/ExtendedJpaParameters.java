@@ -1,35 +1,41 @@
-package df.base.internal.spring.data.jpa.entity.extention.query;
+package df.base.internal.spring.jpa.entity_graph;
 
-import df.base.internal.spring.data.jpa.entity.extention.EntityGraph;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.jpa.repository.query.JpaParameters;
 import org.springframework.data.repository.query.ParametersSource;
 import org.springframework.data.util.TypeInformation;
 
-public class EntityGraphJpaParameters extends JpaParameters {
+import java.util.List;
+import java.util.stream.Stream;
 
-    public EntityGraphJpaParameters(ParametersSource source) {
+public class ExtendedJpaParameters extends JpaParameters {
+
+    private static final List<? extends Class<?>> SPECIAL_PARAMETERS = Stream.of(ExtendedParameterTypes.values())
+            .map(ExtendedParameterTypes::type).toList();
+
+    public ExtendedJpaParameters(ParametersSource source) {
         super(source, parameter -> new Parameter(parameter, source.getDomainTypeInformation()));
     }
 
     private static class Parameter extends JpaParameters.JpaParameter {
 
-        private final boolean entityGraph;
+        private final boolean isSpecialParameter;
 
         private Parameter(MethodParameter parameter, TypeInformation<?> domainType) {
             super(parameter, domainType);
-            this.entityGraph = EntityGraph.class.isAssignableFrom(parameter.getParameterType());
+            this.isSpecialParameter = SPECIAL_PARAMETERS.contains(parameter.getParameterType());
         }
 
         @Override
         public boolean isBindable() {
-            return !entityGraph && super.isBindable();
+            return !isSpecialParameter && super.isBindable();
         }
 
         @Override
         public boolean isSpecialParameter() {
-            return entityGraph || super.isSpecialParameter();
+            return isSpecialParameter || super.isSpecialParameter();
         }
+
     }
 
 }

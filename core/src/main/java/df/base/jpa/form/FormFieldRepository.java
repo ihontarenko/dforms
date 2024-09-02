@@ -1,6 +1,6 @@
 package df.base.jpa.form;
 
-import df.base.internal.spring.data.jpa.entity.extention.ExtendedJpaRepository;
+import df.base.internal.spring.jpa.entity_graph.ExtendedJpaRepository;
 import df.base.jpa.EntityGraphConstants;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.query.Param;
@@ -22,5 +22,7 @@ public interface FormFieldRepository extends ExtendedJpaRepository<FormField, St
 
     @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_ALL_RELATED)
     Optional<FormField> findById(@Param("id") String id);
+
+    Optional<FormField> findByStatus(FieldStatus status, df.base.internal.spring.jpa.entity_graph.EntityGraph graph);
 
 }

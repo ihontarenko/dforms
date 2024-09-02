@@ -15,5 +15,6 @@ breadcrumbs:
         url: "/form"
       - label: "Form Details {formId}"
         url: "/form/{formId}"
-     - label: "Edit Configuration"
+      - label: "Edit Configuration"
         url: "/form/config/{configId}"
+        dataProvider: ""

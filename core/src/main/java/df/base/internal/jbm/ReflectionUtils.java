@@ -6,6 +6,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 
+import static java.util.Objects.requireNonNull;
+
 abstract public class ReflectionUtils {
 
     private static final Map<Class<?>, Object> PRIMITIVES_DEFAULT_TYPE_VALUES = Map.of(
@@ -144,7 +146,23 @@ abstract public class ReflectionUtils {
         return value;
     }
 
-    private static Optional<Field> getField(Class<?> targetClass, String fieldName) {
+    public static List<Field> getObjectField(Object object, int modifiers) {
+        return getClassField(requireNonNull(object).getClass(), modifiers);
+    }
+
+    public static List<Field> getClassField(Class<?> type, int modifiers) {
+        List<Field> fields = new ArrayList<>();
+
+        for (Field field : type.getDeclaredFields()) {
+            if ((field.getModifiers() & modifiers) == 0) {
+                fields.add(field);
+            }
+        }
+
+        return fields;
+    }
+
+    public static Optional<Field> getField(Class<?> targetClass, String fieldName) {
         try {
             Field field = targetClass.getDeclaredField(fieldName);
             field.setAccessible(true);
