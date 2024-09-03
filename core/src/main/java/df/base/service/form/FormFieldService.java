@@ -1,11 +1,14 @@
 package df.base.service.form;
 
 import df.base.internal.spring.jpa.entity_graph.JpaEntityGraph;
-import df.base.jpa.form.*;
+import df.base.jpa.EntityGraphConstants;
+import df.base.jpa.form.FieldStatus;
+import df.base.jpa.form.FormField;
+import df.base.jpa.form.FormFieldRepository;
 import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;
-import df.base.service.RedirectAware;
 import df.base.service.JpaResourceNotFoundException;
+import df.base.service.RedirectAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +18,9 @@ import java.util.Optional;
 
 import static df.base.Messages.FORM_FIELD_NOT_FOUND;
 import static df.base.Messages.REQUIRED_ID_CANNOT_BE_NULL;
+import static df.base.internal.spring.jpa.entity_graph.JpaEntityGraph.Dynamic.fetch;
+import static df.base.internal.spring.jpa.entity_graph.JpaEntityGraph.Named.name;
+import static df.base.jpa.EntityGraphConstants.FORM_FIELD_WITH_ALL_RELATED;
 import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
@@ -28,12 +34,12 @@ public class FormFieldService implements RedirectAware {
 
     @Transactional(readOnly = true)
     public List<FormField> getAll() {
-        return repository.findAll(JpaEntityGraph.Dynamic.fetch().attribute("configs", "child.parentField").build());
+        return repository.findAll(name(FORM_FIELD_WITH_ALL_RELATED));
     }
 
     @Transactional(readOnly = true)
     public Optional<FormField> getById(String id) {
-        return id == null ? Optional.empty() : repository.findById(id);
+        return id == null ? Optional.empty() : repository.findById(id, fetch("child"));
     }
 
     @Transactional(readOnly = true)

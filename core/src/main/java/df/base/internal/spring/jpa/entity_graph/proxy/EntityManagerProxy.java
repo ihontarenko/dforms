@@ -2,7 +2,6 @@ package df.base.internal.spring.jpa.entity_graph.proxy;
 
 import df.base.internal.spring.jpa.entity_graph.MethodInvocationDecorator;
 import df.base.internal.spring.jpa.entity_graph.invocation.EntityManagerMethodInvocation;
-import jakarta.persistence.EntityGraph;
 import jakarta.persistence.Query;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -11,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static df.base.internal.spring.jpa.entity_graph.ProxyUtils.proxy;
 import static java.util.Arrays.asList;
 
 public class EntityManagerProxy implements MethodInterceptor {
@@ -24,26 +24,26 @@ public class EntityManagerProxy implements MethodInterceptor {
         MethodInvocationDecorator decorator  = new EntityManagerMethodInvocation(invocation);
         String                    methodName = decorator.getMethodName();
 
+        if (FIND_METHOD.equals(methodName) || CREATE_QUERY_METHODS.contains(methodName)) {
+            LOGGER.debug("ENTITY_MANAGER_PROXY: [FIND|CREATE] METHOD {}#{}",
+                    decorator.getMethodClassName(), decorator.getMethodName());
+        }
+
+        // catch find method
         if (FIND_METHOD.equals(methodName)) {
-            LOGGER.debug("ENTITY_MANAGER_PROXY: Find method caught '{}' try to apply entity-graph", methodName);
-            applyEntityGraph(null, decorator);
+            throw new UnsupportedOperationException("NOT IMPLEMENTED YET");
+            // todo: apply entity-graph for find method
         }
 
         Object result = decorator.proceed();
 
-        if (CREATE_QUERY_METHODS.contains(methodName)) {
-            LOGGER.debug("ENTITY_MANAGER_PROXY: Create query method caught '{}'", methodName);
-        }
-
-        if (result instanceof Query query) {
-            System.out.println(">>> QUERY: " + query);
+        // catch create methods ["createQuery", "createNamedQuery"]
+        if (CREATE_QUERY_METHODS.contains(methodName) && result instanceof Query query) {
+            // if applicable method name and result is Query then we proxy it
+            result = proxy(query, new QueryProxy());
         }
 
         return result;
-    }
-
-    private void applyEntityGraph(EntityGraph<?> entityGraph, MethodInvocationDecorator invocation) {
-        System.out.println(invocation);
     }
 
 }

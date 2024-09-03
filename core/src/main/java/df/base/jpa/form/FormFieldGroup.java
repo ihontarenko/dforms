@@ -21,16 +21,15 @@ public class FormFieldGroup {
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PARENT_FIELD_ID", nullable = false)
-    private FormField parentField;
+    @JoinColumn(name = "PARENT_FIELD_ID", referencedColumnName = "ID")
+    private FormField parent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FIELD_ID", nullable = false)
+    @JoinColumn(name = "FIELD_ID")
     private FormField field;
 
     private Integer sequenceOrder;
 
-    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -39,12 +38,12 @@ public class FormFieldGroup {
         this.id = id;
     }
 
-    public FormField getParentField() {
-        return parentField;
+    public FormField getParent() {
+        return parent;
     }
 
-    public void setParentField(FormField parentField) {
-        this.parentField = parentField;
+    public void setParent(FormField parentField) {
+        this.parent = parentField;
     }
 
     public FormField getField() {

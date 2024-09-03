@@ -15,8 +15,7 @@ public class ExtendedJpaRepositoryFactory extends JpaRepositoryFactory {
         super(em);
         addRepositoryProxyPostProcessor((factory, ri)
                 -> factory.addAdvice(new JpaRepositoryProxy(em, ri.getDomainType())));
-        setQueryMethodFactory(new QueryMethodFactory(
-                PersistenceProvider.fromEntityManager(em)));
+        setQueryMethodFactory(new QueryMethodFactory(PersistenceProvider.fromEntityManager(em)));
     }
 
     @Override

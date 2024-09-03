@@ -1,6 +1,7 @@
 package df.base.internal.spring.jpa.entity_graph.support;
 
 import df.base.internal.spring.jpa.entity_graph.ExtendedJpaRepositoryFactory;
+import df.base.internal.spring.jpa.entity_graph.ProxyUtils;
 import df.base.internal.spring.jpa.entity_graph.proxy.EntityManagerProxy;
 import jakarta.persistence.EntityManager;
 import org.springframework.aop.framework.ProxyFactory;
@@ -22,12 +23,9 @@ public class EntityGraphRepositoryFactoryBean<R extends Repository<T, I>, T, I>
     }
 
     @Override
-    public void setEntityManager(EntityManager em) {
-        ProxyFactory factory = new ProxyFactory(em);
-
-        factory.addAdvice(new EntityManagerProxy());
-
-        super.setEntityManager((EntityManager) factory.getProxy());
+    public void setEntityManager(EntityManager entityManager) {
+        // proxy EntityManager's method
+        super.setEntityManager(ProxyUtils.proxy(entityManager, new EntityManagerProxy()));
     }
 
 }

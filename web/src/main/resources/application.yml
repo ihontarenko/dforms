@@ -16,7 +16,8 @@ management:
 logging:
   level:
     df.base.internal.jbm: DEBUG
-    df.base.internal.spring.jpa.entity_graph: DEBUG
+    df.base.internal.spring.jpa.entity_graph.proxy: TRACE
+    df.base.internal.spring.jpa.entity_graph: TRACE
 # Endpoints
 endpoints:
   shutdown:

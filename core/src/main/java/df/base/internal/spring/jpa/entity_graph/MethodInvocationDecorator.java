@@ -31,6 +31,22 @@ abstract public class MethodInvocationDecorator implements MethodInvocation {
         return getMethod().getName();
     }
 
+    public Class<?> getMethodClass() {
+        return getMethod().getDeclaringClass();
+    }
+
+    public String getMethodClassName() {
+        return getMethodClass().getName();
+    }
+
+    public Class<?> getThisClass() {
+        return getThis().getClass();
+    }
+
+    public String getThisClassName() {
+        return getThisClass().getSimpleName();
+    }
+
     @Override
     public Object[] getArguments() {
         return delegate.getArguments();

@@ -1,6 +1,8 @@
 package df.base.internal.spring.jpa.entity_graph.proxy;
 
+import df.base.internal.spring.jpa.entity_graph.EntityGraphQueryHint;
 import df.base.internal.spring.jpa.entity_graph.JpaEntityGraph;
+import df.base.internal.spring.jpa.entity_graph.ObjectsHolder;
 import df.base.internal.spring.jpa.entity_graph.invocation.JpaRepositoryMethodInvocation;
 import jakarta.persistence.EntityGraph;
 import jakarta.persistence.EntityManager;
@@ -31,18 +33,15 @@ public class JpaRepositoryProxy implements MethodInterceptor {
         if (argument.isPresent()) {
             JpaEntityGraph jpaEntityGraph = argument.get();
 
-            LOGGER.debug("JPA_REPOSITORY_PROXY: A special argument was detected in '{}({})#{}'",
-                    decorator.getThis().getClass().getSimpleName(), entityClass.getSimpleName(), methodName);
+            LOGGER.debug("JPA_REPOSITORY_PROXY: JpaEntityGraph found '{}({})#{}'",
+                    decorator.getThisClassName(), entityClass.getSimpleName(), methodName);
 
             EntityGraph<?> entityGraph = jpaEntityGraph.createEntityGraph(entityManager, entityClass);
+
+            ObjectsHolder.set(new EntityGraphQueryHint(jpaEntityGraph.entityGraphType(), entityGraph));
         }
 
-        try {
-            System.out.println("invocation.proceed");
-            return invocation.proceed();
-        } finally {
-            System.out.println("finally");
-        }
+        return invocation.proceed();
     }
 
 }

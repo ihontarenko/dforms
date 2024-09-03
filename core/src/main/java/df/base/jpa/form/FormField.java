@@ -2,6 +2,7 @@ package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
 import df.base.internal.hibernate.support.ProtectedEntity;
+import df.base.jpa.EntityConstants;
 import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.EntityNameAware;
 import df.base.jpa.NamedEntityIdGenerator;
@@ -67,8 +68,13 @@ public class FormField implements EntityNameAware, ProtectedEntity {
     @Column(name = "STATUS", nullable = false)
     private FieldStatus status;
 
-    @OneToMany(mappedBy = "parentField", fetch = FetchType.LAZY)
-    private Set<FormFieldGroup> child;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = EntityConstants.TABLE_FORM_FIELD_GROUP,
+            inverseJoinColumns = @JoinColumn(name = EntityConstants.COLUMN_FORM_FIELD_GROUP_PARENT_FIELD_ID),
+            joinColumns = @JoinColumn(name = EntityConstants.COLUMN_FORM_FIELD_GROUP_FIELD_ID)
+    )
+    private Set<FormField> child;
 
     @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
     private Set<FormFieldOption> options;
@@ -134,11 +140,11 @@ public class FormField implements EntityNameAware, ProtectedEntity {
         return status;
     }
 
-    public Set<FormFieldGroup> getChild() {
+    public Set<FormField> getChild() {
         return child;
     }
 
-    public void setChild(Set<FormFieldGroup> child) {
+    public void setChild(Set<FormField> child) {
         this.child = child;
     }
 

@@ -19,15 +19,10 @@ public interface JpaEntityGraph {
 
     EntityGraph<?> createEntityGraph(EntityManager entityManager, Class<?> entityClass);
 
-    class Dynamic implements JpaEntityGraph {
+    EntityGraphType entityGraphType();
 
-        private final EntityGraphType type;
-        private final List<String>    attributes;
-
-        public Dynamic(EntityGraphType type, List<String> attributes) {
-            this.type = type;
-            this.attributes = attributes;
-        }
+    record Dynamic(EntityGraphType type,
+                   List<String> attributes) implements JpaEntityGraph {
 
         public static Builder load() {
             return builder(EntityGraphType.LOAD);
@@ -52,12 +47,17 @@ public interface JpaEntityGraph {
         }
 
         @Override
+        public EntityGraphType entityGraphType() {
+            return type();
+        }
+
+        @Override
         public EntityGraph<?> createEntityGraph(EntityManager entityManager, Class<?> entityClass) {
             List<String> attributes = new ArrayList<>(this.attributes);
 
             Collections.sort(attributes);
 
-            LOGGER.debug("JPA_ENTITY_GRAPH: Create new dynamic entity graph '{}'", entityClass.getName());
+            LOGGER.debug("JPA_ENTITY_GRAPH: Create '{}'", this);
 
             return EntityGraphUtils.createEntityGraph(entityManager, entityClass, attributes);
         }
@@ -103,9 +103,22 @@ public interface JpaEntityGraph {
             return new Named(name, EntityGraphType.LOAD);
         }
 
+        public static Named name(String name, EntityGraphType type) {
+            return new Named(name, type);
+        }
+
+        public static Named name(String name) {
+            return new Named(name, EntityGraphType.FETCH);
+        }
+
+        @Override
+        public EntityGraphType entityGraphType() {
+            return type;
+        }
+
         @Override
         public EntityGraph<?> createEntityGraph(EntityManager entityManager, Class<?> entityClass) {
-            LOGGER.debug("JPA_ENTITY_GRAPH: Fetch named entity graph '{}'", entityClass.getName());
+            LOGGER.debug("JPA_ENTITY_GRAPH: Get '{}'", this);
 
             return entityManager.getEntityGraph(name);
         }
