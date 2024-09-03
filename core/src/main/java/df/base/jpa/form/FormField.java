@@ -6,6 +6,9 @@ import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.EntityNameAware;
 import df.base.jpa.NamedEntityIdGenerator;
 import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Set;
 
 @Entity
@@ -178,6 +181,26 @@ public class FormField implements EntityNameAware, ProtectedEntity {
     @Override
     public boolean nonRemovable() {
         return forms != null && forms.size() > 0;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+
+        if (other == null || getClass() != other.getClass()) return false;
+
+        FormField field = (FormField) other;
+
+        return new EqualsBuilder()
+                .append(id, field.id).append(elementType, field.elementType).append(name, field.name)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(id).append(elementType).append(name)
+                .toHashCode();
     }
 
 }

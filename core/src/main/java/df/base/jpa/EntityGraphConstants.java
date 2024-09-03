@@ -15,6 +15,8 @@ public class EntityGraphConstants {
     // Field Graph
     public static final String FORM_FIELD_WITH_CONFIGS      = "FormFieldConfig.withRelatedConfig";
     public static final String FORM_FIELD_WITH_ALL_RELATED  = "FormFieldConfig.withAllRelated";
+
+    // Field-Config Graph
     public static final String FORM_FIELD_CONFIG_WITH_FIELD = "FormFieldConfig.withFieldOnly";
 
     private EntityGraphConstants() {

@@ -1,6 +1,5 @@
 package df.base.internal.spring.jpa.entity_graph;
 
-import df.base.internal.spring.jpa.entity_graph.domain.EntityGraph;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
@@ -19,7 +18,7 @@ public class EntityGraphJpaRepository<T, ID> extends SimpleJpaRepository<T, ID>
     }
 
     @Override
-    public List<T> findAll(EntityGraph graph) {
+    public List<T> findAll(JpaEntityGraph graph) {
         return findAll();
     }
 

@@ -17,6 +17,7 @@ logging:
   level:
     org.springframework.security: DEBUG
     df.base.internal.jbm: DEBUG
+    df.base.internal.spring.jpa.entity_graph: DEBUG
 # Endpoints
 endpoints:
   shutdown:

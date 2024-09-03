@@ -1,6 +1,7 @@
 package df.web.controller.form;
 
-import df.base.internal.spring.jpa.entity_graph.domain.EntityGraph;
+import df.base.internal.spring.jpa.entity_graph.JpaEntityGraph;
+import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.form.ElementType;
 import df.base.jpa.form.FieldStatus;
 import df.base.jpa.form.FormField;
@@ -21,6 +22,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static df.base.Messages.*;
+import static df.base.internal.spring.jpa.entity_graph.JpaEntityGraph.Named.load;
 import static df.web.common.flash.FlashMessage.*;
 import static df.web.common.flash.FlashMessage.error;
 
@@ -47,7 +49,7 @@ public class FormFieldController implements FormFieldOperations {
 
         bindAttributes(new FormFieldDTO());
 
-        repository.findByStatus(FieldStatus.ACTIVE, new EntityGraph(){});
+        repository.findByStatus(FieldStatus.ACTIVE, load(EntityGraphConstants.FORM_FIELD_WITH_CONFIGS));
 
         return controllerHelper.resolveWithoutRedirect();
     }

@@ -6,6 +6,10 @@ public class EntityGraphException extends RuntimeException {
         super(message);
     }
 
+    public EntityGraphException(Throwable cause) {
+        super(cause);
+    }
+
     public EntityGraphException(String message, Throwable cause) {
         super(message, cause);
     }

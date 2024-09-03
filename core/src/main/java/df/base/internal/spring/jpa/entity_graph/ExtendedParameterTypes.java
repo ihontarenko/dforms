@@ -1,10 +1,8 @@
 package df.base.internal.spring.jpa.entity_graph;
 
-import df.base.internal.spring.jpa.entity_graph.domain.EntityGraph;
-
 public enum ExtendedParameterTypes {
 
-    ENTITY_GRAPH(EntityGraph.class);
+    ENTITY_GRAPH(JpaEntityGraph.class);
 
     private final Class<?> type;
 

@@ -8,9 +8,9 @@ import java.util.Optional;
 
 import static java.util.Arrays.stream;
 
-public class MethodInvocationDecorator implements MethodInvocation {
+abstract public class MethodInvocationDecorator implements MethodInvocation {
 
-    private final MethodInvocation delegate;
+    protected final MethodInvocation delegate;
 
     public MethodInvocationDecorator(MethodInvocation delegate) {
         this.delegate = delegate;
@@ -25,6 +25,10 @@ public class MethodInvocationDecorator implements MethodInvocation {
     @Override
     public Method getMethod() {
         return delegate.getMethod();
+    }
+
+    public String getMethodName() {
+        return getMethod().getName();
     }
 
     @Override
