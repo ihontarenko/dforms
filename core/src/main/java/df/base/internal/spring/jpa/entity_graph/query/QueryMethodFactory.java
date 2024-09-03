@@ -1,4 +1,4 @@
-package df.base.internal.spring.jpa.entity_graph;
+package df.base.internal.spring.jpa.entity_graph.query;
 
 import org.springframework.data.jpa.provider.QueryExtractor;
 import org.springframework.data.jpa.repository.query.JpaQueryMethod;
@@ -8,11 +8,11 @@ import org.springframework.data.repository.core.RepositoryMetadata;
 
 import java.lang.reflect.Method;
 
-public class ExtendedJpaQueryMethodFactory implements JpaQueryMethodFactory {
+public class QueryMethodFactory implements JpaQueryMethodFactory {
 
     private final QueryExtractor extractor;
 
-    public ExtendedJpaQueryMethodFactory(QueryExtractor extractor) {
+    public QueryMethodFactory(QueryExtractor extractor) {
         this.extractor = extractor;
     }
 

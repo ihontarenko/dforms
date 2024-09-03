@@ -31,13 +31,18 @@ public class JpaRepositoryProxy implements MethodInterceptor {
         if (argument.isPresent()) {
             JpaEntityGraph jpaEntityGraph = argument.get();
 
-            LOGGER.debug("JPA_REPOSITORY_PROXY: A special argument was detected in '{}#{}'",
-                    decorator.getRepository().getClass().getName(), methodName);
+            LOGGER.debug("JPA_REPOSITORY_PROXY: A special argument was detected in '{}({})#{}'",
+                    decorator.getThis().getClass().getSimpleName(), entityClass.getSimpleName(), methodName);
 
             EntityGraph<?> entityGraph = jpaEntityGraph.createEntityGraph(entityManager, entityClass);
         }
 
-        return invocation.proceed();
+        try {
+            System.out.println("invocation.proceed");
+            return invocation.proceed();
+        } finally {
+            System.out.println("finally");
+        }
     }
 
 }

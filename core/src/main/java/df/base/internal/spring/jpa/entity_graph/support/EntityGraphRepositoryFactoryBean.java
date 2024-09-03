@@ -1,5 +1,6 @@
-package df.base.internal.spring.jpa.entity_graph;
+package df.base.internal.spring.jpa.entity_graph.support;
 
+import df.base.internal.spring.jpa.entity_graph.ExtendedJpaRepositoryFactory;
 import df.base.internal.spring.jpa.entity_graph.proxy.EntityManagerProxy;
 import jakarta.persistence.EntityManager;
 import org.springframework.aop.framework.ProxyFactory;
