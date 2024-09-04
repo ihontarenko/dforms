@@ -1,22 +1,23 @@
 package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
+import df.base.jpa.EntityConstants;
 import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.EntityNameAware;
 import df.base.jpa.NamedEntityIdGenerator;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "DF_FORM_FIELD_CONFIG")
+@Table(name = EntityConstants.TABLE_FIELD_CONFIG)
 @NamedEntityGraph(
         name = EntityGraphConstants.FORM_FIELD_CONFIG_WITH_FIELD,
-        attributeNodes = @NamedAttributeNode("formField")
+        attributeNodes = @NamedAttributeNode("field")
 )
 public class FieldConfig implements EntityNameAware {
 
     @Id
     @PrefixedId(
-            prefixValue = "CFG",
+            prefixValue = "cfg",
             sequenceName = "FORM_FIELD_CONFIG",
             prefixGenerator = NamedEntityIdGenerator.class,
             numberFormat = "%06d",
@@ -28,7 +29,7 @@ public class FieldConfig implements EntityNameAware {
 
     @ManyToOne
     @JoinColumn(name = "FIELD_ID", nullable = false)
-    private Field formField;
+    private Field field;
 
     @Column(name = "CONFIG_NAME", nullable = false)
     private String configName;
@@ -44,12 +45,12 @@ public class FieldConfig implements EntityNameAware {
         this.id = id;
     }
 
-    public Field getFormField() {
-        return formField;
+    public Field getField() {
+        return field;
     }
 
-    public void setFormField(Field formField) {
-        this.formField = formField;
+    public void setField(Field field) {
+        this.field = field;
     }
 
     public String getConfigName() {

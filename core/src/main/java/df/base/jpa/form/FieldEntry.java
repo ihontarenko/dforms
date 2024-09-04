@@ -1,14 +1,15 @@
 package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
+import df.base.jpa.EntityConstants;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "DF_FORM_FIELD_ENTRIES")
+@Table(name = EntityConstants.TABLE_FIELD_ENTRIES)
 public class FieldEntry {
 
     @Id
-    @PrefixedId(prefixValue = "FFE", sequenceName = "FORM_FIELD_ENTRY")
+    @PrefixedId(prefixValue = "E", sequenceName = "FORM_FIELD_ENTRY")
     @Column(name = "ID")
     private String id;
 
@@ -18,7 +19,7 @@ public class FieldEntry {
 
     @ManyToOne
     @JoinColumn(name = "FIELD_ID", nullable = false)
-    private Field formField;
+    private Field field;
 
     @Column(name = "VALUE", nullable = false)
     private String value;
@@ -39,12 +40,12 @@ public class FieldEntry {
         this.formEntry = formEntry;
     }
 
-    public Field getFormField() {
-        return formField;
+    public Field getField() {
+        return field;
     }
 
-    public void setFormField(Field formField) {
-        this.formField = formField;
+    public void setField(Field field) {
+        this.field = field;
     }
 
     public String getValue() {

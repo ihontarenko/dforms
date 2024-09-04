@@ -5,8 +5,8 @@ import df.base.jpa.form.FieldConfig;
 import df.base.mapper.form.FormFieldConfigMapper;
 import df.base.model.form.FormFieldConfigDTO;
 import df.base.service.JpaResourceNotFoundException;
-import df.base.service.form.FormFieldConfigService;
-import df.base.service.form.FormFieldService;
+import df.base.service.form.FieldConfigService;
+import df.base.service.form.FieldService;
 import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
 import org.springframework.stereotype.Controller;
@@ -24,14 +24,14 @@ import static df.web.common.flash.FlashMessage.error;
 import static df.web.common.flash.FlashMessage.success;
 
 @Controller
-public class FormFieldConfigController implements FormFieldConfigOperations {
+public class FieldConfigController implements FieldConfigOperations {
 
-    private final ControllerHelper  helper;
-    private final FormFieldConfigService configService;
-    private final FormFieldService       fieldService;
+    private final ControllerHelper   helper;
+    private final FieldConfigService configService;
+    private final FieldService       fieldService;
 
-    public FormFieldConfigController(ControllerHelper helper, FormFieldConfigService configService,
-                                     FormFieldService fieldService) {
+    public FieldConfigController(ControllerHelper helper, FieldConfigService configService,
+                                 FieldService fieldService) {
         this.helper = helper;
         this.configService = configService;
         this.fieldService = fieldService;
@@ -89,7 +89,7 @@ public class FormFieldConfigController implements FormFieldConfigOperations {
     @Override
     public ModelAndView remove(String itemId, RedirectAttributes attributes) {
         Optional<FieldConfig> config  = configService.getById(itemId);
-        String                fieldId = config.map(c -> c.getFormField().getId()).orElse(null);
+        String                fieldId = config.map(c -> c.getField().getId()).orElse(null);
 
         helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(fieldId));
         helper.setRedirectAttributes(attributes);

@@ -9,7 +9,7 @@ import df.base.jpa.form.support.UsageType;
 import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;
 import df.base.service.JpaResourceNotFoundException;
-import df.base.service.form.FormFieldService;
+import df.base.service.form.FieldService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
 import df.web.controller.MAVConstants;
@@ -27,15 +27,15 @@ import static df.web.common.flash.FlashMessage.*;
 import static df.web.common.flash.FlashMessage.error;
 
 @Controller
-public class FormFieldController implements FormFieldOperations {
+public class FieldController implements FieldOperations {
 
     private final ControllerHelper controllerHelper;
-    private final FormFieldService fieldService;
+    private final FieldService     fieldService;
 
     // todo: test
     private final FieldRepository repository;
 
-    public FormFieldController(ControllerHelper controllerHelper, FormFieldService fieldService, FieldRepository repository) {
+    public FieldController(ControllerHelper controllerHelper, FieldService fieldService, FieldRepository repository) {
         this.fieldService = fieldService;
         this.controllerHelper = controllerHelper;
         this.repository = repository;

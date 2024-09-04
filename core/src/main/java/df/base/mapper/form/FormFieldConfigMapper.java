@@ -29,7 +29,7 @@ public class FormFieldConfigMapper implements Mapper<FieldConfig, FormFieldConfi
         destination.setId(source.getId());
         destination.setConfigValue(source.getConfigValue());
         destination.setConfigName(source.getConfigName());
-        destination.setFormFieldId(source.getFormField().getId());
+        destination.setFormFieldId(source.getField().getId());
     }
 
     @Override

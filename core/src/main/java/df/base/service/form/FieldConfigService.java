@@ -18,7 +18,7 @@ import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
 @Service
-public class FormFieldConfigService implements ServiceInterface<String, FormFieldConfigDTO, FieldConfig, Field> {
+public class FieldConfigService implements ServiceInterface<String, FormFieldConfigDTO, FieldConfig, Field> {
 
     @Autowired
     private FieldConfigRepository repository;
@@ -32,7 +32,7 @@ public class FormFieldConfigService implements ServiceInterface<String, FormFiel
 
         formConfig.setConfigName(formConfigDTO.getConfigName());
         formConfig.setConfigValue(formConfigDTO.getConfigValue());
-        formConfig.setFormField(field);
+        formConfig.setField(field);
 
         return repository.save(formConfig);
     }
@@ -79,12 +79,12 @@ public class FormFieldConfigService implements ServiceInterface<String, FormFiel
 
     @Transactional(readOnly = true)
     public List<FieldConfig> getAllByFieldId(String fieldId) {
-        return repository.findAllByFormFieldId(fieldId);
+        return repository.findAllByFieldId(fieldId);
     }
 
     @Transactional(readOnly = true)
     public List<FieldConfig> getAllByField(Field field) {
-        return repository.findAllByFormField(field);
+        return repository.findAllByField(field);
     }
 
     @Transactional

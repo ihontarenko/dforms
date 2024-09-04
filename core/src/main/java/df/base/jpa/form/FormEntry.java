@@ -19,7 +19,7 @@ import static df.base.jpa.EntityGraphConstants.FORM_WITH_FIELD_ENTRIES_FIELD;
         subgraphs = {
                 @NamedSubgraph(
                         name = FORM_WITH_FIELD_ENTRIES_FIELD,
-                        attributeNodes = @NamedAttributeNode("formField")
+                        attributeNodes = @NamedAttributeNode("field")
                 )
         }
 )

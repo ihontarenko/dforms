@@ -15,6 +15,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.HashSet;
 import java.util.Set;
 
+import static df.base.jpa.EntityConstants.*;
+
 @Entity
 @Table(name = "DF_FORM_FIELDS")
 @NamedEntityGraphs({
@@ -55,54 +57,53 @@ public class Field implements EntityNameAware, ProtectedEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "DF_FORM_FIELD_MAPPING",
-            joinColumns = @JoinColumn(name = "FIELD_ID"),
-            inverseJoinColumns = @JoinColumn(name = "FORM_ID")
-    )
+            name = TABLE_FORM_FIELD_MAPPING,
+            joinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FIELD_ID),
+            inverseJoinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FORM_ID))
     private Set<Form> forms;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "ELEMENT_TYPE", nullable = false)
+    @Column(name = COLUMN_FIELD_ELEMENT_TYPE, nullable = false)
     private ElementType elementType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "USAGE_TYPE", nullable = false)
+    @Column(name = COLUMN_FIELD_USAGE_TYPE, nullable = false)
     private UsageType usageType;
 
-    @Column(name = "LABEL", nullable = false)
+    @Column(name = COLUMN_FIELD_LABEL, nullable = false)
     private String label;
 
-    @Column(name = "NAME", nullable = false)
+    @Column(name = COLUMN_FIELD_NAME, nullable = false)
     private String name;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = COLUMN_FIELD_DESCRIPTION)
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "STATUS", nullable = false)
+    @Column(name = COLUMN_FIELD_STATUS, nullable = false)
     private FieldStatus status;
 
     @ManyToMany
     @JoinTable(
-            name = "DF_FIELD_SELF_MAPPING",
-            joinColumns = @JoinColumn(name = "P_ID"),
-            inverseJoinColumns = @JoinColumn(name = "C_ID"))
+            name = TABLE_FIELD_SELF_MAPPING,
+            joinColumns = @JoinColumn(name = COLUMN_FIELD_SELF_MAPPING_P_ID),
+            inverseJoinColumns = @JoinColumn(name = COLUMN_FIELD_SELF_MAPPING_C_ID))
     @OrderColumn(name = "SEQUENCE_ORDER")
     private Set<Field> child = new HashSet<>();
 
-    @ManyToMany(mappedBy = "child")
+    @ManyToMany(mappedBy = FIELD_FIELD_SELF_MAPPING_CHILD)
     private Set<Field> parent = new HashSet<>();
 
-    @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = FIELD_FIELD_OPTIONS_FIELD_ID, fetch = FetchType.LAZY)
     private Set<FieldOption> options;
 
-    @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = FIELD_FIELD_ATTRIBUTES_FIELD, fetch = FetchType.LAZY)
     private Set<FieldAttribute> attributes;
 
-    @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = FIELD_FIELD_CONFIG_FIELD, fetch = FetchType.LAZY)
     private Set<FieldConfig> configs;
 
-    @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = FIELD_FIELD_DEFAULT_VALUES_FIELD, fetch = FetchType.LAZY)
     private Set<FieldDefaultValue> defaultValues;
 
     public String getId() {

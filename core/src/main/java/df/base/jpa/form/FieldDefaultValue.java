@@ -1,10 +1,11 @@
 package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
+import df.base.jpa.EntityConstants;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "DF_FORM_FIELD_DEFAULT_VALUES")
+@Table(name = EntityConstants.TABLE_FIELD_DEFAULT_VALUES)
 public class FieldDefaultValue {
 
     @Id
@@ -18,7 +19,7 @@ public class FieldDefaultValue {
 
     @ManyToOne
     @JoinColumn(name = "FIELD_ID", nullable = false)
-    private Field formField;
+    private Field field;
 
     @Column(name = "DEFAULT_VALUE", nullable = false)
     private String defaultValue;
@@ -39,12 +40,12 @@ public class FieldDefaultValue {
         this.form = form;
     }
 
-    public Field getFormField() {
-        return formField;
+    public Field getField() {
+        return field;
     }
 
-    public void setFormField(Field formField) {
-        this.formField = formField;
+    public void setField(Field field) {
+        this.field = field;
     }
 
     public String getDefaultValue() {

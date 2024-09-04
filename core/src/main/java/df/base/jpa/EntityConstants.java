@@ -19,7 +19,7 @@ public final class EntityConstants {
     // Tables
     public static final String TABLE_FORMS = "DF_FORMS";
     public static final String TABLE_FORM_CONFIG = "DF_FORM_CONFIG";
-    public static final String TABLE_FIELD_MAPPING = "DF_FIELD_MAPPING";
+    public static final String TABLE_FORM_FIELD_MAPPING = "DF_FORM_FIELD_MAPPING";
 
     public static final String TABLE_FIELDS = "DF_FIELDS";
     public static final String TABLE_FIELD_SELF_MAPPING = "DF_FIELD_SELF_MAPPING";
@@ -64,23 +64,26 @@ public final class EntityConstants {
     public static final String COLUMN_FORM_CONFIG_CONFIG_VALUE = "CONFIG_VALUE";
 
     // FormFields, FORM_FIELDS
-    public static final String FIELD_FORM_FIELDS_ID = "id";
-    public static final String COLUMN_FORM_FIELDS_ID = "ID";
+    public static final String FIELD_FIELD_ID = "id";
+    public static final String COLUMN_FIELD_ID = "ID";
 
-    public static final String FIELD_FORM_FIELDS_ELEMENT_TYPE = "elementType";
-    public static final String COLUMN_FORM_FIELDS_ELEMENT_TYPE = "ELEMENT_TYPE";
+    public static final String FIELD_FIELD_ELEMENT_TYPE = "elementType";
+    public static final String COLUMN_FIELD_ELEMENT_TYPE = "ELEMENT_TYPE";
 
-    public static final String FIELD_FORM_FIELDS_NAME = "name";
-    public static final String COLUMN_FORM_FIELDS_NAME = "NAME";
+    public static final String FIELD_FIELD_USAGE_TYPE = "usageType";
+    public static final String COLUMN_FIELD_USAGE_TYPE = "USAGE_TYPE";
 
-    public static final String FIELD_FORM_FIELDS_LABEL = "label";
-    public static final String COLUMN_FORM_FIELDS_LABEL = "LABEL";
+    public static final String FIELD_FIELD_NAME = "name";
+    public static final String COLUMN_FIELD_NAME = "NAME";
 
-    public static final String FIELD_FORM_FIELDS_DESCRIPTION = "description";
-    public static final String COLUMN_FORM_FIELDS_DESCRIPTION = "DESCRIPTION";
+    public static final String FIELD_FIELD_LABEL = "label";
+    public static final String COLUMN_FIELD_LABEL = "LABEL";
 
-    public static final String FIELD_FORM_FIELDS_STATUS = "status";
-    public static final String COLUMN_FORM_FIELDS_STATUS = "STATUS";
+    public static final String FIELD_FIELD_DESCRIPTION = "description";
+    public static final String COLUMN_FIELD_DESCRIPTION = "DESCRIPTION";
+
+    public static final String FIELD_FIELD_STATUS = "status";
+    public static final String COLUMN_FIELD_STATUS = "STATUS";
 
     // FormFieldMapping, FORM_FIELD_MAPPING
     public static final String FIELD_FORM_FIELD_MAPPING_FORM_ID = "formId";
@@ -89,14 +92,21 @@ public final class EntityConstants {
     public static final String FIELD_FORM_FIELD_MAPPING_FIELD_ID = "fieldId";
     public static final String COLUMN_FORM_FIELD_MAPPING_FIELD_ID = "FIELD_ID";
 
+    // FormFieldMapping, FORM_FIELD_MAPPING
+    public static final String FIELD_FIELD_SELF_MAPPING_PARENT = "parent";
+    public static final String COLUMN_FIELD_SELF_MAPPING_P_ID = "P_ID";
+
+    public static final String FIELD_FIELD_SELF_MAPPING_CHILD = "child";
+    public static final String COLUMN_FIELD_SELF_MAPPING_C_ID = "C_ID";
+
     // FormFieldDefaultValues, FORM_FIELD_DEFAULT_VALUES
     public static final String FIELD_FIELD_DEFAULT_VALUES_ID = "id";
     public static final String COLUMN_FIELD_DEFAULT_VALUES_ID = "ID";
 
-    public static final String FIELD_FIELD_DEFAULT_VALUES_FORM_ID = "formId";
+    public static final String FIELD_FIELD_DEFAULT_VALUES_FORM     = "form";
     public static final String COLUMN_FIELD_DEFAULT_VALUES_FORM_ID = "FORM_ID";
 
-    public static final String FIELD_FIELD_DEFAULT_VALUES_FIELD_ID = "fieldId";
+    public static final String FIELD_FIELD_DEFAULT_VALUES_FIELD     = "field";
     public static final String COLUMN_FIELD_DEFAULT_VALUES_FIELD_ID = "FIELD_ID";
 
     public static final String FIELD_FIELD_DEFAULT_VALUES_DEFAULT_VALUE = "defaultValue";
@@ -106,7 +116,7 @@ public final class EntityConstants {
     public static final String FIELD_FIELD_OPTIONS_ID = "id";
     public static final String COLUMN_FIELD_OPTIONS_ID = "ID";
 
-    public static final String FIELD_FIELD_OPTIONS_FIELD_ID = "fieldId";
+    public static final String FIELD_FIELD_OPTIONS_FIELD_ID = "field";
     public static final String COLUMN_FIELD_OPTIONS_FIELD_ID = "FIELD_ID";
 
     public static final String FIELD_FIELD_OPTIONS_OPTION_VALUE = "optionValue";
@@ -119,7 +129,7 @@ public final class EntityConstants {
     public static final String FIELD_FIELD_ATTRIBUTES_ID = "id";
     public static final String COLUMN_FIELD_ATTRIBUTES_ID = "ID";
 
-    public static final String FIELD_FIELD_ATTRIBUTES_FIELD_ID = "formFieldId";
+    public static final String FIELD_FIELD_ATTRIBUTES_FIELD     = "field";
     public static final String COLUMN_FIELD_ATTRIBUTES_FIELD_ID = "FIELD_ID";
 
     public static final String FIELD_FIELD_ATTRIBUTES_NAME = "name";
@@ -132,7 +142,7 @@ public final class EntityConstants {
     public static final String FIELD_FIELD_CONFIG_ID = "id";
     public static final String COLUMN_FIELD_CONFIG_ID = "ID";
 
-    public static final String FIELD_FIELD_CONFIG_FIELD_ID = "formFieldId";
+    public static final String FIELD_FIELD_CONFIG_FIELD     = "field";
     public static final String COLUMN_FIELD_CONFIG_FIELD_ID = "FIELD_ID";
 
     public static final String FIELD_FIELD_CONFIG_CONFIG_NAME = "configName";
@@ -145,7 +155,7 @@ public final class EntityConstants {
     public static final String FIELD_FORM_ENTRIES_ID = "id";
     public static final String COLUMN_FORM_ENTRIES_ID = "ID";
 
-    public static final String FIELD_FORM_ENTRIES_FORM_ID = "formId";
+    public static final String FIELD_FORM_ENTRIES_FORM_ID = "form";
     public static final String COLUMN_FORM_ENTRIES_FORM_ID = "FORM_ID";
 
     public static final String FIELD_FORM_ENTRIES_CREATED_AT = "createdAt";
@@ -155,10 +165,10 @@ public final class EntityConstants {
     public static final String FIELD_FIELD_ENTRIES_ID = "id";
     public static final String COLUMN_FIELD_ENTRIES_ID = "ID";
 
-    public static final String FIELD_FIELD_ENTRIES_FORM_ENTRY_ID = "formEntryId";
+    public static final String FIELD_FIELD_ENTRIES_FORM_ENTRY_ID = "formEntry";
     public static final String COLUMN_FIELD_ENTRIES_FORM_ENTRY_ID = "FORM_ENTRY_ID";
 
-    public static final String FIELD_FIELD_ENTRIES_FIELD_ID = "fieldId";
+    public static final String FIELD_FIELD_ENTRIES_FIELD_ID = "field";
     public static final String COLUMN_FIELD_ENTRIES_FIELD_ID = "FIELD_ID";
 
     public static final String FIELD_FIELD_ENTRIES_VALUE = "value";

@@ -23,7 +23,7 @@ import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
 @Service
-public class FormFieldService implements RedirectAware {
+public class FieldService implements RedirectAware {
 
     @Autowired
     private FieldRepository repository;

@@ -16,9 +16,9 @@ public interface FieldConfigRepository extends JpaRepository<FieldConfig, String
     Optional<FieldConfig> findByConfigName(String configName);
 
     @EntityGraph(EntityGraphConstants.FORM_CONFIG_WITH_FORM)
-    List<FieldConfig> findAllByFormFieldId(String formId);
+    List<FieldConfig> findAllByFieldId(String formId);
 
     @EntityGraph(EntityGraphConstants.FORM_CONFIG_WITH_FORM)
-    List<FieldConfig> findAllByFormField(Field form);
+    List<FieldConfig> findAllByField(Field form);
 
 }

@@ -1,20 +1,21 @@
 package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
+import df.base.jpa.EntityConstants;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "DF_FORM_FIELD_OPTIONS")
+@Table(name = EntityConstants.TABLE_FIELD_OPTIONS)
 public class FieldOption {
 
     @Id
-    @PrefixedId(prefixValue = "FFO", sequenceName = "FORM_FIELD_OPTION")
+    @PrefixedId(prefixValue = "o", sequenceName = "FORM_FIELD_OPTION")
     @Column(name = "ID")
     private String id;
 
     @ManyToOne
     @JoinColumn(name = "FIELD_ID", nullable = false)
-    private Field formField;
+    private Field field;
 
     @Column(name = "OPTION_VALUE", nullable = false)
     private String optionValue;
@@ -30,12 +31,12 @@ public class FieldOption {
         this.id = id;
     }
 
-    public Field getFormField() {
-        return formField;
+    public Field getField() {
+        return field;
     }
 
-    public void setFormField(Field formField) {
-        this.formField = formField;
+    public void setField(Field field) {
+        this.field = field;
     }
 
     public String getOptionValue() {

@@ -2,7 +2,7 @@ package df.base.model.form;
 
 import df.base.internal.support.jpa.JpaCriteria;
 import df.base.validation.hibernate.Fields;
-import df.base.jpa.form.FormField;
+import df.base.jpa.form.Field;
 import df.base.validation.hibernate.constraint.JpaResource;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -20,7 +20,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
                                 objectValue = @Fields.Value(value = "name", type = FIELD_NAME),
                                 entityField = "name")
                 },
-                entityClass = FormField.class,
+                entityClass = Field.class,
                 message = "[NEW]: field with this name already taken",
                 applier = "!#hasText(id)"
         ),
@@ -36,7 +36,7 @@ import static df.base.validation.hibernate.Fields.ValueType.FIELD_NAME;
                                 comparison = JpaCriteria.Comparison.NOT_EQUAL,
                                 entityField = "id")
                 },
-                entityClass = FormField.class,
+                entityClass = Field.class,
                 message = "[UPD]: field with this name already taken",
                 applier = "#hasText(id)"
         )

@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequestMapping(MAVConstants.REQUEST_MAPPING_FORM_FIELD)
-public interface FormFieldOperations extends DefaultOperations<FormFieldDTO> {
+public interface FieldOperations extends DefaultOperations<FormFieldDTO> {
 
     @Override
     @Breadcrumbs({
