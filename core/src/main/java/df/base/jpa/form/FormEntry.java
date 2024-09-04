@@ -38,7 +38,7 @@ public class FormEntry {
     private Timestamp createdAt;
 
     @OneToMany(mappedBy = "formEntry", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Set<FormFieldEntry> fieldEntries;
+    private Set<FieldEntry> fieldEntries;
 
     public String getId() {
         return id;
@@ -64,11 +64,11 @@ public class FormEntry {
         this.createdAt = createdAt;
     }
 
-    public Set<FormFieldEntry> getFieldEntries() {
+    public Set<FieldEntry> getFieldEntries() {
         return fieldEntries;
     }
 
-    public void setFieldEntries(Set<FormFieldEntry> fieldEntries) {
+    public void setFieldEntries(Set<FieldEntry> fieldEntries) {
         this.fieldEntries = fieldEntries;
     }
 }

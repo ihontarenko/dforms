@@ -1,8 +1,8 @@
 package df.base.service.form;
 
-import df.base.jpa.form.FieldStatus;
-import df.base.jpa.form.FormField;
-import df.base.jpa.form.FormFieldRepository;
+import df.base.jpa.form.support.FieldStatus;
+import df.base.jpa.form.Field;
+import df.base.jpa.form.repository.FieldRepository;
 import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;
 import df.base.service.JpaResourceNotFoundException;
@@ -26,42 +26,42 @@ import static java.util.Objects.requireNonNull;
 public class FormFieldService implements RedirectAware {
 
     @Autowired
-    private FormFieldRepository repository;
+    private FieldRepository repository;
 
     private String redirectUrl;
 
     @Transactional(readOnly = true)
-    public List<FormField> getAll() {
+    public List<Field> getAll() {
         return repository.findAll(name(FORM_FIELD_WITH_ALL_RELATED));
     }
 
     @Transactional(readOnly = true)
-    public Optional<FormField> getById(String id) {
+    public Optional<Field> getById(String id) {
         return id == null ? Optional.empty() : repository.findById(id, load("child", "parent"));
     }
 
     @Transactional(readOnly = true)
-    public FormField requireById(String id) {
+    public Field requireById(String id) {
         return getById(requireNonNull(id, REQUIRED_ID_CANNOT_BE_NULL))
                 .orElseThrow(() -> new JpaResourceNotFoundException(FORM_FIELD_NOT_FOUND.formatted(id), this));
     }
 
     @Transactional
-    public FormField create(FormFieldDTO fieldDTO) {
+    public Field create(FormFieldDTO fieldDTO) {
         return repository.save(new FormFieldMapper().reverse(fieldDTO));
     }
 
     @Transactional
-    public FormField update(FormField field, FormFieldDTO fieldDTO) {
+    public Field update(Field field, FormFieldDTO fieldDTO) {
         new FormFieldMapper().reverse(fieldDTO, field);
 
         return repository.save(field);
     }
 
     @Transactional
-    public FormField createOrUpdate(FormFieldDTO fieldDTO) {
-        Optional<FormField> optional = getById(fieldDTO.getId());
-        FormField           field;
+    public Field createOrUpdate(FormFieldDTO fieldDTO) {
+        Optional<Field> optional = getById(fieldDTO.getId());
+        Field           field;
 
         if (optional.isPresent()) {
             field = update(optional.get(), fieldDTO);
@@ -73,14 +73,14 @@ public class FormFieldService implements RedirectAware {
     }
 
     @Transactional
-    public void changeStatus(FormField field, FieldStatus status) {
+    public void changeStatus(Field field, FieldStatus status) {
         field.setStatus(status);
 
         repository.save(field);
     }
 
     @Transactional
-    public void delete(FormField field) {
+    public void delete(Field field) {
         repository.delete(field);
     }
 

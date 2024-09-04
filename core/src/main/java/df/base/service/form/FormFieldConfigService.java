@@ -1,8 +1,8 @@
 package df.base.service.form;
 
-import df.base.jpa.form.FormField;
-import df.base.jpa.form.FormFieldConfig;
-import df.base.jpa.form.FormFieldConfigRepository;
+import df.base.jpa.form.Field;
+import df.base.jpa.form.FieldConfig;
+import df.base.jpa.form.repository.FieldConfigRepository;
 import df.base.model.form.FormFieldConfigDTO;
 import df.base.service.JpaResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +18,17 @@ import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
 @Service
-public class FormFieldConfigService implements ServiceInterface<String, FormFieldConfigDTO, FormFieldConfig, FormField> {
+public class FormFieldConfigService implements ServiceInterface<String, FormFieldConfigDTO, FieldConfig, Field> {
 
     @Autowired
-    private FormFieldConfigRepository repository;
+    private FieldConfigRepository repository;
 
     private String redirectUrl;
 
     @Override
     @Transactional
-    public FormFieldConfig create(FormField field, FormFieldConfigDTO formConfigDTO) {
-        FormFieldConfig formConfig = new FormFieldConfig();
+    public FieldConfig create(Field field, FormFieldConfigDTO formConfigDTO) {
+        FieldConfig formConfig = new FieldConfig();
 
         formConfig.setConfigName(formConfigDTO.getConfigName());
         formConfig.setConfigValue(formConfigDTO.getConfigValue());
@@ -39,7 +39,7 @@ public class FormFieldConfigService implements ServiceInterface<String, FormFiel
 
     @Override
     @Transactional
-    public FormFieldConfig update(FormFieldConfig config, FormFieldConfigDTO configDTO) {
+    public FieldConfig update(FieldConfig config, FormFieldConfigDTO configDTO) {
         config.setConfigName(configDTO.getConfigName());
         config.setConfigValue(configDTO.getConfigValue());
 
@@ -48,8 +48,8 @@ public class FormFieldConfigService implements ServiceInterface<String, FormFiel
 
     @Override
     @Transactional
-    public FormFieldConfig createOrUpdate(FormField field, FormFieldConfigDTO configDTO) {
-        Optional<FormFieldConfig> config = getById(configDTO.getId());
+    public FieldConfig createOrUpdate(Field field, FormFieldConfigDTO configDTO) {
+        Optional<FieldConfig> config = getById(configDTO.getId());
 
         if (config.isPresent()) {
             return update(config.get(), configDTO);
@@ -60,35 +60,35 @@ public class FormFieldConfigService implements ServiceInterface<String, FormFiel
 
     @Override
     @Transactional(readOnly = true)
-    public List<FormFieldConfig> getAll() {
+    public List<FieldConfig> getAll() {
         return repository.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<FormFieldConfig> getById(String id) {
+    public Optional<FieldConfig> getById(String id) {
         return StringUtils.hasText(id) ? repository.findById(id) : Optional.empty();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public FormFieldConfig requireById(String id) {
+    public FieldConfig requireById(String id) {
         return getById(requireNonNull(id, REQUIRED_ID_CANNOT_BE_NULL))
                 .orElseThrow(() -> new JpaResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(id), this));
     }
 
     @Transactional(readOnly = true)
-    public List<FormFieldConfig> getAllByFieldId(String fieldId) {
+    public List<FieldConfig> getAllByFieldId(String fieldId) {
         return repository.findAllByFormFieldId(fieldId);
     }
 
     @Transactional(readOnly = true)
-    public List<FormFieldConfig> getAllByField(FormField field) {
+    public List<FieldConfig> getAllByField(Field field) {
         return repository.findAllByFormField(field);
     }
 
     @Transactional
-    public void delete(FormFieldConfig config) {
+    public void delete(FieldConfig config) {
         repository.delete(config);
     }
 
@@ -98,7 +98,7 @@ public class FormFieldConfigService implements ServiceInterface<String, FormFiel
     }
 
     @Transactional
-    public void deleteIfExists(FormFieldConfig config) {
+    public void deleteIfExists(FieldConfig config) {
         Optional.ofNullable(config).ifPresent(this::delete);
     }
 

@@ -4,6 +4,7 @@ import df.base.internal.hibernate.generator.PrefixedId;
 import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.EntityNameAware;
 import df.base.jpa.NamedEntityIdGenerator;
+import df.base.jpa.form.Form;
 import jakarta.persistence.*;
 
 @Entity

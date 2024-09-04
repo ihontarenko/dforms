@@ -3,7 +3,7 @@ package df.base.model.form;
 import df.base.internal.support.jpa.JpaCriteria;
 import df.base.validation.hibernate.Fields;
 import df.base.jpa.form.Form;
-import df.base.jpa.form.FormStatus;
+import df.base.jpa.form.support.FormStatus;
 import df.base.validation.hibernate.Fields.Value;
 import df.base.validation.hibernate.constraint.EnumPattern;
 import df.base.validation.hibernate.constraint.JpaResource;

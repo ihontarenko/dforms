@@ -4,21 +4,20 @@ import df.base.internal.hibernate.generator.PrefixedId;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "DF_FORM_FIELD_ENTRIES")
-public class FormFieldEntry {
+@Table(name = "DF_FORM_FIELD_ATTRIBUTES")
+public class FieldAttribute {
 
     @Id
-    @PrefixedId(prefixValue = "FFE", sequenceName = "FORM_FIELD_ENTRY")
+    @PrefixedId(prefixValue = "FFA", sequenceName = "FORM_FIELD_ATTRIBUTE")
     @Column(name = "ID")
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "FORM_ENTRY_ID", nullable = false)
-    private FormEntry formEntry;
-
-    @ManyToOne
     @JoinColumn(name = "FIELD_ID", nullable = false)
-    private FormField formField;
+    private Field formField;
+
+    @Column(name = "NAME", nullable = false)
+    private String name;
 
     @Column(name = "VALUE", nullable = false)
     private String value;
@@ -31,20 +30,20 @@ public class FormFieldEntry {
         this.id = id;
     }
 
-    public FormEntry getFormEntry() {
-        return formEntry;
-    }
-
-    public void setFormEntry(FormEntry formEntry) {
-        this.formEntry = formEntry;
-    }
-
-    public FormField getFormField() {
+    public Field getFormField() {
         return formField;
     }
 
-    public void setFormField(FormField formField) {
+    public void setFormField(Field formField) {
         this.formField = formField;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getValue() {

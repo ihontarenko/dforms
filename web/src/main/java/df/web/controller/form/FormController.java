@@ -1,7 +1,7 @@
 package df.web.controller.form;
 
 import df.base.jpa.form.Form;
-import df.base.jpa.form.FormStatus;
+import df.base.jpa.form.support.FormStatus;
 import df.base.mapper.form.FormMapper;
 import df.base.model.form.FormDTO;
 import df.base.security.UserInfo;

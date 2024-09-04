@@ -2,10 +2,12 @@ package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
 import df.base.internal.hibernate.support.ProtectedEntity;
-import df.base.jpa.EntityConstants;
 import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.EntityNameAware;
 import df.base.jpa.NamedEntityIdGenerator;
+import df.base.jpa.form.support.ElementType;
+import df.base.jpa.form.support.FieldStatus;
+import df.base.jpa.form.support.UsageType;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -36,7 +38,7 @@ import java.util.Set;
                 }
         )
 })
-public class FormField implements EntityNameAware, ProtectedEntity {
+public class Field implements EntityNameAware, ProtectedEntity {
 
     @Id
     @PrefixedId(
@@ -86,22 +88,22 @@ public class FormField implements EntityNameAware, ProtectedEntity {
             joinColumns = @JoinColumn(name = "P_ID"),
             inverseJoinColumns = @JoinColumn(name = "C_ID"))
     @OrderColumn(name = "SEQUENCE_ORDER")
-    private Set<FormField> child = new HashSet<>();
+    private Set<Field> child = new HashSet<>();
 
     @ManyToMany(mappedBy = "child")
-    private Set<FormField> parent = new HashSet<>();
+    private Set<Field> parent = new HashSet<>();
 
     @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
-    private Set<FormFieldOption> options;
+    private Set<FieldOption> options;
 
     @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
-    private Set<FormFieldAttribute> attributes;
+    private Set<FieldAttribute> attributes;
 
     @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
-    private Set<FormFieldConfig> configs;
+    private Set<FieldConfig> configs;
 
     @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
-    private Set<FormFieldDefaultValue> defaultValues;
+    private Set<FieldDefaultValue> defaultValues;
 
     public String getId() {
         return id;
@@ -163,19 +165,19 @@ public class FormField implements EntityNameAware, ProtectedEntity {
         return status;
     }
 
-    public Set<FormField> getChild() {
+    public Set<Field> getChild() {
         return child;
     }
 
-    public void setChild(Set<FormField> child) {
+    public void setChild(Set<Field> child) {
         this.child = child;
     }
 
-    public Set<FormField> getParent() {
+    public Set<Field> getParent() {
         return parent;
     }
 
-    public void setParent(Set<FormField> parent) {
+    public void setParent(Set<Field> parent) {
         this.parent = parent;
     }
 
@@ -183,35 +185,35 @@ public class FormField implements EntityNameAware, ProtectedEntity {
         this.status = status;
     }
 
-    public Set<FormFieldOption> getOptions() {
+    public Set<FieldOption> getOptions() {
         return options;
     }
 
-    public void setOptions(Set<FormFieldOption> options) {
+    public void setOptions(Set<FieldOption> options) {
         this.options = options;
     }
 
-    public Set<FormFieldAttribute> getAttributes() {
+    public Set<FieldAttribute> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(Set<FormFieldAttribute> attributes) {
+    public void setAttributes(Set<FieldAttribute> attributes) {
         this.attributes = attributes;
     }
 
-    public Set<FormFieldConfig> getConfigs() {
+    public Set<FieldConfig> getConfigs() {
         return configs;
     }
 
-    public void setConfigs(Set<FormFieldConfig> configs) {
+    public void setConfigs(Set<FieldConfig> configs) {
         this.configs = configs;
     }
 
-    public Set<FormFieldDefaultValue> getDefaultValues() {
+    public Set<FieldDefaultValue> getDefaultValues() {
         return defaultValues;
     }
 
-    public void setDefaultValues(Set<FormFieldDefaultValue> defaultValues) {
+    public void setDefaultValues(Set<FieldDefaultValue> defaultValues) {
         this.defaultValues = defaultValues;
     }
 
@@ -226,7 +228,7 @@ public class FormField implements EntityNameAware, ProtectedEntity {
 
         if (other == null || getClass() != other.getClass()) return false;
 
-        FormField field = (FormField) other;
+        Field field = (Field) other;
 
         return new EqualsBuilder()
                 .append(id, field.id).append(elementType, field.elementType).append(name, field.name)

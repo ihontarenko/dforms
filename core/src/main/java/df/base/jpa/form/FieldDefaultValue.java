@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "DF_FORM_FIELD_DEFAULT_VALUES")
-public class FormFieldDefaultValue {
+public class FieldDefaultValue {
 
     @Id
     @PrefixedId(prefixValue = "FDV", sequenceName = "FORM_FIELD_DEFAULT_VALUE")
@@ -18,7 +18,7 @@ public class FormFieldDefaultValue {
 
     @ManyToOne
     @JoinColumn(name = "FIELD_ID", nullable = false)
-    private FormField formField;
+    private Field formField;
 
     @Column(name = "DEFAULT_VALUE", nullable = false)
     private String defaultValue;
@@ -39,11 +39,11 @@ public class FormFieldDefaultValue {
         this.form = form;
     }
 
-    public FormField getFormField() {
+    public Field getFormField() {
         return formField;
     }
 
-    public void setFormField(FormField formField) {
+    public void setFormField(Field formField) {
         this.formField = formField;
     }
 

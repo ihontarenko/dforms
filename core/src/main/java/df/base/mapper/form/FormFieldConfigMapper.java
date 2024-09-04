@@ -1,13 +1,13 @@
 package df.base.mapper.form;
 
 import df.base.internal.Mapper;
-import df.base.jpa.form.FormFieldConfig;
+import df.base.jpa.form.FieldConfig;
 import df.base.model.form.FormFieldConfigDTO;
 
-public class FormFieldConfigMapper implements Mapper<FormFieldConfig, FormFieldConfigDTO> {
+public class FormFieldConfigMapper implements Mapper<FieldConfig, FormFieldConfigDTO> {
 
     @Override
-    public FormFieldConfigDTO map(FormFieldConfig source) {
+    public FormFieldConfigDTO map(FieldConfig source) {
         FormFieldConfigDTO configDTO = new FormFieldConfigDTO();
 
         map(source, configDTO);
@@ -16,8 +16,8 @@ public class FormFieldConfigMapper implements Mapper<FormFieldConfig, FormFieldC
     }
 
     @Override
-    public FormFieldConfig reverse(FormFieldConfigDTO source) {
-        FormFieldConfig entity = new FormFieldConfig();
+    public FieldConfig reverse(FormFieldConfigDTO source) {
+        FieldConfig entity = new FieldConfig();
 
         reverse(source, entity);
 
@@ -25,7 +25,7 @@ public class FormFieldConfigMapper implements Mapper<FormFieldConfig, FormFieldC
     }
 
     @Override
-    public void map(FormFieldConfig source, FormFieldConfigDTO destination) {
+    public void map(FieldConfig source, FormFieldConfigDTO destination) {
         destination.setId(source.getId());
         destination.setConfigValue(source.getConfigValue());
         destination.setConfigName(source.getConfigName());
@@ -33,7 +33,7 @@ public class FormFieldConfigMapper implements Mapper<FormFieldConfig, FormFieldC
     }
 
     @Override
-    public void reverse(FormFieldConfigDTO source, FormFieldConfig destination) {
+    public void reverse(FormFieldConfigDTO source, FieldConfig destination) {
         destination.setConfigName(source.getConfigName());
         destination.setConfigValue(source.getConfigValue());
     }

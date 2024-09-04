@@ -1,7 +1,7 @@
 package df.web.controller.form;
 
-import df.base.jpa.form.FormField;
-import df.base.jpa.form.FormFieldConfig;
+import df.base.jpa.form.Field;
+import df.base.jpa.form.FieldConfig;
 import df.base.mapper.form.FormFieldConfigMapper;
 import df.base.model.form.FormFieldConfigDTO;
 import df.base.service.JpaResourceNotFoundException;
@@ -75,7 +75,7 @@ public class FormFieldConfigController implements FormFieldConfigOperations {
         helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(configDTO.getFormFieldId()));
 
         if (!result.hasErrors()) {
-            FormFieldConfig config = configService
+            FieldConfig config = configService
                     .createOrUpdate(fieldService.requireById(configDTO.getFormFieldId()), configDTO);
             helper.addMessage(success(SUCCESS_CONFIG_SAVED
                     .formatted(config.getConfigName())));
@@ -88,8 +88,8 @@ public class FormFieldConfigController implements FormFieldConfigOperations {
 
     @Override
     public ModelAndView remove(String itemId, RedirectAttributes attributes) {
-        Optional<FormFieldConfig> config  = configService.getById(itemId);
-        String                    fieldId = config.map(c -> c.getFormField().getId()).orElse(null);
+        Optional<FieldConfig> config  = configService.getById(itemId);
+        String                fieldId = config.map(c -> c.getFormField().getId()).orElse(null);
 
         helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(fieldId));
         helper.setRedirectAttributes(attributes);
@@ -102,7 +102,7 @@ public class FormFieldConfigController implements FormFieldConfigOperations {
 
     private void bindAttributes(FormFieldConfigDTO itemDTO) {
         Map<String, Object> attributes = new HashMap<>();
-        FormField           field      = fieldService.requireById(itemDTO.getFormFieldId());
+        Field               field      = fieldService.requireById(itemDTO.getFormFieldId());
 
         attributes.put("itemDTO", itemDTO);
         attributes.put("configurations", configService.getAllByField(field));

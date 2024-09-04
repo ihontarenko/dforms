@@ -1,4 +1,4 @@
-package df.base.jpa.form;
+package df.base.jpa.form.support;
 
 public enum UsageType {
     VIRTUAL,     // The field is composite and cannot be part of another field.

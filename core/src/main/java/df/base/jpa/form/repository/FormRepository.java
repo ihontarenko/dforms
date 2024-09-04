@@ -1,7 +1,8 @@
-package df.base.jpa.form;
+package df.base.jpa.form.repository;
 
 import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.User;
+import df.base.jpa.form.Form;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

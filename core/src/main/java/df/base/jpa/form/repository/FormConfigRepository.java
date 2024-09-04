@@ -1,6 +1,8 @@
-package df.base.jpa.form;
+package df.base.jpa.form.repository;
 
 import df.base.jpa.EntityGraphConstants;
+import df.base.jpa.form.Form;
+import df.base.jpa.form.FormConfig;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,14 +11,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface FormFieldConfigRepository extends JpaRepository<FormFieldConfig, String> {
+public interface FormConfigRepository extends JpaRepository<FormConfig, String> {
 
-    Optional<FormFieldConfig> findByConfigName(String configName);
-
-    @EntityGraph(EntityGraphConstants.FORM_CONFIG_WITH_FORM)
-    List<FormFieldConfig> findAllByFormFieldId(String formId);
+    Optional<FormConfig> findByConfigName(String configName);
 
     @EntityGraph(EntityGraphConstants.FORM_CONFIG_WITH_FORM)
-    List<FormFieldConfig> findAllByFormField(FormField form);
+    List<FormConfig> findAllByFormId(String formId);
+
+    @EntityGraph(EntityGraphConstants.FORM_CONFIG_WITH_FORM)
+    List<FormConfig> findAllByForm(Form form);
 
 }

@@ -12,7 +12,7 @@ import jakarta.persistence.*;
         name = EntityGraphConstants.FORM_FIELD_CONFIG_WITH_FIELD,
         attributeNodes = @NamedAttributeNode("formField")
 )
-public class FormFieldConfig implements EntityNameAware {
+public class FieldConfig implements EntityNameAware {
 
     @Id
     @PrefixedId(
@@ -28,7 +28,7 @@ public class FormFieldConfig implements EntityNameAware {
 
     @ManyToOne
     @JoinColumn(name = "FIELD_ID", nullable = false)
-    private FormField formField;
+    private Field formField;
 
     @Column(name = "CONFIG_NAME", nullable = false)
     private String configName;
@@ -44,11 +44,11 @@ public class FormFieldConfig implements EntityNameAware {
         this.id = id;
     }
 
-    public FormField getFormField() {
+    public Field getFormField() {
         return formField;
     }
 
-    public void setFormField(FormField formField) {
+    public void setFormField(Field formField) {
         this.formField = formField;
     }
 

@@ -1,8 +1,10 @@
-package df.base.jpa.form;
+package df.base.jpa.form.repository;
 
 import df.base.internal.spring.jpa.entity_graph.JpaEntityGraphRepository;
 import df.base.internal.spring.jpa.entity_graph.JpaEntityGraph;
 import df.base.jpa.EntityGraphConstants;
+import df.base.jpa.form.Field;
+import df.base.jpa.form.support.FieldStatus;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface FormFieldRepository extends JpaEntityGraphRepository<FormField, String> {
+public interface FieldRepository extends JpaEntityGraphRepository<Field, String> {
 
 //    @Override
 //    @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_CONFIGS)
@@ -19,13 +21,13 @@ public interface FormFieldRepository extends JpaEntityGraphRepository<FormField,
 
     @Override
     @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_CONFIGS)
-    List<FormField> findAll();
+    List<Field> findAll();
 
     @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_ALL_RELATED)
-    Optional<FormField> findById(@Param("id") String id);
+    Optional<Field> findById(@Param("id") String id);
 
-    Optional<FormField> findById(@Param("id") String id, JpaEntityGraph graph);
+    Optional<Field> findById(@Param("id") String id, JpaEntityGraph graph);
 
-    List<FormField> findByStatus(FieldStatus status, JpaEntityGraph graph);
+    List<Field> findByStatus(FieldStatus status, JpaEntityGraph graph);
 
 }

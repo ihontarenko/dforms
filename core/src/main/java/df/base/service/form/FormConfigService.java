@@ -2,7 +2,7 @@ package df.base.service.form;
 
 import df.base.jpa.form.Form;
 import df.base.jpa.form.FormConfig;
-import df.base.jpa.form.FormConfigRepository;
+import df.base.jpa.form.repository.FormConfigRepository;
 import df.base.model.form.FormConfigDTO;
 import df.base.service.JpaResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static df.base.Messages.FORM_CONFIG_NOT_FOUND;

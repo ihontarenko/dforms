@@ -1,16 +1,16 @@
 package df.base.mapper.form;
 
-import df.base.jpa.form.ElementType;
-import df.base.jpa.form.FieldStatus;
-import df.base.jpa.form.FormField;
+import df.base.jpa.form.support.ElementType;
+import df.base.jpa.form.support.FieldStatus;
+import df.base.jpa.form.Field;
 import df.base.internal.Mapper;
-import df.base.jpa.form.UsageType;
+import df.base.jpa.form.support.UsageType;
 import df.base.model.form.FormFieldDTO;
 
-public class FormFieldMapper implements Mapper<FormField, FormFieldDTO> {
+public class FormFieldMapper implements Mapper<Field, FormFieldDTO> {
 
     @Override
-    public FormFieldDTO map(FormField source) {
+    public FormFieldDTO map(Field source) {
         FormFieldDTO fieldDTO = new FormFieldDTO();
 
         map(source, fieldDTO);
@@ -19,8 +19,8 @@ public class FormFieldMapper implements Mapper<FormField, FormFieldDTO> {
     }
 
     @Override
-    public FormField reverse(FormFieldDTO source) {
-        FormField entity = new FormField();
+    public Field reverse(FormFieldDTO source) {
+        Field entity = new Field();
 
         reverse(source, entity);
 
@@ -28,7 +28,7 @@ public class FormFieldMapper implements Mapper<FormField, FormFieldDTO> {
     }
 
     @Override
-    public void map(FormField source, FormFieldDTO destination) {
+    public void map(Field source, FormFieldDTO destination) {
         destination.setId(source.getId());
         destination.setUsageType(source.getUsageType().name());
         destination.setElementType(source.getElementType().name());
@@ -39,7 +39,7 @@ public class FormFieldMapper implements Mapper<FormField, FormFieldDTO> {
     }
 
     @Override
-    public void reverse(FormFieldDTO source, FormField destination) {
+    public void reverse(FormFieldDTO source, Field destination) {
         destination.setUsageType(UsageType.valueOf(source.getUsageType()));
         destination.setElementType(ElementType.valueOf(source.getElementType()));
         destination.setName(source.getName());

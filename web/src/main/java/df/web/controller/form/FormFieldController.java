@@ -1,8 +1,11 @@
 package df.web.controller.form;
 
-import df.base.internal.spring.jpa.entity_graph.JpaEntityGraph;
 import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.form.*;
+import df.base.jpa.form.repository.FieldRepository;
+import df.base.jpa.form.support.ElementType;
+import df.base.jpa.form.support.FieldStatus;
+import df.base.jpa.form.support.UsageType;
 import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;
 import df.base.service.JpaResourceNotFoundException;
@@ -30,9 +33,9 @@ public class FormFieldController implements FormFieldOperations {
     private final FormFieldService fieldService;
 
     // todo: test
-    private final FormFieldRepository repository;
+    private final FieldRepository repository;
 
-    public FormFieldController(ControllerHelper controllerHelper, FormFieldService fieldService, FormFieldRepository repository) {
+    public FormFieldController(ControllerHelper controllerHelper, FormFieldService fieldService, FieldRepository repository) {
         this.fieldService = fieldService;
         this.controllerHelper = controllerHelper;
         this.repository = repository;
@@ -86,7 +89,7 @@ public class FormFieldController implements FormFieldOperations {
         bindAttributes(fieldDTO);
 
         if (!result.hasFieldErrors()) {
-            FormField field = fieldService.createOrUpdate(fieldDTO);
+            Field field = fieldService.createOrUpdate(fieldDTO);
             controllerHelper.addMessage(success(SUCCESS_FIELD_SAVED.formatted(field.getLabel())));
         }
 
@@ -97,7 +100,7 @@ public class FormFieldController implements FormFieldOperations {
     public ModelAndView remove(String itemId, RedirectAttributes attributes) {
         controllerHelper.setRedirectAttributes(attributes);
 
-        Optional<FormField> result = fieldService.getById(itemId);
+        Optional<Field> result = fieldService.getById(itemId);
 
         if (result.isPresent()) {
             fieldService.delete(result.get());
@@ -111,7 +114,7 @@ public class FormFieldController implements FormFieldOperations {
 
     @Override
     public ModelAndView status(String itemId, String status, RedirectAttributes attributes) {
-        Optional<FormField> result = fieldService.getById(itemId);
+        Optional<Field> result = fieldService.getById(itemId);
         controllerHelper.setRedirectAttributes(attributes);
 
         if (result.isPresent()) {

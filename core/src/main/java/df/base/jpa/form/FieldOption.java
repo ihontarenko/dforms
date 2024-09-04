@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "DF_FORM_FIELD_OPTIONS")
-public class FormFieldOption {
+public class FieldOption {
 
     @Id
     @PrefixedId(prefixValue = "FFO", sequenceName = "FORM_FIELD_OPTION")
@@ -14,7 +14,7 @@ public class FormFieldOption {
 
     @ManyToOne
     @JoinColumn(name = "FIELD_ID", nullable = false)
-    private FormField formField;
+    private Field formField;
 
     @Column(name = "OPTION_VALUE", nullable = false)
     private String optionValue;
@@ -30,11 +30,11 @@ public class FormFieldOption {
         this.id = id;
     }
 
-    public FormField getFormField() {
+    public Field getFormField() {
         return formField;
     }
 
-    public void setFormField(FormField formField) {
+    public void setFormField(Field formField) {
         this.formField = formField;
     }
 

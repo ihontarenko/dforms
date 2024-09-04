@@ -2,6 +2,7 @@ package df.base.jpa.form;
 
 import df.base.internal.hibernate.generator.PrefixedId;
 import df.base.jpa.*;
+import df.base.jpa.form.support.FormStatus;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -50,7 +51,7 @@ public class Form implements EntityNameAware {
     private List<FormConfig> configs;
 
     @ManyToMany(mappedBy = "forms", fetch = FetchType.LAZY)
-    private List<FormField> fields;
+    private List<Field> fields;
 
     @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FormEntry> entries;
@@ -111,15 +112,15 @@ public class Form implements EntityNameAware {
         this.configs = configs;
     }
 
-    public List<FormField> getFields() {
+    public List<Field> getFields() {
         return fields;
     }
 
-    public void setFields(List<FormField> fields) {
+    public void setFields(List<Field> fields) {
         this.fields = fields;
     }
 
-    public void addField(FormField field) {
+    public void addField(Field field) {
         this.fields.add(requireNonNull(field));
     }
 
