@@ -4,7 +4,7 @@ import df.base.persistence.entity.support.FieldStatus;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.repository.form.FieldRepository;
 import df.base.mapping.form.FormFieldMapper;
-import df.base.dto.form.FormFieldDTO;
+import df.base.dto.form.FieldDTO;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.service.RedirectAware;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,19 +47,19 @@ public class FieldService implements RedirectAware {
     }
 
     @Transactional
-    public Field create(FormFieldDTO fieldDTO) {
+    public Field create(FieldDTO fieldDTO) {
         return repository.save(new FormFieldMapper().reverse(fieldDTO));
     }
 
     @Transactional
-    public Field update(Field field, FormFieldDTO fieldDTO) {
+    public Field update(Field field, FieldDTO fieldDTO) {
         new FormFieldMapper().reverse(fieldDTO, field);
 
         return repository.save(field);
     }
 
     @Transactional
-    public Field createOrUpdate(FormFieldDTO fieldDTO) {
+    public Field createOrUpdate(FieldDTO fieldDTO) {
         Optional<Field> optional = getById(fieldDTO.getId());
         Field           field;
 

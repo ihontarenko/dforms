@@ -3,7 +3,7 @@ package df.base.service.form;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.form.FieldConfig;
 import df.base.persistence.repository.form.FieldConfigRepository;
-import df.base.dto.form.FormFieldConfigDTO;
+import df.base.dto.form.FieldConfigDTO;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
 @Service
-public class FieldConfigService implements ServiceInterface<String, FormFieldConfigDTO, FieldConfig, Field> {
+public class FieldConfigService implements ServiceInterface<String, FieldConfigDTO, FieldConfig, Field> {
 
     @Autowired
     private FieldConfigRepository repository;
@@ -27,7 +27,7 @@ public class FieldConfigService implements ServiceInterface<String, FormFieldCon
 
     @Override
     @Transactional
-    public FieldConfig create(Field field, FormFieldConfigDTO formConfigDTO) {
+    public FieldConfig create(Field field, FieldConfigDTO formConfigDTO) {
         FieldConfig formConfig = new FieldConfig();
 
         formConfig.setConfigName(formConfigDTO.getConfigName());
@@ -39,7 +39,7 @@ public class FieldConfigService implements ServiceInterface<String, FormFieldCon
 
     @Override
     @Transactional
-    public FieldConfig update(FieldConfig config, FormFieldConfigDTO configDTO) {
+    public FieldConfig update(FieldConfig config, FieldConfigDTO configDTO) {
         config.setConfigName(configDTO.getConfigName());
         config.setConfigValue(configDTO.getConfigValue());
 
@@ -48,7 +48,7 @@ public class FieldConfigService implements ServiceInterface<String, FormFieldCon
 
     @Override
     @Transactional
-    public FieldConfig createOrUpdate(Field field, FormFieldConfigDTO configDTO) {
+    public FieldConfig createOrUpdate(Field field, FieldConfigDTO configDTO) {
         Optional<FieldConfig> config = getById(configDTO.getId());
 
         if (config.isPresent()) {

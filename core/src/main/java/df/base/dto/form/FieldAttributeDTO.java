@@ -3,7 +3,7 @@ package df.base.dto.form;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-public class FormFieldEntryDTO {
+public class FieldAttributeDTO {
 
     @NotEmpty
     @Size(max = 32)
@@ -11,11 +11,11 @@ public class FormFieldEntryDTO {
 
     @NotEmpty
     @Size(max = 32)
-    private String formEntryId;
+    private String formFieldId;
 
     @NotEmpty
-    @Size(max = 32)
-    private String formFieldId;
+    @Size(max = 255)
+    private String name;
 
     @NotEmpty
     @Size(max = 1000)
@@ -29,20 +29,20 @@ public class FormFieldEntryDTO {
         this.id = id;
     }
 
-    public String getFormEntryId() {
-        return formEntryId;
-    }
-
-    public void setFormEntryId(String formEntryId) {
-        this.formEntryId = formEntryId;
-    }
-
     public String getFormFieldId() {
         return formFieldId;
     }
 
     public void setFormFieldId(String formFieldId) {
         this.formFieldId = formFieldId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getValue() {

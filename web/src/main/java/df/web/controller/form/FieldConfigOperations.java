@@ -1,7 +1,7 @@
 package df.web.controller.form;
 
 import df.base.common.breadcrumb.Breadcrumbs;
-import df.base.dto.form.FormFieldConfigDTO;
+import df.base.dto.form.FieldConfigDTO;
 import df.web.controller.DefaultOperations;
 import df.web.controller.MAVConstants;
 import jakarta.validation.Valid;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequestMapping(MAVConstants.REQUEST_MAPPING_FORM_FIELD_CONFIG)
-public interface FieldConfigOperations extends DefaultOperations<FormFieldConfigDTO> {
+public interface FieldConfigOperations extends DefaultOperations<FieldConfigDTO> {
 
     @Override
     @Breadcrumbs({
@@ -38,7 +38,7 @@ public interface FieldConfigOperations extends DefaultOperations<FormFieldConfig
             @Breadcrumbs.Item(label = "Fields", url = "/form/field"),
             @Breadcrumbs.Item(label = "Performing")
     })
-    ModelAndView perform(@ModelAttribute("itemDTO") @Valid FormFieldConfigDTO configDTO, BindingResult result,
+    ModelAndView perform(@ModelAttribute("itemDTO") @Valid FieldConfigDTO configDTO, BindingResult result,
                          RedirectAttributes attributes);
 
 

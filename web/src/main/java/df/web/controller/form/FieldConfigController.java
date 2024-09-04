@@ -3,7 +3,7 @@ package df.web.controller.form;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.form.FieldConfig;
 import df.base.mapping.form.FormFieldConfigMapper;
-import df.base.dto.form.FormFieldConfigDTO;
+import df.base.dto.form.FieldConfigDTO;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.service.form.FieldConfigService;
 import df.base.service.form.FieldService;
@@ -42,7 +42,7 @@ public class FieldConfigController implements FieldConfigOperations {
     public ModelAndView index(String fieldId) {
         helper.setViewName(MAVConstants.VIEW_FORM_FIELD_CONFIG);
 
-        bindAttributes(new FormFieldConfigDTO(){{
+        bindAttributes(new FieldConfigDTO(){{
             setFormFieldId(fieldId);
         }});
 
@@ -67,7 +67,7 @@ public class FieldConfigController implements FieldConfigOperations {
     }
 
     @Override
-    public ModelAndView perform(FormFieldConfigDTO configDTO, BindingResult result,
+    public ModelAndView perform(FieldConfigDTO configDTO, BindingResult result,
                                 RedirectAttributes attributes) {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
@@ -100,7 +100,7 @@ public class FieldConfigController implements FieldConfigOperations {
         return helper.redirect();
     }
 
-    private void bindAttributes(FormFieldConfigDTO itemDTO) {
+    private void bindAttributes(FieldConfigDTO itemDTO) {
         Map<String, Object> attributes = new HashMap<>();
         Field               field      = fieldService.requireById(itemDTO.getFormFieldId());
 

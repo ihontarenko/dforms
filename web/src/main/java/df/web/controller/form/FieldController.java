@@ -7,7 +7,7 @@ import df.base.persistence.entity.support.ElementType;
 import df.base.persistence.entity.support.FieldStatus;
 import df.base.persistence.entity.support.UsageType;
 import df.base.mapping.form.FormFieldMapper;
-import df.base.dto.form.FormFieldDTO;
+import df.base.dto.form.FieldDTO;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.service.form.FieldService;
 import df.web.common.ControllerHelper;
@@ -47,7 +47,7 @@ public class FieldController implements FieldOperations {
     public ModelAndView index() {
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_LIST);
 
-        bindAttributes(new FormFieldDTO());
+        bindAttributes(new FieldDTO());
 
         repository.findByStatus(FieldStatus.ACTIVE, load(EntityGraphConstants.FORM_FIELD_WITH_CONFIGS));
 
@@ -58,7 +58,7 @@ public class FieldController implements FieldOperations {
     public ModelAndView create() {
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
 
-        bindAttributes(new FormFieldDTO());
+        bindAttributes(new FieldDTO());
 
         return controllerHelper.resolveWithoutRedirect();
     }
@@ -81,7 +81,7 @@ public class FieldController implements FieldOperations {
     }
 
     @Override
-    public ModelAndView perform(FormFieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
+    public ModelAndView perform(FieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
         controllerHelper.setBindingResult(result);
         controllerHelper.setRedirectAttributes(attributes);
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
@@ -136,7 +136,7 @@ public class FieldController implements FieldOperations {
         return controllerHelper.redirect();
     }
 
-    private void bindAttributes(FormFieldDTO itemDTO) {
+    private void bindAttributes(FieldDTO itemDTO) {
         Map<String, Object> attributes = new HashMap<>();
 
         attributes.put("itemDTO", itemDTO);

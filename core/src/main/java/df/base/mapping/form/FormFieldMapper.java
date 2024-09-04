@@ -5,13 +5,13 @@ import df.base.persistence.entity.support.FieldStatus;
 import df.base.persistence.entity.form.Field;
 import df.base.common.Mapper;
 import df.base.persistence.entity.support.UsageType;
-import df.base.dto.form.FormFieldDTO;
+import df.base.dto.form.FieldDTO;
 
-public class FormFieldMapper implements Mapper<Field, FormFieldDTO> {
+public class FormFieldMapper implements Mapper<Field, FieldDTO> {
 
     @Override
-    public FormFieldDTO map(Field source) {
-        FormFieldDTO fieldDTO = new FormFieldDTO();
+    public FieldDTO map(Field source) {
+        FieldDTO fieldDTO = new FieldDTO();
 
         map(source, fieldDTO);
 
@@ -19,7 +19,7 @@ public class FormFieldMapper implements Mapper<Field, FormFieldDTO> {
     }
 
     @Override
-    public Field reverse(FormFieldDTO source) {
+    public Field reverse(FieldDTO source) {
         Field entity = new Field();
 
         reverse(source, entity);
@@ -28,7 +28,7 @@ public class FormFieldMapper implements Mapper<Field, FormFieldDTO> {
     }
 
     @Override
-    public void map(Field source, FormFieldDTO destination) {
+    public void map(Field source, FieldDTO destination) {
         destination.setId(source.getId());
         destination.setUsageType(source.getUsageType().name());
         destination.setElementType(source.getElementType().name());
@@ -39,7 +39,7 @@ public class FormFieldMapper implements Mapper<Field, FormFieldDTO> {
     }
 
     @Override
-    public void reverse(FormFieldDTO source, Field destination) {
+    public void reverse(FieldDTO source, Field destination) {
         destination.setUsageType(UsageType.valueOf(source.getUsageType()));
         destination.setElementType(ElementType.valueOf(source.getElementType()));
         destination.setName(source.getName());

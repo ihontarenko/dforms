@@ -41,7 +41,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 applier = "#hasText(id)"
         )
 })
-public class FormFieldDTO {
+public class FieldDTO {
 
     @Size(max = 32)
     private String id;
