@@ -1,8 +1,8 @@
 package df.web.controller.user;
 
-import df.base.jpa.Privilege;
+import df.base.persistence.entity.user.Privilege;
 import df.base.mapper.user.PrivilegeMapper;
-import df.base.model.user.PrivilegeDTO;
+import df.base.dto.user.PrivilegeDTO;
 import df.base.service.JpaResourceNotFoundException;
 import df.base.service.user.PrivilegeService;
 import df.web.common.ControllerHelper;

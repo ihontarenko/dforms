@@ -1,13 +1,13 @@
 package df.web.controller.form;
 
-import df.base.jpa.EntityGraphConstants;
-import df.base.jpa.form.*;
-import df.base.jpa.form.repository.FieldRepository;
-import df.base.jpa.form.support.ElementType;
-import df.base.jpa.form.support.FieldStatus;
-import df.base.jpa.form.support.UsageType;
+import df.base.persistence.entity.form.Field;
+import df.base.persistence.support.EntityGraphConstants;
+import df.base.persistence.repository.form.FieldRepository;
+import df.base.persistence.entity.support.ElementType;
+import df.base.persistence.entity.support.FieldStatus;
+import df.base.persistence.entity.support.UsageType;
 import df.base.mapper.form.FormFieldMapper;
-import df.base.model.form.FormFieldDTO;
+import df.base.dto.form.FormFieldDTO;
 import df.base.service.JpaResourceNotFoundException;
 import df.base.service.form.FieldService;
 import df.web.common.ControllerHelper;
@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static df.base.Messages.*;
-import static df.base.internal.spring.jpa.entity_graph.JpaEntityGraph.Named.load;
+import static df.base.common.spring.jpa.entity_graph.JpaEntityGraph.Named.load;
 import static df.web.common.flash.FlashMessage.*;
 import static df.web.common.flash.FlashMessage.error;
 

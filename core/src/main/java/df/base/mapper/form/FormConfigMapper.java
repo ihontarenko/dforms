@@ -1,8 +1,8 @@
 package df.base.mapper.form;
 
-import df.base.internal.Mapper;
-import df.base.jpa.form.FormConfig;
-import df.base.model.form.FormConfigDTO;
+import df.base.common.Mapper;
+import df.base.persistence.entity.form.FormConfig;
+import df.base.dto.form.FormConfigDTO;
 
 public class FormConfigMapper implements Mapper<FormConfig, FormConfigDTO> {
 

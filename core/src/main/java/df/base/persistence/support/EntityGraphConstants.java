@@ -1,4 +1,4 @@
-package df.base.jpa;
+package df.base.persistence.support;
 
 public class EntityGraphConstants {
 

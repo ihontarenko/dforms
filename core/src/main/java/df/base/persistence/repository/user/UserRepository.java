@@ -1,5 +1,7 @@
-package df.base.jpa;
+package df.base.persistence.repository.user;
 
+import df.base.persistence.entity.user.User;
+import df.base.persistence.support.EntityGraphConstants;
 import df.base.security.Provider;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;

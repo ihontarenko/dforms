@@ -1,6 +1,6 @@
 package df.base.security.oauth2.mapper;
 
-import df.base.model.user.UserDTO;
+import df.base.dto.user.UserDTO;
 import df.base.security.Provider;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 

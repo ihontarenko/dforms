@@ -1,4 +1,4 @@
-package df.base.jpa.form.support;
+package df.base.persistence.entity.support;
 
 public enum FieldStatus {
     ACTIVE, INACTIVE, DELETED

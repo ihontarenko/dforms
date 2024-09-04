@@ -1,13 +1,13 @@
-package df.base.jpa.form;
+package df.base.persistence.entity.form;
 
 import df.base.common.hibernate.generator.PrefixedId;
 import df.base.common.hibernate.support.ProtectedEntity;
-import df.base.jpa.EntityGraphConstants;
-import df.base.jpa.EntityNameAware;
-import df.base.jpa.NamedEntityIdGenerator;
-import df.base.jpa.form.support.ElementType;
-import df.base.jpa.form.support.FieldStatus;
-import df.base.jpa.form.support.UsageType;
+import df.base.persistence.support.EntityGraphConstants;
+import df.base.persistence.entity.EntityNameAware;
+import df.base.persistence.generator.NamedEntityIdGenerator;
+import df.base.persistence.entity.support.ElementType;
+import df.base.persistence.entity.support.FieldStatus;
+import df.base.persistence.entity.support.UsageType;
 import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.HashSet;
 import java.util.Set;
 
-import static df.base.jpa.EntityConstants.*;
+import static df.base.persistence.support.EntityConstants.*;
 
 @Entity
 @Table(name = "DF_FORM_FIELDS")

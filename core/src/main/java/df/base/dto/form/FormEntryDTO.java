@@ -1,4 +1,4 @@
-package df.base.model.form;
+package df.base.dto.form;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

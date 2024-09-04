@@ -1,6 +1,6 @@
 package df.base.security;
 
-import df.base.jpa.User;
+import df.base.persistence.entity.user.User;
 import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

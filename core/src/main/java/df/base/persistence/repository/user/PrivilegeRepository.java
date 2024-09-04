@@ -1,5 +1,6 @@
-package df.base.jpa;
+package df.base.persistence.repository.user;
 
+import df.base.persistence.entity.user.Privilege;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

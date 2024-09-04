@@ -1,10 +1,10 @@
 package df.base.service.user;
 
-import df.base.jpa.Role;
-import df.base.jpa.User;
-import df.base.jpa.UserRepository;
+import df.base.persistence.entity.user.Role;
+import df.base.persistence.entity.user.User;
+import df.base.persistence.repository.user.UserRepository;
 import df.base.mapper.user.UserMapper;
-import df.base.model.user.UserDTO;
+import df.base.dto.user.UserDTO;
 import df.base.security.Provider;
 import df.base.service.RedirectAware;
 import df.base.service.JpaResourceNotFoundException;

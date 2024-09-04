@@ -1,7 +1,7 @@
 package df.web.controller.user;
 
-import df.base.internal.breadcrumb.Breadcrumbs;
-import df.base.model.user.RoleDTO;
+import df.base.common.breadcrumb.Breadcrumbs;
+import df.base.dto.user.RoleDTO;
 import df.web.controller.DefaultOperations;
 import df.web.controller.MAVConstants;
 import jakarta.validation.Valid;

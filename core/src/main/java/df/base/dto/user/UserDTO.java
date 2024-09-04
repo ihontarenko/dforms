@@ -1,7 +1,7 @@
-package df.base.model.user;
+package df.base.dto.user;
 
 import df.base.common.support.jpa.JpaCriteria;
-import df.base.jpa.User;
+import df.base.persistence.entity.user.User;
 import df.base.security.Provider;
 import df.base.common.validation.jakarta.Fields;
 import df.base.common.validation.jakarta.constraint.JpaResource;

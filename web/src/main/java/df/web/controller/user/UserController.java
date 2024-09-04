@@ -1,8 +1,8 @@
 package df.web.controller.user;
 
-import df.base.jpa.User;
+import df.base.persistence.entity.user.User;
 import df.base.mapper.user.UserMapper;
-import df.base.model.user.UserDTO;
+import df.base.dto.user.UserDTO;
 import df.base.service.JpaResourceNotFoundException;
 import df.base.service.user.RoleService;
 import df.base.service.user.UserService;

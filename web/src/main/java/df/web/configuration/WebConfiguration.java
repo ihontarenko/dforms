@@ -1,12 +1,12 @@
 package df.web.configuration;
 
-import df.base.internal.resource.ContentHashVersionStrategy;
-import df.base.internal.validation.MessageResolver;
-import df.base.internal.validation.Validation;
+import df.base.common.resource.ContentHashVersionStrategy;
+import df.base.common.validation.custom.MessageResolver;
+import df.base.common.validation.custom.Validation;
 import df.base.configuration.CommonConfiguration;
 import df.base.property.ApplicationProperties;
-import df.base.validation.custom.validator.NotBlankValidator;
-import df.base.validation.custom.validator.NotNullValidator;
+import df.base.common.validation.custom.constraint.NotBlankValidator;
+import df.base.common.validation.custom.constraint.NotNullValidator;
 import df.web.common.pebble.PebbleExtension;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

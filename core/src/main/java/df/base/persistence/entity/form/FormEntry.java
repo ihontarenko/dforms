@@ -1,4 +1,4 @@
-package df.base.jpa.form;
+package df.base.persistence.entity.form;
 
 import df.base.common.hibernate.generator.PrefixedId;
 import jakarta.persistence.*;
@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.Set;
 
-import static df.base.jpa.EntityGraphConstants.FORM_WITH_ENTRIES_WITH_FIELD_ENTRIES;
-import static df.base.jpa.EntityGraphConstants.FORM_WITH_FIELD_ENTRIES_FIELD;
+import static df.base.persistence.support.EntityGraphConstants.FORM_WITH_ENTRIES_WITH_FIELD_ENTRIES;
+import static df.base.persistence.support.EntityGraphConstants.FORM_WITH_FIELD_ENTRIES_FIELD;
 
 @Entity
 @Table(name = "DF_FORM_ENTRIES")

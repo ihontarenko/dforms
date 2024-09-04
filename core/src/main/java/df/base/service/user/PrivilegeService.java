@@ -1,10 +1,10 @@
 package df.base.service.user;
 
 import df.base.Messages;
-import df.base.jpa.Privilege;
-import df.base.jpa.PrivilegeRepository;
+import df.base.persistence.entity.user.Privilege;
+import df.base.persistence.repository.user.PrivilegeRepository;
 import df.base.mapper.user.PrivilegeMapper;
-import df.base.model.user.PrivilegeDTO;
+import df.base.dto.user.PrivilegeDTO;
 import df.base.service.RedirectAware;
 import df.base.service.JpaResourceNotFoundException;
 import org.springframework.stereotype.Service;

@@ -1,10 +1,10 @@
-package df.base.jpa.form.repository;
+package df.base.persistence.repository.form;
 
 import df.base.common.spring.jpa.entity_graph.JpaEntityGraphRepository;
 import df.base.common.spring.jpa.entity_graph.JpaEntityGraph;
-import df.base.jpa.EntityGraphConstants;
-import df.base.jpa.form.Field;
-import df.base.jpa.form.support.FieldStatus;
+import df.base.persistence.support.EntityGraphConstants;
+import df.base.persistence.entity.form.Field;
+import df.base.persistence.entity.support.FieldStatus;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

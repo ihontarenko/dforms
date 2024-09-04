@@ -1,6 +1,6 @@
 package df.base.security.oauth2;
 
-import df.base.jpa.User;
+import df.base.persistence.entity.user.User;
 import df.base.security.UserInfo;
 import df.base.service.user.UserService;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;

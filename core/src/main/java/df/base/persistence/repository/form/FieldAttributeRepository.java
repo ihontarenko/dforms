@@ -1,6 +1,6 @@
-package df.base.jpa.form.repository;
+package df.base.persistence.repository.form;
 
-import df.base.jpa.form.FieldAttribute;
+import df.base.persistence.entity.form.FieldAttribute;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

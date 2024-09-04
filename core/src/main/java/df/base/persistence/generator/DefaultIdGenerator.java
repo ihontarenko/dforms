@@ -1,4 +1,4 @@
-package df.base.jpa;
+package df.base.persistence.generator;
 
 import df.base.common.hibernate.generator.IdPrefixGenerator;
 import df.base.common.hibernate.generator.PrefixedId;

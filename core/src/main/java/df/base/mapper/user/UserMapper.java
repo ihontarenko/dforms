@@ -1,9 +1,9 @@
 package df.base.mapper.user;
 
-import df.base.jpa.Role;
-import df.base.jpa.User;
-import df.base.internal.Mapper;
-import df.base.model.user.UserDTO;
+import df.base.persistence.entity.user.Role;
+import df.base.persistence.entity.user.User;
+import df.base.common.Mapper;
+import df.base.dto.user.UserDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;

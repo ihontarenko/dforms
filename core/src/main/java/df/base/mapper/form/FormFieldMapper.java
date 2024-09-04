@@ -1,11 +1,11 @@
 package df.base.mapper.form;
 
-import df.base.jpa.form.support.ElementType;
-import df.base.jpa.form.support.FieldStatus;
-import df.base.jpa.form.Field;
-import df.base.internal.Mapper;
-import df.base.jpa.form.support.UsageType;
-import df.base.model.form.FormFieldDTO;
+import df.base.persistence.entity.support.ElementType;
+import df.base.persistence.entity.support.FieldStatus;
+import df.base.persistence.entity.form.Field;
+import df.base.common.Mapper;
+import df.base.persistence.entity.support.UsageType;
+import df.base.dto.form.FormFieldDTO;
 
 public class FormFieldMapper implements Mapper<Field, FormFieldDTO> {
 

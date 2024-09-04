@@ -1,6 +1,6 @@
 package df.base.common.support;
 
-import df.base.jpa.User;
+import df.base.persistence.entity.user.User;
 import df.base.security.UserInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

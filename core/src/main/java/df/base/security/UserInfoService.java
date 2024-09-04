@@ -1,6 +1,6 @@
 package df.base.security;
 
-import df.base.jpa.User;
+import df.base.persistence.entity.user.User;
 import df.base.service.user.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;

@@ -1,6 +1,6 @@
 package df.base.configuration;
 
-import df.base.internal.hibernate.support.ProtectDeleteListener;
+import df.base.common.hibernate.support.ProtectDeleteListener;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceUnit;

@@ -1,8 +1,8 @@
-package df.base.model.form;
+package df.base.dto.form;
 
 import df.base.common.support.jpa.JpaCriteria;
 import df.base.common.validation.jakarta.Fields;
-import df.base.jpa.form.Field;
+import df.base.persistence.entity.form.Field;
 import df.base.common.validation.jakarta.constraint.JpaResource;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

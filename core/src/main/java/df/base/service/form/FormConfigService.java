@@ -1,9 +1,9 @@
 package df.base.service.form;
 
-import df.base.jpa.form.Form;
-import df.base.jpa.form.FormConfig;
-import df.base.jpa.form.repository.FormConfigRepository;
-import df.base.model.form.FormConfigDTO;
+import df.base.persistence.entity.form.Form;
+import df.base.persistence.entity.form.FormConfig;
+import df.base.persistence.repository.form.FormConfigRepository;
+import df.base.dto.form.FormConfigDTO;
 import df.base.service.JpaResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

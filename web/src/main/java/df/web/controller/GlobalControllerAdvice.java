@@ -1,6 +1,6 @@
 package df.web.controller;
 
-import df.base.internal.breadcrumb.BreadcrumbService;
+import df.base.common.breadcrumb.BreadcrumbService;
 import df.base.property.ApplicationProperties;
 import df.base.security.UserInfo;
 import df.base.service.RedirectAware;

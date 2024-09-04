@@ -1,8 +1,11 @@
-package df.base.jpa.form;
+package df.base.persistence.entity.form;
 
 import df.base.common.hibernate.generator.PrefixedId;
-import df.base.jpa.*;
-import df.base.jpa.form.support.FormStatus;
+import df.base.persistence.entity.user.User;
+import df.base.persistence.entity.support.FormStatus;
+import df.base.persistence.support.EntityGraphConstants;
+import df.base.persistence.entity.EntityNameAware;
+import df.base.persistence.generator.NamedEntityIdGenerator;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;

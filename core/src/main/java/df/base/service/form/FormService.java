@@ -1,12 +1,12 @@
 package df.base.service.form;
 
 import df.base.Messages;
-import df.base.jpa.User;
-import df.base.jpa.form.Form;
-import df.base.jpa.form.repository.FormRepository;
-import df.base.jpa.form.support.FormStatus;
+import df.base.persistence.entity.user.User;
+import df.base.persistence.entity.form.Form;
+import df.base.persistence.repository.form.FormRepository;
+import df.base.persistence.entity.support.FormStatus;
 import df.base.mapper.form.FormMapper;
-import df.base.model.form.FormDTO;
+import df.base.dto.form.FormDTO;
 import df.base.service.RedirectAware;
 import df.base.service.JpaResourceNotFoundException;
 import org.springframework.stereotype.Service;

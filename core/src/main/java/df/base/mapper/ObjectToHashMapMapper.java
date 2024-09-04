@@ -1,7 +1,7 @@
 package df.base.mapper;
 
-import df.base.internal.Mapper;
-import df.base.internal.jbm.ReflectionUtils;
+import df.base.common.Mapper;
+import df.base.common.jbm.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

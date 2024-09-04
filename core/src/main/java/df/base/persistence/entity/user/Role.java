@@ -1,7 +1,10 @@
-package df.base.jpa;
+package df.base.persistence.entity.user;
 
 import df.base.common.hibernate.generator.IdPrefixGenerator;
 import df.base.common.hibernate.generator.PrefixedId;
+import df.base.persistence.entity.EntityNameAware;
+import df.base.persistence.generator.NamedEntityIdGenerator;
+import df.base.persistence.support.EntityGraphConstants;
 import jakarta.persistence.*;
 
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package df.base.model;
+package df.base.dto;
 
 public class SearchDTO {
 

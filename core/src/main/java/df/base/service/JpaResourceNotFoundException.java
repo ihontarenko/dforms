@@ -1,6 +1,6 @@
 package df.base.service;
 
-import df.base.internal.exception.ApplicationException;
+import df.base.common.exception.ApplicationException;
 
 import static df.base.utils.SlugifyTransliterator.slugify;
 
