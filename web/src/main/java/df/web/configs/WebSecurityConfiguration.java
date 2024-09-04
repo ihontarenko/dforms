@@ -1,4 +1,4 @@
-package df.web.configuration;
+package df.web.configs;
 
 import df.base.security.*;
 import df.base.security.oauth2.OAuth2UserMapperFactory;

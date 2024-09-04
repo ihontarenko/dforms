@@ -1,4 +1,4 @@
-package df.base.configuration;
+package df.base.configs;
 
 import df.base.Constants;
 import df.base.common.BeansHolder;
@@ -37,11 +37,9 @@ import java.util.stream.Collectors;
 @EnableJpaRepositories(
         basePackages = Constants.ENTITY_PACKAGE_TO_SCAN,
         repositoryFactoryBeanClass = EntityGraphRepositoryFactoryBean.class)
-@ComponentScan(basePackages = {
-        Constants.BASE_PACKAGE_TO_SCAN})
+@ComponentScan(basePackages = {Constants.BASE_PACKAGE_TO_SCAN})
 @EnableConfigurationProperties
-@ConfigurationPropertiesScan(basePackages = {
-        "df.base.property"})
+@ConfigurationPropertiesScan(basePackages = {"df.base.property"})
 public class CommonConfiguration implements WebMvcConfigurer {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(CommonConfiguration.class);

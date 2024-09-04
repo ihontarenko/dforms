@@ -1,6 +1,6 @@
 package df.api.configuration;
 
-import df.base.configuration.CommonConfiguration;
+import df.base.configs.CommonConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.*;

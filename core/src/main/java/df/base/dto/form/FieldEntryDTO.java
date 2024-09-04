@@ -15,7 +15,7 @@ public class FieldEntryDTO {
 
     @NotEmpty
     @Size(max = 32)
-    private String formFieldId;
+    private String fieldId;
 
     @NotEmpty
     @Size(max = 1000)
@@ -37,12 +37,12 @@ public class FieldEntryDTO {
         this.formEntryId = formEntryId;
     }
 
-    public String getFormFieldId() {
-        return formFieldId;
+    public String getFieldId() {
+        return fieldId;
     }
 
-    public void setFormFieldId(String formFieldId) {
-        this.formFieldId = formFieldId;
+    public void setFieldId(String fieldId) {
+        this.fieldId = fieldId;
     }
 
     public String getValue() {

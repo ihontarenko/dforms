@@ -17,7 +17,8 @@ public class MessageResolver {
     }
 
     public ErrorMessage resolve(String packageName, ErrorCode code, ErrorContext context) {
-        Map<String, ValidationMessages.Message> messages = this.messages.getMessages(packageName);
+        Map<String, ValidationMessages.Message> messages = Objects.requireNonNull(this.messages.getMessages(packageName),
+                "UNABLE TO FIND MESSAGE PACKAGE NAME '%s'".formatted(packageName));
 
         ValidationMessages.Message message = Objects.requireNonNull(messages.get(code.name()),
                 "UNABLE TO FIND MESSAGE CODE '%s'".formatted(code.name()));

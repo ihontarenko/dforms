@@ -17,7 +17,7 @@ import java.util.Set;
 import static df.base.persistence.support.EntityConstants.*;
 
 @Entity
-@Table(name = "DF_FORM_FIELDS")
+@Table(name = TABLE_FIELDS)
 @NamedEntityGraphs({
         @NamedEntityGraph(
                 name = EntityGraphConstants.FORM_FIELD_WITH_CONFIGS,

@@ -1,44 +1,52 @@
 package df.web.controller.form;
 
+import df.base.common.validation.custom.Validation;
+import df.base.dto.form.FieldDTO;
+import df.base.mapping.form.FormFieldMapper;
 import df.base.persistence.entity.form.Field;
-import df.base.persistence.support.EntityGraphConstants;
-import df.base.persistence.repository.form.FieldRepository;
 import df.base.persistence.entity.support.ElementType;
 import df.base.persistence.entity.support.FieldStatus;
 import df.base.persistence.entity.support.UsageType;
-import df.base.mapping.form.FormFieldMapper;
-import df.base.dto.form.FieldDTO;
 import df.base.persistence.exception.JpaResourceNotFoundException;
+import df.base.persistence.repository.form.FieldRepository;
+import df.base.persistence.support.EntityGraphConstants;
 import df.base.service.form.FieldService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
 import df.web.controller.MAVConstants;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static df.base.Messages.*;
 import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Named.load;
 import static df.web.common.flash.FlashMessage.*;
-import static df.web.common.flash.FlashMessage.error;
 
 @Controller
 public class FieldController implements FieldOperations {
 
+    private final Validation       validation;
     private final ControllerHelper controllerHelper;
     private final FieldService     fieldService;
 
     // todo: test
     private final FieldRepository repository;
 
-    public FieldController(ControllerHelper controllerHelper, FieldService fieldService, FieldRepository repository) {
+    public FieldController(@Qualifier("fieldValidation") Validation validation, ControllerHelper controllerHelper,
+                           FieldService fieldService, FieldRepository repository) {
+        this.validation = validation;
         this.fieldService = fieldService;
         this.controllerHelper = controllerHelper;
         this.repository = repository;
+
         controllerHelper.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
         fieldService.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
     }
@@ -87,6 +95,8 @@ public class FieldController implements FieldOperations {
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
 
         bindAttributes(fieldDTO);
+
+        validation.validate(fieldDTO, result);
 
         if (!result.hasFieldErrors()) {
             Field field = fieldService.createOrUpdate(fieldDTO);

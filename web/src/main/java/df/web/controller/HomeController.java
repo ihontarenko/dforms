@@ -18,11 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class HomeController {
 
     private final FlashMessageService flashMessage;
-    private final Validation commonValidation;
 
-    public HomeController(FlashMessageService flashMessage, @Qualifier("commonValidation") Validation commonValidation) {
+    public HomeController(FlashMessageService flashMessage) {
         this.flashMessage = flashMessage;
-        this.commonValidation = commonValidation;
     }
 
     @GetMapping("/home")
@@ -32,8 +30,6 @@ public class HomeController {
             RedirectAttributes attributes
     ) {
         ModelAndView mav = new ModelAndView("index/home");
-
-        commonValidation.validate(null);
 
         if (status != null) {
             flashMessage.addMessage(attributes, "Welcome on board %s you are authorized using '%s'!"

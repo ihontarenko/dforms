@@ -1,4 +1,4 @@
-package df.base.configuration;
+package df.base.configs;
 
 import df.base.Constants;
 import df.base.common.extensions.hibernate.naming.EnhancementPhysicalNamingStrategy;

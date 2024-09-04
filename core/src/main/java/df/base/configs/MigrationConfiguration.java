@@ -1,4 +1,4 @@
-package df.base.configuration;
+package df.base.configs;
 
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;

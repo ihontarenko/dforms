@@ -51,7 +51,7 @@ public class FieldDTO {
     private String usageType;
 
     @NotNull
-    @Pattern(regexp = "TEXT|NUMBER|SELECT|RADIO|CHECKBOX|TEXTAREA|DATE|EMAIL|URL|VIRTUAL")
+    @Pattern(regexp = "TEXT|NUMBER|SELECT|RADIO|CHECKBOX|TEXTAREA|DATE|EMAIL|URL|NONE")
     private String elementType;
 
     @NotEmpty

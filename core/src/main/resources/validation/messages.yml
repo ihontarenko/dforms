@@ -3,17 +3,11 @@ validation:
     messages:
 
       NULL_OBJECT:
-        message: "Field cannot be null"
+        message: "field cannot be null"
         pointer: name
 
-      STRING_BLANK:
-        message: "Field cannot be blank"
-        pointer: name
-        context:
-          FORM_NAME:
-            message: "Form name cannot be NULL"
-            pointer: formName
-
-      UNSUPPORTED_CHARACTERS:
-        message: "Field contains unsupported characters"
-        pointer: name
+  FIELD_VALIDATION:
+    messages:
+      INCOMPATIBLE_USAGE_TYPE:
+        message: "a VIRTUAL column must have an element type of NONE"
+        pointer: usageType

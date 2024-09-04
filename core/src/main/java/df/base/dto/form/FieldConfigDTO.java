@@ -11,7 +11,7 @@ public class FieldConfigDTO {
 
     @NotEmpty
     @Size(max = 32)
-    private String formFieldId;
+    private String fieldId;
 
     @NotEmpty
     @Size(max = 255)
@@ -29,12 +29,12 @@ public class FieldConfigDTO {
         this.id = id;
     }
 
-    public String getFormFieldId() {
-        return formFieldId;
+    public String getFieldId() {
+        return fieldId;
     }
 
-    public void setFormFieldId(String formFieldId) {
-        this.formFieldId = formFieldId;
+    public void setFieldId(String fieldId) {
+        this.fieldId = fieldId;
     }
 
     public String getConfigName() {

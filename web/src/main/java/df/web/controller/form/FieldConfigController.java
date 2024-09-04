@@ -43,7 +43,7 @@ public class FieldConfigController implements FieldConfigOperations {
         helper.setViewName(MAVConstants.VIEW_FORM_FIELD_CONFIG);
 
         bindAttributes(new FieldConfigDTO(){{
-            setFormFieldId(fieldId);
+            setFieldId(fieldId);
         }});
 
         return helper.resolveWithoutRedirect();
@@ -72,11 +72,11 @@ public class FieldConfigController implements FieldConfigOperations {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
         helper.setViewName(MAVConstants.VIEW_FORM_FIELD_CONFIG);
-        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(configDTO.getFormFieldId()));
+        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(configDTO.getFieldId()));
 
         if (!result.hasErrors()) {
             FieldConfig config = configService
-                    .createOrUpdate(fieldService.requireById(configDTO.getFormFieldId()), configDTO);
+                    .createOrUpdate(fieldService.requireById(configDTO.getFieldId()), configDTO);
             helper.addMessage(success(SUCCESS_CONFIG_SAVED
                     .formatted(config.getConfigName())));
         } else {
@@ -102,7 +102,7 @@ public class FieldConfigController implements FieldConfigOperations {
 
     private void bindAttributes(FieldConfigDTO itemDTO) {
         Map<String, Object> attributes = new HashMap<>();
-        Field               field      = fieldService.requireById(itemDTO.getFormFieldId());
+        Field               field      = fieldService.requireById(itemDTO.getFieldId());
 
         attributes.put("itemDTO", itemDTO);
         attributes.put("configurations", configService.getAllByField(field));
