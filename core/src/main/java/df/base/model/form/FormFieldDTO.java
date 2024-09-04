@@ -47,7 +47,11 @@ public class FormFieldDTO {
     private String id;
 
     @NotNull
-    @Pattern(regexp = "TEXT|NUMBER|SELECT|RADIO|CHECKBOX|TEXTAREA|DATE|EMAIL|URL")
+    @Pattern(regexp = "VIRTUAL|EMBEDDABLE|STANDALONE")
+    private String usageType;
+
+    @NotNull
+    @Pattern(regexp = "TEXT|NUMBER|SELECT|RADIO|CHECKBOX|TEXTAREA|DATE|EMAIL|URL|VIRTUAL")
     private String elementType;
 
     @NotEmpty
@@ -71,6 +75,14 @@ public class FormFieldDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUsageType() {
+        return usageType;
+    }
+
+    public void setUsageType(String usageType) {
+        this.usageType = usageType;
     }
 
     public String getElementType() {

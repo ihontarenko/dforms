@@ -40,11 +40,22 @@
     </div>
 
     <div class="form-group">
+        <label class="d-block">Usage Type</label>
+        <div class="btn-group" role="group">
+            {% for usageType in usageTypes %}
+            <input type="radio" class="btn-check" name="usageType" id="{{ usageType }}" value="{{ usageType }}" autocomplete="off" {% if usageType equals itemDTO.usageType %}checked{% endif %}>
+            <label class="btn btn-sm btn-outline-dark" for="{{ usageType }}">{{ usageType }}</label>
+            {% endfor %}
+        </div>
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "usageType"} %}
+    </div>
+
+    <div class="form-group">
         <label class="d-block">Status</label>
         <div class="btn-group" role="group">
             {% for status in fieldStatuses %}
             <input type="radio" class="btn-check" name="status" id="{{ status }}" value="{{ status }}" autocomplete="off" {% if status equals itemDTO.status %}checked{% endif %}>
-            <label class="btn btn-sm btn-outline-dark" for="{{ status }}">{{ status }}</label>
+            <label class="btn btn-sm btn-outline-primary" for="{{ status }}">{{ status }}</label>
             {% endfor %}
         </div>
         {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "status"} %}

@@ -32,8 +32,10 @@ public class QueryProxy implements MethodInterceptor {
             LOGGER.warn("QUERY_PROXY: UNWRAP NULL DETECTED");
             return invocation.getThis();
         } else if (EXECUTE_QUERY_METHODS.contains(methodName)) {
-            LOGGER.debug("QUERY_PROXY: EXECUTE_QUERY_METHOD [{}]", decorator.getMethodName());
-            Optional<EntityGraphQueryHint> optional = ObjectsHolder.get(EntityGraphQueryHint.class);
+            LOGGER.debug("QUERY_PROXY: EXECUTE_QUERY_METHOD [{}#{}]",
+                    decorator.getMethodClassName(), decorator.getMethodName());
+            Optional<EntityGraphQueryHint> optional = ObjectsHolder.getAndRemove(EntityGraphQueryHint.class);
+            // inject entity graph
             optional.ifPresent(hint -> new QueryHintInjector().inject(hint, decorator.getThis()));
         }
 

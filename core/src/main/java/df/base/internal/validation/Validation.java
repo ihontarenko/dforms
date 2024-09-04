@@ -46,6 +46,8 @@ public class Validation {
                 } catch (ValidationException exception) {
                     ErrorMessage message = resolver.resolve(name, exception.getErrorCode(), exception.getErrorContext());
                     errors.add(message);
+
+                    if (exception.isBreakOnFail()) break;
                 }
             }
 

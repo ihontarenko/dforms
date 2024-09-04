@@ -4,6 +4,8 @@ import df.base.internal.spring.jpa.entity_graph.MethodInvocationDecorator;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.ProxyMethodInvocation;
 
+import java.lang.annotation.Annotation;
+
 import static java.util.Objects.requireNonNull;
 
 public class JpaRepositoryMethodInvocation extends MethodInvocationDecorator {
@@ -12,12 +14,8 @@ public class JpaRepositoryMethodInvocation extends MethodInvocationDecorator {
         super(delegate);
     }
 
-    public Object getRepository() {
-        if (delegate instanceof ProxyMethodInvocation) {
-            return ((ProxyMethodInvocation) delegate).getProxy();
-        } else {
-            return delegate.getThis();
-        }
+    public boolean isMethodAnnotated(Class<? extends Annotation> annotation) {
+        return delegate.getMethod().isAnnotationPresent(annotation);
     }
 
 }

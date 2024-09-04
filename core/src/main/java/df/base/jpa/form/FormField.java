@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,6 +26,13 @@ import java.util.Set;
                         @NamedAttributeNode("configs"),
                         @NamedAttributeNode("attributes"),
                         @NamedAttributeNode("options")
+                }
+        ),
+        @NamedEntityGraph(
+                name = "FormField.withParentAndChildren",
+                attributeNodes = {
+                        @NamedAttributeNode("parent"),
+                        @NamedAttributeNode(value = "child")
                 }
         )
 })
@@ -55,6 +63,10 @@ public class FormField implements EntityNameAware, ProtectedEntity {
     @Column(name = "ELEMENT_TYPE", nullable = false)
     private ElementType elementType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "USAGE_TYPE", nullable = false)
+    private UsageType usageType;
+
     @Column(name = "LABEL", nullable = false)
     private String label;
 
@@ -68,13 +80,16 @@ public class FormField implements EntityNameAware, ProtectedEntity {
     @Column(name = "STATUS", nullable = false)
     private FieldStatus status;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
-            name = EntityConstants.TABLE_FORM_FIELD_GROUP,
-            inverseJoinColumns = @JoinColumn(name = EntityConstants.COLUMN_FORM_FIELD_GROUP_PARENT_FIELD_ID),
-            joinColumns = @JoinColumn(name = EntityConstants.COLUMN_FORM_FIELD_GROUP_FIELD_ID)
-    )
-    private Set<FormField> child;
+            name = "DF_FIELD_SELF_MAPPING",
+            joinColumns = @JoinColumn(name = "P_ID"),
+            inverseJoinColumns = @JoinColumn(name = "C_ID"))
+    @OrderColumn(name = "SEQUENCE_ORDER")
+    private Set<FormField> child = new HashSet<>();
+
+    @ManyToMany(mappedBy = "child")
+    private Set<FormField> parent = new HashSet<>();
 
     @OneToMany(mappedBy = "formField", fetch = FetchType.LAZY)
     private Set<FormFieldOption> options;
@@ -112,6 +127,14 @@ public class FormField implements EntityNameAware, ProtectedEntity {
         this.elementType = elementType;
     }
 
+    public UsageType getUsageType() {
+        return usageType;
+    }
+
+    public void setUsageType(UsageType usageType) {
+        this.usageType = usageType;
+    }
+
     public String getLabel() {
         return label;
     }
@@ -146,6 +169,14 @@ public class FormField implements EntityNameAware, ProtectedEntity {
 
     public void setChild(Set<FormField> child) {
         this.child = child;
+    }
+
+    public Set<FormField> getParent() {
+        return parent;
+    }
+
+    public void setParent(Set<FormField> parent) {
+        this.parent = parent;
     }
 
     public void setStatus(FieldStatus status) {

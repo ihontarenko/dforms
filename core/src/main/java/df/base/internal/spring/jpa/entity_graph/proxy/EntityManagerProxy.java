@@ -1,6 +1,9 @@
 package df.base.internal.spring.jpa.entity_graph.proxy;
 
+import df.base.internal.spring.jpa.entity_graph.EntityGraphQueryHint;
 import df.base.internal.spring.jpa.entity_graph.MethodInvocationDecorator;
+import df.base.internal.spring.jpa.entity_graph.ObjectsHolder;
+import df.base.internal.spring.jpa.entity_graph.injector.QueryParametersInjector;
 import df.base.internal.spring.jpa.entity_graph.invocation.EntityManagerMethodInvocation;
 import jakarta.persistence.Query;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -9,7 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 
+import static df.base.internal.spring.jpa.entity_graph.ObjectsHolder.exists;
+import static df.base.internal.spring.jpa.entity_graph.ObjectsHolder.getAndRemove;
 import static df.base.internal.spring.jpa.entity_graph.ProxyUtils.proxy;
 import static java.util.Arrays.asList;
 
@@ -31,15 +37,16 @@ public class EntityManagerProxy implements MethodInterceptor {
 
         // catch find method
         if (FIND_METHOD.equals(methodName)) {
-            throw new UnsupportedOperationException("NOT IMPLEMENTED YET");
-            // todo: apply entity-graph for find method
+            Optional<EntityGraphQueryHint> optional = getAndRemove(EntityGraphQueryHint.class);
+            // inject entity graph
+            optional.ifPresent(hint -> new QueryParametersInjector().inject(hint, decorator.getArguments()));
         }
 
         Object result = decorator.proceed();
 
         // catch create methods ["createQuery", "createNamedQuery"]
-        if (CREATE_QUERY_METHODS.contains(methodName) && result instanceof Query query) {
-            // if applicable method name and result is Query then we proxy it
+        if (CREATE_QUERY_METHODS.contains(methodName) && result instanceof Query query && exists(EntityGraphQueryHint.class)) {
+            // if applicable method name and result is Query and EntityGraphQueryHint is present then we proxy it
             result = proxy(query, new QueryProxy());
         }
 

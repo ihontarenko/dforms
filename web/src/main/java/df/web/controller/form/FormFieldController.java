@@ -2,10 +2,7 @@ package df.web.controller.form;
 
 import df.base.internal.spring.jpa.entity_graph.JpaEntityGraph;
 import df.base.jpa.EntityGraphConstants;
-import df.base.jpa.form.ElementType;
-import df.base.jpa.form.FieldStatus;
-import df.base.jpa.form.FormField;
-import df.base.jpa.form.FormFieldRepository;
+import df.base.jpa.form.*;
 import df.base.mapper.form.FormFieldMapper;
 import df.base.model.form.FormFieldDTO;
 import df.base.service.JpaResourceNotFoundException;
@@ -143,6 +140,7 @@ public class FormFieldController implements FormFieldOperations {
         attributes.put("elementTypes", ElementType.values());
         attributes.put("fields", fieldService.getAll());
         attributes.put("fieldStatuses", FieldStatus.values());
+        attributes.put("usageTypes", UsageType.values());
 
         controllerHelper.attributes(attributes);
     }

@@ -1,7 +1,5 @@
 package df.base.service.form;
 
-import df.base.internal.spring.jpa.entity_graph.JpaEntityGraph;
-import df.base.jpa.EntityGraphConstants;
 import df.base.jpa.form.FieldStatus;
 import df.base.jpa.form.FormField;
 import df.base.jpa.form.FormFieldRepository;
@@ -18,7 +16,7 @@ import java.util.Optional;
 
 import static df.base.Messages.FORM_FIELD_NOT_FOUND;
 import static df.base.Messages.REQUIRED_ID_CANNOT_BE_NULL;
-import static df.base.internal.spring.jpa.entity_graph.JpaEntityGraph.Dynamic.fetch;
+import static df.base.internal.spring.jpa.entity_graph.JpaEntityGraph.Dynamic.load;
 import static df.base.internal.spring.jpa.entity_graph.JpaEntityGraph.Named.name;
 import static df.base.jpa.EntityGraphConstants.FORM_FIELD_WITH_ALL_RELATED;
 import static java.util.Objects.requireNonNull;
@@ -39,7 +37,7 @@ public class FormFieldService implements RedirectAware {
 
     @Transactional(readOnly = true)
     public Optional<FormField> getById(String id) {
-        return id == null ? Optional.empty() : repository.findById(id, fetch("child"));
+        return id == null ? Optional.empty() : repository.findById(id, load("child", "parent"));
     }
 
     @Transactional(readOnly = true)

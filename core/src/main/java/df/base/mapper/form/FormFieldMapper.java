@@ -4,6 +4,7 @@ import df.base.jpa.form.ElementType;
 import df.base.jpa.form.FieldStatus;
 import df.base.jpa.form.FormField;
 import df.base.internal.Mapper;
+import df.base.jpa.form.UsageType;
 import df.base.model.form.FormFieldDTO;
 
 public class FormFieldMapper implements Mapper<FormField, FormFieldDTO> {
@@ -29,6 +30,7 @@ public class FormFieldMapper implements Mapper<FormField, FormFieldDTO> {
     @Override
     public void map(FormField source, FormFieldDTO destination) {
         destination.setId(source.getId());
+        destination.setUsageType(source.getUsageType().name());
         destination.setElementType(source.getElementType().name());
         destination.setName(source.getName());
         destination.setLabel(source.getLabel());
@@ -38,6 +40,7 @@ public class FormFieldMapper implements Mapper<FormField, FormFieldDTO> {
 
     @Override
     public void reverse(FormFieldDTO source, FormField destination) {
+        destination.setUsageType(UsageType.valueOf(source.getUsageType()));
         destination.setElementType(ElementType.valueOf(source.getElementType()));
         destination.setName(source.getName());
         destination.setLabel(source.getLabel());

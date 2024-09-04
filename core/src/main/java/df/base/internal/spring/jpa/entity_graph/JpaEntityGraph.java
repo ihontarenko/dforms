@@ -28,7 +28,6 @@ public interface JpaEntityGraph {
             return builder(EntityGraphType.LOAD);
         }
 
-
         public static Dynamic load(String... attributes) {
             return load().attribute(attributes).build();
         }
@@ -36,7 +35,6 @@ public interface JpaEntityGraph {
         public static Builder fetch() {
             return builder(EntityGraphType.FETCH);
         }
-
 
         public static Dynamic fetch(String... attributes) {
             return fetch().attribute(attributes).build();

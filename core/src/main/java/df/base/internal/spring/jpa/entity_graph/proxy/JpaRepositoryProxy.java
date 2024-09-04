@@ -1,5 +1,6 @@
 package df.base.internal.spring.jpa.entity_graph.proxy;
 
+import df.base.internal.spring.jpa.entity_graph.EntityGraphException;
 import df.base.internal.spring.jpa.entity_graph.EntityGraphQueryHint;
 import df.base.internal.spring.jpa.entity_graph.JpaEntityGraph;
 import df.base.internal.spring.jpa.entity_graph.ObjectsHolder;
@@ -33,8 +34,13 @@ public class JpaRepositoryProxy implements MethodInterceptor {
         if (argument.isPresent()) {
             JpaEntityGraph jpaEntityGraph = argument.get();
 
+            if (decorator.isMethodAnnotated(org.springframework.data.jpa.repository.EntityGraph.class)) {
+                throw new EntityGraphException("@EntityGraph already present on method %s#%s"
+                        .formatted(decorator.getMethodClassName(), decorator.getMethodName()));
+            }
+
             LOGGER.debug("JPA_REPOSITORY_PROXY: JpaEntityGraph found '{}({})#{}'",
-                    decorator.getThisClassName(), entityClass.getSimpleName(), methodName);
+                    decorator.getMethodClassName(), entityClass.getSimpleName(), methodName);
 
             EntityGraph<?> entityGraph = jpaEntityGraph.createEntityGraph(entityManager, entityClass);
 
