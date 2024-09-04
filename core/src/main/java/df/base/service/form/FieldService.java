@@ -3,9 +3,9 @@ package df.base.service.form;
 import df.base.persistence.entity.support.FieldStatus;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.repository.form.FieldRepository;
-import df.base.mapper.form.FormFieldMapper;
+import df.base.mapping.form.FormFieldMapper;
 import df.base.dto.form.FormFieldDTO;
-import df.base.service.JpaResourceNotFoundException;
+import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.service.RedirectAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ import java.util.Optional;
 
 import static df.base.Messages.FORM_FIELD_NOT_FOUND;
 import static df.base.Messages.REQUIRED_ID_CANNOT_BE_NULL;
-import static df.base.common.spring.jpa.entity_graph.JpaEntityGraph.Dynamic.load;
-import static df.base.common.spring.jpa.entity_graph.JpaEntityGraph.Named.name;
+import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Dynamic.load;
+import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Named.name;
 import static df.base.persistence.support.EntityGraphConstants.FORM_FIELD_WITH_ALL_RELATED;
 import static java.util.Objects.requireNonNull;
 

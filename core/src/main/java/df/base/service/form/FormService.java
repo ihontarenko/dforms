@@ -5,10 +5,10 @@ import df.base.persistence.entity.user.User;
 import df.base.persistence.entity.form.Form;
 import df.base.persistence.repository.form.FormRepository;
 import df.base.persistence.entity.support.FormStatus;
-import df.base.mapper.form.FormMapper;
+import df.base.mapping.form.FormMapper;
 import df.base.dto.form.FormDTO;
 import df.base.service.RedirectAware;
-import df.base.service.JpaResourceNotFoundException;
+import df.base.persistence.exception.JpaResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,7 +1,6 @@
 package df.base.persistence.entity.form;
 
-import df.base.common.hibernate.generator.PrefixedId;
-import df.base.common.hibernate.support.ProtectedEntity;
+import df.base.common.extensions.hibernate.generator.PrefixedId;
 import df.base.persistence.support.EntityGraphConstants;
 import df.base.persistence.entity.EntityNameAware;
 import df.base.persistence.generator.NamedEntityIdGenerator;
@@ -40,7 +39,7 @@ import static df.base.persistence.support.EntityConstants.*;
                 }
         )
 })
-public class Field implements EntityNameAware, ProtectedEntity {
+public class Field implements EntityNameAware {
 
     @Id
     @PrefixedId(
@@ -216,11 +215,6 @@ public class Field implements EntityNameAware, ProtectedEntity {
 
     public void setDefaultValues(Set<FieldDefaultValue> defaultValues) {
         this.defaultValues = defaultValues;
-    }
-
-    @Override
-    public boolean nonRemovable() {
-        return forms != null && forms.size() > 0;
     }
 
     @Override

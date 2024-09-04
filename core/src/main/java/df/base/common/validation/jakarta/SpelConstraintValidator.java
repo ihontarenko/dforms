@@ -1,6 +1,6 @@
 package df.base.common.validation.jakarta;
 
-import df.base.common.support.SpelEvaluator;
+import df.base.common.support.spel.SpelEvaluator;
 import df.base.common.validation.jakarta.constraint.SpelConstraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

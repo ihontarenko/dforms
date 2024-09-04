@@ -1,7 +1,7 @@
 package df.base.common.support.jpa;
 
 import df.base.common.Mapper;
-import df.base.common.support.SpelEvaluator;
+import df.base.common.support.spel.SpelEvaluator;
 import df.base.common.validation.jakarta.Fields;
 import df.base.common.validation.jakarta.Fields.ValueType;
 import org.springframework.expression.ExpressionParser;
@@ -10,7 +10,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import java.util.ArrayList;
 import java.util.List;
 
-import static df.base.common.jbm.ReflectionUtils.getFieldValue;
+import static df.base.common.libs.jbm.ReflectionUtils.getFieldValue;
 
 public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
 

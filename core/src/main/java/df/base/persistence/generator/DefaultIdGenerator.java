@@ -1,7 +1,7 @@
 package df.base.persistence.generator;
 
-import df.base.common.hibernate.generator.IdPrefixGenerator;
-import df.base.common.hibernate.generator.PrefixedId;
+import df.base.common.extensions.hibernate.generator.IdPrefixGenerator;
+import df.base.common.extensions.hibernate.generator.PrefixedId;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

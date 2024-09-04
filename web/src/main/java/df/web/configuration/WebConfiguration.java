@@ -1,6 +1,6 @@
 package df.web.configuration;
 
-import df.base.common.resource.ContentHashVersionStrategy;
+import df.base.common.extensions.spring.resource.ContentHashVersionStrategy;
 import df.base.common.validation.custom.MessageResolver;
 import df.base.common.validation.custom.Validation;
 import df.base.configuration.CommonConfiguration;

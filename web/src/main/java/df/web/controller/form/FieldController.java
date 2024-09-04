@@ -6,9 +6,9 @@ import df.base.persistence.repository.form.FieldRepository;
 import df.base.persistence.entity.support.ElementType;
 import df.base.persistence.entity.support.FieldStatus;
 import df.base.persistence.entity.support.UsageType;
-import df.base.mapper.form.FormFieldMapper;
+import df.base.mapping.form.FormFieldMapper;
 import df.base.dto.form.FormFieldDTO;
-import df.base.service.JpaResourceNotFoundException;
+import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.service.form.FieldService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static df.base.Messages.*;
-import static df.base.common.spring.jpa.entity_graph.JpaEntityGraph.Named.load;
+import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Named.load;
 import static df.web.common.flash.FlashMessage.*;
 import static df.web.common.flash.FlashMessage.error;
 

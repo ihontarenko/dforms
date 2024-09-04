@@ -2,9 +2,9 @@ package df.web.controller.form;
 
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.form.FieldConfig;
-import df.base.mapper.form.FormFieldConfigMapper;
+import df.base.mapping.form.FormFieldConfigMapper;
 import df.base.dto.form.FormFieldConfigDTO;
-import df.base.service.JpaResourceNotFoundException;
+import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.service.form.FieldConfigService;
 import df.base.service.form.FieldService;
 import df.web.common.ControllerHelper;

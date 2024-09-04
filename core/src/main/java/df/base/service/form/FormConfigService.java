@@ -4,7 +4,7 @@ import df.base.persistence.entity.form.Form;
 import df.base.persistence.entity.form.FormConfig;
 import df.base.persistence.repository.form.FormConfigRepository;
 import df.base.dto.form.FormConfigDTO;
-import df.base.service.JpaResourceNotFoundException;
+import df.base.persistence.exception.JpaResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -3,7 +3,7 @@ package df.base.common.validation.jakarta;
 import df.base.common.support.jpa.JpaCriteria;
 import df.base.common.support.jpa.JpaCriteriaMapper;
 import df.base.common.support.jpa.JpaHelper;
-import df.base.common.support.SpelEvaluator;
+import df.base.common.support.spel.SpelEvaluator;
 import df.base.common.validation.jakarta.constraint.JpaResource;
 import jakarta.persistence.TypedQuery;
 import jakarta.validation.ConstraintValidator;

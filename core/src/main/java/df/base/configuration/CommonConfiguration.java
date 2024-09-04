@@ -3,7 +3,7 @@ package df.base.configuration;
 import df.base.Constants;
 import df.base.common.BeansHolder;
 import df.base.common.i18n.Translator;
-import df.base.common.spring.jpa.entity_graph.support.EntityGraphRepositoryFactoryBean;
+import df.base.common.extensions.persistence.entity_graph.support.EntityGraphRepositoryFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

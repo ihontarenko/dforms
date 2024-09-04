@@ -4,7 +4,7 @@ import df.base.common.breadcrumb.BreadcrumbService;
 import df.base.property.ApplicationProperties;
 import df.base.security.UserInfo;
 import df.base.service.RedirectAware;
-import df.base.service.JpaResourceNotFoundException;
+import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.web.common.flash.FlashMessageService;
 import io.pebbletemplates.pebble.error.PebbleException;
 import jakarta.servlet.http.HttpServletRequest;

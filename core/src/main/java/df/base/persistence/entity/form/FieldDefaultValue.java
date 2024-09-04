@@ -1,6 +1,6 @@
 package df.base.persistence.entity.form;
 
-import df.base.common.hibernate.generator.PrefixedId;
+import df.base.common.extensions.hibernate.generator.PrefixedId;
 import df.base.persistence.support.EntityConstants;
 import jakarta.persistence.*;
 

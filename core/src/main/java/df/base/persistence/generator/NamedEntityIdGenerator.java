@@ -1,10 +1,10 @@
 package df.base.persistence.generator;
 
-import df.base.common.hibernate.generator.IdPrefixGenerator;
-import df.base.common.hibernate.generator.PrefixedId;
+import df.base.common.extensions.hibernate.generator.IdPrefixGenerator;
+import df.base.common.extensions.hibernate.generator.PrefixedId;
 import df.base.persistence.entity.EntityNameAware;
 
-import static df.base.utils.SlugifyTransliterator.slugify;
+import static df.base.common.support.SlugifyTransliterator.slugify;
 import static java.util.Objects.requireNonNull;
 
 public class NamedEntityIdGenerator implements IdPrefixGenerator {

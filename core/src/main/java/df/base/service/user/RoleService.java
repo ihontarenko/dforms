@@ -6,7 +6,7 @@ import df.base.persistence.entity.user.Role;
 import df.base.persistence.repository.user.RoleRepository;
 import df.base.dto.user.RoleDTO;
 import df.base.service.RedirectAware;
-import df.base.service.JpaResourceNotFoundException;
+import df.base.persistence.exception.JpaResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

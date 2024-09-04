@@ -1,7 +1,7 @@
 package df.base.persistence.repository.form;
 
-import df.base.common.spring.jpa.entity_graph.JpaEntityGraphRepository;
-import df.base.common.spring.jpa.entity_graph.JpaEntityGraph;
+import df.base.common.extensions.persistence.entity_graph.JpaEntityGraphRepository;
+import df.base.common.extensions.persistence.entity_graph.JpaEntityGraph;
 import df.base.persistence.support.EntityGraphConstants;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.support.FieldStatus;
