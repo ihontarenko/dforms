@@ -1,5 +1,6 @@
 package df.base.service.form;
 
+import df.base.common.extensions.persistence.entity_graph.JpaEntityGraph;
 import df.base.persistence.entity.support.FieldStatus;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.repository.form.FieldRepository;
@@ -18,7 +19,7 @@ import static df.base.Messages.FORM_FIELD_NOT_FOUND;
 import static df.base.Messages.REQUIRED_ID_CANNOT_BE_NULL;
 import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Dynamic.load;
 import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Named.name;
-import static df.base.persistence.support.EntityGraphConstants.FORM_FIELD_WITH_ALL_RELATED;
+import static df.base.persistence.support.EntityGraphConstants.FORM_FIELD_FULL;
 import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
@@ -28,16 +29,20 @@ public class FieldService implements RedirectAware {
     @Autowired
     private FieldRepository repository;
 
+    private static final JpaEntityGraph JPA_ENTITY_GRAPH = load(Field.class,
+            "children", "configs", "attributes", "options");
+
     private String redirectUrl;
 
     @Transactional(readOnly = true)
     public List<Field> getAll() {
-        return repository.findAll(name(FORM_FIELD_WITH_ALL_RELATED));
+//        return repository.findAll(name(FORM_FIELD_WITH_ALL_RELATED));
+        return repository.findAll(name(FORM_FIELD_FULL));
     }
 
     @Transactional(readOnly = true)
     public Optional<Field> getById(String id) {
-        return id == null ? Optional.empty() : repository.findById(id, load("child", "parent"));
+        return id == null ? Optional.empty() : repository.findById(id, JPA_ENTITY_GRAPH);
     }
 
     @Transactional(readOnly = true)

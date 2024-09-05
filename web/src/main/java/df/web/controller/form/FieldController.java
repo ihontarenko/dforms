@@ -2,6 +2,7 @@ package df.web.controller.form;
 
 import df.base.common.validation.custom.Validation;
 import df.base.dto.form.FieldDTO;
+import df.base.mapping.Mappers;
 import df.base.mapping.form.FieldMapper;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.support.ElementType;
@@ -56,8 +57,6 @@ public class FieldController implements FieldOperations {
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_LIST);
 
         bindAttributes(new FieldDTO());
-
-        repository.findByStatus(FieldStatus.ACTIVE, load(EntityGraphConstants.FORM_FIELD_WITH_CONFIGS));
 
         return controllerHelper.resolveWithoutRedirect();
     }
@@ -148,10 +147,11 @@ public class FieldController implements FieldOperations {
 
     private void bindAttributes(FieldDTO itemDTO) {
         Map<String, Object> attributes = new HashMap<>();
+        FieldMapper         mapper     = new FieldMapper();
 
         attributes.put("itemDTO", itemDTO);
         attributes.put("elementTypes", ElementType.values());
-        attributes.put("fields", fieldService.getAll());
+        attributes.put("fields", fieldService.getAll().stream().map(mapper::map).toList());
         attributes.put("fieldStatuses", FieldStatus.values());
         attributes.put("usageTypes", UsageType.values());
 

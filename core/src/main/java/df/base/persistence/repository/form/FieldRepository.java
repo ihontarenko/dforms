@@ -19,7 +19,7 @@ public interface FieldRepository extends JpaEntityGraphRepository<Field, String>
     @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_CONFIGS)
     List<Field> findAll();
 
-    @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_ALL_RELATED)
+    @EntityGraph(EntityGraphConstants.FORM_FIELD_FULL)
     Optional<Field> findById(@Param("id") String id);
 
     Optional<Field> findById(@Param("id") String id, JpaEntityGraph graph);

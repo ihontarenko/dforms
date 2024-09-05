@@ -34,6 +34,14 @@ public class JpaRepositoryProxy implements MethodInterceptor {
         if (argument.isPresent()) {
             JpaEntityGraph jpaEntityGraph = argument.get();
 
+            if (jpaEntityGraph instanceof JpaEntityGraph.Dynamic entityGraphDynamic
+                    && entityGraphDynamic.entity() != null
+                    && !entityGraphDynamic.entity().isAssignableFrom(entityClass)) {
+                String errorMessage = "Incompatible JpaEntityGraph: method %s#%s cannot apply a dynamic graph for '%s'. Expected entity: '%s'.";
+                throw new EntityGraphException(errorMessage.formatted(decorator.getMethodClassName(),
+                        decorator.getMethodName(), entityClass.getName(), entityGraphDynamic.entity().getName()));
+            }
+
             if (decorator.isMethodAnnotated(org.springframework.data.jpa.repository.EntityGraph.class)) {
                 throw new EntityGraphException("@EntityGraph already present on method %s#%s"
                         .formatted(decorator.getMethodClassName(), decorator.getMethodName()));

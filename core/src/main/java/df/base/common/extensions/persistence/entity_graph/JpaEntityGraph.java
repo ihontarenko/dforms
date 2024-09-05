@@ -21,8 +21,8 @@ public interface JpaEntityGraph {
 
     EntityGraphType entityGraphType();
 
-    record Dynamic(EntityGraphType type,
-                   List<String> attributes) implements JpaEntityGraph {
+    record Dynamic(EntityGraphType type, List<String> attributes,
+                   Class<?> entity) implements JpaEntityGraph {
 
         public static Builder load() {
             return builder(EntityGraphType.LOAD);
@@ -32,8 +32,24 @@ public interface JpaEntityGraph {
             return load().attribute(attributes).build();
         }
 
+        public static Builder load(Class<?> entity) {
+            return builder(entity, EntityGraphType.LOAD);
+        }
+
+        public static Dynamic load(Class<?> entity, String... attributes) {
+            return builder(entity, EntityGraphType.LOAD).attribute(attributes).build();
+        }
+
         public static Builder fetch() {
             return builder(EntityGraphType.FETCH);
+        }
+
+        public static Builder fetch(Class<?> entity) {
+            return builder(entity, EntityGraphType.FETCH);
+        }
+
+        public static Dynamic fetch(Class<?> entity, String... attributes) {
+            return builder(entity, EntityGraphType.FETCH).attribute(attributes).build();
         }
 
         public static Dynamic fetch(String... attributes) {
@@ -42,6 +58,10 @@ public interface JpaEntityGraph {
 
         public static Builder builder(EntityGraphType type) {
             return new Builder(type);
+        }
+
+        public static Builder builder(Class<?> entity, EntityGraphType type) {
+            return new Builder(entity, type);
         }
 
         @Override
@@ -64,9 +84,15 @@ public interface JpaEntityGraph {
 
             private final EntityGraphType type;
             private final List<String>    attributes = new ArrayList<>();
+            private       Class<?>        entity;
+
+            private Builder(Class<?> entity, EntityGraphType type) {
+                this.entity = entity;
+                this.type = requireNonNull(type);
+            }
 
             private Builder(EntityGraphType type) {
-                this.type = requireNonNull(type);
+                this(null, type);
             }
 
             public Builder attribute(String... paths) {
@@ -74,8 +100,13 @@ public interface JpaEntityGraph {
                 return this;
             }
 
+            public Builder entity(Class<?> entity) {
+                this.entity = entity;
+                return this;
+            }
+
             public Dynamic build() {
-                return new Dynamic(type, attributes);
+                return new Dynamic(type, attributes, entity);
             }
 
         }

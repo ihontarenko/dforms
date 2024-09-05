@@ -10,6 +10,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
 
 @JpaResource.List({
@@ -70,6 +73,16 @@ public class FieldDTO implements DTO {
     @Pattern(regexp = "ACTIVE|INACTIVE|DELETED")
     private String status;
 
+    private List<FieldDTO> parents = new ArrayList<>();
+
+    private List<FieldDTO> children = new ArrayList<>();
+
+    private List<FieldOptionDTO> options = new ArrayList<>();
+
+    private List<FieldAttributeDTO> attributes = new ArrayList<>();
+
+    private List<FieldConfigDTO> configs = new ArrayList<>();
+
     public String getId() {
         return id;
     }
@@ -124,6 +137,66 @@ public class FieldDTO implements DTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<FieldDTO> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<FieldDTO> parents) {
+        this.parents = parents;
+    }
+
+    public void addParent(FieldDTO parent) {
+        parents.add(parent);
+    }
+
+    public List<FieldDTO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<FieldDTO> children) {
+        this.children = children;
+    }
+
+    public void addChild(FieldDTO child) {
+        children.add(child);
+    }
+
+    public List<FieldOptionDTO> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<FieldOptionDTO> options) {
+        this.options = options;
+    }
+
+    public void addOption(FieldOptionDTO option) {
+        options.add(option);
+    }
+
+    public List<FieldAttributeDTO> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(List<FieldAttributeDTO> attributes) {
+        this.attributes = attributes;
+    }
+
+    public void addAttribute(FieldAttributeDTO attribute) {
+        attributes.add(attribute);
+    }
+
+    public List<FieldConfigDTO> getConfigs() {
+        return configs;
+    }
+
+    public void setConfigs(List<FieldConfigDTO> configs) {
+        this.configs = configs;
+    }
+
+    public void addConfig(FieldConfigDTO config) {
+        configs.add(config);
     }
 }
 

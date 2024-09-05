@@ -93,10 +93,10 @@ public final class EntityConstants {
     public static final String COLUMN_FORM_FIELD_MAPPING_FIELD_ID = "FIELD_ID";
 
     // FormFieldMapping, FORM_FIELD_MAPPING
-    public static final String FIELD_FIELD_SELF_MAPPING_PARENT = "parent";
+    public static final String FIELD_FIELD_SELF_MAPPING_PARENT = "parents";
     public static final String COLUMN_FIELD_SELF_MAPPING_P_ID = "P_ID";
 
-    public static final String FIELD_FIELD_SELF_MAPPING_CHILD = "child";
+    public static final String FIELD_FIELD_SELF_MAPPING_CHILD = "children";
     public static final String COLUMN_FIELD_SELF_MAPPING_C_ID = "C_ID";
 
     // FormFieldDefaultValues, FORM_FIELD_DEFAULT_VALUES

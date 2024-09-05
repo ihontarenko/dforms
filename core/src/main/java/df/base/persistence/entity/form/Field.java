@@ -24,20 +24,15 @@ import static df.base.persistence.support.EntityConstants.*;
                 attributeNodes = @NamedAttributeNode("configs")
         ),
         @NamedEntityGraph(
-                name = EntityGraphConstants.FORM_FIELD_WITH_ALL_RELATED,
+                name = EntityGraphConstants.FORM_FIELD_FULL,
                 attributeNodes = {
+                        @NamedAttributeNode("children"),
+                        @NamedAttributeNode("parents"),
                         @NamedAttributeNode("configs"),
                         @NamedAttributeNode("attributes"),
                         @NamedAttributeNode("options")
                 }
         ),
-        @NamedEntityGraph(
-                name = "FormField.withParentAndChildren",
-                attributeNodes = {
-                        @NamedAttributeNode("parent"),
-                        @NamedAttributeNode(value = "child")
-                }
-        )
 })
 public class Field implements EntityNameAware {
 
@@ -88,10 +83,10 @@ public class Field implements EntityNameAware {
             joinColumns = @JoinColumn(name = COLUMN_FIELD_SELF_MAPPING_P_ID),
             inverseJoinColumns = @JoinColumn(name = COLUMN_FIELD_SELF_MAPPING_C_ID))
     @OrderColumn(name = "SEQUENCE_ORDER")
-    private Set<Field> child = new HashSet<>();
+    private Set<Field> children = new HashSet<>();
 
     @ManyToMany(mappedBy = FIELD_FIELD_SELF_MAPPING_CHILD)
-    private Set<Field> parent = new HashSet<>();
+    private Set<Field> parents = new HashSet<>();
 
     @OneToMany(mappedBy = FIELD_FIELD_OPTIONS_FIELD_ID, fetch = FetchType.LAZY)
     private Set<FieldOption> options;
@@ -165,20 +160,28 @@ public class Field implements EntityNameAware {
         return status;
     }
 
-    public Set<Field> getChild() {
-        return child;
+    public Set<Field> getChildren() {
+        return children;
     }
 
-    public void setChild(Set<Field> child) {
-        this.child = child;
+    public void setChildren(Set<Field> children) {
+        this.children = children;
     }
 
-    public Set<Field> getParent() {
-        return parent;
+    public void addChild(Field child) {
+        children.add(child);
     }
 
-    public void setParent(Set<Field> parent) {
-        this.parent = parent;
+    public Set<Field> getParents() {
+        return parents;
+    }
+
+    public void setParents(Set<Field> parents) {
+        this.parents = parents;
+    }
+
+    public void addParent(Field parent) {
+        parents.add(parent);
     }
 
     public void setStatus(FieldStatus status) {
@@ -193,6 +196,10 @@ public class Field implements EntityNameAware {
         this.options = options;
     }
 
+    public void addOption(FieldOption option) {
+        options.add(option);
+    }
+
     public Set<FieldAttribute> getAttributes() {
         return attributes;
     }
@@ -201,12 +208,20 @@ public class Field implements EntityNameAware {
         this.attributes = attributes;
     }
 
+    public void addAttribute(FieldAttribute attribute) {
+        attributes.add(attribute);
+    }
+
     public Set<FieldConfig> getConfigs() {
         return configs;
     }
 
     public void setConfigs(Set<FieldConfig> configs) {
         this.configs = configs;
+    }
+
+    public void addConfig(FieldConfig config) {
+        configs.add(config);
     }
 
     public Set<FieldDefaultValue> getDefaultValues() {
