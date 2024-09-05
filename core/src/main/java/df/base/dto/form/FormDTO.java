@@ -2,6 +2,7 @@ package df.base.dto.form;
 
 import df.base.common.support.jpa.JpaCriteria;
 import df.base.common.validation.jakarta.Fields;
+import df.base.dto.DTO;
 import df.base.persistence.entity.form.Form;
 import df.base.persistence.entity.support.FormStatus;
 import df.base.common.validation.jakarta.Fields.Value;
@@ -68,7 +69,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 value = "#isPrincipal(ownerId)",
                 message = "ownerId should be equals to authorized ID")
 })
-public class FormDTO {
+public class FormDTO implements DTO {
 
     private String id;
 

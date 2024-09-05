@@ -11,6 +11,7 @@ public interface Messages {
     String ERROR_ROLE_NOT_FOUND       = "Role '%s' not found";
     String FORM_CONFIG_NOT_FOUND      = "Configuration '%s' not found";
     String FORM_FIELD_NOT_FOUND       = "Form-Field '%s' not found";
+    String ENTITY_NOT_FOUND           = "Entity with primary key '%s' not found";
 
     // Services Errors
     String ERROR_VIEW_NAME_MUST_BE_SPECIFIED       = "View name must be specified";

@@ -1,6 +1,7 @@
 package df.base.dto.user;
 
 import df.base.common.support.jpa.JpaCriteria;
+import df.base.dto.DTO;
 import df.base.persistence.entity.user.Role;
 import df.base.common.validation.jakarta.Fields;
 import df.base.common.validation.jakarta.constraint.JpaResource;
@@ -52,7 +53,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 applier = "#hasText(id)"
         )
 })
-public class RoleDTO {
+public class RoleDTO implements DTO {
 
     public static final String ROLE_PREFIX = "ROLE_";
 

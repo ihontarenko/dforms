@@ -40,11 +40,11 @@
 
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/form/field/config/' + field.id) }}'"
-                            type="button" class="btn btn-sm btn-secondary">CONFIGURE</button>
+                    <button onclick="window.location = '{{ href('/form/field/setup/' + field.id) }}'"
+                            type="button" class="btn btn-sm btn-secondary">SETUP</button>
                     <button onclick="window.location = '{{ href('/form/field/modify/' + field.id) }}'"
-                            type="button" class="btn btn-sm btn-info">MODIFY</button>
-                    <button type="button" class="btn btn-sm btn-danger">STATUS</button>
+                            type="button" class="btn btn-sm btn-dark">MODIFY</button>
+                    <button type="button" class="btn btn-sm btn-warning">STATUS</button>
                     <div class="btn-group" role="group">
                         <button id="status" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                         <div class="dropdown-menu" aria-labelledby="status" style="">

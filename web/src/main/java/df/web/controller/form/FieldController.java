@@ -2,7 +2,7 @@ package df.web.controller.form;
 
 import df.base.common.validation.custom.Validation;
 import df.base.dto.form.FieldDTO;
-import df.base.mapping.form.FormFieldMapper;
+import df.base.mapping.form.FieldMapper;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.support.ElementType;
 import df.base.persistence.entity.support.FieldStatus;
@@ -79,7 +79,7 @@ public class FieldController implements FieldOperations {
         ModelAndView mav;
 
         try {
-            bindAttributes(new FormFieldMapper().map(fieldService.requireById(itemId)));
+            bindAttributes(new FieldMapper().map(fieldService.requireById(itemId)));
             mav = controllerHelper.resolveWithoutRedirect();
         } catch (JpaResourceNotFoundException exception) {
             mav = controllerHelper.redirect(exception);

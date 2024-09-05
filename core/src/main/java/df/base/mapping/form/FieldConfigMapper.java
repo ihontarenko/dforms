@@ -4,7 +4,7 @@ import df.base.common.Mapper;
 import df.base.persistence.entity.form.FieldConfig;
 import df.base.dto.form.FieldConfigDTO;
 
-public class FormFieldConfigMapper implements Mapper<FieldConfig, FieldConfigDTO> {
+public class FieldConfigMapper implements Mapper<FieldConfig, FieldConfigDTO> {
 
     @Override
     public FieldConfigDTO map(FieldConfig source) {

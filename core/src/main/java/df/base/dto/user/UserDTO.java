@@ -1,6 +1,7 @@
 package df.base.dto.user;
 
 import df.base.common.support.jpa.JpaCriteria;
+import df.base.dto.DTO;
 import df.base.persistence.entity.user.User;
 import df.base.security.Provider;
 import df.base.common.validation.jakarta.Fields;
@@ -45,7 +46,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 applier = "#hasText(id)"
         )
 })
-public class UserDTO {
+public class UserDTO implements DTO {
 
     public static final String OAUTH2_USER_ROLE = "ROLE_OAUTH2_USER";
 

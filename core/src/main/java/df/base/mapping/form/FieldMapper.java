@@ -7,7 +7,7 @@ import df.base.common.Mapper;
 import df.base.persistence.entity.support.UsageType;
 import df.base.dto.form.FieldDTO;
 
-public class FormFieldMapper implements Mapper<Field, FieldDTO> {
+public class FieldMapper implements Mapper<Field, FieldDTO> {
 
     @Override
     public FieldDTO map(Field source) {

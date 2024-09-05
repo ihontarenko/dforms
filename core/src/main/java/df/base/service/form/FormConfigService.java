@@ -5,6 +5,8 @@ import df.base.persistence.entity.form.FormConfig;
 import df.base.persistence.repository.form.FormConfigRepository;
 import df.base.dto.form.FormConfigDTO;
 import df.base.persistence.exception.JpaResourceNotFoundException;
+import df.base.service.CommonService;
+import df.base.service.RedirectAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +21,14 @@ import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
 @Service
-public class FormConfigService implements ServiceInterface<String, FormConfigDTO, FormConfig, Form> {
+public class FormConfigService implements
+        CommonService<FormConfigDTO, FormConfig, FormConfigRepository>, RedirectAware {
 
     @Autowired
     private FormConfigRepository repository;
 
     private String redirectUrl;
 
-    @Override
     @Transactional
     public FormConfig create(Form form, FormConfigDTO formConfigDTO) {
         FormConfig formConfig = new FormConfig();
@@ -47,7 +49,6 @@ public class FormConfigService implements ServiceInterface<String, FormConfigDTO
         return repository.save(config);
     }
 
-    @Override
     @Transactional
     public FormConfig createOrUpdate(Form form, FormConfigDTO configDTO) {
         Optional<FormConfig> config = getById(configDTO.getId());
@@ -113,6 +114,11 @@ public class FormConfigService implements ServiceInterface<String, FormConfigDTO
     @Transactional
     public void deleteIfExists(FormConfig config) {
         Optional.ofNullable(config).ifPresent(this::delete);
+    }
+
+    @Override
+    public FormConfigRepository getRepository() {
+        return repository;
     }
 
     @Override

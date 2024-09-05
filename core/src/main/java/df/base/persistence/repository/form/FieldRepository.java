@@ -15,10 +15,6 @@ import java.util.Optional;
 @Repository
 public interface FieldRepository extends JpaEntityGraphRepository<Field, String> {
 
-//    @Override
-//    @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_CONFIGS)
-//    Set<FormField> findAll();
-
     @Override
     @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_CONFIGS)
     List<Field> findAll();

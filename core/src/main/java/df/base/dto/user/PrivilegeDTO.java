@@ -1,6 +1,7 @@
 package df.base.dto.user;
 
 import df.base.common.support.jpa.JpaCriteria;
+import df.base.dto.DTO;
 import df.base.persistence.entity.user.Privilege;
 import df.base.common.validation.jakarta.Fields;
 import df.base.common.validation.jakarta.constraint.JpaResource;
@@ -51,7 +52,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 applier = "#hasText(id)"
         )
 })
-public class PrivilegeDTO {
+public class PrivilegeDTO implements DTO {
 
     private String id;
 

@@ -2,6 +2,7 @@ package df.base.dto.form;
 
 import df.base.common.support.jpa.JpaCriteria;
 import df.base.common.validation.jakarta.Fields;
+import df.base.dto.DTO;
 import df.base.persistence.entity.form.Field;
 import df.base.common.validation.jakarta.constraint.JpaResource;
 import jakarta.validation.constraints.NotEmpty;
@@ -41,7 +42,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 applier = "#hasText(id)"
         )
 })
-public class FieldDTO {
+public class FieldDTO implements DTO {
 
     @Size(max = 32)
     private String id;

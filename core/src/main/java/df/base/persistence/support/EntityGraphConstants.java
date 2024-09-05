@@ -9,8 +9,8 @@ public class EntityGraphConstants {
     // Form Graph
     public static final String FORM_WITH_USER                       = "Form.withUserOnly";
     public static final String FORM_WITH_ENTRIES_WITH_FIELD_ENTRIES = "FormEntries.withFieldEntries";
-    public static final String FORM_WITH_FIELD_ENTRIES_FIELD        = "FormFieldEntries.withField";
-    public static final String FORM_CONFIG_WITH_FORM                = "FormConfig.withFormOnly";
+    public static final String FORM_WITH_FIELD_ENTRIES_FIELD = "FormFieldEntries.withField";
+    public static final String FIELD_CONFIG_WITH_FORM        = "FormConfig.withFormOnly";
 
     // Field Graph
     public static final String FORM_FIELD_WITH_CONFIGS      = "FormFieldConfig.withRelatedConfig";

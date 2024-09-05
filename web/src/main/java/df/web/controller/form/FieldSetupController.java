@@ -1,16 +1,19 @@
 package df.web.controller.form;
 
+import df.base.dto.form.FieldConfigDTO;
+import df.base.mapping.form.FieldConfigMapper;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.form.FieldConfig;
-import df.base.mapping.form.FormFieldConfigMapper;
-import df.base.dto.form.FieldConfigDTO;
 import df.base.persistence.exception.JpaResourceNotFoundException;
+import df.base.service.form.FieldAttributeService;
 import df.base.service.form.FieldConfigService;
+import df.base.service.form.FieldOptionService;
 import df.base.service.form.FieldService;
 import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,25 +27,29 @@ import static df.web.common.flash.FlashMessage.error;
 import static df.web.common.flash.FlashMessage.success;
 
 @Controller
-public class FieldConfigController implements FieldConfigOperations {
+public class FieldSetupController implements FieldSetupOperations {
 
-    private final ControllerHelper   helper;
-    private final FieldConfigService configService;
-    private final FieldService       fieldService;
+    private final ControllerHelper      helper;
+    private final FieldService          fieldService;
+    private final FieldConfigService    configService;
+    private final FieldAttributeService attributeService;
+    private final FieldOptionService    optionService;
 
-    public FieldConfigController(ControllerHelper helper, FieldConfigService configService,
-                                 FieldService fieldService) {
+    public FieldSetupController(ControllerHelper helper, FieldConfigService configService,
+                                FieldService fieldService, FieldAttributeService attributeService, FieldOptionService optionService) {
         this.helper = helper;
         this.configService = configService;
         this.fieldService = fieldService;
-        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD_CONFIG);
+        this.attributeService = attributeService;
+        this.optionService = optionService;
+        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD_SETUP);
     }
 
     @Override
     public ModelAndView index(String fieldId) {
         helper.setViewName(MAVConstants.VIEW_FORM_FIELD_CONFIG);
 
-        bindAttributes(new FieldConfigDTO(){{
+        bindAttributes(new FieldConfigDTO() {{
             setFieldId(fieldId);
         }});
 
@@ -57,7 +64,7 @@ public class FieldConfigController implements FieldConfigOperations {
         ModelAndView mav;
 
         try {
-            bindAttributes(new FormFieldConfigMapper().map(configService.requireById(configId)));
+            bindAttributes(new FieldConfigMapper().map(configService.requireById(configId)));
             mav = helper.resolveWithoutRedirect();
         } catch (JpaResourceNotFoundException exception) {
             mav = helper.redirect(exception);
@@ -66,7 +73,7 @@ public class FieldConfigController implements FieldConfigOperations {
         return mav;
     }
 
-    @Override
+    @GetMapping("/perform/attribute")
     public ModelAndView perform(FieldConfigDTO configDTO, BindingResult result,
                                 RedirectAttributes attributes) {
         helper.setBindingResult(result);
@@ -105,7 +112,9 @@ public class FieldConfigController implements FieldConfigOperations {
         Field               field      = fieldService.requireById(itemDTO.getFieldId());
 
         attributes.put("itemDTO", itemDTO);
-        attributes.put("configurations", configService.getAllByField(field));
+        attributes.put("configs", configService.getAllByField(field));
+        attributes.put("attributes", attributeService.getAllByField(field));
+        attributes.put("options", optionService.getAllByField(field));
         attributes.put("field", field);
 
         helper.attributes(attributes);

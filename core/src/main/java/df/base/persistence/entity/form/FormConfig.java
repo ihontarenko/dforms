@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "DF_FORM_CONFIG")
 @NamedEntityGraph(
-        name = EntityGraphConstants.FORM_CONFIG_WITH_FORM,
+        name = EntityGraphConstants.FIELD_CONFIG_WITH_FORM,
         attributeNodes = @NamedAttributeNode("form")
 )
 public class FormConfig implements EntityNameAware {

@@ -2,8 +2,9 @@ package df.base.dto.form;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import df.base.dto.DTO;
 
-public class FieldDefaultValueDTO {
+public class FieldDefaultValueDTO implements DTO {
 
     @NotEmpty
     @Size(max = 32)

@@ -9,6 +9,10 @@ public class JpaResourceNotFoundException extends ApplicationException implement
 
     private String redirectUrl;
 
+    public JpaResourceNotFoundException(String message) {
+        super(message);
+    }
+
     public JpaResourceNotFoundException(String message, RedirectAware redirectAware) {
         super(message);
         setRedirectUrl("%s#%s".formatted(redirectAware.getRedirectUrl(), slugify(message).toUpperCase()));

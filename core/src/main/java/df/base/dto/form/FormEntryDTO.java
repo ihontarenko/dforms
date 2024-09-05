@@ -4,8 +4,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import df.base.dto.DTO;
 
-public class FormEntryDTO {
+public class FormEntryDTO implements DTO {
 
     @NotEmpty
     @Size(max = 32)
