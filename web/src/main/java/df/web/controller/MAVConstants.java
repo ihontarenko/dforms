@@ -34,8 +34,8 @@ public interface MAVConstants {
     String VIEW_FORM_FIELD_FORM       = "form/field_form";
 
     // field config
-    String VIEW_FORM_FIELD_CONFIG           = "form/field_setup";
-    String REQUEST_MAPPING_FORM_FIELD_SETUP = "/form/field/setup";
-    String REDIRECT_FORM_FIELD_SETUP        = REQUEST_MAPPING_FORM_CONFIG + "/%s";
+    String VIEW_FIELD_CONFIG           = "form/field_setup";
+    String REQUEST_MAPPING_FIELD_SETUP = "/form/field/setup";
+    String REDIRECT_FIELD_SETUP        = REQUEST_MAPPING_FORM_CONFIG + "/%s";
 
 }

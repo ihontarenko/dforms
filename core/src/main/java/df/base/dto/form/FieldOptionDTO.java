@@ -6,11 +6,9 @@ import df.base.dto.DTO;
 
 public class FieldOptionDTO implements DTO {
 
-    @NotEmpty
     @Size(max = 32)
     private String id;
 
-    @NotEmpty
     @Size(max = 32)
     private String fieldId;
 

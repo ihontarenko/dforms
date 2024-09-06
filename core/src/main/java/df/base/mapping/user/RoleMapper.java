@@ -4,9 +4,11 @@ import df.base.persistence.entity.user.Privilege;
 import df.base.persistence.entity.user.Role;
 import df.base.common.Mapper;
 import df.base.dto.user.RoleDTO;
+import org.springframework.stereotype.Service;
 
 import static java.util.stream.Collectors.toList;
 
+@Service
 public class RoleMapper implements Mapper<Role, RoleDTO> {
 
     @Override

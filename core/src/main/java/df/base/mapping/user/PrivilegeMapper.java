@@ -3,9 +3,11 @@ package df.base.mapping.user;
 import df.base.persistence.entity.user.Privilege;
 import df.base.common.Mapper;
 import df.base.dto.user.PrivilegeDTO;
+import org.springframework.stereotype.Service;
 
 import static df.base.common.support.SlugifyTransliterator.slugify;
 
+@Service
 public class PrivilegeMapper implements Mapper<Privilege, PrivilegeDTO> {
 
     @Override

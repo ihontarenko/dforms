@@ -3,7 +3,9 @@ package df.base.mapping.form;
 import df.base.common.Mapper;
 import df.base.dto.form.FieldOptionDTO;
 import df.base.persistence.entity.form.FieldOption;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FieldOptionMapper implements Mapper<FieldOption, FieldOptionDTO> {
 
     @Override

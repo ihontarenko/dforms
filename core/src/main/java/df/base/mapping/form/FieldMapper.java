@@ -6,11 +6,13 @@ import df.base.persistence.entity.form.Field;
 import df.base.common.Mapper;
 import df.base.persistence.entity.support.UsageType;
 import df.base.dto.form.FieldDTO;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
+@Service
 public class FieldMapper implements Mapper<Field, FieldDTO> {
 
     private final FieldConfigMapper    configMapper    = new FieldConfigMapper();
@@ -72,7 +74,7 @@ public class FieldMapper implements Mapper<Field, FieldDTO> {
 
 
         ofNullable(source.getConfigs()).ifPresent(configs
-                -> configs.stream().map(configMapper::reverse).forEach(destination::addConfig));
+                -> configs.values().stream().map(configMapper::reverse).forEach(destination::addConfig));
 
         ofNullable(source.getAttributes()).ifPresent(attributes
                 -> attributes.stream().map(attributeMapper::reverse).forEach(destination::addAttribute));

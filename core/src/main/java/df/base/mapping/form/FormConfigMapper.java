@@ -3,7 +3,9 @@ package df.base.mapping.form;
 import df.base.common.Mapper;
 import df.base.persistence.entity.form.FormConfig;
 import df.base.dto.form.FormConfigDTO;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FormConfigMapper implements Mapper<FormConfig, FormConfigDTO> {
 
     @Override

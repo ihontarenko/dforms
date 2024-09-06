@@ -3,7 +3,9 @@ package df.base.mapping.form;
 import df.base.common.Mapper;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.persistence.entity.form.FieldAttribute;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FieldAttributeMapper implements Mapper<FieldAttribute, FieldAttributeDTO> {
 
     @Override

@@ -5,6 +5,7 @@ import df.base.persistence.entity.user.User;
 import df.base.common.Mapper;
 import df.base.dto.user.UserDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -14,6 +15,7 @@ import static df.base.common.support.SlugifyTransliterator.slugify;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
+@Service
 public class UserMapper implements Mapper<User, UserDTO> {
 
     private final PasswordEncoder passwordEncoder;

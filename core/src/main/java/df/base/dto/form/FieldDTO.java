@@ -5,13 +5,18 @@ import df.base.common.validation.jakarta.Fields;
 import df.base.dto.DTO;
 import df.base.persistence.entity.form.Field;
 import df.base.common.validation.jakarta.constraint.JpaResource;
+import df.base.validation.groups.FieldsOneLevelGroup;
+import df.base.validation.groups.Operations;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
 
@@ -47,30 +52,31 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
 })
 public class FieldDTO implements DTO {
 
-    @Size(max = 32)
+    @Size(max = 32, groups = Operations.Simple.class)
     private String id;
 
-    @NotNull
-    @Pattern(regexp = "VIRTUAL|EMBEDDABLE|STANDALONE")
+    @NotNull(groups = Operations.Simple.class)
+    @Pattern(regexp = "VIRTUAL|EMBEDDABLE|STANDALONE", groups = Operations.Simple.class)
     private String usageType;
 
-    @NotNull
-    @Pattern(regexp = "TEXT|NUMBER|SELECT|RADIO|CHECKBOX|TEXTAREA|DATE|EMAIL|URL|NONE")
+    @NotNull(groups = Operations.Simple.class)
+    @Pattern(regexp = "TEXT|NUMBER|SELECT|RADIO|CHECKBOX|TEXTAREA|DATE|EMAIL|URL|NONE",
+            groups = Operations.Simple.class)
     private String elementType;
 
-    @NotEmpty
+    @NotEmpty(groups = {Operations.Simple.class})
     @Size(max = 255)
     private String label;
 
-    @NotEmpty
-    @Size(max = 255)
+    @NotEmpty(groups = {Operations.Simple.class})
+    @Size(max = 255, groups = {Operations.Simple.class})
     private String name;
 
-    @Size(max = 500)
+    @Size(max = 500, groups = {Operations.Simple.class})
     private String description;
 
-    @NotNull
-    @Pattern(regexp = "ACTIVE|INACTIVE|DELETED")
+    @NotNull(groups = Operations.Simple.class)
+    @Pattern(regexp = "ACTIVE|INACTIVE|DELETED", groups = Operations.Simple.class)
     private String status;
 
     private List<FieldDTO> parents = new ArrayList<>();
@@ -81,7 +87,8 @@ public class FieldDTO implements DTO {
 
     private List<FieldAttributeDTO> attributes = new ArrayList<>();
 
-    private List<FieldConfigDTO> configs = new ArrayList<>();
+    @Valid
+    private Map<@Valid String, @Valid FieldConfigDTO> configs = new HashMap<>();
 
     public String getId() {
         return id;
@@ -187,16 +194,16 @@ public class FieldDTO implements DTO {
         attributes.add(attribute);
     }
 
-    public List<FieldConfigDTO> getConfigs() {
+    public Map<String, FieldConfigDTO> getConfigs() {
         return configs;
     }
 
-    public void setConfigs(List<FieldConfigDTO> configs) {
+    public void setConfigs(Map<String, FieldConfigDTO> configs) {
         this.configs = configs;
     }
 
     public void addConfig(FieldConfigDTO config) {
-        configs.add(config);
+        configs.put(config.getId(), config);
     }
 }
 

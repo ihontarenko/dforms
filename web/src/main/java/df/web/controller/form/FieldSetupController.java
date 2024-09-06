@@ -1,13 +1,15 @@
 package df.web.controller.form;
 
 import df.base.dto.form.FieldDTO;
+import df.base.mapping.form.FieldMapper;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.service.form.FieldService;
 import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -17,33 +19,25 @@ import java.util.Map;
 @Controller
 public class FieldSetupController implements FieldSetupOperations {
 
-    private final ControllerHelper      helper;
-    private final FieldService          fieldService;
+    private final ControllerHelper helper;
+    private final FieldService     service;
+    private final FieldMapper      mapper;
 
-    public FieldSetupController(ControllerHelper helper, FieldService fieldService) {
+    public FieldSetupController(ControllerHelper helper, FieldService service, FieldMapper mapper) {
         this.helper = helper;
-        this.fieldService = fieldService;
-        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD_SETUP);
+        this.service = service;
+        this.mapper = mapper;
     }
 
     @Override
     public ModelAndView index(String fieldId) {
-        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_CONFIG);
-
-        bindAttributes(new FieldDTO());
-
-        return helper.resolveWithoutRedirect();
-    }
-
-    @Override
-    public ModelAndView modify(String configId, RedirectAttributes attributes) {
-        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_CONFIG);
-        helper.setRedirectAttributes(attributes);
-
+        FieldDTO     fieldDTO = mapper.map(service.requireById(fieldId));
         ModelAndView mav;
 
+        helper.setViewName(MAVConstants.VIEW_FIELD_CONFIG);
+
         try {
-            bindAttributes(new FieldDTO());
+            bindAttributes(fieldDTO);
             mav = helper.resolveWithoutRedirect();
         } catch (JpaResourceNotFoundException exception) {
             mav = helper.redirect(exception);
@@ -52,24 +46,22 @@ public class FieldSetupController implements FieldSetupOperations {
         return mav;
     }
 
-    @GetMapping("/perform")
-    public ModelAndView perform(Map<String, Object> dto, BindingResult result,
-                                RedirectAttributes attributes) {
+//    @PostMapping("/perform")
+    // todo: do something with dtos
+    // todo: validation groups
+    public ModelAndView perform(@ModelAttribute("itemDTO") @Validated FieldDTO dto,
+                                BindingResult result, RedirectAttributes attributes) {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
-        helper.setViewName(MAVConstants.VIEW_FORM_FIELD_CONFIG);
-//        helper.setRedirectUrl(MAVConstants.REDIRECT_FORM_CONFIG.formatted(configDTO.getFieldId()));
+        helper.setViewName(MAVConstants.VIEW_FIELD_CONFIG);
 
         if (!result.hasErrors()) {
-//            FieldConfig config = configService
-//                    .createOrUpdate(fieldService.requireById(configDTO.getFieldId()), configDTO);
-//            helper.addMessage(success(SUCCESS_CONFIG_SAVED
-//                    .formatted(config.getConfigName())));
+
         } else {
-            bindAttributes(new FieldDTO());
+            bindAttributes(dto);
         }
 
-        return helper.resolveWithRedirect();
+        return helper.resolveWithoutRedirect();
     }
 
     private void bindAttributes(FieldDTO itemDTO) {
