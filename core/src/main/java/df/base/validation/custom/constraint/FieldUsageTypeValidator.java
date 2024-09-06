@@ -13,6 +13,12 @@ public class FieldUsageTypeValidator implements Validator {
     @Override
     public void validate(Object object) throws ValidationException {
         FieldDTO    fieldDTO    = (FieldDTO) object;
+
+        if (fieldDTO.getElementType() == null || fieldDTO.getUsageType() == null) {
+            throw new ValidationException(INCOMPATIBLE_USAGE_TYPE,
+                    "could not check compatibility of element type with field type due to empty DTO");
+        }
+
         ElementType elementType = ElementType.valueOf(fieldDTO.getElementType());
         UsageType   usageType   = UsageType.valueOf(fieldDTO.getUsageType());
 

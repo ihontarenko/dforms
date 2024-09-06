@@ -7,27 +7,31 @@ public class ValidationException extends RuntimeException {
 
     private final boolean breakOnFail;
 
-    public ValidationException(ErrorCode errorCode, ErrorContext errorContext, Throwable cause, boolean breakOnFail) {
-        super(cause);
+    public ValidationException(String message, Throwable cause, ErrorCode errorCode, ErrorContext errorContext, boolean breakOnFail) {
+        super(message, cause);
         this.errorContext = errorContext;
         this.errorCode = errorCode;
         this.breakOnFail = breakOnFail;
     }
 
     public ValidationException(ErrorCode errorCode, boolean breakOnFail) {
-        this(errorCode, null, breakOnFail);
+        this(null, null, errorCode, null, breakOnFail);
     }
 
     public ValidationException(ErrorCode errorCode, ErrorContext errorContext, boolean breakOnFail) {
-        this(errorCode, errorContext, null, breakOnFail);
+        this(null, null, errorCode, errorContext, breakOnFail);
     }
 
     public ValidationException(ErrorCode errorCode) {
-        this(errorCode, null, false);
+        this(null, null, errorCode, null, false);
+    }
+
+    public ValidationException(ErrorCode errorCode, String message) {
+        this(message, null, errorCode, null, false);
     }
 
     public ValidationException(ErrorCode errorCode, ErrorContext errorContext) {
-        this(errorCode, errorContext, null, false);
+        this(null, null, errorCode, errorContext, false);
     }
 
     public ErrorCode getErrorCode() {

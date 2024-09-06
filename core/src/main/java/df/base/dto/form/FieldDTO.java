@@ -5,7 +5,6 @@ import df.base.common.validation.jakarta.Fields;
 import df.base.dto.DTO;
 import df.base.persistence.entity.form.Field;
 import df.base.common.validation.jakarta.constraint.JpaResource;
-import df.base.validation.groups.FieldsOneLevelGroup;
 import df.base.validation.groups.Operations;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -13,9 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
@@ -52,40 +49,42 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
 })
 public class FieldDTO implements DTO {
 
-    @Size(max = 32, groups = Operations.Simple.class)
+    @Size(max = 32, groups = Operations.Primary.class)
     private String id;
 
-    @NotNull(groups = Operations.Simple.class)
-    @Pattern(regexp = "VIRTUAL|EMBEDDABLE|STANDALONE", groups = Operations.Simple.class)
+    @NotNull(groups = Operations.Primary.class)
+    @Pattern(regexp = "VIRTUAL|EMBEDDABLE|STANDALONE", groups = Operations.Primary.class)
     private String usageType;
 
-    @NotNull(groups = Operations.Simple.class)
+    @NotNull(groups = Operations.Primary.class)
     @Pattern(regexp = "TEXT|NUMBER|SELECT|RADIO|CHECKBOX|TEXTAREA|DATE|EMAIL|URL|NONE",
-            groups = Operations.Simple.class)
+            groups = Operations.Primary.class)
     private String elementType;
 
-    @NotEmpty(groups = {Operations.Simple.class})
+    @NotEmpty(groups = {Operations.Primary.class})
     @Size(max = 255)
     private String label;
 
-    @NotEmpty(groups = {Operations.Simple.class})
-    @Size(max = 255, groups = {Operations.Simple.class})
+    @NotEmpty(groups = {Operations.Primary.class})
+    @Size(max = 255, groups = {Operations.Primary.class})
     private String name;
 
-    @Size(max = 500, groups = {Operations.Simple.class})
+    @Size(max = 500, groups = {Operations.Primary.class})
     private String description;
 
-    @NotNull(groups = Operations.Simple.class)
-    @Pattern(regexp = "ACTIVE|INACTIVE|DELETED", groups = Operations.Simple.class)
+    @NotNull(groups = Operations.Primary.class)
+    @Pattern(regexp = "ACTIVE|INACTIVE|DELETED", groups = Operations.Primary.class)
     private String status;
 
-    private List<FieldDTO> parents = new ArrayList<>();
+    private Map<String, FieldDTO> parents = new HashMap<>();
 
-    private List<FieldDTO> children = new ArrayList<>();
+    private Map<String, FieldDTO> children = new HashMap<>();
 
-    private List<FieldOptionDTO> options = new ArrayList<>();
+    @Valid
+    private Map<@Valid String, @Valid FieldOptionDTO> options = new HashMap<>();
 
-    private List<FieldAttributeDTO> attributes = new ArrayList<>();
+    @Valid
+    private Map<@Valid String, @Valid FieldAttributeDTO> attributes = new HashMap<>();
 
     @Valid
     private Map<@Valid String, @Valid FieldConfigDTO> configs = new HashMap<>();
@@ -146,52 +145,52 @@ public class FieldDTO implements DTO {
         this.status = status;
     }
 
-    public List<FieldDTO> getParents() {
+    public Map<String, FieldDTO> getParents() {
         return parents;
     }
 
-    public void setParents(List<FieldDTO> parents) {
+    public void setParents(Map<String, FieldDTO> parents) {
         this.parents = parents;
     }
 
     public void addParent(FieldDTO parent) {
-        parents.add(parent);
+        parents.put(parent.getId(), parent);
     }
 
-    public List<FieldDTO> getChildren() {
+    public Map<String, FieldDTO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<FieldDTO> children) {
+    public void setChildren(Map<String, FieldDTO> children) {
         this.children = children;
     }
 
     public void addChild(FieldDTO child) {
-        children.add(child);
+        children.put(child.getId(), child);
     }
 
-    public List<FieldOptionDTO> getOptions() {
+    public Map<String, FieldOptionDTO> getOptions() {
         return options;
     }
 
-    public void setOptions(List<FieldOptionDTO> options) {
+    public void setOptions(Map<String, FieldOptionDTO> options) {
         this.options = options;
     }
 
     public void addOption(FieldOptionDTO option) {
-        options.add(option);
+        options.put(option.getId(), option);
     }
 
-    public List<FieldAttributeDTO> getAttributes() {
+    public Map<String, FieldAttributeDTO> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(List<FieldAttributeDTO> attributes) {
+    public void setAttributes(Map<String, FieldAttributeDTO> attributes) {
         this.attributes = attributes;
     }
 
     public void addAttribute(FieldAttributeDTO attribute) {
-        attributes.add(attribute);
+        attributes.put(attribute.getId(), attribute);
     }
 
     public Map<String, FieldConfigDTO> getConfigs() {

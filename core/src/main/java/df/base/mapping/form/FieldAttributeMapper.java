@@ -30,13 +30,13 @@ public class FieldAttributeMapper implements Mapper<FieldAttribute, FieldAttribu
     public void map(FieldAttribute source, FieldAttributeDTO destination) {
         destination.setId(source.getId());
         destination.setValue(source.getValue());
-        destination.setName(source.getName());
+        destination.setKey(source.getName());
         destination.setFieldId(source.getField().getId());
     }
 
     @Override
     public void reverse(FieldAttributeDTO source, FieldAttribute destination) {
-        destination.setName(source.getName());
+        destination.setName(source.getKey());
         destination.setValue(source.getValue());
     }
 

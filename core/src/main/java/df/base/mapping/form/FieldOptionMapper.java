@@ -29,15 +29,15 @@ public class FieldOptionMapper implements Mapper<FieldOption, FieldOptionDTO> {
     @Override
     public void map(FieldOption source, FieldOptionDTO destination) {
         destination.setId(source.getId());
-        destination.setOptionValue(source.getOptionValue());
-        destination.setOptionLabel(source.getOptionLabel());
+        destination.setKey(source.getOptionValue());
+        destination.setValue(source.getOptionLabel());
         destination.setFieldId(source.getField().getId());
     }
 
     @Override
     public void reverse(FieldOptionDTO source, FieldOption destination) {
-        destination.setOptionValue(source.getOptionValue());
-        destination.setOptionLabel(source.getOptionLabel());
+        destination.setOptionValue(source.getKey());
+        destination.setOptionLabel(source.getValue());
     }
 
 }

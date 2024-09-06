@@ -2,141 +2,117 @@
 {% block title %}Configure Field '{{ itemDTO.id }}'{% endblock %}
 {% block content %}
 
+{% block headerButtons %}
+<div class="btn-group pt-2" role="group">
+    <button onclick="window.location = '/form/field/extra/configs'" type="button" class="btn btn-sm btn-dark">CONFIGS</button>
+    <button onclick="window.location = '/form/field/extra/attributes'" type="button" class="btn btn-sm btn-dark">ATTRIBUTES</button>
+    <button onclick="window.location = '/form/field/extra/options'" type="button" class="btn btn-sm btn-dark">OPTIONS</button>
+    <button onclick="window.location = '/form/field/extra/embedded'" type="button" class="btn btn-sm btn-warning">EMBEDDED FIELDS</button>
+</div>
+{% endblock %}
+
 <div class="container-fluid">
     <div class="row">
 
-        <div class="bg-light col-xl-6 col-lg-12 col-md-12">
-            <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data" >
-                <h2 class="mt-5">Configuration</h2>
-                {% for entry in itemDTO.configs %}
-                {% set config = entry.value %}
-                    <div class="form-group">
-                        <div class="input-group mb-1 mt-1">
-                            <input
-                                    type="text"
-                                    name="configs[{{ config.id }}].configName"
-                                    class="form-control {{ ifFieldErrors('itemDTO', 'configs[' + config.id + '].configName', 'is-invalid', 'is-valid') }}"
-                                    placeholder="Config Name"
-                                    value="{{ config.configName }}">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-bs-toggle="tab" href="#configs" role="tab" tabindex="-1">Home</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-bs-toggle="tab" href="#attributes" role="tab">Profile</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-bs-toggle="tab" href="#options"tabindex="-1" role="tab">Disabled</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-bs-toggle="tab" href="#embedded" tabindex="-1" role="tab">Disabled</a>
+            </li>
+        </ul>
 
-                            <input
-                                    type="text"
-                                    name="configs[{{ config.id }}].configValue"
-                                    class="form-control {{ ifFieldErrors('itemDTO', 'configs[' + config.id + '].configValue', 'is-invalid', 'is-valid') }}"
-                                    placeholder="Config Value"
-                                    value="{{ config.configValue }}">
+        <div class="tab-content">
+            <div class="tab-pane fade" id="configs" role="tabpanel">
+                <div class="bg-light col-xxl-8 col-12">
+                    <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data" >
+                        <h2 class="mt-5">Configuration</h2>
+                        {% for entry in itemDTO.configs %}
+                        {% set config = entry.value %}
+                        <div class="form-group">
+                            <div class="input-group mb-1 mt-1">
+                                <input
+                                        type="text"
+                                        name="configs[{{ config.id }}].configName"
+                                        class="form-control {{ ifFieldErrors('itemDTO', 'configs[' + config.id + '].configName', 'is-invalid', 'is-valid') }}"
+                                        placeholder="Config Name"
+                                        value="{{ config.configName }}">
 
-                            <input type="hidden" name="configs[{{ config.id }}].id" value="{{ config.id }}">
-                            <input type="hidden" name="fieldId" value="{{ itemDTO.id }}">
+                                <!-- because bootstrap uses last-child for change borders -->
+                                <input type="hidden"
+                                       name="configs[{{ config.id }}].id"
+                                       value="{{ config.id }}">
+                                <input type="hidden"
+                                       name="fieldId"
+                                       value="{{ itemDTO.id }}">
 
+                                <input
+                                        type="text"
+                                        name="configs[{{ config.id }}].configValue"
+                                        class="form-control {{ ifFieldErrors('itemDTO', 'configs[' + config.id + '].configValue', 'is-invalid', 'is-valid') }}"
+                                        placeholder="Config Value"
+                                        value="{{ config.configValue }}">
+
+
+                            </div>
                             {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : 'fieldId'} %}
                             {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : 'configs[' + config.id + '].configName'} %}
                             {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : 'configs[' + config.id + '].configValue'} %}
                             {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : 'configs[' + config.id + '].id'} %}
                         </div>
-                    </div>
-                {% endfor %}
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success">Update</button>
+                        {% endfor %}
+                        {% if itemDTO.configs is not empty %}
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                        {% endif %}
+                    </form>
                 </div>
-            </form>
-
-            <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data">
-                <div class="form-group">
-                    <div class="input-group mb-1 mt-1">
-                        <input
-                                type="text"
-                                name="configs[-1].configName"
-                                class="form-control {{ ifFieldErrors('itemDTO', 'configs[-1].configName', 'is-invalid', 'is-valid') }}"
-                                placeholder="Config Name">
-
-                        <input type="text"
-                               name="configs[-1].configValue"
-                               class="form-control {{ ifFieldErrors('itemDTO', 'configs[-1].configValue', 'is-invalid', 'is-valid') }}"
-                               placeholder="Config Value">
-                    </div>
+            </div>
+            <div class="tab-pane fade active show" id="attributes" role="tabpanel">
+                no attributes
+            </div>
+            <div class="tab-pane fade" id="options">
+                <div class="bg-light col-xxl-8 col-12">
+                    <h2 class="mt-5">Options</h2>
+                    {% for option in itemDTO.options %}
+                    <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data" >
+                        <div class="input-group mb-1 mt-1">
+                            <input type="text" name="options[{{ option.id }}].optionValue" class="form-control" placeholder="Option Value" value="{{ option.optionValue }}">
+                            <input type="hidden" name="options[{{ loop.index }}].id" value="{{ option.id }}">
+                            <input type="hidden" name="fieldId" value="{{ itemDTO.id }}">
+                            <input type="text" name="options[{{ option.id }}].optionLabel" class="form-control" placeholder="Option Label" value="{{ option.optionLabel }}">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </form>
+                    {% endfor %}
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success">Create</button>
-                </div>
-            </form>
-        </div>
-
-        <div class="bg-light col-xl-6 col-lg-12 col-md-12">
-            <h2 class="mt-5">Attributes</h2>
-            {% for attribute in itemDTO.attributes %}
-            <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data">
-                <div class="input-group mb-1 mt-1">
-                    <input type="text" name="attributes[{{ attribute.id }}].name" class="form-control" placeholder="Attribute Name" value="{{ attribute.name }}">
-                    <input type="text" name="attributes[{{ attribute.id }}].value" class="form-control" placeholder="Attribute Value" value="{{ attribute.value }}">
-                    <input type="hidden" name="attributes[{{ attribute.id }}].id" value="{{ attribute.id }}">
-                    <input type="hidden" name="fieldId" value="{{ itemDTO.id }}">
-                    <button type="submit" class="btn btn-success">Update</button>
-                </div>
-            </form>
-            {% endfor %}
-            <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data">
-                <div class="input-group mb-1 mt-1">
-                    <input type="text" name="attributes[-1].name" class="form-control" placeholder="Attribute Name" >
-                    <input type="text" name="attributes[-1].value" class="form-control" placeholder="Attribute Value" >
-                    <button type="submit" class="btn btn-success">Save</button>
-                </div>
-            </form>
-        </div>
-
-        <div class="bg-light col-xl-6 col-lg-12 col-md-12">
-            <h2 class="mt-5">Options</h2>
-            {% for option in itemDTO.options %}
-            <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data" >
-                <div class="input-group mb-1 mt-1">
-                    <input type="text" name="options[{{ loop.index }}].optionValue" class="form-control" placeholder="Option Value" value="{{ option.optionValue }}">
-                    <input type="text" name="options[{{ loop.index }}].optionLabel" class="form-control" placeholder="Option Label" value="{{ option.optionLabel }}">
-                    <input type="hidden" name="options[{{ loop.index }}].id" value="{{ option.id }}">
-                    <input type="hidden" name="fieldId" value="{{ itemDTO.id }}">
-                    <button type="submit" class="btn btn-success">Update</button>
-                </div>
-            </form>
-            {% endfor %}
-
-            <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data">
-                <div class="input-group mb-1 mt-1">
-                    <input type="text" name="options[-1].optionValue" class="form-control" placeholder="Option Value">
-                    <input type="text" name="options[-1].optionLabel" class="form-control" placeholder="Option Label">
-                    <button type="submit" class="btn btn-success">Create</button>
-                </div>
-            </form>
-        </div>
-
-        <div class="bg-light col-12">
-
-            <h2 class="mt-5">Embedded Fields</h2>
-
-            <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data">
-                <div class="input-group mb-1 mt-1">
-                    <select class="form-select" id="embedded-field" aria-label="Floating label select example">
-                        <option selected>-- select --</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
-                    <button type="submit" class="btn btn-success">Update</button>
-                </div>
-            </form>
-
-            <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data">
-                <div class="input-group mb-1 mt-1">
-                    <div class="form-floating">
-                        <select class="form-select" id="embedded-field-new" aria-label="Floating label select example">
-                            <option selected>-- select --</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
+            </div>
+            <div class="tab-pane fade" id="embedded">
+                <div class="bg-light col-xxl-8 col-12">
+                    <h2 class="mt-5">Embedded Fields</h2>
+                    <form method="post" action="{{ href('/form/field/setup/perform') }}" enctype="multipart/form-data">
+                        <div class="input-group mb-1 mt-1">
+                            <select class="form-select" id="embedded-field" aria-label="Floating label select example">
+                                <option selected>-- select --</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
                         <button type="submit" class="btn btn-success">Update</button>
-                    </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
+
     </div>
 </div>
 

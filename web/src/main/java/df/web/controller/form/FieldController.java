@@ -2,7 +2,6 @@ package df.web.controller.form;
 
 import df.base.common.validation.custom.Validation;
 import df.base.dto.form.FieldDTO;
-import df.base.mapping.Mappers;
 import df.base.mapping.form.FieldMapper;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.support.ElementType;
@@ -10,14 +9,15 @@ import df.base.persistence.entity.support.FieldStatus;
 import df.base.persistence.entity.support.UsageType;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.persistence.repository.form.FieldRepository;
-import df.base.persistence.support.EntityGraphConstants;
 import df.base.service.form.FieldService;
+import df.base.validation.groups.Operations;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
 import df.web.controller.MAVConstants;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -28,7 +28,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static df.base.Messages.*;
-import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Named.load;
 import static df.web.common.flash.FlashMessage.*;
 
 @Controller
@@ -88,7 +87,7 @@ public class FieldController implements FieldOperations {
     }
 
     @Override
-    public ModelAndView perform(FieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
+    public ModelAndView perform(@Validated(Operations.Primary.class) FieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
         controllerHelper.setBindingResult(result);
         controllerHelper.setRedirectAttributes(attributes);
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);

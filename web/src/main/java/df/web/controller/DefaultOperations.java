@@ -29,7 +29,7 @@ public interface DefaultOperations<DTO> {
         throw UNSUPPORTED_REQUEST_METHOD;
     }
 
-    @GetMapping("/modify/{itemId}")
+    @GetMapping("/{itemId}/modify")
     default ModelAndView modify(@PathVariable("itemId") String itemId,
                                 RedirectAttributes attributes) {
         throw UNSUPPORTED_REQUEST_METHOD;
@@ -42,13 +42,13 @@ public interface DefaultOperations<DTO> {
     }
 
     @PreAuthorize("hasRole('SUPER_USER')")
-    @GetMapping("/remove/{itemId}")
+    @GetMapping("/{itemId}/remove")
     default ModelAndView remove(@PathVariable("itemId") String itemId,
                                 RedirectAttributes attributes) {
         throw UNSUPPORTED_REQUEST_METHOD;
     }
 
-    @GetMapping("/status/{status}/{itemId}")
+    @GetMapping("/{itemId}/status/{status}")
     default ModelAndView status(@PathVariable("itemId") String itemId, @PathVariable("status") String status,
                                 RedirectAttributes attributes) {
         throw UNSUPPORTED_REQUEST_METHOD;

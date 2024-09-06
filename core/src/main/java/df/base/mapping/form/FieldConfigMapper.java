@@ -29,15 +29,15 @@ public class FieldConfigMapper implements Mapper<FieldConfig, FieldConfigDTO> {
     @Override
     public void map(FieldConfig source, FieldConfigDTO destination) {
         destination.setId(source.getId());
-        destination.setConfigValue(source.getConfigValue());
-        destination.setConfigName(source.getConfigName());
+        destination.setValue(source.getConfigValue());
+        destination.setKey(source.getConfigName());
         destination.setFieldId(source.getField().getId());
     }
 
     @Override
     public void reverse(FieldConfigDTO source, FieldConfig destination) {
-        destination.setConfigName(source.getConfigName());
-        destination.setConfigValue(source.getConfigValue());
+        destination.setConfigName(source.getKey());
+        destination.setConfigValue(source.getValue());
     }
 
 }

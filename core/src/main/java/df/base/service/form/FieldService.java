@@ -7,6 +7,7 @@ import df.base.persistence.repository.form.FieldRepository;
 import df.base.mapping.form.FieldMapper;
 import df.base.dto.form.FieldDTO;
 import df.base.persistence.exception.JpaResourceNotFoundException;
+import df.base.service.CommonService;
 import df.base.service.RedirectAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
 @Service
-public class FieldService implements RedirectAware {
+public class FieldService implements RedirectAware, CommonService<FieldDTO, Field, FieldRepository> {
 
     @Autowired
     private FieldRepository repository;
@@ -87,6 +88,11 @@ public class FieldService implements RedirectAware {
     @Transactional
     public void delete(Field field) {
         repository.delete(field);
+    }
+
+    @Override
+    public FieldRepository getRepository() {
+        return repository;
     }
 
     @Override

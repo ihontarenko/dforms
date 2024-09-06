@@ -77,16 +77,16 @@ public class FieldMapper implements Mapper<Field, FieldDTO> {
                 -> configs.values().stream().map(configMapper::reverse).forEach(destination::addConfig));
 
         ofNullable(source.getAttributes()).ifPresent(attributes
-                -> attributes.stream().map(attributeMapper::reverse).forEach(destination::addAttribute));
+                -> attributes.values().stream().map(attributeMapper::reverse).forEach(destination::addAttribute));
 
         ofNullable(source.getOptions()).ifPresent(options
-                -> options.stream().map(optionMapper::reverse).forEach(destination::addOption));
+                -> options.values().stream().map(optionMapper::reverse).forEach(destination::addOption));
 
         ofNullable(source.getChildren()).ifPresent(children
-                -> children.stream().map(this::reverse).forEach(destination::addChild));
+                -> children.values().stream().map(this::reverse).forEach(destination::addChild));
 
         ofNullable(source.getParents()).ifPresent(parents
-                -> parents.stream().map(this::reverse).forEach(destination::addParent));
+                -> parents.values().stream().map(this::reverse).forEach(destination::addParent));
     }
 
 }

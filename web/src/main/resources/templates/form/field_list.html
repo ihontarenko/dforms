@@ -40,20 +40,31 @@
 
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/form/field/setup/' + field.id) }}'"
-                            type="button" class="btn btn-sm btn-secondary">SETUP</button>
-                    <button onclick="window.location = '{{ href('/form/field/modify/' + field.id) }}'"
-                            type="button" class="btn btn-sm btn-dark">MODIFY</button>
-                    <button type="button" class="btn btn-sm btn-warning">STATUS</button>
+                    <button onclick="window.location = '{{ href('/form/field/' + field.id + '/modify') }}'"
+                            type="button" class="btn btn-sm btn-primary">MODIFY</button>
+
                     <div class="btn-group" role="group">
-                        <button id="status" type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <button id="extra_{{ field.id }}" type="button"
+                                class="btn btn-dark dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">EXTRA</button>
                         <div class="dropdown-menu" aria-labelledby="status" style="">
-                            <a class="dropdown-item" href="{{ href('/form/field/status/active/' + field.id) }}">STATUS ACTIVE</a>
-                            <a class="dropdown-item" href="{{ href('/form/field/status/inactive/'+ field.id) }}">STATUS INACTIVE</a>
-                            <a class="dropdown-item" href="{{ href('/form/field/status/deleted/' + field.id) }}">STATUS DELETE</a>
-                            <a class="dropdown-item" href="{{ href('/form/field/remove/' + field.id) }}">REMOVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/customization/configs') }}">CONFIGS</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/customization/attributes') }}">ATTRIBUTES</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/customization/options') }}">OPTIONS</a>
                         </div>
                     </div>
+
+                    <div class="btn-group" role="group">
+                        <button id="status_{{ field.id }}" type="button" class="btn btn-warning dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">STATUS</button>
+                        <div class="dropdown-menu" aria-labelledby="status">
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/status/active') }}">STATUS ACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/status/inactive') }}">STATUS INACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/status/deleted') }}">STATUS DELETE</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/remove') }}">REMOVE</a>
+                        </div>
+                    </div>
+
                 </div>
             </td>
         </tr>

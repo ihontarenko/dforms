@@ -1,24 +1,26 @@
 package df.base.dto.form;
 
+import df.base.dto.KeyValueDTO;
+import df.base.validation.groups.Operations;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import df.base.dto.DTO;
 
-public class FieldOptionDTO implements DTO {
+public class FieldOptionDTO implements DTO, KeyValueDTO {
 
-    @Size(max = 32)
+    @Size(max = 32, groups = Operations.Secondary.class)
     private String id;
 
-    @Size(max = 32)
+    @Size(max = 32, groups = Operations.Secondary.class)
     private String fieldId;
 
     @NotEmpty
-    @Size(max = 255)
-    private String optionValue;
+    @Size(max = 32, groups = Operations.Secondary.class)
+    private String key;
 
     @NotEmpty
-    @Size(max = 255)
-    private String optionLabel;
+    @Size(max = 255, groups = Operations.Secondary.class)
+    private String value;
 
     public String getId() {
         return id;
@@ -36,20 +38,35 @@ public class FieldOptionDTO implements DTO {
         this.fieldId = fieldId;
     }
 
-    public String getOptionValue() {
-        return optionValue;
+    @Override
+    public String getKey() {
+        return key;
     }
 
-    public void setOptionValue(String optionValue) {
-        this.optionValue = optionValue;
+    @Override
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getOptionLabel() {
-        return optionLabel;
+    @Override
+    public String getValue() {
+        return value;
     }
 
-    public void setOptionLabel(String optionLabel) {
-        this.optionLabel = optionLabel;
+    @Override
+    public void setValue(String value) {
+        this.value = value;
     }
+
+    @Override
+    public String getOwnerId() {
+        return getFieldId();
+    }
+
+    @Override
+    public void setOwnerId(String id) {
+        setFieldId(id);
+    }
+
 }
 

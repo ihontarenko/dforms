@@ -4,18 +4,14 @@ import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.form.FieldConfig;
 import df.base.persistence.repository.form.FieldConfigRepository;
 import df.base.dto.form.FieldConfigDTO;
-import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.service.CommonService;
 import df.base.service.RedirectAware;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 
-import static df.base.Messages.FORM_CONFIG_NOT_FOUND;
-import static df.base.Messages.REQUIRED_ID_CANNOT_BE_NULL;
 import static java.util.Objects.requireNonNull;
 
 @SuppressWarnings({"unused"})
@@ -32,8 +28,8 @@ public class FieldConfigService implements
     public FieldConfig create(Field field, FieldConfigDTO formConfigDTO) {
         FieldConfig formConfig = new FieldConfig();
 
-        formConfig.setConfigName(formConfigDTO.getConfigName());
-        formConfig.setConfigValue(formConfigDTO.getConfigValue());
+        formConfig.setConfigName(formConfigDTO.getKey());
+        formConfig.setConfigValue(formConfigDTO.getValue());
         formConfig.setField(field);
 
         return repository.save(formConfig);
@@ -53,8 +49,8 @@ public class FieldConfigService implements
     @Override
     @Transactional
     public FieldConfig update(FieldConfig config, FieldConfigDTO configDTO) {
-        config.setConfigName(configDTO.getConfigName());
-        config.setConfigValue(configDTO.getConfigValue());
+        config.setConfigName(configDTO.getKey());
+        config.setConfigValue(configDTO.getValue());
 
         return repository.save(config);
     }

@@ -2,6 +2,7 @@ package df.base.common.validation.custom;
 
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
@@ -43,6 +44,11 @@ public class Validation {
                     validator.validate(object);
                 } catch (ValidationException exception) {
                     ErrorMessage message = resolver.resolve(name, exception.getErrorCode(), exception.getErrorContext());
+
+                    if (StringUtils.hasText(exception.getMessage())) {
+                        message = new ErrorMessage(message.code(), exception.getMessage(), message.pointer());
+                    }
+
                     errors.add(message);
 
                     if (exception.isBreakOnFail()) break;

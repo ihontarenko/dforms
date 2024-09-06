@@ -1,26 +1,30 @@
 package df.base.dto.form;
 
 import df.base.dto.DTO;
+import df.base.dto.KeyValueDTO;
+import df.base.validation.groups.Operations;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class FieldConfigDTO implements DTO {
+public class FieldConfigDTO implements DTO, KeyValueDTO {
 
-    @NotEmpty
-    @Size(max = 32)
+    @NotEmpty(groups = Operations.Secondary.class)
+    @Size(max = 32, groups = Operations.Secondary.class)
     private String id;
 
-    @NotEmpty
-    @Size(max = 32)
+    @NotEmpty(groups = Operations.Secondary.class)
+    @Size(max = 32, groups = Operations.Secondary.class)
     private String fieldId;
 
-    @NotEmpty
-    @Size(max = 255)
-    private String configName;
+    @NotEmpty(groups = Operations.Secondary.class)
+    @Size(max = 32, groups = Operations.Secondary.class)
+    @Pattern(regexp = "[0-9A-Z_]+")
+    private String key;
 
-    @NotEmpty
-    @Size(max = 1000)
-    private String configValue;
+    @NotEmpty(groups = Operations.Secondary.class)
+    @Size(max = 255, groups = Operations.Secondary.class)
+    private String value;
 
     public String getId() {
         return id;
@@ -38,20 +42,34 @@ public class FieldConfigDTO implements DTO {
         this.fieldId = fieldId;
     }
 
-    public String getConfigName() {
-        return configName;
+    @Override
+    public String getKey() {
+        return key;
     }
 
-    public void setConfigName(String configName) {
-        this.configName = configName;
+    @Override
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getConfigValue() {
-        return configValue;
+    @Override
+    public String getValue() {
+        return value;
     }
 
-    public void setConfigValue(String configValue) {
-        this.configValue = configValue;
+    @Override
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String getOwnerId() {
+        return getFieldId();
+    }
+
+    @Override
+    public void setOwnerId(String id) {
+        setFieldId(id);
     }
 }
 
