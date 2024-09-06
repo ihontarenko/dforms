@@ -19,7 +19,7 @@ public class FormEntryDTO implements DTO {
     @NotNull
     private LocalDateTime createdAt;
 
-    public String getId() {
+    public String id() {
         return id;
     }
 

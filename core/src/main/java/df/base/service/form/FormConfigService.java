@@ -51,7 +51,7 @@ public class FormConfigService implements
 
     @Transactional
     public FormConfig createOrUpdate(Form form, FormConfigDTO configDTO) {
-        Optional<FormConfig> config = getById(configDTO.getId());
+        Optional<FormConfig> config = getById(configDTO.id());
 
         if (config.isPresent()) {
             return update(config.get(), configDTO);

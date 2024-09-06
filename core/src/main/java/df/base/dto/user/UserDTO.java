@@ -71,7 +71,7 @@ public class UserDTO implements DTO {
     @NotEmpty(message = "select at least one role")
     private List<String> roles = new ArrayList<>();
 
-    public String getId() {
+    public String id() {
         return id;
     }
 

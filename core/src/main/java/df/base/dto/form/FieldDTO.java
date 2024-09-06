@@ -89,7 +89,7 @@ public class FieldDTO implements DTO {
     @Valid
     private Map<@Valid String, @Valid FieldConfigDTO> configs = new HashMap<>();
 
-    public String getId() {
+    public String id() {
         return id;
     }
 
@@ -154,7 +154,7 @@ public class FieldDTO implements DTO {
     }
 
     public void addParent(FieldDTO parent) {
-        parents.put(parent.getId(), parent);
+        parents.put(parent.id(), parent);
     }
 
     public Map<String, FieldDTO> getChildren() {
@@ -166,7 +166,7 @@ public class FieldDTO implements DTO {
     }
 
     public void addChild(FieldDTO child) {
-        children.put(child.getId(), child);
+        children.put(child.id(), child);
     }
 
     public Map<String, FieldOptionDTO> getOptions() {
@@ -178,7 +178,7 @@ public class FieldDTO implements DTO {
     }
 
     public void addOption(FieldOptionDTO option) {
-        options.put(option.getId(), option);
+        options.put(option.id(), option);
     }
 
     public Map<String, FieldAttributeDTO> getAttributes() {
@@ -190,7 +190,7 @@ public class FieldDTO implements DTO {
     }
 
     public void addAttribute(FieldAttributeDTO attribute) {
-        attributes.put(attribute.getId(), attribute);
+        attributes.put(attribute.id(), attribute);
     }
 
     public Map<String, FieldConfigDTO> getConfigs() {
@@ -202,7 +202,7 @@ public class FieldDTO implements DTO {
     }
 
     public void addConfig(FieldConfigDTO config) {
-        configs.put(config.getId(), config);
+        configs.put(config.id(), config);
     }
 }
 

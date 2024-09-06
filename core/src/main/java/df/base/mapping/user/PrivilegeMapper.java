@@ -31,7 +31,7 @@ public class PrivilegeMapper implements Mapper<Privilege, PrivilegeDTO> {
     @Override
     public void reverse(PrivilegeDTO source, Privilege destination) {
         destination.setName(slugify(source.getName()).toUpperCase());
-        destination.setId(source.getId());
+        destination.setId(source.id());
     }
 
     @Override

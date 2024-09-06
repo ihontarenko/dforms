@@ -69,20 +69,19 @@
             </td>
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/form/setup/' + form.id) }}'"
-                            type="button" class="btn btn-sm btn-light">SETUP</button>
-                    <button onclick="window.location = '{{ href('/form/config/' + form.id) }}'"
-                            type="button" class="btn btn-sm btn-secondary">CONFIGURE</button>
-                    <button onclick="window.location = '{{ href('/form/modify/' + form.id) }}'"
-                            type="button" class="btn btn-sm btn-info">MODIFY</button>
-                    <button type="button" class="btn btn-sm btn-danger">STATUS</button>
+                    <button onclick="window.location = '{{ href('/form/' + form.id + '/customization') }}'"
+                            type="button" class="btn btn-sm btn-primary">CUSTOMIZATION</button>
+                    <button onclick="window.location = '{{ href('/form/' + form.id + '/config') }}'"
+                            type="button" class="btn btn-sm btn-primary">CONFIGURE</button>
+                    <button onclick="window.location = '{{ href('/form/' + form.id + '/modify') }}'"
+                            type="button" class="btn btn-sm btn-primary">MODIFY</button>
                     <div class="btn-group" role="group">
-                        <button id="status" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <button id="status" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">STATUS</button>
                         <div class="dropdown-menu" aria-labelledby="status" style="">
-                            <a class="dropdown-item" href="{{ href('/form/status/active/' + form.id) }}">STATUS ACTIVE</a>
-                            <a class="dropdown-item" href="{{ href('/form/status/inactive/' + form.id) }}">STATUS INACTIVE</a>
-                            <a class="dropdown-item" href="{{ href('/form/status/deleted/' + form.id) }}">STATUS DELETE</a>
-                            <a class="dropdown-item" href="{{ href('/form/remove/' + form.id) }}">REMOVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/active') }}">STATUS ACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/inactive') }}">STATUS INACTIVE</a>
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/deleted') }}">STATUS DELETE</a>
+                            <a class="dropdown-item" href="{{ href('/form/' + form.id + '/remove') }}">REMOVE</a>
                         </div>
                     </div>
                 </div>

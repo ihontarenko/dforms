@@ -1,7 +1,7 @@
 package df.web.controller.form;
 
 import df.base.common.breadcrumb.Breadcrumbs;
-import df.base.dto.KeyValueDTO;
+import df.base.dto.SecondaryDTO;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldConfigDTO;
 import df.base.dto.form.FieldOptionDTO;
@@ -14,50 +14,54 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@RequestMapping(MAVConstants.REQUEST_MAPPING_FIELD_EXTRA)
-public interface FieldCustomizationOperations extends DefaultOperations<KeyValueDTO> {
+@RequestMapping(MAVConstants.FORM_FIELD_FIELD_ID_CUSTOMIZATION)
+public interface FieldCustomizationOperations extends DefaultOperations<SecondaryDTO> {
 
 
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Fields", url = "/form/field"),
-            @Breadcrumbs.Item(label = "Field Configuring '{ownerId}'")
+            @Breadcrumbs.Item(label = "Configuring field-{section}")
     })
     @GetMapping("/{section}")
-    ModelAndView index(@PathVariable("section") String section, @PathVariable("fieldId") String ownerId);
+    ModelAndView index(@PathVariable("section") String section, @PathVariable("primaryId") String ownerId);
 
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Fields", url = "/form/field"),
             @Breadcrumbs.Item(label = "Modify Item {itemId}")
     })
-    @Override
-    ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
+    @GetMapping("/{section}/{itemId}/modify")
+    ModelAndView modify(
+            @PathVariable("section") String section,
+            @PathVariable("primaryId") String primaryId,
+            @PathVariable("itemId") String itemId,
+            RedirectAttributes attributes);
 
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Fields", url = "/form/field"),
-            @Breadcrumbs.Item(label = "Field Config Performing'")
+            @Breadcrumbs.Item(label = "Performing...")
     })
-    @PostMapping("/perform/configs")
+    @PostMapping("/perform/config")
     ModelAndView perform(@ModelAttribute("itemDTO") @Validated(Operations.Advanced.class) FieldConfigDTO itemDTO,
                          BindingResult result, RedirectAttributes attributes);
 
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Fields", url = "/form/field"),
-            @Breadcrumbs.Item(label = "Attribute Performing'")
+            @Breadcrumbs.Item(label = "Performing...'")
     })
-    @PostMapping("/perform/attributes")
+    @PostMapping("/perform/attribute")
     ModelAndView perform(@ModelAttribute("itemDTO") @Validated(Operations.Advanced.class) FieldAttributeDTO itemDTO,
                          BindingResult result, RedirectAttributes attributes);
 
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Fields", url = "/form/field"),
-            @Breadcrumbs.Item(label = "Element Option Performing'")
+            @Breadcrumbs.Item(label = "Performing...'")
     })
-    @PostMapping("/perform/options")
+    @PostMapping("/perform/option")
     ModelAndView perform(@ModelAttribute("itemDTO") @Validated(Operations.Advanced.class) FieldOptionDTO itemDTO,
                          BindingResult result, RedirectAttributes attributes);
 

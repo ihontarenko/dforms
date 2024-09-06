@@ -67,7 +67,7 @@ public class RoleDTO implements DTO {
     @NotEmpty(message = "select at least one privilege")
     private List<String> privileges;
 
-    public String getId() {
+    public String id() {
         return id;
     }
 

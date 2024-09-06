@@ -29,7 +29,7 @@ public class RoleService implements RedirectAware {
 
     @Transactional
     public Role createOrUpdate(RoleDTO roleDTO) {
-        return getById(roleDTO.getId())
+        return getById(roleDTO.id())
                 .map(entity -> update(entity, roleDTO))
                 .orElseGet(() -> create(roleDTO));
     }

@@ -18,6 +18,7 @@ public interface FormOperations extends DefaultOperations<FormDTO> {
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Forms")
     })
+    @GetMapping
     ModelAndView index();
 
     @Breadcrumbs({
@@ -25,6 +26,7 @@ public interface FormOperations extends DefaultOperations<FormDTO> {
             @Breadcrumbs.Item(label = "Forms", url = "/form"),
             @Breadcrumbs.Item(label = "Modify '{itemId}'")
     })
+    @GetMapping("/{itemId}/modify")
     ModelAndView modify(@PathVariable("itemId") String itemId,
                         RedirectAttributes attributes);
 
@@ -32,12 +34,15 @@ public interface FormOperations extends DefaultOperations<FormDTO> {
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Performing")
     })
+    @PostMapping("/perform")
     ModelAndView perform(@ModelAttribute("itemDTO") @Valid FormDTO itemDTO, BindingResult result,
                          RedirectAttributes attributes);
 
+    @GetMapping("/{itemId}/remove")
     ModelAndView remove(@PathVariable("itemId") String itemId,
                         RedirectAttributes attributes);
 
+    @GetMapping("/{itemId}/status/{status}")
     ModelAndView status(@PathVariable("itemId") String itemId, @PathVariable("status") String status,
                         RedirectAttributes attributes);
 

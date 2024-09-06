@@ -32,7 +32,7 @@ public class RoleMapper implements Mapper<Role, RoleDTO> {
     @Override
     public void reverse(RoleDTO source, Role destination) {
         destination.setName(source.getName());
-        destination.setId(source.getId());
+        destination.setId(source.id());
     }
 
     @Override

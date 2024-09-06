@@ -1,13 +1,13 @@
 package df.base.dto.form;
 
 import df.base.dto.DTO;
-import df.base.dto.KeyValueDTO;
+import df.base.dto.SecondaryDTO;
 import df.base.validation.groups.Operations;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class FieldConfigDTO implements DTO, KeyValueDTO {
+public class FieldConfigDTO implements DTO, SecondaryDTO {
 
     @NotEmpty(groups = Operations.Secondary.class)
     @Size(max = 32, groups = Operations.Secondary.class)
@@ -26,7 +26,7 @@ public class FieldConfigDTO implements DTO, KeyValueDTO {
     @Size(max = 255, groups = Operations.Secondary.class)
     private String value;
 
-    public String getId() {
+    public String id() {
         return id;
     }
 
@@ -47,7 +47,6 @@ public class FieldConfigDTO implements DTO, KeyValueDTO {
         return key;
     }
 
-    @Override
     public void setKey(String key) {
         this.key = key;
     }
@@ -57,18 +56,16 @@ public class FieldConfigDTO implements DTO, KeyValueDTO {
         return value;
     }
 
-    @Override
     public void setValue(String value) {
         this.value = value;
     }
 
     @Override
-    public String getOwnerId() {
+    public String getPrimaryId() {
         return getFieldId();
     }
 
-    @Override
-    public void setOwnerId(String id) {
+    public void setPrimaryId(String id) {
         setFieldId(id);
     }
 }

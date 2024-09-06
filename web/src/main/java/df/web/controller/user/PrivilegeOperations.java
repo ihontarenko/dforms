@@ -28,6 +28,7 @@ public interface PrivilegeOperations extends DefaultOperations<PrivilegeDTO> {
             @Breadcrumbs.Item(label = "Privileges", url = "/privilege"),
             @Breadcrumbs.Item(label = "Modify '{itemId}'"),
     })
+    @GetMapping("/{itemId}/modify")
     ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
 
     @Override
@@ -36,6 +37,8 @@ public interface PrivilegeOperations extends DefaultOperations<PrivilegeDTO> {
             @Breadcrumbs.Item(label = "Roles", url = "/role"),
             @Breadcrumbs.Item(label = "Performing"),
     })
-    ModelAndView perform(@ModelAttribute("itemDTO") @Valid PrivilegeDTO privilegeDTO, BindingResult result, RedirectAttributes attributes);
+    @PostMapping("/perform")
+    ModelAndView perform(@ModelAttribute("itemDTO") @Valid PrivilegeDTO privilegeDTO, BindingResult result,
+                         RedirectAttributes attributes);
 
 }

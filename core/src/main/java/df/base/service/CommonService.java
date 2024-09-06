@@ -35,7 +35,7 @@ public interface CommonService<D extends DTO, E, R extends JpaEntityGraphReposit
     
     @Transactional
     default E createOrUpdate(D dto) {
-        Optional<E> optional = getById(dto.getId());
+        Optional<E> optional = getById(dto.id());
 
         if (optional.isPresent()) {
             return update(optional.get(), dto);

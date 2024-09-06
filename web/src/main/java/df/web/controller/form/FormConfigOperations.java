@@ -19,7 +19,8 @@ public interface FormConfigOperations extends DefaultOperations<FormConfigDTO> {
             @Breadcrumbs.Item(label = "Forms", url = "/form"),
             @Breadcrumbs.Item(label = "Configurations '{ownerId}'")
     })
-    ModelAndView index(@PathVariable("ownerId") String formId);
+    @GetMapping
+    ModelAndView index(@PathVariable("primaryId") String primaryId);
 
 
     @Override
@@ -28,7 +29,9 @@ public interface FormConfigOperations extends DefaultOperations<FormConfigDTO> {
             @Breadcrumbs.Item(label = "Forms", url = "/form"),
             @Breadcrumbs.Item(label = "Modify '{itemId}'")
     })
-    ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
+    @GetMapping("/{itemId}/modify")
+    ModelAndView modify(@PathVariable("primaryId") String primaryId, @PathVariable("itemId") String itemId,
+                        RedirectAttributes attributes);
 
     @Override
     @Breadcrumbs({
@@ -36,8 +39,13 @@ public interface FormConfigOperations extends DefaultOperations<FormConfigDTO> {
             @Breadcrumbs.Item(label = "Forms", url = "/form"),
             @Breadcrumbs.Item(label = "Performing")
     })
+    @PostMapping("/perform")
     ModelAndView perform(@ModelAttribute("itemDTO") @Valid FormConfigDTO configDTO, BindingResult result,
                          RedirectAttributes attributes);
+
+    @Override
+    @GetMapping("/{itemId}/remove")
+    ModelAndView remove(String itemId, RedirectAttributes attributes);
 
 
 }

@@ -28,6 +28,7 @@ public interface UserOperations extends DefaultOperations<UserDTO> {
             @Breadcrumbs.Item(label = "Users", url = "/user"),
             @Breadcrumbs.Item(label = "Modify '{userId}'"),
     })
+    @GetMapping("/{itemId}/modify")
     ModelAndView modify(@PathVariable("itemId") String itemId,
                         RedirectAttributes attributes);
 
@@ -37,6 +38,7 @@ public interface UserOperations extends DefaultOperations<UserDTO> {
             @Breadcrumbs.Item(label = "Users", url = "/user"),
             @Breadcrumbs.Item(label = "Performing"),
     })
+    @PostMapping("/perform")
     ModelAndView perform(@ModelAttribute("itemDTO") @Valid UserDTO userDTO, BindingResult result,
                          RedirectAttributes attributes);
 

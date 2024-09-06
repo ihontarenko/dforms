@@ -11,6 +11,7 @@ import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -38,18 +39,18 @@ public class FormConfigController implements FormConfigOperations {
     }
 
     @Override
-    public ModelAndView index(String formId) {
+    public ModelAndView index(String primaryId) {
         helper.setViewName(MAVConstants.VIEW_FORM_CONFIG);
 
         bindAttributes(new FormConfigDTO(){{
-            setFormId(formId);
+            setFormId(primaryId);
         }});
 
         return helper.resolveWithoutRedirect();
     }
 
     @Override
-    public ModelAndView modify(String configId, RedirectAttributes attributes) {
+    public ModelAndView modify(String primaryId, String configId, RedirectAttributes attributes) {
         helper.setViewName(MAVConstants.VIEW_FORM_CONFIG);
         helper.setRedirectAttributes(attributes);
 

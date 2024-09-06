@@ -66,7 +66,7 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
 
     @Transactional
     public Field createOrUpdate(FieldDTO fieldDTO) {
-        Optional<Field> optional = getById(fieldDTO.getId());
+        Optional<Field> optional = getById(fieldDTO.id());
         Field           field;
 
         if (optional.isPresent()) {

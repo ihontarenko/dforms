@@ -105,7 +105,7 @@ public class FormConfigDTO implements DTO {
     @Size(max = 1000)
     private String configValue;
 
-    public String getId() {
+    public String id() {
         return id;
     }
 

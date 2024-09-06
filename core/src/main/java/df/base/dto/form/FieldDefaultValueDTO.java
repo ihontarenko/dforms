@@ -22,7 +22,7 @@ public class FieldDefaultValueDTO implements DTO {
     @Size(max = 1000)
     private String defaultValue;
 
-    public String getId() {
+    public String id() {
         return id;
     }
 

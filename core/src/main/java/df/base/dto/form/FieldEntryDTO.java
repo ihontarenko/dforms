@@ -22,7 +22,7 @@ public class FieldEntryDTO implements DTO {
     @Size(max = 1000)
     private String value;
 
-    public String getId() {
+    public String id() {
         return id;
     }
 

@@ -88,7 +88,7 @@ public class FormDTO implements DTO {
     @EnumPattern(regexp = "ACTIVE|INACTIVE|DELETED")
     private FormStatus status;
 
-    public String getId() {
+    public String id() {
         return id;
     }
 

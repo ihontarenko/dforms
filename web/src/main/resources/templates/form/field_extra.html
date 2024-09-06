@@ -1,45 +1,49 @@
 {% extends "common/layout" %}
-{% block title %}Setup Field [{{ section | upper }}] '{{ itemDTO.id }}'{% endblock %}
-
+{% block title %}Field '{{ field.id }}'{% endblock %}
 {% block headerButtons %}
 <div class="btn-group pt-2" role="group">
-    <button onclick="window.location = '/form/field/customization/configs/{{ itemDTO.id }}'" type="button" class="btn btn-sm btn-dark">CONFIGS</button>
-    <button onclick="window.location = '/form/field/customization/attributes/{{ itemDTO.id }}'" type="button" class="btn btn-sm btn-dark">ATTRIBUTES</button>
-    <button onclick="window.location = '/form/field/customization/options/{{ itemDTO.id }}'" type="button" class="btn btn-sm btn-dark">OPTIONS</button>
-    <button onclick="window.location = '/form/field/customization/embedded/{{ itemDTO.id }}'" type="button" class="btn btn-sm btn-warning">EMBEDDED FIELDS</button>
+    <button onclick="window.location = '/form/field/{{ field.id }}/customization/config'" type="button" class="btn btn-sm btn-dark">CONFIG</button>
+    <button onclick="window.location = '/form/field/{{ field.id }}/customization/attribute'" type="button" class="btn btn-sm btn-dark">ATTRIBUTE</button>
+    <button onclick="window.location = '/form/field/{{ field.id }}/customization/option'" type="button" class="btn btn-sm btn-dark">OPTION</button>
+    <button onclick="window.location = '/form/field/{{ field.id }}/customization/embedded'" type="button" class="btn btn-sm btn-warning">EMBEDDED</button>
 </div>
 {% endblock %}
-
 {% block content %}
-<div class="card bg-light mb-3">
-    <div class="card-header">ID: <b>{{itemDTO.id}}</b></div>
-    <div class="card-body">
-        <h4 class="card-title">{{itemDTO.label}}</h4>
-        <h5 class="card-title">{{itemDTO.name}}</h5>
-        <p class="card-text">{{itemDTO.description}}</p>
-    </div>
-</div>
-
-<form method="post" action="{{ href('/form/field/customization/perform' + section) }}" enctype="multipart/form-data" class="row g-3" >
+<form method="post"
+      action="{{ href('/form/field/' + field.fieldId + '/customization/perform/' + section) }}"
+      enctype="multipart/form-data"
+      class="row g-3">
 
     <div class="row g-3">
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="text" class="form-control {{ ifFieldErrors('itemDTO', 'configName', 'is-invalid', 'is-valid') }}" id="config-name" name="configName" value="{{itemDTO.configName}}">
-                <label for="config-name">Config Name</label>
-                {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "configName"} %}
+                <input
+                        type="text"
+                        class="form-control {{ ifFieldErrors('itemDTO', 'configName', 'is-invalid', 'is-valid') }}"
+                        id="key"
+                        name="key"
+                        value="{{field.key}}"
+                />
+                <label for="key">Key</label>
+                {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "key"} %}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="text" class="form-control {{ ifFieldErrors('itemDTO', 'configValue', 'is-invalid', 'is-valid') }}" id="config-value" name="configValue" value="{{itemDTO.configValue}}">
-                <label for="config-value">Config Value</label>
-                {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "configValue"} %}
+                <input
+                        type="text"
+                        class="form-control {{ ifFieldErrors('itemDTO', 'configValue', 'is-invalid', 'is-valid') }}"
+                        id="value"
+                        name="value"
+                        value="{{field.value}}"
+                />
+                <label for="value">Value</label>
+                {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "value"} %}
             </div>
         </div>
     </div>
 
-    <input type="hidden" name="fieldId" value="{{ itemDTO.id }}">
+    <input type="hidden" name="fieldId" value="{{ field.id }}">
 
     <div class="form-group mt-4">
         <button class="btn btn-success" type="submit">Submit</button>
@@ -60,7 +64,8 @@
     </tr>
     </thead>
     <tbody>
-    {% for entry in itemDTO[section] %}
+    {% set elements = section == 'config' ? field.configs : section == 'attribute' ? field.attributes : field.options %}
+    {% for entry in elements %}
     {% set item = entry.value %}
     <tr>
         <th scope="row">{{ item.id }}</th>
@@ -72,9 +77,9 @@
         </td>
         <td>
             <div class="btn-group" role="group">
-                <button onclick="window.location = '{{ href('/form/field/customization/' + section + '/modify/' + item.id) }}'"
+                <button onclick="window.location = '{{ href('/form/field/' + item.primaryId + '/customization/' + section + '/' + item.id + '/modify') }}'"
                         type="button" class="btn btn-sm btn-dark">MODIFY</button>
-                <button onclick="window.location = '{{ href('/form/field/customization/' + section + '/remove/' + item.id) }}'"
+                <button onclick="window.location = '{{ href('/form/field/' + item.primaryId + '/customization/' + section + '/' + item.id) + '/remove' }}'"
                         type="button" class="btn btn-sm btn-warning">REMOVE</button>
             </div>
         </td>

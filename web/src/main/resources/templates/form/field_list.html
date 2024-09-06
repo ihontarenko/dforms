@@ -46,11 +46,11 @@
                     <div class="btn-group" role="group">
                         <button id="extra_{{ field.id }}" type="button"
                                 class="btn btn-dark dropdown-toggle"
-                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">EXTRA</button>
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">CUSTOMIZATION</button>
                         <div class="dropdown-menu" aria-labelledby="status" style="">
-                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/customization/configs') }}">CONFIGS</a>
-                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/customization/attributes') }}">ATTRIBUTES</a>
-                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/customization/options') }}">OPTIONS</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/customization/config') }}">CONFIGS</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/customization/attribute') }}">ATTRIBUTES</a>
+                            <a class="dropdown-item" href="{{ href('/form/field/' + field.id + '/customization/option') }}">OPTIONS</a>
                         </div>
                     </div>
 

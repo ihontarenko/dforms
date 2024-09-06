@@ -54,7 +54,7 @@ public class UserService implements RedirectAware {
     @Transactional
     public User createOrUpdate(UserDTO userDTO) {
         // todo: check getId on empty string
-        User user = repository.findById(userDTO.getId())
+        User user = repository.findById(userDTO.id())
                 .map(u -> update(u, userDTO))
                 .orElseGet(() -> create(userDTO));
 

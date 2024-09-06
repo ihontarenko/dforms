@@ -28,6 +28,7 @@ public interface RoleOperations extends DefaultOperations<RoleDTO> {
             @Breadcrumbs.Item(label = "Roles", url = "/role"),
             @Breadcrumbs.Item(label = "Modify '{itemId}'"),
     })
+    @GetMapping("/{itemId}/modify")
     ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
 
     @Override
@@ -36,6 +37,8 @@ public interface RoleOperations extends DefaultOperations<RoleDTO> {
             @Breadcrumbs.Item(label = "Roles", url = "/role"),
             @Breadcrumbs.Item(label = "Performing"),
     })
-    ModelAndView perform(@ModelAttribute("itemDTO") @Valid RoleDTO roleDTO, BindingResult result, RedirectAttributes attributes);
+    @PostMapping("/perform")
+    ModelAndView perform(@ModelAttribute("itemDTO") @Valid RoleDTO roleDTO, BindingResult result,
+                         RedirectAttributes attributes);
 
 }

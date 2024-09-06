@@ -7,9 +7,7 @@ import df.web.controller.DefaultOperations;
 import df.web.controller.MAVConstants;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -21,6 +19,7 @@ public interface FieldOperations extends DefaultOperations<FieldDTO> {
             @Item(label = "Home", url = "/"),
             @Item(label = "Fields")
     })
+    @GetMapping
     ModelAndView index();
 
     @Override
@@ -29,6 +28,7 @@ public interface FieldOperations extends DefaultOperations<FieldDTO> {
             @Item(label = "Fields", url = "/form/field"),
             @Item(label = "Create Field")
     })
+    @GetMapping("/create")
     ModelAndView create();
 
     @Override
@@ -37,6 +37,7 @@ public interface FieldOperations extends DefaultOperations<FieldDTO> {
             @Item(label = "Fields", url = "/form/field"),
             @Item(label = "Modify '{itemId}'")
     })
+    @GetMapping("/{itemId}/modify")
     ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
 
     @Override
@@ -45,8 +46,21 @@ public interface FieldOperations extends DefaultOperations<FieldDTO> {
             @Item(label = "Fields", url = "/form/field"),
             @Item(label = "Performing...")
     })
+    @PostMapping("/perform")
     ModelAndView perform(@ModelAttribute("itemDTO") @Valid FieldDTO itemDTO,
                          BindingResult result, RedirectAttributes attributes);
+
+    @Override
+    @GetMapping("/{itemId}/remove")
+    ModelAndView remove(String itemId, RedirectAttributes attributes);
+
+    @GetMapping("/{itemId}/status/{status}")
+    default ModelAndView status(@PathVariable("primaryId") String primaryId,
+                                @PathVariable("itemId") String itemId,
+                                @PathVariable("status") String status,
+                                RedirectAttributes attributes) {
+        throw UNSUPPORTED_REQUEST_METHOD;
+    }
 
 
 }

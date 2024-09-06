@@ -43,7 +43,7 @@ public class FormService implements RedirectAware {
 
     @Transactional
     public Form createOrUpdate(FormDTO formDTO, User user) {
-        return getById(formDTO.getId())
+        return getById(formDTO.id())
                 .map(f -> update(f, formDTO))
                 .orElseGet(() -> create(user, formDTO));
     }

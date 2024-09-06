@@ -60,7 +60,7 @@ public class PrivilegeDTO implements DTO {
     @Size(max = 32)
     private String name;
 
-    public String getId() {
+    public String id() {
         return id;
     }
 

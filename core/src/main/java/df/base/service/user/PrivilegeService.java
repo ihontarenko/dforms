@@ -25,7 +25,7 @@ public class PrivilegeService implements RedirectAware {
 
     @Transactional
     public Privilege createOrUpdate(PrivilegeDTO privilegeDTO) {
-        return getById(privilegeDTO.getId())
+        return getById(privilegeDTO.id())
                 .map(entity -> update(entity, privilegeDTO))
                 .orElseGet(() -> create(privilegeDTO));
     }

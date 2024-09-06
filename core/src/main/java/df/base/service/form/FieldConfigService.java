@@ -37,7 +37,7 @@ public class FieldConfigService implements
 
     @Transactional
     public FieldConfig createOrUpdate(Field field, FieldConfigDTO configDTO) {
-        Optional<FieldConfig> config = getById(configDTO.getId());
+        Optional<FieldConfig> config = getById(configDTO.id());
 
         if (config.isPresent()) {
             return update(config.get(), configDTO);
