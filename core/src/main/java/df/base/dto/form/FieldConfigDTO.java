@@ -1,15 +1,37 @@
 package df.base.dto.form;
 
+import df.base.common.validation.jakarta.Fields;
+import df.base.common.validation.jakarta.constraint.JpaResource;
 import df.base.dto.DTO;
 import df.base.dto.SecondaryDTO;
+import df.base.persistence.entity.form.FieldConfig;
 import df.base.validation.groups.Operations;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
+
+@JpaResource.List({
+        // validation for creating new config
+        @JpaResource(
+                pointer = "key",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "key", type = FIELD_NAME),
+                                entityField = "configName"),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "fieldId", type = FIELD_NAME),
+                                entityField = "field.id"),
+                },
+                entityClass = FieldConfig.class,
+                message = "[NEW]: configuration with this key already taken",
+                applier = "!#hasText(id)",
+                groups = Operations.Secondary.class
+        ),
+})
 public class FieldConfigDTO implements DTO, SecondaryDTO {
 
-    @NotEmpty(groups = Operations.Secondary.class)
     @Size(max = 32, groups = Operations.Secondary.class)
     private String id;
 
@@ -19,7 +41,7 @@ public class FieldConfigDTO implements DTO, SecondaryDTO {
 
     @NotEmpty(groups = Operations.Secondary.class)
     @Size(max = 32, groups = Operations.Secondary.class)
-    @Pattern(regexp = "[0-9A-Z_]+")
+    @Pattern(regexp = "[0-9A-Z_]+", groups = Operations.Secondary.class)
     private String key;
 
     @NotEmpty(groups = Operations.Secondary.class)

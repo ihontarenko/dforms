@@ -44,7 +44,7 @@ public interface FieldCustomizationOperations extends DefaultOperations<Secondar
             @Breadcrumbs.Item(label = "Performing...")
     })
     @PostMapping("/perform/config")
-    ModelAndView perform(@ModelAttribute("itemDTO") @Validated(Operations.Advanced.class) FieldConfigDTO itemDTO,
+    ModelAndView perform(@ModelAttribute("itemDTO") @Validated(Operations.Secondary.class) FieldConfigDTO itemDTO,
                          BindingResult result, RedirectAttributes attributes);
 
     @Breadcrumbs({
@@ -53,7 +53,7 @@ public interface FieldCustomizationOperations extends DefaultOperations<Secondar
             @Breadcrumbs.Item(label = "Performing...'")
     })
     @PostMapping("/perform/attribute")
-    ModelAndView perform(@ModelAttribute("itemDTO") @Validated(Operations.Advanced.class) FieldAttributeDTO itemDTO,
+    ModelAndView perform(@ModelAttribute("itemDTO") @Validated(Operations.Secondary.class) FieldAttributeDTO itemDTO,
                          BindingResult result, RedirectAttributes attributes);
 
     @Breadcrumbs({
@@ -62,7 +62,7 @@ public interface FieldCustomizationOperations extends DefaultOperations<Secondar
             @Breadcrumbs.Item(label = "Performing...'")
     })
     @PostMapping("/perform/option")
-    ModelAndView perform(@ModelAttribute("itemDTO") @Validated(Operations.Advanced.class) FieldOptionDTO itemDTO,
+    ModelAndView perform(@ModelAttribute("itemDTO") @Validated(Operations.Secondary.class) FieldOptionDTO itemDTO,
                          BindingResult result, RedirectAttributes attributes);
 
 }

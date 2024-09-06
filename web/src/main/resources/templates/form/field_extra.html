@@ -10,7 +10,7 @@
 {% endblock %}
 {% block content %}
 <form method="post"
-      action="{{ href('/form/field/' + field.fieldId + '/customization/perform/' + section) }}"
+      action="{{ href('/form/field/' + field.id + '/customization/perform/' + section) }}"
       enctype="multipart/form-data"
       class="row g-3">
 
@@ -19,11 +19,10 @@
             <div class="form-floating">
                 <input
                         type="text"
-                        class="form-control {{ ifFieldErrors('itemDTO', 'configName', 'is-invalid', 'is-valid') }}"
+                        class="form-control {{ ifFieldErrors('itemDTO', 'key', 'is-invalid', 'is-valid') }}"
                         id="key"
                         name="key"
-                        value="{{field.key}}"
-                />
+                        value="{{secondaryDTO.key}}" />
                 <label for="key">Key</label>
                 {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "key"} %}
             </div>
@@ -32,23 +31,23 @@
             <div class="form-floating">
                 <input
                         type="text"
-                        class="form-control {{ ifFieldErrors('itemDTO', 'configValue', 'is-invalid', 'is-valid') }}"
+                        class="form-control {{ ifFieldErrors('itemDTO', 'value', 'is-invalid', 'is-valid') }}"
                         id="value"
                         name="value"
-                        value="{{field.value}}"
-                />
+                        value="{{secondaryDTO.value}}" />
                 <label for="value">Value</label>
                 {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "value"} %}
             </div>
         </div>
     </div>
 
-    <input type="hidden" name="fieldId" value="{{ field.id }}">
+    <input type="hidden" name="id" value="{{ secondaryDTO.id }}">
+    <input type="hidden" name="primaryId" value="{{ field.id }}">
 
     <div class="form-group mt-4">
         <button class="btn btn-success" type="submit">Submit</button>
         {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "id"} %}
-        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "fieldId"} %}
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "primaryId"} %}
     </div>
 </form>
 

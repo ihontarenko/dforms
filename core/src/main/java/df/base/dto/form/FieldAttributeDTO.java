@@ -8,7 +8,6 @@ import df.base.dto.DTO;
 
 public class FieldAttributeDTO implements DTO, SecondaryDTO {
 
-    @NotEmpty(groups = Operations.Secondary.class)
     @Size(max = 32, groups = Operations.Secondary.class)
     private String id;
 

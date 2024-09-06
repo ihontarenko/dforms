@@ -7,9 +7,7 @@ import df.base.dto.form.FieldDTO;
 import df.base.dto.form.FieldOptionDTO;
 import df.base.mapping.Mappers;
 import df.base.mapping.form.FieldMapper;
-import df.base.persistence.entity.form.FieldAttribute;
-import df.base.persistence.entity.form.FieldConfig;
-import df.base.persistence.entity.form.FieldOption;
+import df.base.persistence.entity.form.*;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.service.form.FieldAttributeService;
 import df.base.service.form.FieldConfigService;
@@ -24,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static df.web.common.flash.FlashMessage.success;
 
 @Controller
 public class FieldCustomizationController implements FieldCustomizationOperations {
@@ -64,35 +64,66 @@ public class FieldCustomizationController implements FieldCustomizationOperation
 
     @Override
     public ModelAndView modify(String section, String primaryId, String itemId, RedirectAttributes attributes) {
-        Mappers mappers = Mappers.INSTANCE;
-        Object  mapped  = switch (section) {
-            case "config" -> mappers.get(FieldConfig.class).map(configService.requireById(itemId));
-            case "attribute" -> mappers.get(FieldAttribute.class).map(attributeService.requireById(itemId));
-            case "option" -> mappers.get(FieldOption.class).map(optionService.requireById(itemId));
-            default -> throw new JpaResourceNotFoundException("Unsupported section '%s'".formatted(section));
-        };
+        Mappers      mappers = Mappers.INSTANCE;
+        ModelAndView mav;
 
         helper.setViewName(MAVConstants.VIEW_FIELD_CUSTOMIZATION);
         helper.setRedirectAttributes(attributes);
 
-        bindAttributes((SecondaryDTO) mapped);
+        try {
+            Object mapped = switch (section) {
+                case "config" -> mappers.get(FieldConfig.class).map(configService.requireById(itemId));
+                case "attribute" -> mappers.get(FieldAttribute.class).map(attributeService.requireById(itemId));
+                case "option" -> mappers.get(FieldOption.class).map(optionService.requireById(itemId));
+                default -> throw new JpaResourceNotFoundException("Unsupported section '%s'".formatted(section));
+            };
+            bindAttributes((SecondaryDTO) mapped);
+            mav = helper.resolveWithoutRedirect();
+        } catch (JpaResourceNotFoundException exception) {
+            mav = helper.redirect(exception);
+        }
 
-        return null;
+        return mav;
     }
 
     @Override
     public ModelAndView perform(FieldConfigDTO itemDTO, BindingResult result, RedirectAttributes attributes) {
-        return null;
+        return doPerform("config", itemDTO, result, attributes);
     }
 
     @Override
     public ModelAndView perform(FieldAttributeDTO itemDTO, BindingResult result, RedirectAttributes attributes) {
-        return null;
+        return doPerform("attribute", itemDTO, result, attributes);
     }
 
-    @Override
     public ModelAndView perform(FieldOptionDTO itemDTO, BindingResult result, RedirectAttributes attributes) {
-        return null;
+        return doPerform("option", itemDTO, result, attributes);
+    }
+
+    private ModelAndView doPerform(String section, SecondaryDTO itemDTO, BindingResult result, RedirectAttributes attributes) {
+        helper.setBindingResult(result);
+        helper.setRedirectAttributes(attributes);
+        helper.setViewName(MAVConstants.VIEW_FIELD_CUSTOMIZATION);
+        helper.setRedirectUrl(MAVConstants.REDIRECT_FIELD_CUSTOMIZATION.formatted(itemDTO.getPrimaryId(), section));
+        helper.attribute("section", section);
+
+        bindAttributes(itemDTO);
+
+        if (!result.hasErrors()) {
+            Field field = service.requireById(itemDTO.getPrimaryId());
+
+            if (section.equals("config")) {
+                configService.createOrUpdate(field, (FieldConfigDTO) itemDTO);
+//                case "attribute" -> attributeService.createOrUpdate(field, (FieldAttributeDTO) itemDTO);
+//                case "option" -> optionService.createOrUpdate(field, (FieldOptionDTO) itemDTO);
+            } else {
+                throw new JpaResourceNotFoundException("Unsupported section '%s'".formatted(section));
+            }
+
+            helper.addMessage(success("something saved"));
+        }
+
+        return helper.resolveWithRedirect();
     }
 
     private void bindAttributes(SecondaryDTO secondaryDTO) {
