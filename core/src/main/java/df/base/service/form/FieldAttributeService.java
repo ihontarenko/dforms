@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings({"unused"})
 @Service
@@ -24,6 +25,16 @@ public class FieldAttributeService implements
     @Transactional(readOnly = true)
     public List<FieldAttribute> getAllByField(Field field) {
         return repository.findAllByField(field);
+    }
+
+    public FieldAttribute createOrUpdate(FieldAttribute attribute, FieldAttributeDTO attributeDTO) {
+        Optional<FieldAttribute> entity = getById(attributeDTO.id());
+
+        if (entity.isPresent()) {
+            return update(entity.get(), attributeDTO);
+        } else {
+            return create(attributeDTO);
+        }
     }
 
     @Override
