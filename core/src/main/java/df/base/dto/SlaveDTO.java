@@ -1,6 +1,6 @@
 package df.base.dto;
 
-public interface SecondaryDTO extends DTO {
+public interface SlaveDTO extends DTO {
 
     String getPrimaryId();
 
@@ -8,7 +8,7 @@ public interface SecondaryDTO extends DTO {
 
     String getValue();
 
-    record Simple(String id, String key, String value, String primaryId) implements SecondaryDTO {
+    record Simple(String id, String key, String value, String primaryId) implements SlaveDTO {
 
         @Override
         public String getPrimaryId() {

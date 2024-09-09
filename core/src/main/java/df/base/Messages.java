@@ -39,4 +39,10 @@ public interface Messages {
     String SUCCESS_CONFIG_SAVED         = "Configuration '%s' successfully saved";
     String SUCCESS_CONFIG_DELETED       = "Configuration '%s' successfully permanently deleted!";
 
+    // fields customization
+    String SUCCESS_CUSTOMIZATION_SAVED            = "Customization of '%s' successfully saved";
+    String SUCCESS_CUSTOMIZATION_UNSUPPORTED      = "Customization '%s' unsupported";
+    String SUCCESS_CUSTOMIZATION_DELETED          = "Customization of '%s' deleted!";
+    String SUCCESS_CUSTOMIZATION_INELIGIBLE_FIELD = "The field with element type '%s' is not eligible to have element options. Only 'checkbox', 'radio', and 'select' types are permitted to have options.";
+
 }

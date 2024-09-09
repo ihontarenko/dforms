@@ -3,7 +3,6 @@ package df.base.service;
 import df.base.common.exception.MethodNotImplemented;
 import df.base.common.extensions.persistence.entity_graph.JpaEntityGraphRepository;
 import df.base.dto.DTO;
-import df.base.mapping.Mappers;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -26,11 +25,7 @@ public interface CommonService<D extends DTO, E, R extends JpaEntityGraphReposit
 
     @Transactional
     default E update(E entity, D dto) {
-        entity = (E) Mappers.INSTANCE.get(entity.getClass()).reverse(dto);
-
-        getRepository().save(entity);
-
-        return entity;
+        throw METHOD_NOT_IMPLEMENTED;
     }
     
     @Transactional

@@ -10,38 +10,30 @@
 {% endblock %}
 {% block content %}
 <form method="post"
-      action="{{ href('/form/field/' + field.id + '/customization/perform/' + section) }}"
+      action="{{ href('/form/field/' + field.id + '/customization/' + section + '/perform') }}"
       enctype="multipart/form-data"
       class="row g-3">
 
     <div class="row g-3">
         <div class="col-md-6">
             <div class="form-floating">
-                <input
-                        type="text"
-                        class="form-control {{ ifFieldErrors('itemDTO', 'key', 'is-invalid', 'is-valid') }}"
-                        id="key"
-                        name="key"
-                        value="{{secondaryDTO.key}}" />
+                <input type="text" class="form-control {{ ifFieldErrors('itemDTO', 'key', 'is-invalid', 'is-valid') }}"
+                        id="key" name="key" value="{{slave.key}}" />
                 <label for="key">Key</label>
                 {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "key"} %}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating">
-                <input
-                        type="text"
-                        class="form-control {{ ifFieldErrors('itemDTO', 'value', 'is-invalid', 'is-valid') }}"
-                        id="value"
-                        name="value"
-                        value="{{secondaryDTO.value}}" />
+                <input type="text" class="form-control {{ ifFieldErrors('itemDTO', 'value', 'is-invalid', 'is-valid') }}"
+                        id="value" name="value" value="{{slave.value}}" />
                 <label for="value">Value</label>
                 {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "value"} %}
             </div>
         </div>
     </div>
 
-    <input type="hidden" name="id" value="{{ secondaryDTO.id }}">
+    <input type="hidden" name="id" value="{{ slave.id }}">
     <input type="hidden" name="primaryId" value="{{ field.id }}">
 
     <div class="form-group mt-4">

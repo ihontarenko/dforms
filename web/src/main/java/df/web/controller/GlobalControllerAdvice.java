@@ -1,6 +1,7 @@
 package df.web.controller;
 
 import df.base.common.breadcrumb.BreadcrumbService;
+import df.base.common.exception.ApplicationException;
 import df.base.property.ApplicationProperties;
 import df.base.security.UserInfo;
 import df.base.service.RedirectAware;
@@ -53,7 +54,7 @@ public class GlobalControllerAdvice {
             HttpRequestMethodNotSupportedException.class,
             AccessDeniedException.class,
             NoResourceFoundException.class,
-            JpaResourceNotFoundException.class
+            ApplicationException.class
     })
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     public void httpRequestMethodNotSupportedException(HttpServletRequest request, HttpServletResponse response,

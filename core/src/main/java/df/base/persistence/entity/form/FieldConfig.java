@@ -18,9 +18,10 @@ public class FieldConfig implements EntityNameAware {
     @Id
     @PrefixedId(
             prefixValue = "cfg",
-            sequenceName = "FORM_FIELD_CONFIG",
+            sequenceName = "FIELD_CFG",
             prefixGenerator = NamedEntityIdGenerator.class,
-            numberFormat = "%06d",
+            numberFormat = "%04d",
+            initialValue = 1000,
             incrementBy = 1,
             prefixSeparator = "_"
     )

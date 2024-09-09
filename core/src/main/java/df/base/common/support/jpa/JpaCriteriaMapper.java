@@ -10,7 +10,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import java.util.ArrayList;
 import java.util.List;
 
-import static df.base.common.libs.jbm.ReflectionUtils.getFieldValue;
+import static df.base.common.libs.jbm.ReflectionUtils.*;
 
 public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
 
@@ -53,7 +53,17 @@ public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
                 yield evaluator.evaluate(parser.parseExpression(rawValue), Object.class);
             }
             case RAW_VALUE -> rawValue;
-            case FIELD_NAME -> getFieldValue(object, rawValue);
+            case FIELD_NAME -> {
+                Object objectValue = getFieldValue(object, rawValue);
+
+                // try to extract the value through the getter
+                // when the real field-name is different from the object getter name
+                if (objectValue == null) {
+                    objectValue = getMethodValue(object, rawValue);
+                }
+
+                yield objectValue;
+            }
         };
     }
 

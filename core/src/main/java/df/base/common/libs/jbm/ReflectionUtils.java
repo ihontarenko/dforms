@@ -172,6 +172,43 @@ abstract public class ReflectionUtils {
         }
     }
 
+    public static Optional<Method> getMethod(Class<?> targetClass, String methodName) {
+        try {
+            Method method = targetClass.getDeclaredMethod(methodName);
+            method.setAccessible(true);
+            return Optional.ofNullable(method);
+        } catch (NoSuchMethodException e) {
+            return Optional.empty();
+        }
+    }
+
+    public static Object getMethodValue(Object object, Method method) {
+        Object value = null;
+
+        try {
+            method.setAccessible(true);
+            value = method.invoke(object);
+        } catch (InvocationTargetException | IllegalAccessException ignore) { }
+
+        return value;
+    }
+
+    public static Object getMethodValue(Object object, String methodName) {
+        return getGetter(object.getClass(), methodName)
+                .map(method -> getMethodValue(object, method))
+                .orElse(null);
+    }
+
+    public static Optional<Method> getSetter(Class<?> targetClass, String methodName) {
+        return getMethod(targetClass,
+                "set" + methodName.substring(0, 1).toUpperCase() + methodName.substring(1));
+    }
+
+    public static Optional<Method> getGetter(Class<?> targetClass, String methodName) {
+        return getMethod(targetClass,
+                "get" + methodName.substring(0, 1).toUpperCase() + methodName.substring(1));
+    }
+
     public static void setFieldValue(Object object, Field field, Object value) {
         try {
             field.setAccessible(true);

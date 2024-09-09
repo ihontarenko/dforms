@@ -1,15 +1,25 @@
 package df.base.persistence.entity.form;
 
 import df.base.common.extensions.hibernate.generator.PrefixedId;
+import df.base.persistence.entity.EntityNameAware;
+import df.base.persistence.generator.NamedEntityIdGenerator;
 import df.base.persistence.support.EntityConstants;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = EntityConstants.TABLE_FIELD_OPTIONS)
-public class FieldOption {
+public class FieldOption implements EntityNameAware {
 
     @Id
-    @PrefixedId(prefixValue = "o", sequenceName = "FORM_FIELD_OPTION")
+    @PrefixedId(
+            prefixValue = "o",
+            sequenceName = "FIELD_OPTION",
+            prefixGenerator = NamedEntityIdGenerator.class,
+            numberFormat = "%04d",
+            initialValue = 1000,
+            incrementBy = 1,
+            prefixSeparator = "_"
+    )
     @Column(name = "ID")
     private String id;
 
@@ -53,6 +63,11 @@ public class FieldOption {
 
     public void setOptionLabel(String optionLabel) {
         this.optionLabel = optionLabel;
+    }
+
+    @Override
+    public String getName() {
+        return getOptionValue();
     }
 }
 

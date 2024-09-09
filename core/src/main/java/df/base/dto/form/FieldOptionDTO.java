@@ -1,24 +1,114 @@
 package df.base.dto.form;
 
-import df.base.dto.SecondaryDTO;
+import df.base.common.support.jpa.JpaCriteria;
+import df.base.common.validation.jakarta.Fields;
+import df.base.common.validation.jakarta.constraint.JpaResource;
+import df.base.dto.SlaveDTO;
+import df.base.persistence.entity.form.Field;
+import df.base.persistence.entity.form.FieldOption;
 import df.base.validation.groups.Operations;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import df.base.dto.DTO;
 
-public class FieldOptionDTO implements DTO, SecondaryDTO {
+import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
+
+@JpaResource.List({
+        // validation for creating new option
+        @JpaResource(
+                pointer = "key",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "key", type = FIELD_NAME),
+                                entityField = "optionValue"),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "primaryId", type = FIELD_NAME),
+                                entityField = "field.id"),
+                },
+                entityClass = FieldOption.class,
+                message = "[NEW]: option with this key already taken",
+                applier = "!#hasText(id)",
+                groups = Operations.Secondary.class
+        ),
+        // validation for updating existed option
+        @JpaResource(
+                pointer = "key",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "key", type = FIELD_NAME),
+                                entityField = "optionValue"),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
+                                entityField = "id",
+                                comparison = JpaCriteria.Comparison.NOT_EQUAL),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "primaryId", type = FIELD_NAME),
+                                entityField = "field.id"),
+                },
+                entityClass = FieldOption.class,
+                message = "[UPD]: option with this key already taken",
+                applier = "#hasText(id)",
+                groups = Operations.Secondary.class
+        ),
+        // check if primaryKey is correct
+        @JpaResource(
+                pointer = "primaryId",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "primaryId", type = FIELD_NAME),
+                                entityField = "id")
+                },
+                entityClass = Field.class,
+                message = "[NEW]: passed field does not exist. don't modify request :)",
+                applier = "#hasText(primaryId) && !#hasText(id)",
+                predicate = "!#result.empty",
+                groups = Operations.Secondary.class
+        ),
+        // check if updated item belongs to owner-id
+        @JpaResource(
+                pointer = "primaryId",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "primaryId", type = FIELD_NAME),
+                                entityField = "field.id"),
+                        @Fields(
+                                objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
+                                entityField = "id")
+                },
+                entityClass = FieldOption.class,
+                message = "[UPD]: the current option does not belong to the requested field",
+                applier = "#hasText(id) && #hasText(primaryId)",
+                predicate = "!#result.empty",
+                groups = Operations.Secondary.class
+        ),
+        // check if request config id is correct
+        @JpaResource(
+                pointer = "id",
+                fields = {
+                        @Fields(
+                                objectValue = @Fields.Value(value = "id", type = FIELD_NAME),
+                                entityField = "id")
+                },
+                entityClass = FieldOption.class,
+                message = "unable to update option for non-existent entry",
+                applier = "#hasText(id)",
+                predicate = "!#result.empty"
+        ),
+})
+public class FieldOptionDTO implements DTO, SlaveDTO {
 
     @Size(max = 32, groups = Operations.Secondary.class)
     private String id;
 
+    @NotEmpty(groups = Operations.Secondary.class)
     @Size(max = 32, groups = Operations.Secondary.class)
     private String fieldId;
 
-    @NotEmpty
+    @NotEmpty(groups = Operations.Secondary.class)
     @Size(max = 32, groups = Operations.Secondary.class)
     private String key;
 
-    @NotEmpty
+    @NotEmpty(groups = Operations.Secondary.class)
     @Size(max = 255, groups = Operations.Secondary.class)
     private String value;
 

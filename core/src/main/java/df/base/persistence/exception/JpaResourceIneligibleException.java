@@ -5,24 +5,24 @@ import df.base.service.RedirectAware;
 
 import static df.base.common.support.SlugifyTransliterator.slugify;
 
-public class JpaResourceNotFoundException extends ApplicationException implements RedirectAware {
+public class JpaResourceIneligibleException extends ApplicationException implements RedirectAware {
 
     private String redirectUrl;
 
-    public JpaResourceNotFoundException(String message) {
+    public JpaResourceIneligibleException(String message) {
         super(message);
     }
 
-    public JpaResourceNotFoundException(String message, RedirectAware redirectAware) {
+    public JpaResourceIneligibleException(String message, RedirectAware redirectAware) {
         super(message);
         setRedirectUrl("%s#%s".formatted(redirectAware.getRedirectUrl(), slugify(message).toUpperCase()));
     }
 
-    public JpaResourceNotFoundException(String message, Throwable cause) {
+    public JpaResourceIneligibleException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public JpaResourceNotFoundException(Throwable cause) {
+    public JpaResourceIneligibleException(Throwable cause) {
         super(cause);
     }
 
