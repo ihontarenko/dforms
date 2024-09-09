@@ -48,13 +48,13 @@ public class Field implements EntityNameAware {
     )
     @Column(name = "ID")
     private String id;
-
-    @ManyToMany
-    @JoinTable(
-            name = TABLE_FORM_FIELD_MAPPING,
-            joinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FIELD_ID),
-            inverseJoinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FORM_ID))
-    private Set<Form> forms;
+//
+//    @ManyToMany
+//    @JoinTable(
+//            name = TABLE_FORM_FIELD_MAPPING,
+//            joinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FIELD_ID),
+//            inverseJoinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FORM_ID))
+//    private Set<Form> forms;
 
     @Enumerated(EnumType.STRING)
     @Column(name = COLUMN_FIELD_ELEMENT_TYPE, nullable = false)
@@ -108,13 +108,13 @@ public class Field implements EntityNameAware {
         this.id = id;
     }
 
-    public Set<Form> getForms() {
-        return forms;
-    }
-
-    public void setForms(Set<Form> forms) {
-        this.forms = forms;
-    }
+//    public Set<Form> getForms() {
+//        return forms;
+//    }
+//
+//    public void setForms(Set<Form> forms) {
+//        this.forms = forms;
+//    }
 
     public ElementType getElementType() {
         return elementType;

@@ -1,5 +1,5 @@
 {% extends "common/layout" %}
-{% block title %}Field '{{ field.id }}'{% endblock %}
+{% block title %}Customize Field: '{{ field.name }}'{% endblock %}
 {% block headerButtons %}
 <div class="btn-group pt-2" role="group">
     <button onclick="window.location = '/form/field/{{ field.id }}/customization/config'" type="button" class="btn btn-sm btn-dark">CONFIG</button>
@@ -9,10 +9,8 @@
 </div>
 {% endblock %}
 {% block content %}
-<form method="post"
-      action="{{ href('/form/field/' + field.id + '/customization/' + section + '/perform') }}"
-      enctype="multipart/form-data"
-      class="row g-3">
+<form method="post" action="{{ href('/form/field/' + field.id + '/customization/' + section + '/perform') }}"
+      enctype="multipart/form-data" class="row g-3">
 
     <div class="row g-3">
         <div class="col-md-6">

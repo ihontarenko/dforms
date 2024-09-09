@@ -9,7 +9,9 @@ import df.base.persistence.generator.NamedEntityIdGenerator;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
+import static df.base.persistence.support.EntityConstants.*;
 import static java.util.Objects.requireNonNull;
 
 @Entity
@@ -53,8 +55,12 @@ public class Form implements EntityNameAware {
     @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FormConfig> configs;
 
-    @ManyToMany(mappedBy = "forms", fetch = FetchType.LAZY)
-    private List<Field> fields;
+    @ManyToMany
+    @JoinTable(
+            name = TABLE_FORM_FIELD_MAPPING,
+            joinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FORM_ID),
+            inverseJoinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FIELD_ID))
+    private Set<Field> fields;
 
     @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FormEntry> entries;
@@ -115,11 +121,11 @@ public class Form implements EntityNameAware {
         this.configs = configs;
     }
 
-    public List<Field> getFields() {
+    public Set<Field> getFields() {
         return fields;
     }
 
-    public void setFields(List<Field> fields) {
+    public void setFields(Set<Field> fields) {
         this.fields = fields;
     }
 

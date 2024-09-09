@@ -11,4 +11,5 @@ public interface Operations {
     interface Advanced { }
     interface Primary { }
     interface Secondary { }
+    interface PrimaryId { }
 }

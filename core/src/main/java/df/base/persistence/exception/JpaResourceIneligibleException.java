@@ -7,32 +7,25 @@ import static df.base.common.support.SlugifyTransliterator.slugify;
 
 public class JpaResourceIneligibleException extends ApplicationException implements RedirectAware {
 
-    private String redirectUrl;
+
+    public JpaResourceIneligibleException(String message, String redirectUrl, Throwable cause) {
+        super(message, redirectUrl, cause);
+    }
+
+    public JpaResourceIneligibleException(String message, String redirectUrl) {
+        super(message, redirectUrl);
+    }
 
     public JpaResourceIneligibleException(String message) {
         super(message);
-    }
-
-    public JpaResourceIneligibleException(String message, RedirectAware redirectAware) {
-        super(message);
-        setRedirectUrl("%s#%s".formatted(redirectAware.getRedirectUrl(), slugify(message).toUpperCase()));
-    }
-
-    public JpaResourceIneligibleException(String message, Throwable cause) {
-        super(message, cause);
     }
 
     public JpaResourceIneligibleException(Throwable cause) {
         super(cause);
     }
 
-    @Override
-    public String getRedirectUrl() {
-        return this.redirectUrl;
+    public JpaResourceIneligibleException(Throwable cause, String redirectUrl) {
+        super(cause, redirectUrl);
     }
 
-    @Override
-    public void setRedirectUrl(String defaultRedirectUrl) {
-        this.redirectUrl = defaultRedirectUrl;
-    }
 }

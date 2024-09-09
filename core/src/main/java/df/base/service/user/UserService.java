@@ -106,7 +106,7 @@ public class UserService implements RedirectAware {
     @Transactional(readOnly = true)
     public User requireById(String id) {
         return getById(id).orElseThrow(()
-                -> new JpaResourceNotFoundException(ERROR_USER_NOT_FOUND.formatted(id), this));
+                -> new JpaResourceNotFoundException(ERROR_USER_NOT_FOUND.formatted(id), this.getRedirectUrl()));
     }
 
     @Transactional(readOnly = true)

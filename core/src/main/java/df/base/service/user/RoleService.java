@@ -91,13 +91,13 @@ public class RoleService implements RedirectAware {
     @Transactional(readOnly = true)
     public Role requiredById(String id) {
         return getById(id).orElseThrow(()
-                -> new JpaResourceNotFoundException(Messages.ERROR_ROLE_NOT_FOUND.formatted(id), this));
+                -> new JpaResourceNotFoundException(Messages.ERROR_ROLE_NOT_FOUND.formatted(id), this.getRedirectUrl()));
     }
 
     @Transactional(readOnly = true)
     public Role requiredByName(String name) {
         return getById(name).orElseThrow(()
-                -> new JpaResourceNotFoundException(Messages.ERROR_ROLE_NOT_FOUND.formatted(name), this));
+                -> new JpaResourceNotFoundException(Messages.ERROR_ROLE_NOT_FOUND.formatted(name), this.getRedirectUrl()));
     }
 
     @Transactional(readOnly = true)

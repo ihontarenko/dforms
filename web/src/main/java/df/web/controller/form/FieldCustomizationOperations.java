@@ -4,6 +4,7 @@ import df.base.common.breadcrumb.Breadcrumbs;
 import df.base.dto.SlaveDTO;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldConfigDTO;
+import df.base.dto.form.FieldDTO;
 import df.base.dto.form.FieldOptionDTO;
 import df.base.validation.groups.Operations;
 import df.web.controller.DefaultOperations;
@@ -23,16 +24,33 @@ public interface FieldCustomizationOperations extends DefaultOperations<SlaveDTO
             @Breadcrumbs.Item(label = "Fields", url = "/form/field"),
             @Breadcrumbs.Item(label = "Configuring field-{section}")
     })
-    @GetMapping("/{section}")
-    ModelAndView index(@PathVariable("section") String section, @PathVariable("primaryId") String ownerId);
+    @GetMapping("/{section:[config|attribute|option|embedded]+}")
+    ModelAndView index(
+            @PathVariable("section") String section,
+            @PathVariable("primaryId") String ownerId,
+            RedirectAttributes attributes);
 
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Fields", url = "/form/field"),
             @Breadcrumbs.Item(label = "Embedded Fields")
     })
-    @GetMapping("/embedded")
-    ModelAndView embedded(@PathVariable("primaryId") String ownerId);
+    @PostMapping("/embedded/attach")
+    ModelAndView attach(
+            @PathVariable("primaryId") String primaryId,
+            @ModelAttribute("itemDTO") @Validated(Operations.PrimaryId.class) FieldDTO itemDTO,
+            BindingResult result, RedirectAttributes attributes);
+
+    @Breadcrumbs({
+            @Breadcrumbs.Item(label = "Home", url = "/"),
+            @Breadcrumbs.Item(label = "Fields", url = "/form/field"),
+            @Breadcrumbs.Item(label = "Embedded Fields")
+    })
+    @GetMapping("/embedded/detach/{embeddedId}")
+    ModelAndView detach(
+            @PathVariable("primaryId") String primary,
+            @PathVariable("embeddedId") String embeddedId,
+            RedirectAttributes attributes);
 
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),

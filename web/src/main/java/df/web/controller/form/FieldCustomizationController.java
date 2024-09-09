@@ -1,22 +1,25 @@
 package df.web.controller.form;
 
 import df.base.Messages;
+import df.base.common.specification.SpecificationContext;
+import df.base.common.specification.SpecificationRunner;
 import df.base.dto.SlaveDTO;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldConfigDTO;
+import df.base.dto.form.FieldDTO;
 import df.base.dto.form.FieldOptionDTO;
 import df.base.mapping.form.FieldAttributeMapper;
 import df.base.mapping.form.FieldConfigMapper;
 import df.base.mapping.form.FieldMapper;
 import df.base.mapping.form.FieldOptionMapper;
 import df.base.persistence.entity.form.Field;
-import df.base.persistence.entity.support.ElementType;
-import df.base.persistence.exception.JpaResourceIneligibleException;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.service.form.FieldAttributeService;
 import df.base.service.form.FieldConfigService;
 import df.base.service.form.FieldOptionService;
 import df.base.service.form.FieldService;
+import df.base.specification.FieldSelectiveSpecification;
+import df.base.specification.FieldTypeSpecification;
 import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
 import org.springframework.stereotype.Controller;
@@ -24,11 +27,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
 import static df.base.Messages.*;
-import static df.base.persistence.entity.support.ElementType.*;
+import static df.web.common.flash.FlashMessage.error;
 import static df.web.common.flash.FlashMessage.success;
+import static df.web.controller.MAVConstants.REDIRECT_FIELD_CUSTOMIZATION;
 
 @Controller
 public class FieldCustomizationController implements FieldCustomizationOperations {
@@ -52,15 +54,18 @@ public class FieldCustomizationController implements FieldCustomizationOperation
     }
 
     @Override
-    public ModelAndView index(String section, String primaryId) {
-        helper.setViewName(MAVConstants.VIEW_FIELD_CUSTOMIZATION);
+    public ModelAndView index(String section, String primaryId, RedirectAttributes attributes) {
+        helper.setViewName("EMBEDDED".equalsIgnoreCase(section)
+                ? MAVConstants.VIEW_FIELD_EMBEDDED : MAVConstants.VIEW_FIELD_CUSTOMIZATION);
+        helper.setRedirectAttributes(attributes);
+        helper.setRedirectUrl(REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, "config"));
 
         ModelAndView mav;
 
         try {
             bindAttributes(null, primaryId, section);
             mav = helper.resolveWithoutRedirect();
-        } catch (JpaResourceNotFoundException exception) {
+        } catch (Exception exception) {
             mav = helper.redirect(exception);
         }
 
@@ -85,7 +90,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
             };
             bindAttributes((SlaveDTO) mapped, primaryId, section);
             mav = helper.resolveWithoutRedirect();
-        } catch (JpaResourceNotFoundException exception) {
+        } catch (Exception exception) {
             mav = helper.redirect(exception);
         }
 
@@ -115,7 +120,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
         helper.setViewName(MAVConstants.VIEW_FIELD_CUSTOMIZATION);
-        helper.setRedirectUrl(MAVConstants.REDIRECT_FIELD_CUSTOMIZATION.formatted(itemDTO.getPrimaryId(), section));
+        helper.setRedirectUrl(REDIRECT_FIELD_CUSTOMIZATION.formatted(itemDTO.getPrimaryId(), section));
         helper.attribute("section", section);
 
         bindAttributes(itemDTO, primaryId, section);
@@ -140,7 +145,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
     @Override
     public ModelAndView remove(String section, String primaryId, String itemId, RedirectAttributes attributes) {
         helper.setRedirectAttributes(attributes);
-        helper.setRedirectUrl(MAVConstants.REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, section));
+        helper.setRedirectUrl(REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, section));
 
         switch (section.toLowerCase()) {
             case "config" -> configService.deleteIfExists(itemId);
@@ -156,23 +161,36 @@ public class FieldCustomizationController implements FieldCustomizationOperation
     }
 
     @Override
-    public ModelAndView embedded(String primaryId) {
+    public ModelAndView attach(String primaryId, FieldDTO itemDTO, BindingResult result, RedirectAttributes attributes) {
+        helper.setRedirectUrl(REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, "embedded"));
+        helper.setRedirectAttributes(attributes);
+
+        if (!result.hasErrors()) {
+            service.attach(primaryId, itemDTO.id());
+            helper.addMessage(success(SUCCESS_EMBEDDED_ATTACHED.formatted(primaryId, itemDTO.id())));
+        } else {
+            helper.addMessage(error("something went wrong..."));
+        }
+
+        return helper.redirect();
+    }
+
+    @Override
+    public ModelAndView detach(String primary, String embeddedId, RedirectAttributes attributes) {
         return null;
     }
 
     private void bindAttributes(SlaveDTO slaveDTO, String primaryId, String section) {
-        Field             field               = service.requireById(primaryId);
-        List<ElementType> allowedElementTypes = List.of(CHECKBOX, RADIO, SELECT);
-        ElementType       elementType         = field.getElementType();
+        Field field = service.requireById(primaryId);
+        SpecificationContext context = new SpecificationContext.Builder()
+                .with("section", section)
+                .with("redirect", REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, "config"))
+                .build();
 
-        if ("option".equalsIgnoreCase(section) && !allowedElementTypes.contains(elementType)) {
-            JpaResourceIneligibleException exception = new JpaResourceIneligibleException(
-                    SUCCESS_CUSTOMIZATION_INELIGIBLE_FIELD.formatted(elementType));
-            // redirect to the "config" section as it is applicable to any field type
-            exception.setRedirectUrl(MAVConstants.REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, "config"));
-            throw exception;
-        }
+        new SpecificationRunner<Field>()
+                .checkAllSatisfied(field, context, new FieldSelectiveSpecification(), new FieldTypeSpecification());
 
+        helper.attribute("embeddable", service.getEmbeddableFields());
         helper.attribute("slave", slaveDTO);
         helper.attribute("field", mapper.map(field));
         helper.attribute("section", section);
