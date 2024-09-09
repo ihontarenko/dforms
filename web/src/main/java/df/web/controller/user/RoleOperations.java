@@ -20,6 +20,7 @@ public interface RoleOperations extends DefaultOperations<RoleDTO> {
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Roles")
     })
+    @GetMapping
     ModelAndView index();
 
     @Override

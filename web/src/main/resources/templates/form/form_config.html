@@ -1,14 +1,6 @@
 {% extends "common/layout" %}
-{% block title %}Configure Form '{{ itemDTO.formId }}'{% endblock %}
+{% block title %}Configure Form '{{ itemDTO.description }}'{% endblock %}
 {% block content %}
-
-<div class="card bg-light mb-3">
-    <div class="card-header">ID: <b>{{form.id}}</b></div>
-    <div class="card-body">
-        <h4 class="card-title">{{form.name}}</h4>
-        <p class="card-text">{{form.description}}</p>
-    </div>
-</div>
 
 <form method="post" action="{{ href('/form/' + form.id + '/config/perform') }}" enctype="multipart/form-data" class="row g-3" >
 

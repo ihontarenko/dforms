@@ -20,6 +20,7 @@ public interface UserOperations extends DefaultOperations<UserDTO> {
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Users")
     })
+    @GetMapping
     ModelAndView index();
 
     @Override

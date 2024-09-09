@@ -33,7 +33,7 @@ public class FormService implements RedirectAware {
 
     public Form requireById(final String formId) {
         return getById(formId).orElseThrow(()
-                -> new JpaResourceNotFoundException(Messages.ERROR_FORM_NOT_FOUND.formatted(formId), this));
+                -> new JpaResourceNotFoundException(Messages.ERROR_FORM_NOT_FOUND.formatted(formId), this.getRedirectUrl()));
     }
 
     @Transactional(readOnly = true)

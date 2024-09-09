@@ -77,7 +77,7 @@ public class FormConfigService implements
     @Transactional(readOnly = true)
     public FormConfig requireById(String id) {
         return getById(requireNonNull(id, REQUIRED_ID_CANNOT_BE_NULL))
-                .orElseThrow(() -> new JpaResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(id), this));
+                .orElseThrow(() -> new JpaResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(id), this.getRedirectUrl()));
     }
 
     @Transactional(readOnly = true)
@@ -88,7 +88,7 @@ public class FormConfigService implements
     @Transactional(readOnly = true)
     public FormConfig requireByName(String name) {
         return getByName(name)
-                .orElseThrow(() -> new JpaResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(name), this));
+                .orElseThrow(() -> new JpaResourceNotFoundException(FORM_CONFIG_NOT_FOUND.formatted(name), this.getRedirectUrl()));
     }
 
     @Transactional(readOnly = true)

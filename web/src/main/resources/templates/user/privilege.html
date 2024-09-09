@@ -33,9 +33,9 @@
             <td>{{ privilege.name }}</td>
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/user/privilege/modify/' + privilege.id) }}'"
+                    <button onclick="window.location = '{{ href('/user/privilege/' + privilege.id + '/modify') }}'"
                             type="button" class="btn btn-sm btn-info">EDIT</button>
-                    <button onclick="window.location = '{{ href('/user/privilege/remove/' + privilege.id) }}'"
+                    <button onclick="window.location = '{{ href('/user/privilege/' + privilege.id + '/remove') }}'"
                             type="button" class="btn btn-sm btn-danger">DELETE</button>
                 </div>
             </td>

@@ -56,7 +56,7 @@ public class PrivilegeService implements RedirectAware {
     @Transactional(readOnly = true)
     public Privilege requireById(String id) {
         return getById(id).orElseThrow(()
-                -> new JpaResourceNotFoundException(Messages.ERROR_PRIVILEGE_NOT_FOUND.formatted(id), this));
+                -> new JpaResourceNotFoundException(Messages.ERROR_PRIVILEGE_NOT_FOUND.formatted(id), this.getRedirectUrl()));
     }
 
     @Transactional(readOnly = true)

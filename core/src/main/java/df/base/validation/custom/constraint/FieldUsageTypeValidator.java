@@ -1,5 +1,6 @@
 package df.base.validation.custom.constraint;
 
+import df.base.common.validation.custom.ValidationContext;
 import df.base.common.validation.custom.ValidationException;
 import df.base.common.validation.custom.Validator;
 import df.base.dto.form.FieldDTO;
@@ -11,7 +12,7 @@ import static df.base.validation.custom.FieldErrorCode.INCOMPATIBLE_USAGE_TYPE;
 public class FieldUsageTypeValidator implements Validator {
 
     @Override
-    public void validate(Object object) throws ValidationException {
+    public void validate(Object object, ValidationContext validationContext) throws ValidationException {
         FieldDTO    fieldDTO    = (FieldDTO) object;
 
         if (fieldDTO.getElementType() == null || fieldDTO.getUsageType() == null) {

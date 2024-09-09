@@ -20,6 +20,7 @@ public interface PrivilegeOperations extends DefaultOperations<PrivilegeDTO> {
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Privileges")
     })
+    @GetMapping
     ModelAndView index();
 
     @Override

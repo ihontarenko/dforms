@@ -1,0 +1,80 @@
+{% extends "common/layout" %}
+{% block title %}Configure Embedded Fields{% endblock %}
+{% block headerButtons %}
+<div class="btn-group pt-2" role="group">
+    <button onclick="window.location = '/form/field/{{ field.id }}/customization/config'" type="button" class="btn btn-sm btn-dark">CONFIG</button>
+    <button onclick="window.location = '/form/field/{{ field.id }}/customization/attribute'" type="button" class="btn btn-sm btn-dark">ATTRIBUTE</button>
+    <button onclick="window.location = '/form/field/{{ field.id }}/customization/option'" type="button" class="btn btn-sm btn-dark">OPTION</button>
+    <button onclick="window.location = '/form/field/{{ field.id }}/customization/embedded'" type="button" class="btn btn-sm btn-warning">EMBEDDED</button>
+</div>
+{% endblock %}
+{% block content %}
+<form method="post" action="{{ href('/form/field/' + field.id + '/customization/embedded/attach') }}"
+      enctype="multipart/form-data" class="row g-3">
+
+    <div class="row g-3">
+        <div class="col-8 col-xl-12">
+            <select class="form-select" name="id">
+                <option selected>- select embedded field -</option>
+                {% for f in embeddable %}
+                <option value="{{ f.id }}">{{ f.label }} [{{ f.elementType }}]</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <input type="hidden" name="primaryId" value="{{ field.id }}">
+
+    <div class="form-group mt-4">
+        <button class="btn btn-success" type="submit">Attach</button>
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "id"} %}
+        {% include "common/invalid-feedback" with {"formName" : "itemDTO", "fieldName" : "primaryId"} %}
+    </div>
+</form>
+
+<h2 class="mt-5">Embedded Fields</h2>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Element Type</th>
+        <th scope="col">Usage Type</th>
+        <th scope="col">Name</th>
+        <th scope="col">Label</th>
+        <th scope="col">Description</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for entry in field.children %}
+    {% set embedded = entry.value %}
+    <tr>
+        <th scope="row">{{ embedded.id }}</th>
+        <td>
+            <i>{{ embedded.elementType }}</i>
+        </td>
+        <td>
+            <i>{{ embedded.usageType }}</i>
+        </td>
+        <td>
+            <b>{{ embedded.name }}</b>
+        </td>
+        <td>
+            <u>{{ embedded.label }}</u>
+        </td>
+        <td>
+            <i>{{ embedded.description }}</i>
+        </td>
+
+        <td>
+            <div class="btn-group" role="group">
+                <button onclick="window.location = '{{ href('/form/field/' + field.id + '/customization/embedded/' + embedded.id + '/detach') }}'"
+                        type="button" class="btn btn-sm btn-primary">DETACH</button>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

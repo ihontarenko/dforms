@@ -49,6 +49,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
 })
 public class FieldDTO implements DTO {
 
+    @NotNull(groups = Operations.PrimaryId.class)
     @Size(max = 32, groups = Operations.Primary.class)
     private String id;
 

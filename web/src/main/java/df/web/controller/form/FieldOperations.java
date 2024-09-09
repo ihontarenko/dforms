@@ -2,10 +2,12 @@ package df.web.controller.form;
 
 import df.base.common.breadcrumb.Breadcrumbs;
 import df.base.common.breadcrumb.Breadcrumbs.Item;
+import df.base.common.validation.custom.ValidationContext;
 import df.base.dto.form.FieldDTO;
 import df.web.controller.DefaultOperations;
 import df.web.controller.MAVConstants;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,7 +42,6 @@ public interface FieldOperations extends DefaultOperations<FieldDTO> {
     @GetMapping("/{itemId}/modify")
     ModelAndView modify(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
 
-    @Override
     @Breadcrumbs({
             @Item(label = "Home", url = "/"),
             @Item(label = "Fields", url = "/form/field"),
@@ -48,15 +49,14 @@ public interface FieldOperations extends DefaultOperations<FieldDTO> {
     })
     @PostMapping("/perform")
     ModelAndView perform(@ModelAttribute("itemDTO") @Valid FieldDTO itemDTO,
-                         BindingResult result, RedirectAttributes attributes);
+                         BindingResult result, RedirectAttributes attributes, ValidationContext context);
 
     @Override
     @GetMapping("/{itemId}/remove")
-    ModelAndView remove(String itemId, RedirectAttributes attributes);
+    ModelAndView remove(@PathVariable("itemId") String itemId, RedirectAttributes attributes);
 
     @GetMapping("/{itemId}/status/{status}")
-    default ModelAndView status(@PathVariable("primaryId") String primaryId,
-                                @PathVariable("itemId") String itemId,
+    default ModelAndView status(@PathVariable("itemId") String itemId,
                                 @PathVariable("status") String status,
                                 RedirectAttributes attributes) {
         throw UNSUPPORTED_REQUEST_METHOD;

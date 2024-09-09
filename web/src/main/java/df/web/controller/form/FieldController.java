@@ -1,6 +1,7 @@
 package df.web.controller.form;
 
 import df.base.common.validation.custom.Validation;
+import df.base.common.validation.custom.ValidationContext;
 import df.base.dto.form.FieldDTO;
 import df.base.mapping.node.FieldToNode;
 import df.base.mapping.form.FieldMapper;
@@ -92,14 +93,15 @@ public class FieldController implements FieldOperations {
     }
 
     @Override
-    public ModelAndView perform(@Validated(Operations.Primary.class) FieldDTO fieldDTO, BindingResult result, RedirectAttributes attributes) {
+    public ModelAndView perform(@Validated(Operations.Primary.class) FieldDTO fieldDTO,
+                                BindingResult result, RedirectAttributes attributes, ValidationContext context) {
         controllerHelper.setBindingResult(result);
         controllerHelper.setRedirectAttributes(attributes);
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_FIELD_FORM);
 
         bindAttributes(fieldDTO);
 
-        validation.validate(fieldDTO, result);
+        validation.validate(fieldDTO, context, result);
 
         if (!result.hasFieldErrors()) {
             Field field = fieldService.createOrUpdate(fieldDTO);

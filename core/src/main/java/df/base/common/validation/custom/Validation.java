@@ -31,8 +31,10 @@ public class Validation {
     }
 
     @SuppressWarnings({"all"})
-    public Errors validate(Object object) {
+    public Errors validate(Object object, ValidationContext validationContext) {
         Errors errors = new Errors();
+
+        validationContext.setAttribute(ValidationContext.VALIDATION_MANAGER_KEY, this);
 
         for (Validator validator : validators) {
 
@@ -41,7 +43,7 @@ public class Validation {
             if (validator.supports(objectType)) {
                 try {
                     beanFactory.autowireBean(validator);
-                    validator.validate(object);
+                    validator.validate(object, validationContext);
                 } catch (ValidationException exception) {
                     ErrorMessage message = resolver.resolve(name, exception.getErrorCode(), exception.getErrorContext());
 
@@ -60,8 +62,14 @@ public class Validation {
         return errors;
     }
 
-    public void validate(Object object, BindingResult result) {
-        new BindingResultMapper().map(validate(object), result);
+    public void validate(Object object, ValidationContext validationContext, BindingResult result) {
+        BindingResult bindingResult = validationContext.getAttribute(ValidationContext.BINDING_RESULT_KEY);
+
+        if (bindingResult == null) {
+            bindingResult = result;
+        }
+
+        new BindingResultMapper().map(validate(object, validationContext), bindingResult);
     }
 
     public void configure(Consumer<Validation> consumer) {

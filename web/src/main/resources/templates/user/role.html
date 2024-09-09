@@ -55,9 +55,9 @@
             <td>{{ role.name }}</td>
             <td>
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/user/role/modify/' + role.id) }}'"
+                    <button onclick="window.location = '{{ href('/user/role/' + role.id + '/modify') }}'"
                             type="button" class="btn btn-sm btn-info">EDIT</button>
-                    <button onclick="window.location = '{{ href('/user/role/remove/' + role.id) }}'"
+                    <button onclick="window.location = '{{ href('/user/role/' + role.id + '/remove') }}'"
                             type="button" class="btn btn-sm btn-danger">DELETE</button>
                 </div>
             </td>
