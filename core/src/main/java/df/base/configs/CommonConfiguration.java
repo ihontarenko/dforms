@@ -2,6 +2,10 @@ package df.base.configs;
 
 import df.base.Constants;
 import df.base.common.BeansHolder;
+import df.base.common.elements.Interceptor;
+import df.base.common.elements.NodeContext;
+import df.base.common.elements.RendererFactory;
+import df.base.common.elements.interceptor.LoggingInterceptor;
 import df.base.common.i18n.Translator;
 import df.base.common.extensions.persistence.entity_graph.support.EntityGraphRepositoryFactoryBean;
 import org.slf4j.Logger;
@@ -26,10 +30,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -111,6 +112,14 @@ public class CommonConfiguration implements WebMvcConfigurer {
         LOGGER.info("AVAILABLE LOCALES: {}", locales);
 
         return locales;
+    }
+
+    @Bean
+    public NodeContext nodeContext() {
+        RendererFactory factory     = new RendererFactory();
+        Interceptor     interceptor = new LoggingInterceptor();
+
+        return new NodeContext(factory, List.of(interceptor));
     }
 
     @Override

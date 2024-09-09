@@ -10,13 +10,14 @@ import java.util.List;
 public class Example {
 
     public static void main(String[] args) {
-        RendererFactory rendererFactory = new RendererFactory();
+        RendererFactory factory = new RendererFactory();
         Interceptor     interceptor     = new LoggingInterceptor();
-        NodeContext     context         = new NodeContext(rendererFactory, List.of(interceptor));
+        NodeContext     context         = new NodeContext(factory, List.of(interceptor));
 
         ElementNode html = new ElementNode(TagName.HTML);
         ElementNode body = new ElementNode(TagName.BODY);
         ElementNode div = new ElementNode(TagName.DIV);
+        ElementNode p = new ElementNode(TagName.P);
 
         div.addAttribute("class", "container");
 
@@ -24,20 +25,17 @@ public class Example {
 
         TextNode text = new TextNode("Hello, World!");
 
-        div.addChild(text);
+        div.addChild(p);
+        p.addChild(text);
         body.addChild(div);
         body.addChild(comment);
         html.addChild(body);
 
-        ElementNode wrapper = new ElementNode(TagName.P);
-        wrapper.addAttribute("class", "border: 1px solid red;");
 
-        div.wrap(wrapper);
+        html.execute(node -> node.insertBefore(new CommentNode(node.getTagName() + ":" + node.getNodeType())));
 
-        comment.insertAfter(wrapper);
-
-        new Bootstrap5().apply(context);
-        new Cleanup().apply(context);
+        // after finish build html-tree reorder depth
+        html.execute(node -> node.setDepth(node.hasParent() ? 0 : node.getParent().getDepth() + 1));
 
         String output = html.interpret(context);
         System.out.println(output);

@@ -4,9 +4,6 @@ import df.base.common.elements.*;
 
 import java.util.*;
 
-import static java.util.Objects.requireNonNullElse;
-import static java.util.Optional.ofNullable;
-
 abstract public class AbstractNode implements Node {
 
     protected TagName             tagName;
@@ -169,7 +166,7 @@ abstract public class AbstractNode implements Node {
             return result;
         } catch (Exception e) {
             context.invokeOnError(this, e);
-            throw new RuntimeException("ERROR DURING RENDERING", e);
+            throw new RuntimeException("Error during rendering", e);
         }
     }
 

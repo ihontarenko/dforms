@@ -2,10 +2,12 @@ package df.base.common.elements;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 @SuppressWarnings({"unused"})
 
-public interface Node {
+public interface Node /*extends df.base.common.libs.parser.node.Node*/ {
     int getDepth();
 
     void setDepth(int depth);
@@ -18,6 +20,10 @@ public interface Node {
 
     List<Node> getChildren();
 
+    default boolean hasChildren() {
+        return getChildren() != null && getChildren().size() > 0;
+    }
+
     void wrap(Node wrapper);
 
     void unwrap();
@@ -25,6 +31,10 @@ public interface Node {
     Node getParent();
 
     void setParent(Node node);
+
+    default boolean hasParent() {
+        return getParent() != null;
+    }
 
     void insertBefore(Node sibling);
 
@@ -39,5 +49,14 @@ public interface Node {
     Map<String, String> getAttributes();
 
     String interpret(NodeContext context);
+
+    default void execute(Consumer<Node> executor) {
+        executor.accept(this);
+
+        for (Node child : new CopyOnWriteArrayList<>(getChildren())) {
+            child.execute(executor);
+        }
+    }
+
 }
 

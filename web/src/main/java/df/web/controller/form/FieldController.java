@@ -2,6 +2,7 @@ package df.web.controller.form;
 
 import df.base.common.validation.custom.Validation;
 import df.base.dto.form.FieldDTO;
+import df.base.mapping.node.FieldToNode;
 import df.base.mapping.form.FieldMapper;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.support.ElementType;
@@ -35,16 +36,18 @@ public class FieldController implements FieldOperations {
 
     private final Validation       validation;
     private final ControllerHelper controllerHelper;
-    private final FieldService     fieldService;
+    private final FieldService fieldService;
+    private final FieldToNode  mapper;
 
     // todo: test
     private final FieldRepository repository;
 
     public FieldController(@Qualifier("fieldValidation") Validation validation, ControllerHelper controllerHelper,
-                           FieldService fieldService, FieldRepository repository) {
+                           FieldService fieldService, FieldToNode mapper, FieldRepository repository) {
         this.validation = validation;
         this.fieldService = fieldService;
         this.controllerHelper = controllerHelper;
+        this.mapper = mapper;
         this.repository = repository;
 
         controllerHelper.setRedirectUrl(MAVConstants.REDIRECT_FORM_FIELD);
@@ -75,6 +78,8 @@ public class FieldController implements FieldOperations {
         controllerHelper.setRedirectAttributes(attributes);
 
         ModelAndView mav;
+
+        System.out.println(mapper.map(fieldService.requireById(itemId)));
 
         try {
             bindAttributes(new FieldMapper().map(fieldService.requireById(itemId)));
