@@ -28,7 +28,11 @@ public class FieldSelectiveSpecification implements Specification<Field> {
         String redirect = "%s#%s".formatted(context.getAttribute("redirect"),
                 getClass().getSimpleName());
         return new JpaResourceIneligibleException(EXCEPTION_CUSTOMIZATION_INELIGIBLE_FIELD
+<<<<<<< HEAD
                 .formatted(field.getElementType(), field.getUsageType()), redirect);
+=======
+                .formatted(field.getElementType()), redirect);
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
     }
 
 }

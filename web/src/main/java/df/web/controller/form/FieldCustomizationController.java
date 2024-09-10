@@ -1,8 +1,14 @@
 package df.web.controller.form;
 
+<<<<<<< HEAD
 import df.base.common.specification.SpecificationContext;
 import df.base.common.specification.SpecificationRunner;
 import df.base.common.validation.custom.ValidationContext;
+=======
+import df.base.Messages;
+import df.base.common.specification.SpecificationContext;
+import df.base.common.specification.SpecificationRunner;
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
 import df.base.dto.SlaveDTO;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldConfigDTO;
@@ -28,7 +34,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static df.base.Messages.*;
+<<<<<<< HEAD
 import static df.web.common.flash.FlashMessage.*;
+=======
+import static df.web.common.flash.FlashMessage.error;
+import static df.web.common.flash.FlashMessage.success;
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
 import static df.web.controller.MAVConstants.REDIRECT_FIELD_CUSTOMIZATION;
 
 @Controller
@@ -160,14 +171,23 @@ public class FieldCustomizationController implements FieldCustomizationOperation
     }
 
     @Override
+<<<<<<< HEAD
     public ModelAndView attach(String primaryId, FieldDTO itemDTO, BindingResult result,
                                RedirectAttributes attributes, ValidationContext context) {
+=======
+    public ModelAndView attach(String primaryId, FieldDTO itemDTO, BindingResult result, RedirectAttributes attributes) {
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
         helper.setRedirectUrl(REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, "embedded"));
         helper.setRedirectAttributes(attributes);
 
         if (!result.hasErrors()) {
             service.attach(primaryId, itemDTO.id());
             helper.addMessage(success(SUCCESS_EMBEDDED_ATTACHED.formatted(primaryId, itemDTO.id())));
+<<<<<<< HEAD
+=======
+        } else {
+            helper.addMessage(error("something went wrong..."));
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
         }
 
         return helper.redirect();
@@ -175,6 +195,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
 
     @Override
     public ModelAndView detach(String primary, String embeddedId, RedirectAttributes attributes) {
+<<<<<<< HEAD
         helper.setRedirectUrl(REDIRECT_FIELD_CUSTOMIZATION.formatted(primary, "embedded"));
         helper.setRedirectAttributes(attributes);
         helper.addMessage(primary(SUCCESS_EMBEDDED_DETACHED.formatted(primary, embeddedId)));
@@ -182,10 +203,14 @@ public class FieldCustomizationController implements FieldCustomizationOperation
         service.detach(primary, embeddedId);
 
         return helper.redirect();
+=======
+        return null;
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
     }
 
     private void bindAttributes(SlaveDTO slaveDTO, String primaryId, String section) {
         Field field = service.requireById(primaryId);
+<<<<<<< HEAD
         SpecificationContext context = new SpecificationContext.Builder().with("section", section)
                 .with("redirect", REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, "config")).build();
 
@@ -196,6 +221,20 @@ public class FieldCustomizationController implements FieldCustomizationOperation
         helper.attribute("slave",       slaveDTO);
         helper.attribute("field",       mapper.map(field));
         helper.attribute("section",     section);
+=======
+        SpecificationContext context = new SpecificationContext.Builder()
+                .with("section", section)
+                .with("redirect", REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, "config"))
+                .build();
+
+        new SpecificationRunner<Field>()
+                .checkAllSatisfied(field, context, new FieldSelectiveSpecification(), new FieldTypeSpecification());
+
+        helper.attribute("embeddable", service.getEmbeddableFields());
+        helper.attribute("slave", slaveDTO);
+        helper.attribute("field", mapper.map(field));
+        helper.attribute("section", section);
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
     }
 
 }

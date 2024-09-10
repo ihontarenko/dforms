@@ -47,6 +47,7 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
 
     @Transactional(readOnly = true)
     public List<Field> getEmbeddableFields() {
+<<<<<<< HEAD
         // todo: check entity graph. because not children for embedded fields
         return repository.findAllByUsageType(EMBEDDABLE, fetch("parents", "children"));
     }
@@ -54,6 +55,9 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
     @Transactional(readOnly = true)
     public List<Field> getEligibleFields() {
         return repository.findAllByUsageTypeIn(List.of(STANDALONE, VIRTUAL), fetch("children"));
+=======
+        return repository.findAllByUsageType(UsageType.EMBEDDABLE, fetch("parents", "children"));
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
     }
 
     @Transactional(readOnly = true)
@@ -93,14 +97,20 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
         return repository.save(field);
     }
 
+<<<<<<< HEAD
     @Transactional
+=======
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
     public void attach(String parentId, String childId) {
         Field parent = requireById(parentId);
         Field child  = requireById(childId);
         attach(parent, child);
     }
 
+<<<<<<< HEAD
     @Transactional
+=======
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
     public void attach(Field parent, Field child) {
         if (parent.equals(child)) {
             throw new IllegalReferenceException(
@@ -111,6 +121,7 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
         repository.save(parent);
     }
 
+<<<<<<< HEAD
     @Transactional
     public void detach(String parentId, String childId) {
         Field parent = requireById(parentId);
@@ -119,6 +130,14 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
     }
 
     @Transactional
+=======
+    public void detach(String parentId, String childId) {
+        Field parent = requireById(parentId);
+        Field child  = requireById(parentId);
+        detach(parent, child);
+    }
+
+>>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
     public void detach(Field parent, Field child) {
         parent.getChildren().remove(child);
         repository.save(parent);
