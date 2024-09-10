@@ -41,19 +41,11 @@ public interface Messages {
 
     // fields customization
     String SUCCESS_CUSTOMIZATION_SAVED              = "Customization of '%s' successfully saved";
-<<<<<<< HEAD
     String SUCCESS_EMBEDDED_ATTACHED                = "Field '%s' attached to parent '%s'";
     String SUCCESS_EMBEDDED_DETACHED                = "Field '%s' detached from parent '%s'";
     String SUCCESS_CUSTOMIZATION_UNSUPPORTED        = "Customization '%s' unsupported";
     String SUCCESS_CUSTOMIZATION_DELETED            = "Customization of '%s' deleted!";
     String EXCEPTION_CUSTOMIZATION_INELIGIBLE_FIELD = "The field '%s:%s' is not eligible to have element options. Only 'CHECKBOX', 'RADIO', and 'SELECT' types are permitted to have options.";
     String EXCEPTION_EMBEDDED_INELIGIBLE_FIELD      = "This field is not marked as 'VIRTUAL', and attaching an 'EMBEDDED' fields is not permitted.";
-=======
-    String SUCCESS_EMBEDDED_ATTACHED                = "Child field '%s' attached to parent '%s'";
-    String SUCCESS_CUSTOMIZATION_UNSUPPORTED        = "Customization '%s' unsupported";
-    String SUCCESS_CUSTOMIZATION_DELETED            = "Customization of '%s' deleted!";
-    String EXCEPTION_CUSTOMIZATION_INELIGIBLE_FIELD = "The field with element type '%s' is not eligible to have element options. Only 'checkbox', 'radio', and 'select' types are permitted to have options.";
-    String EXCEPTION_EMBEDDED_INELIGIBLE_FIELD      = "This field is not marked as virtual, and attaching an embedded field is not permitted.";
->>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
 
 }

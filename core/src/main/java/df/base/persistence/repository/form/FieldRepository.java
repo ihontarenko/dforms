@@ -23,11 +23,8 @@ public interface FieldRepository extends JpaEntityGraphRepository<Field, String>
 
     List<Field> findAllByUsageType(UsageType usageType, JpaEntityGraph graph);
 
-<<<<<<< HEAD
     List<Field> findAllByUsageTypeIn(Iterable<UsageType> usageTypes, JpaEntityGraph graph);
 
-=======
->>>>>>> 43e565398f2065b3e9d637462ab5d1bd41cceea9
     @EntityGraph(EntityGraphConstants.FORM_FIELD_FULL)
     Optional<Field> findById(@Param("id") String id);
 
