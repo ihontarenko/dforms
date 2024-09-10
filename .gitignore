@@ -22,7 +22,9 @@ output/
 .classpath
 .factorypath
 .DS_Store
+
 *.private.properties
 *sensitive.yml
-application-public.properties
+*public.properties
 *.db
+*mariadb.properties
