@@ -1,29 +1,37 @@
 package df.base.service.form;
 
 import df.base.Messages;
-import df.base.persistence.entity.user.User;
-import df.base.persistence.entity.form.Form;
-import df.base.persistence.repository.form.FormRepository;
-import df.base.persistence.entity.support.FormStatus;
-import df.base.mapping.form.FormMapper;
 import df.base.dto.form.FormDTO;
-import df.base.service.RedirectAware;
+import df.base.mapping.form.FormMapper;
+import df.base.persistence.entity.form.Field;
+import df.base.persistence.entity.form.Form;
+import df.base.persistence.entity.support.FormStatus;
+import df.base.persistence.entity.user.User;
 import df.base.persistence.exception.JpaResourceNotFoundException;
+import df.base.persistence.repository.form.FormRepository;
+import df.base.service.RedirectAware;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import static df.base.Messages.ERROR_SEQUENCE_ORDER_NOT_FOUND;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 @SuppressWarnings({"unused"})
 @Service
 public class FormService implements RedirectAware {
 
     private final FormRepository repository;
+    private final FieldService   fieldService;
     private       String         redirectUrl;
 
-    public FormService(FormRepository repository) {
+    public FormService(FormRepository repository, FieldService fieldService) {
         this.repository = repository;
+        this.fieldService = fieldService;
     }
 
     @Transactional(readOnly = true)
@@ -65,6 +73,32 @@ public class FormService implements RedirectAware {
     }
 
     @Transactional
+    public void attach(String formId, String fieldId) {
+        attach(requireById(formId), fieldService.requireById(fieldId));
+    }
+
+    @Transactional
+    public void attach(Form form, Field field) {
+        if (form.absentField(field)) {
+            form.addField(field);
+            repository.save(form);
+        }
+    }
+
+    @Transactional
+    public void detach(String formId, String fieldId) {
+        detach(requireById(formId), fieldService.requireById(fieldId));
+    }
+
+    @Transactional
+    public void detach(Form form, Field field) {
+        if (form.existsField(field)) {
+            form.removeField(field);
+            repository.save(form);
+        }
+    }
+
+    @Transactional
     public void delete(Form form) {
         repository.delete(form);
     }
@@ -72,6 +106,27 @@ public class FormService implements RedirectAware {
     @Transactional
     public void changeStatus(Form form, FormStatus status) {
         form.setStatus(status);
+
+        repository.save(form);
+    }
+
+    @Transactional
+    public void reorder(String formId, String fieldId, int newIndex) {
+        Integer     oldIndex = repository.findCurrentOrder(formId, fieldId);
+        Form        form     = requireById(formId);
+        List<Field> fields   = form.getFields();
+
+        if (oldIndex == null) {
+            throw new JpaResourceNotFoundException(
+                    ERROR_SEQUENCE_ORDER_NOT_FOUND.formatted("form", "field", formId, fieldId));
+        }
+
+        newIndex = min(max(newIndex, 0), fields.size());
+
+        fields.add(newIndex, fields.remove(oldIndex.intValue()));
+        fields.removeIf(Objects::isNull);
+
+        form.setFields(fields);
 
         repository.save(form);
     }

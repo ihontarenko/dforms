@@ -1,9 +1,9 @@
 {% extends "common/layout" %}
-{% block title %}Configure Form '{{ itemDTO.description }}'{% endblock %}
+{% block title %}Form '{{ form.name }}' configuration{% endblock %}
 {% block headerButtons %}
 <div class="btn-group pt-2" role="group">
-    <button onclick="window.location = '/form/' + form.id + '/config'" type="button" class="btn btn-sm btn-dark">CONFIG</button>
-    <button onclick="window.location = '/form/' + form.id + '/embedded'" type="button" class="btn btn-sm btn-warning">EMBEDDED</button>
+    <button onclick="window.location = '/form/{{ form.id }}/config'" type="button" class="btn btn-sm btn-dark">CONFIG</button>
+    <button onclick="window.location = '/form/{{ form.id }}/embedded'" type="button" class="btn btn-sm btn-warning">EMBEDDED</button>
 </div>
 {% endblock %}
 {% block content %}

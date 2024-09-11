@@ -2,7 +2,6 @@ package df.web.controller.form;
 
 import df.base.common.validation.custom.ValidationContext;
 import df.base.dto.form.FieldDTO;
-import df.base.persistence.entity.form.Form;
 import df.base.service.form.FieldService;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
@@ -12,7 +11,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import static df.base.Messages.*;
+import static df.web.common.flash.FlashMessage.primary;
+import static df.web.common.flash.FlashMessage.success;
 import static df.web.controller.MAVConstants.REDIRECT_FIELD_CUSTOMIZATION;
+import static df.web.controller.MAVConstants.REDIRECT_FORM_EMBEDDED;
 
 @Controller
 public class FormEmbeddedController implements FormEmbeddedOperations {
@@ -48,19 +51,41 @@ public class FormEmbeddedController implements FormEmbeddedOperations {
     @Override
     public ModelAndView attach(String primaryId, FieldDTO itemDTO,
                                BindingResult result, RedirectAttributes attributes, ValidationContext context) {
-        return null;
+        controllerHelper.setRedirectUrl(REDIRECT_FORM_EMBEDDED.formatted(primaryId));
+        controllerHelper.setRedirectAttributes(attributes);
+        controllerHelper.addMessage(success(SUCCESS_FORM_FIELD_ATTACHED.formatted(primaryId, itemDTO.id())));
+
+        formService.attach(primaryId, itemDTO.id());
+
+        return controllerHelper.redirect();
     }
 
     @Override
     public ModelAndView detach(String primary, String embeddedId, RedirectAttributes attributes) {
-        return null;
+        controllerHelper.setRedirectUrl(REDIRECT_FORM_EMBEDDED.formatted(primary));
+        controllerHelper.setRedirectAttributes(attributes);
+        controllerHelper.addMessage(primary(SUCCESS_FORM_FIELD_DETACHED.formatted(primary, embeddedId)));
+
+        formService.detach(primary, embeddedId);
+
+        return controllerHelper.redirect();
+    }
+
+    @Override
+    public ModelAndView order(String primary, String embeddedId, Integer newOrder,
+                              RedirectAttributes attributes) {
+        controllerHelper.setRedirectUrl(REDIRECT_FORM_EMBEDDED.formatted(primary));
+        controllerHelper.setRedirectAttributes(attributes);
+        controllerHelper.addMessage(primary(SUCCESS_FORM_FIELD_ORDER_CHANGED.formatted("field", embeddedId)));
+
+        formService.reorder(primary, embeddedId, newOrder);
+
+        return controllerHelper.redirect();
     }
 
     private void bindAttributes(String primaryId) {
-        Form formEntity = formService.requireById(primaryId);
-
         controllerHelper.attribute("embeddable", fieldService.getEligibleFields());
-        controllerHelper.attribute("form", formEntity);
+        controllerHelper.attribute("form", formService.requireById(primaryId));
     }
 
 }

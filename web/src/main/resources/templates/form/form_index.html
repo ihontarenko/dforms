@@ -76,7 +76,7 @@
                     <button onclick="window.location = '{{ href('/form/' + form.id + '/modify') }}'"
                             type="button" class="btn btn-sm btn-primary">MODIFY</button>
                     <div class="btn-group" role="group">
-                        <button id="status" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">STATUS</button>
+                        <button id="status" type="button" class="btn btn-sm btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">STATUS</button>
                         <div class="dropdown-menu" aria-labelledby="status" style="">
                             <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/active') }}">STATUS ACTIVE</a>
                             <a class="dropdown-item" href="{{ href('/form/' + form.id + '/status/inactive') }}">STATUS INACTIVE</a>

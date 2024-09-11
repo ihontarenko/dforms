@@ -1,7 +1,6 @@
 {% extends "common/layout" %}
-{% block title %}Configure FIeld '{{ itemDTO.fieldId }}'{% endblock %}
+{% block title %}Configure Field '{{ itemDTO.fieldId }}'{% endblock %}
 {% block content %}
-
 <div class="card bg-light mb-3">
     <div class="card-header">ID: <b>{{field.id}}</b></div>
     <div class="card-body">
@@ -9,7 +8,6 @@
         <p class="card-text">{{field.name}}</p>
     </div>
 </div>
-
 <form method="post" action="{{ href('/form/field/config/perform') }}" enctype="multipart/form-data" class="row g-3" >
 
     <div class="row g-3">

@@ -3,13 +3,15 @@ package df.base.persistence.entity.form;
 import df.base.common.extensions.hibernate.generator.PrefixedId;
 import df.base.persistence.entity.user.User;
 import df.base.persistence.entity.support.FormStatus;
+import df.base.persistence.support.EntityConstants;
 import df.base.persistence.support.EntityGraphConstants;
 import df.base.persistence.entity.EntityNameAware;
 import df.base.persistence.generator.NamedEntityIdGenerator;
 import jakarta.persistence.*;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static df.base.persistence.support.EntityConstants.*;
 import static java.util.Objects.requireNonNull;
@@ -58,10 +60,11 @@ public class Form implements EntityNameAware {
     @ManyToMany
     @JoinTable(
             name = TABLE_FORM_FIELD_MAPPING,
-            joinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FORM_ID),
-            inverseJoinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FIELD_ID))
+            inverseJoinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FIELD_ID),
+            joinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FORM_ID)
+    )
     @OrderColumn(name = "SEQUENCE_ORDER")
-    private Set<Field> fields;
+    private List<Field> fields;
 
     @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FormEntry> entries;
@@ -122,16 +125,31 @@ public class Form implements EntityNameAware {
         this.configs = configs;
     }
 
-    public Set<Field> getFields() {
-        return fields;
+    public List<Field> getFields() {
+        return new ArrayList<>(fields);
     }
 
-    public void setFields(Set<Field> fields) {
-        this.fields = fields;
+    public void setFields(@NotNull List<Field> fields) {
+        this.fields = new ArrayList<>(new LinkedHashSet<>(fields));
     }
 
     public void addField(Field field) {
-        this.fields.add(requireNonNull(field));
+        Optional.ofNullable(field).ifPresent(f -> {
+            this.fields.remove(f);
+            this.fields.add(f);
+        });
+    }
+
+    public boolean existsField(Field field) {
+        return this.fields.contains(field);
+    }
+
+    public boolean absentField(Field field) {
+        return !existsField(field);
+    }
+
+    public void removeField(Field field) {
+        this.fields.remove(requireNonNull(field));
     }
 
     public List<FormEntry> getEntries() {

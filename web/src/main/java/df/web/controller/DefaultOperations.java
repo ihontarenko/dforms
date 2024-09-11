@@ -41,7 +41,6 @@ public interface DefaultOperations<DTO> {
         throw UNSUPPORTED_REQUEST_METHOD;
     }
 
-    @PreAuthorize("hasRole('SUPER_USER')")
     default ModelAndView remove(@PathVariable("itemId") String itemId, RedirectAttributes attributes) {
         throw UNSUPPORTED_REQUEST_METHOD;
     }

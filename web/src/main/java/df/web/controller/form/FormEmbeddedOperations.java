@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Map;
+
 @RequestMapping(MAVConstants.REQUEST_MAPPING_FORM_EMBEDDED)
 public interface FormEmbeddedOperations extends DefaultOperations<FormDTO> {
 
@@ -37,6 +39,13 @@ public interface FormEmbeddedOperations extends DefaultOperations<FormDTO> {
     ModelAndView detach(
             @PathVariable("primaryId") String primary,
             @PathVariable("embeddedId") String embeddedId,
+            RedirectAttributes attributes);
+
+    @GetMapping("/{embeddedId}/sequence")
+    ModelAndView order(
+            @PathVariable("primaryId") String primary,
+            @PathVariable("embeddedId") String embeddedId,
+            @RequestParam("newOrder") Integer newOrder,
             RedirectAttributes attributes);
 
 }

@@ -4,6 +4,10 @@ import static java.lang.Character.*;
 
 abstract public class StringUtils {
 
+    public static boolean hasText(String value) {
+        return value != null && !value.isBlank();
+    }
+
     public static String uncapitalize(final String value) {
         String result = value;
 
@@ -26,17 +30,20 @@ abstract public class StringUtils {
         if (value != null && !value.isBlank()) {
             StringBuilder builder  = new StringBuilder();
             char          previous = ' ';
+            int           counter  = 0;
 
             for (char current : value.toCharArray()) {
                 char newCharacter = toUpperCase ? toUpperCase(current) : toLowerCase(current);
+                boolean lowToHigh = isUpperCase(current) && isLowerCase(previous) && !isWhitespace(previous);
+                // boolean highToLow = isLowerCase(current) && isUpperCase(previous) && !isWhitespace(previous);
 
-                if ((isUpperCase(previous) && isLowerCase(current)) || (isUpperCase(current) && !isUpperCase(
-                        previous)) && isLetter(previous)) {
+                if (lowToHigh && isLetter(previous) && counter > 1) {
                     builder.append('_').append(newCharacter);
                 } else {
                     builder.append(newCharacter);
                 }
 
+                counter++;
                 previous = current;
             }
 

@@ -24,6 +24,7 @@ import static df.base.Messages.REQUIRED_ID_CANNOT_BE_NULL;
 import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Dynamic.fetch;
 import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Dynamic.load;
 import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Named.name;
+import static df.base.persistence.entity.support.FieldStatus.ACTIVE;
 import static df.base.persistence.entity.support.UsageType.*;
 import static df.base.persistence.support.EntityGraphConstants.FORM_FIELD_FULL;
 import static java.util.Objects.requireNonNull;
@@ -52,7 +53,7 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
 
     @Transactional(readOnly = true)
     public List<Field> getEligibleFields() {
-        return repository.findAllByUsageTypeInAndStatusActive(List.of(STANDALONE, VIRTUAL), fetch("children"));
+        return repository.findAllByUsageTypeInAndStatus(List.of(STANDALONE, VIRTUAL), ACTIVE, fetch("children"));
     }
 
     @Transactional(readOnly = true)

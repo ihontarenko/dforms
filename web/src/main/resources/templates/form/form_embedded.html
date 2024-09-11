@@ -2,8 +2,8 @@
 {% block title %}Embedded Fields{% endblock %}
 {% block headerButtons %}
 <div class="btn-group pt-2" role="group">
-    <button onclick="window.location = '/form/' + form.id + '/config'" type="button" class="btn btn-sm btn-dark">CONFIG</button>
-    <button onclick="window.location = '/form/' + form.id + '/embedded'" type="button" class="btn btn-sm btn-warning">EMBEDDED</button>
+    <button onclick="window.location = '/form/{{ form.id }}/config'" type="button" class="btn btn-sm btn-dark">CONFIG</button>
+    <button onclick="window.location = '/form/{{ form.id }}/embedded'" type="button" class="btn btn-sm btn-warning">EMBEDDED</button>
 </div>
 {% endblock %}
 {% block content %}
@@ -31,31 +31,35 @@
 <table class="table table-hover">
     <thead>
     <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Element Type</th>
-        <th scope="col">Name</th>
-        <th scope="col">Label</th>
-        <th scope="col">Actions</th>
+        <th class="d-none d-lg-table-cell">ID</th>
+        <th class="d-none d-md-table-cell">Element Type</th>
+        <th>Name</th>
+        <th class="d-none d-lg-table-cell">Label</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     {% for field in form.fields %}
     <tr>
-        <th scope="row">{{ field.id }}</th>
-        <td>
+        <th class="d-none d-lg-table-cell">{{ field.id }}</th>
+        <td class="d-none d-md-table-cell">
             <b>{{ field.elementType }}</b>
         </td>
         <td>
             <u>{{ field.name }}</u>
         </td>
-        <td>
+        <td class="d-none d-lg-table-cell">
             <i>{{ field.label }}</i>
         </td>
-        <td class="col-1">
-            <div class="btn-group" role="group">
-                <button onclick="window.location = '{{ href('/form/' + form.id + '/embedded/' + field.id + '/detach') }}'"
-                        type="button" class="btn btn-sm btn-primary">DETACH</button>
-            </div>
+        <td class="col">
+            <form class="d-inline" method="get" action="{{ href('/form/' + form.id + '/embedded/' + field.id + '/sequence') }}">
+                <div class="input-group w-75" role="group">
+                    <input name="newOrder" type="number" class="form-control form-control-sm" value="{{ loop.index }}"/>
+                    <button type="submit" class="btn btn-sm btn-dark">REORDER</button>
+                    <button onclick="confirm('Are you sure?') ? window.location = '{{ href('/form/' + form.id + '/embedded/' + field.id + '/detach') }}' : null"
+                            type="button" class="btn btn-sm btn-warning">DETACH</button>
+                </div>
+            </form>
         </td>
     </tr>
     {% endfor %}
