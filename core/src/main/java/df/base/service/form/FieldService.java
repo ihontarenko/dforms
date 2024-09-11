@@ -47,13 +47,12 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
 
     @Transactional(readOnly = true)
     public List<Field> getEmbeddableFields() {
-        // todo: check entity graph. because not children for embedded fields
-        return repository.findAllByUsageType(EMBEDDABLE, fetch("parents", "children"));
+        return repository.findAllByUsageType(EMBEDDABLE, fetch("parents"));
     }
 
     @Transactional(readOnly = true)
     public List<Field> getEligibleFields() {
-        return repository.findAllByUsageTypeIn(List.of(STANDALONE, VIRTUAL), fetch("children"));
+        return repository.findAllByUsageTypeInAndStatusActive(List.of(STANDALONE, VIRTUAL), fetch("children"));
     }
 
     @Transactional(readOnly = true)

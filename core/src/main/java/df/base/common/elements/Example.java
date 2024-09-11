@@ -37,6 +37,8 @@ public class Example {
         // after finish build html-tree reorder depth
         html.execute(node -> node.setDepth(node.hasParent() ? node.getParent().getDepth() + 1 : 0));
 
+        html.execute(System.out::println);
+
         String output = html.interpret(context);
         System.out.println(output);
     }

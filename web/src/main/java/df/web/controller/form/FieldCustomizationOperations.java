@@ -31,11 +31,6 @@ public interface FieldCustomizationOperations extends DefaultOperations<SlaveDTO
             @PathVariable("primaryId") String ownerId,
             RedirectAttributes attributes);
 
-    @Breadcrumbs({
-            @Breadcrumbs.Item(label = "Home", url = "/"),
-            @Breadcrumbs.Item(label = "Fields", url = "/form/field"),
-            @Breadcrumbs.Item(label = "Embedded Fields")
-    })
     @PostMapping("/embedded/attach")
     ModelAndView attach(
             @PathVariable("primaryId") String primaryId,

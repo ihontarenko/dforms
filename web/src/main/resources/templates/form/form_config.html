@@ -1,7 +1,12 @@
 {% extends "common/layout" %}
 {% block title %}Configure Form '{{ itemDTO.description }}'{% endblock %}
+{% block headerButtons %}
+<div class="btn-group pt-2" role="group">
+    <button onclick="window.location = '/form/' + form.id + '/config'" type="button" class="btn btn-sm btn-dark">CONFIG</button>
+    <button onclick="window.location = '/form/' + form.id + '/embedded'" type="button" class="btn btn-sm btn-warning">EMBEDDED</button>
+</div>
+{% endblock %}
 {% block content %}
-
 <form method="post" action="{{ href('/form/' + form.id + '/config/perform') }}" enctype="multipart/form-data" class="row g-3" >
 
     <div class="row g-3">
@@ -52,7 +57,7 @@
             <td>
                 <i>{{ config.configValue }}</i>
             </td>
-            <td>
+            <td class="col-1">
                 <div class="btn-group" role="group">
                     <button onclick="window.location = '{{ href('/form/' + form.id + '/config/' + config.id + '/modify') }}'"
                             type="button" class="btn btn-sm btn-info">MODIFY</button>

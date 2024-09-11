@@ -26,8 +26,7 @@ public class SlugifyTransliterator {
 
         slug = slug.toLowerCase()
                 .replaceAll("[^a-z0-9]+", replacement.character())
-                .replaceAll("^%s|%s$"
-                        .formatted(replacement.character(), replacement.character()), replacement.character());
+                .replaceAll("^%s|%s+$".formatted(replacement.character(), replacement.character()), "");
 
         return slug;
     }

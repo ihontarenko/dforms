@@ -53,12 +53,12 @@
         <tr>
             <th scope="row">{{ role.id }}</th>
             <td>{{ role.name }}</td>
-            <td>
+            <td class="col-1">
                 <div class="btn-group" role="group">
                     <button onclick="window.location = '{{ href('/user/role/' + role.id + '/modify') }}'"
-                            type="button" class="btn btn-sm btn-info">EDIT</button>
+                            type="button" class="btn btn-sm btn-dark">EDIT</button>
                     <button onclick="window.location = '{{ href('/user/role/' + role.id + '/remove') }}'"
-                            type="button" class="btn btn-sm btn-danger">DELETE</button>
+                            type="button" class="btn btn-sm btn-warning">DELETE</button>
                 </div>
             </td>
         </tr>

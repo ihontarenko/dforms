@@ -22,6 +22,11 @@ public interface MAVConstants {
     String REQUEST_MAPPING_FORM = "/form";
     String REDIRECT_FORM        = REQUEST_MAPPING_FORM;
 
+    // form field embedded
+    String VIEW_FORM_EMBEDDED            = "form/form_embedded";
+    String REQUEST_MAPPING_FORM_EMBEDDED = "/form/{primaryId}/embedded";
+    String REDIRECT_FORM_EMBEDDED        = "/form/%s/embedded";
+
     // form config
     String VIEW_FORM_CONFIG            = "form/form_config";
     String REQUEST_MAPPING_FORM_CONFIG = "/form/{primaryId}/config";

@@ -67,10 +67,10 @@
             <td>
                 <span class="badge {{ statuses.get(form.status) }}">{{ form.status }}</span>
             </td>
-            <td>
+            <td class="col-1">
                 <div class="btn-group" role="group">
-                    <button onclick="window.location = '{{ href('/form/' + form.id + '/customization') }}'"
-                            type="button" class="btn btn-sm btn-primary">CUSTOMIZATION</button>
+                    <button onclick="window.location = '{{ href('/form/' + form.id + '/embedded') }}'"
+                            type="button" class="btn btn-sm btn-primary">EMBEDDED</button>
                     <button onclick="window.location = '{{ href('/form/' + form.id + '/config') }}'"
                             type="button" class="btn btn-sm btn-primary">CONFIGURE</button>
                     <button onclick="window.location = '{{ href('/form/' + form.id + '/modify') }}'"

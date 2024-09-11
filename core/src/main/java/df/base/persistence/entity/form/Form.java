@@ -60,6 +60,7 @@ public class Form implements EntityNameAware {
             name = TABLE_FORM_FIELD_MAPPING,
             joinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FORM_ID),
             inverseJoinColumns = @JoinColumn(name = COLUMN_FORM_FIELD_MAPPING_FIELD_ID))
+    @OrderColumn(name = "SEQUENCE_ORDER")
     private Set<Field> fields;
 
     @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)

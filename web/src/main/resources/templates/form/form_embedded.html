@@ -1,0 +1,64 @@
+{% extends "common/layout" %}
+{% block title %}Embedded Fields{% endblock %}
+{% block headerButtons %}
+<div class="btn-group pt-2" role="group">
+    <button onclick="window.location = '/form/' + form.id + '/config'" type="button" class="btn btn-sm btn-dark">CONFIG</button>
+    <button onclick="window.location = '/form/' + form.id + '/embedded'" type="button" class="btn btn-sm btn-warning">EMBEDDED</button>
+</div>
+{% endblock %}
+{% block content %}
+<form method="post" action="{{ href('/form/' + form.id + '/embedded/attach') }}"
+      enctype="multipart/form-data" class="row g-3">
+
+    <div class="row g-3">
+        <div class="col-8 col-xl-12">
+            <select class="form-select" name="id">
+                <option selected>- select field -</option>
+                {% for f in embeddable %}
+                <option value="{{ f.id }}">{{ f.label }} [{{ f.elementType }}]</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group mt-4">
+        <button class="btn btn-success" type="submit">Attach</button>
+    </div>
+</form>
+
+<h2 class="mt-5">Attached Fields</h2>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Element Type</th>
+        <th scope="col">Name</th>
+        <th scope="col">Label</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for field in form.fields %}
+    <tr>
+        <th scope="row">{{ field.id }}</th>
+        <td>
+            <b>{{ field.elementType }}</b>
+        </td>
+        <td>
+            <u>{{ field.name }}</u>
+        </td>
+        <td>
+            <i>{{ field.label }}</i>
+        </td>
+        <td class="col-1">
+            <div class="btn-group" role="group">
+                <button onclick="window.location = '{{ href('/form/' + form.id + '/embedded/' + field.id + '/detach') }}'"
+                        type="button" class="btn btn-sm btn-primary">DETACH</button>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

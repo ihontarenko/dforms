@@ -8,8 +8,6 @@ import df.base.persistence.entity.support.ElementType;
 import df.base.persistence.entity.support.FieldStatus;
 import df.base.persistence.entity.support.UsageType;
 import jakarta.persistence.*;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -73,7 +71,7 @@ public class Field implements EntityNameAware {
 
     @ManyToMany
     @JoinTable(
-            name = TABLE_FIELD_SELF_MAPPING,
+            name = TABLE_FIELD_CHILD_MAPPING,
             joinColumns = @JoinColumn(name = COLUMN_FIELD_SELF_MAPPING_P_ID),
             inverseJoinColumns = @JoinColumn(name = COLUMN_FIELD_SELF_MAPPING_C_ID))
     @OrderColumn(name = "SEQUENCE_ORDER")

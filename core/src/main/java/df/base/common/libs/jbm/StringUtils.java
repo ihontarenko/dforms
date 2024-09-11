@@ -1,7 +1,6 @@
 package df.base.common.libs.jbm;
 
-import static java.lang.Character.toLowerCase;
-import static java.lang.Character.toUpperCase;
+import static java.lang.Character.*;
 
 abstract public class StringUtils {
 
@@ -31,8 +30,9 @@ abstract public class StringUtils {
             for (char current : value.toCharArray()) {
                 char newCharacter = toUpperCase ? toUpperCase(current) : toLowerCase(current);
 
-                if (Character.isUpperCase(current) && Character.isLetter(previous)) {
-                    builder.append("_").append(newCharacter);
+                if ((isUpperCase(previous) && isLowerCase(current)) || (isUpperCase(current) && !isUpperCase(
+                        previous)) && isLetter(previous)) {
+                    builder.append('_').append(newCharacter);
                 } else {
                     builder.append(newCharacter);
                 }
