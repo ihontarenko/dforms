@@ -1,6 +1,6 @@
 package df.base.common.validation.custom;
 
-import df.base.common.Mapper;
+import df.base.common.support.Mapper;
 import df.base.property.ValidationMessages;
 
 public class ErrorMessageMapper implements Mapper<ValidationMessages.Message, ErrorMessage> {

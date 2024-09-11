@@ -1,6 +1,6 @@
 package df.base.mapping.node;
 
-import df.base.common.Mapper;
+import df.base.common.support.Mapper;
 import df.base.common.elements.Node;
 import df.base.common.elements.NodeContext;
 import df.base.common.elements.TagName;

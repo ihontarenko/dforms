@@ -1,7 +1,6 @@
 package df.base.configs;
 
 import df.base.Constants;
-import df.base.common.BeansHolder;
 import df.base.common.elements.Interceptor;
 import df.base.common.elements.NodeContext;
 import df.base.common.elements.RendererFactory;
@@ -48,10 +47,8 @@ public class CommonConfiguration implements WebMvcConfigurer {
     public static final Logger LOGGER = LoggerFactory.getLogger(CommonConfiguration.class);
 
     @Bean
-    public Translator translator(MessageSource messageSource, BeansHolder holder) {
+    public Translator translator(MessageSource messageSource) {
         Translator translator = new Translator(messageSource);
-
-        holder.set(Translator.class, translator);
 
         LOGGER.info("CREATE {} BEAN", Translator.class.getName());
 
@@ -81,12 +78,6 @@ public class CommonConfiguration implements WebMvcConfigurer {
 
         return interceptor;
     }
-
-    @Bean
-    public BeansHolder beansHolder() {
-        return BeansHolder.INSTANCE;
-    }
-
     @Bean("locales")
     @Scope(ConfigurableListableBeanFactory.SCOPE_SINGLETON)
     public Set<Locale> availableLocales(@Value("classpath:locale/**.properties") Resource[] resources) {

@@ -1,6 +1,6 @@
 package df.base.security.oauth2.mapper;
 
-import df.base.common.Mapper;
+import df.base.common.support.Mapper;
 import df.base.dto.user.UserDTO;
 import df.base.common.support.SlugifyTransliterator;
 import org.springframework.security.oauth2.core.user.OAuth2User;

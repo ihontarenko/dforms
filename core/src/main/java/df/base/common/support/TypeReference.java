@@ -1,4 +1,4 @@
-package df.base.common;
+package df.base.common.support;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

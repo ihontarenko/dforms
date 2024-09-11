@@ -2,7 +2,7 @@ package df.base.mapping.user;
 
 import df.base.persistence.entity.user.Role;
 import df.base.persistence.entity.user.User;
-import df.base.common.Mapper;
+import df.base.common.support.Mapper;
 import df.base.dto.user.UserDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

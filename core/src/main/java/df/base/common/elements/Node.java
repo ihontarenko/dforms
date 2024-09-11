@@ -51,7 +51,7 @@ public interface Node /*extends df.base.common.libs.parser.node.Node*/ {
     String interpret(NodeContext context);
 
     default void execute(Consumer<Node> executor) {
-        executor.accept(this);
+//        executor.accept(this);
 
         for (Node child : new CopyOnWriteArrayList<>(getChildren())) {
             child.execute(executor);

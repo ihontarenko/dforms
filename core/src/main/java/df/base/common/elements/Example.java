@@ -35,7 +35,7 @@ public class Example {
         html.execute(node -> node.insertBefore(new CommentNode(node.getTagName() + ":" + node.getNodeType())));
 
         // after finish build html-tree reorder depth
-        html.execute(node -> node.setDepth(node.hasParent() ? 0 : node.getParent().getDepth() + 1));
+        html.execute(node -> node.setDepth(node.hasParent() ? node.getParent().getDepth() + 1 : 0));
 
         String output = html.interpret(context);
         System.out.println(output);

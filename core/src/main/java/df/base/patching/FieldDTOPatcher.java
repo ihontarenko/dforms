@@ -1,6 +1,6 @@
 package df.base.patching;
 
-import df.base.common.Patcher;
+import df.base.common.support.Patcher;
 import df.base.dto.form.FieldDTO;
 
 public class FieldDTOPatcher implements Patcher<FieldDTO, FieldDTO, FieldDTO> {

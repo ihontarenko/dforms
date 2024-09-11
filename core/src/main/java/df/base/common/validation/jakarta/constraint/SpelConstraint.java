@@ -29,9 +29,7 @@ public @interface SpelConstraint {
     @Retention(RetentionPolicy.RUNTIME)
     @Documented
     @interface List {
-
         SpelConstraint[] value();
-
     }
 
 }

@@ -1,6 +1,6 @@
 package df.base.mapping;
 
-import df.base.common.Mapper;
+import df.base.common.support.Mapper;
 import df.base.dto.form.*;
 import df.base.dto.user.PrivilegeDTO;
 import df.base.dto.user.RoleDTO;
@@ -13,7 +13,6 @@ import df.base.persistence.entity.form.*;
 import df.base.persistence.entity.user.Privilege;
 import df.base.persistence.entity.user.Role;
 import df.base.persistence.entity.user.User;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;

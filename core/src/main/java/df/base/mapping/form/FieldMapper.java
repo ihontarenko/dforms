@@ -1,6 +1,6 @@
 package df.base.mapping.form;
 
-import df.base.common.Mapper;
+import df.base.common.support.Mapper;
 import df.base.dto.form.FieldDTO;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.support.ElementType;

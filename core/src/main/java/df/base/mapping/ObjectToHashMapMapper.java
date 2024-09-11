@@ -1,6 +1,6 @@
 package df.base.mapping;
 
-import df.base.common.Mapper;
+import df.base.common.support.Mapper;
 import df.base.common.libs.jbm.ReflectionUtils;
 
 import java.lang.reflect.Field;

@@ -48,9 +48,10 @@ public class ElementRenderer implements Renderer {
 
     private void preformChildren(StringBuilder builder, Node node, NodeContext context) {
         try {
-            for (Node child : node.getChildren()) {
-                builder.append(child.interpret(context));
-            }
+            node.execute(c -> builder.append(c.interpret(context)));
+//            for (Node child : node.getChildren()) {
+//                builder.append(child.interpret(context));
+//            }
         } catch (ConcurrentModificationException exception) {
             throw new IllegalStateException("Any interceptors are not allowed to modify the element tree during rendering");
         }

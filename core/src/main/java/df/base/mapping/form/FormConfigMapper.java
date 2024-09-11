@@ -1,6 +1,6 @@
 package df.base.mapping.form;
 
-import df.base.common.Mapper;
+import df.base.common.support.Mapper;
 import df.base.persistence.entity.form.FormConfig;
 import df.base.dto.form.FormConfigDTO;
 import org.springframework.stereotype.Service;

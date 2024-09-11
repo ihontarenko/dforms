@@ -1,6 +1,6 @@
 package df.base.common.support.jpa;
 
-import df.base.common.Mapper;
+import df.base.common.support.Mapper;
 import df.base.common.support.spel.SpelEvaluator;
 import df.base.common.validation.jakarta.Fields;
 import df.base.common.validation.jakarta.Fields.ValueType;
