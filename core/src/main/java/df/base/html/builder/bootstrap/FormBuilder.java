@@ -14,13 +14,16 @@ public class FormBuilder implements Builder<FormDTO> {
 
     @Override
     public Node build(FormDTO formDTO, BuilderContext ctx) {
-        Collection<FieldDTO> fields = formDTO.getFields();
-        Node                 root   = new ElementNode(TagName.FORM);
+        Collection<FieldDTO> fields  = formDTO.getFields();
+        Node                 root    = new ElementNode(TagName.FORM);
+        Node                 wrapper = new ElementNode(TagName.FIELDSET);
+
+        root.addChild(wrapper);
 
         for (FieldDTO field : fields) {
             var  builder = ctx.getStrategy().getBuilder(FieldDTO.class);
             Node node    = builder.build(field, ctx);
-            root.addChild(node);
+            wrapper.addChild(node);
         }
 
         return root;

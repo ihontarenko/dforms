@@ -80,7 +80,6 @@ public class FormController implements FormOperations {
         FormDTO                 formDTO    = mapper.map(formEntity);
         Node                    root       = builder.build(formDTO, this.builderContext);
 
-        root.execute(NodeContext.COMMENT_INFO_CORRECTOR);
         root.execute(NodeContext.REORDER_NODE_CORRECTOR);
 
         controllerHelper.attribute("form", formEntity);

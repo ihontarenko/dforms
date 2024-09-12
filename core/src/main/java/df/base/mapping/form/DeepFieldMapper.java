@@ -3,14 +3,11 @@ package df.base.mapping.form;
 import df.base.common.support.Mapper;
 import df.base.dto.form.FieldDTO;
 import df.base.persistence.entity.form.Field;
-import df.base.persistence.entity.support.ElementType;
-import df.base.persistence.entity.support.UsageType;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-import static df.base.persistence.entity.support.ElementType.NONE;
 import static df.base.persistence.entity.support.UsageType.VIRTUAL;
 import static java.util.Optional.ofNullable;
 
@@ -19,9 +16,6 @@ public class DeepFieldMapper implements Mapper<Field, FieldDTO> {
 
     private static final Consumer<Field>      NULL_RELATED    = field -> {
         // prevent lazy loading for child entities
-        field.setConfigs(null);
-        field.setAttributes(null);
-        field.setOptions(null);
         field.setChildren(null);
         field.setParents(null);
     };
@@ -60,7 +54,7 @@ public class DeepFieldMapper implements Mapper<Field, FieldDTO> {
         ofNullable(source.getOptions()).ifPresent(options
             -> options.stream().map(optionMapper::map).forEach(destination::addOption));
 
-        if (source.getElementType() == NONE || source.getUsageType() == VIRTUAL) {
+        if (source.getUsageType() == VIRTUAL) {
             ofNullable(source.getChildren()).ifPresent(children
                 -> children.stream().peek(NULL_RELATED).map(this::map).forEach(destination::addChild));
         }
@@ -80,7 +74,7 @@ public class DeepFieldMapper implements Mapper<Field, FieldDTO> {
                 -> options.stream().map(optionMapper::reverse).forEach(destination::addOption));
 
         ofNullable(source.getChildren()).ifPresent(children
-                -> children.values().stream().map(new FieldMapper()::reverse).forEach(destination::addChild));
+                -> children.values().stream().map(this::reverse).forEach(destination::addChild));
 
         ofNullable(source.getParents()).ifPresent(parents -> parents.values()
                 .stream().peek(dto -> dto.setChildren(new HashMap<>()))
