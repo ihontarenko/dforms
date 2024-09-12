@@ -1,6 +1,5 @@
 package df.base.service.form;
 
-import df.base.Messages;
 import df.base.dto.form.FormDTO;
 import df.base.mapping.form.FormMapper;
 import df.base.persistence.entity.form.Field;
@@ -17,7 +16,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static df.base.Messages.ERROR_FORM_NOT_FOUND;
 import static df.base.Messages.ERROR_SEQUENCE_ORDER_NOT_FOUND;
+import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Dynamic.fetch;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -39,9 +40,18 @@ public class FormService implements RedirectAware {
         return repository.findById(formId);
     }
 
+    @Transactional(readOnly = true)
+    public Form loadFormWithFields(String formId) {
+        Optional<Form> optionalForm = repository.findById(formId, fetch(
+                "fields", "fields.configs", "fields.attributes", "fields.options", "fields.children"));
+        return optionalForm.orElseThrow(()
+            -> new JpaResourceNotFoundException(ERROR_FORM_NOT_FOUND.formatted(formId)));
+    }
+
+    @Transactional(readOnly = true)
     public Form requireById(final String formId) {
         return getById(formId).orElseThrow(()
-                -> new JpaResourceNotFoundException(Messages.ERROR_FORM_NOT_FOUND.formatted(formId), this.getRedirectUrl()));
+                -> new JpaResourceNotFoundException(ERROR_FORM_NOT_FOUND.formatted(formId), this.getRedirectUrl()));
     }
 
     @Transactional(readOnly = true)
@@ -51,9 +61,16 @@ public class FormService implements RedirectAware {
 
     @Transactional
     public Form createOrUpdate(FormDTO formDTO, User user) {
-        return getById(formDTO.id())
-                .map(f -> update(f, formDTO))
-                .orElseGet(() -> create(user, formDTO));
+        Optional<Form> optional = getById(formDTO.id());
+        Form           updated;
+
+        if (optional.isPresent()) {
+            updated = this.update(optional.get(), formDTO);
+        } else {
+            updated = this.create(user, formDTO);
+        }
+
+        return updated;
     }
 
     @Transactional

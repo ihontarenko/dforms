@@ -1,6 +1,6 @@
 package df.base.common.libs.confio.parser;
 
-import df.base.common.libs.parser.token.Token;
+import df.base.common.libs.ast.token.Token;
 
 public enum ConfioToken implements Token {
 

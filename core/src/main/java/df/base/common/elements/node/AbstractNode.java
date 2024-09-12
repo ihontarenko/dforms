@@ -156,16 +156,8 @@ abstract public class AbstractNode implements Node {
     @Override
     public String interpret(NodeContext context) {
         try {
-            context.invokeBeforeRender(this);
-
-            Renderer renderer = context.getRendererFactory().getRenderer(this);
-            String   result   = renderer.render(this, context);
-
-            context.invokeAfterRender(this);
-
-            return result;
+            return context.getRendererFactory().getRenderer(this).render(this, context);
         } catch (Exception e) {
-            context.invokeOnError(this, e);
             throw new RuntimeException("Error during rendering", e);
         }
     }

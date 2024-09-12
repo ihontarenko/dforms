@@ -19,6 +19,7 @@ public interface MAVConstants {
 
     // form
     String VIEW_FORM_INDEX      = "form/form_index";
+    String VIEW_FORM_PREVIEW    = "form/form_preview";
     String REQUEST_MAPPING_FORM = "/form";
     String REDIRECT_FORM        = REQUEST_MAPPING_FORM;
 

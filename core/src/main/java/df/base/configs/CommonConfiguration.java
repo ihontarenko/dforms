@@ -1,10 +1,8 @@
 package df.base.configs;
 
 import df.base.Constants;
-import df.base.common.elements.Interceptor;
 import df.base.common.elements.NodeContext;
 import df.base.common.elements.RendererFactory;
-import df.base.common.elements.interceptor.LoggingInterceptor;
 import df.base.common.i18n.Translator;
 import df.base.common.extensions.persistence.entity_graph.support.EntityGraphRepositoryFactoryBean;
 import df.base.common.validation.custom.ValidationContextArgumentResolver;
@@ -78,6 +76,7 @@ public class CommonConfiguration implements WebMvcConfigurer {
 
         return interceptor;
     }
+
     @Bean("locales")
     @Scope(ConfigurableListableBeanFactory.SCOPE_SINGLETON)
     public Set<Locale> availableLocales(@Value("classpath:locale/**.properties") Resource[] resources) {
@@ -109,10 +108,7 @@ public class CommonConfiguration implements WebMvcConfigurer {
 
     @Bean
     public NodeContext nodeContext() {
-        RendererFactory factory     = new RendererFactory();
-        Interceptor     interceptor = new LoggingInterceptor();
-
-        return new NodeContext(factory, List.of(interceptor));
+        return new NodeContext(new RendererFactory());
     }
 
     @Override

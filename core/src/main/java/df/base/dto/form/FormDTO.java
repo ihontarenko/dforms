@@ -13,6 +13,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
 
 @JpaResource.List({
@@ -88,6 +91,8 @@ public class FormDTO implements DTO {
     @EnumPattern(regexp = "ACTIVE|INACTIVE|DELETED")
     private FormStatus status;
 
+    private Map<String, FieldDTO> fields = new HashMap<>();
+
     public String id() {
         return id;
     }
@@ -127,5 +132,18 @@ public class FormDTO implements DTO {
     public void setStatus(FormStatus status) {
         this.status = status;
     }
+
+    public Map<String, FieldDTO> getFields() {
+        return fields;
+    }
+
+    public void setFields(Map<String, FieldDTO> fields) {
+        this.fields = fields;
+    }
+
+    public void addField(FieldDTO fieldDTO) {
+        this.fields.put(fieldDTO.id(), fieldDTO);
+    }
+
 }
 

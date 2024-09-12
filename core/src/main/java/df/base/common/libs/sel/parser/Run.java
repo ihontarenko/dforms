@@ -1,9 +1,9 @@
 package df.base.common.libs.sel.parser;
 
-import df.base.common.libs.parser.token.Tokenizer;
-import df.base.common.libs.parser.lexer.Lexer;
-import df.base.common.libs.parser.token.DefaultTokenizer;
-import df.base.common.libs.parser.token.Token;
+import df.base.common.libs.ast.token.Tokenizer;
+import df.base.common.libs.ast.lexer.Lexer;
+import df.base.common.libs.ast.token.DefaultTokenizer;
+import df.base.common.libs.ast.token.Token;
 import df.base.common.resources.ResourceReader;
 
 public class Run {

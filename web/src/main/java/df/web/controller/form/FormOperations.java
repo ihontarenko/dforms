@@ -24,6 +24,14 @@ public interface FormOperations extends DefaultOperations<FormDTO> {
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),
             @Breadcrumbs.Item(label = "Forms", url = "/form"),
+            @Breadcrumbs.Item(label = "Preview '{itemId}'")
+    })
+    @GetMapping("/{primaryId}/preview")
+    ModelAndView preview(@PathVariable("primaryId") String primaryId, RedirectAttributes attributes);
+
+    @Breadcrumbs({
+            @Breadcrumbs.Item(label = "Home", url = "/"),
+            @Breadcrumbs.Item(label = "Forms", url = "/form"),
             @Breadcrumbs.Item(label = "Modify '{itemId}'")
     })
     @GetMapping("/{itemId}/modify")

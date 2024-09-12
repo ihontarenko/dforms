@@ -1,6 +1,6 @@
 package df.base.common.libs.sel.parser;
 
-import df.base.common.libs.parser.token.Token;
+import df.base.common.libs.ast.token.Token;
 
 public enum SELToken implements Token {
 

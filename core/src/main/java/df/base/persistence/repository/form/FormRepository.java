@@ -1,5 +1,6 @@
 package df.base.persistence.repository.form;
 
+import df.base.common.extensions.persistence.entity_graph.JpaEntityGraph;
 import df.base.persistence.entity.form.Form;
 import df.base.persistence.entity.user.User;
 import df.base.persistence.support.EntityGraphConstants;
@@ -11,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FormRepository extends JpaRepository<Form, String> {
@@ -18,6 +20,8 @@ public interface FormRepository extends JpaRepository<Form, String> {
     @EntityGraph(EntityGraphConstants.FORM_WITH_USER)
     @Override
     List<Form> findAll();
+
+    Optional<Form> findById(String id, JpaEntityGraph entityGraph);
 
     boolean existsByIdAndUser(String id, User user);
 

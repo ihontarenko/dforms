@@ -1,11 +1,13 @@
 package df.web.controller.form;
 
+import df.base.common.elements.NodeContext;
+import df.base.dto.form.FormDTO;
+import df.base.mapping.form.DeepFormMapper;
+import df.base.mapping.form.FormMapper;
 import df.base.persistence.entity.form.Form;
 import df.base.persistence.entity.support.FormStatus;
-import df.base.mapping.form.FormMapper;
-import df.base.dto.form.FormDTO;
-import df.base.security.UserInfo;
 import df.base.persistence.exception.JpaResourceNotFoundException;
+import df.base.security.UserInfo;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
@@ -33,10 +35,14 @@ public class FormController implements FormOperations {
 
     private final FormService      formService;
     private final ControllerHelper controllerHelper;
+    private final NodeContext      nodeContext;
+    private final DeepFormMapper   mapper;
 
-    public FormController(FormService formService, ControllerHelper controllerHelper) {
+    public FormController(FormService formService, ControllerHelper controllerHelper, NodeContext nodeContext, DeepFormMapper mapper) {
         this.formService = formService;
         this.controllerHelper = controllerHelper;
+        this.nodeContext = nodeContext;
+        this.mapper = mapper;
 
         formService.setRedirectUrl(MAVConstants.REDIRECT_FORM);
         controllerHelper.setRedirectUrl(MAVConstants.REDIRECT_FORM);
@@ -51,6 +57,19 @@ public class FormController implements FormOperations {
         bindAttributes(new FormDTO() {{
             setOwnerId(((UserInfo) authentication.getPrincipal()).getUser().getId());
         }});
+
+        return controllerHelper.resolveWithoutRedirect();
+    }
+
+    @Override
+    public ModelAndView preview(String primaryId, RedirectAttributes attributes) {
+        controllerHelper.setViewName(MAVConstants.VIEW_FORM_PREVIEW);
+
+        Form    formEntity = formService.loadFormWithFields(primaryId);
+        FormDTO formDTO    = mapper.map(formEntity);
+
+        controllerHelper.attribute("form", formEntity);
+        controllerHelper.attribute("generatedHtml",null);
 
         return controllerHelper.resolveWithoutRedirect();
     }
@@ -98,20 +117,16 @@ public class FormController implements FormOperations {
 
         if (result.isPresent()) {
             formService.delete(result.get());
-            controllerHelper.addMessage(error(SUCCESS_FORM_DELETED
-                    .formatted(itemId)));
+            controllerHelper.addMessage(error(SUCCESS_FORM_DELETED.formatted(itemId)));
         } else {
-            controllerHelper.addMessage(warning(ERROR_FORM_NOT_FOUND
-                    .formatted(itemId)));
+            controllerHelper.addMessage(warning(ERROR_FORM_NOT_FOUND.formatted(itemId)));
         }
 
         return controllerHelper.redirect();
     }
 
     @Override
-    public ModelAndView status(@PathVariable("itemId") String itemId,
-                               @PathVariable("status") String status,
-                               RedirectAttributes attributes) {
+    public ModelAndView status(@PathVariable("itemId") String itemId, @PathVariable("status") String status, RedirectAttributes attributes) {
         Optional<Form> result = formService.getById(itemId);
         controllerHelper.setRedirectAttributes(attributes);
 
@@ -123,12 +138,10 @@ public class FormController implements FormOperations {
                 put(FormStatus.DELETED, FlashMessage::error);
             }};
             formService.changeStatus(result.get(), formStatus);
-            controllerHelper.addMessage(messages.get(formStatus).apply(
-                    SUCCESS_FORM_STATUS_CHANGED
-                            .formatted(itemId, formStatus)));
+            controllerHelper.addMessage(
+                    messages.get(formStatus).apply(SUCCESS_FORM_STATUS_CHANGED.formatted(itemId, formStatus)));
         } else {
-            controllerHelper.addMessage(error(ERROR_FORM_NOT_FOUND
-                    .formatted(itemId)));
+            controllerHelper.addMessage(error(ERROR_FORM_NOT_FOUND.formatted(itemId)));
         }
 
         return controllerHelper.redirect();
