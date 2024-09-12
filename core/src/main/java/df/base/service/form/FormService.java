@@ -1,5 +1,6 @@
 package df.base.service.form;
 
+import df.base.common.extensions.persistence.entity_graph.JpaEntityGraph;
 import df.base.dto.form.FormDTO;
 import df.base.mapping.form.FormMapper;
 import df.base.persistence.entity.form.Field;
@@ -42,8 +43,11 @@ public class FormService implements RedirectAware {
 
     @Transactional(readOnly = true)
     public Form loadFormWithFields(String formId) {
-        Optional<Form> optionalForm = repository.findById(formId, fetch(
-                "fields", "fields.configs", "fields.attributes", "fields.options", "fields.children"));
+        JpaEntityGraph entityGraph  = fetch("fields", "fields.configs", "fields.attributes", "fields.options",
+                                            "fields.children", "fields.children.configs", "fields.children.attributes",
+                                            "fields.children.options");
+        Optional<Form> optionalForm = repository.findById(formId, entityGraph);
+
         return optionalForm.orElseThrow(()
             -> new JpaResourceNotFoundException(ERROR_FORM_NOT_FOUND.formatted(formId)));
     }
@@ -138,7 +142,7 @@ public class FormService implements RedirectAware {
                     ERROR_SEQUENCE_ORDER_NOT_FOUND.formatted("form", "field", formId, fieldId));
         }
 
-        newIndex = min(max(newIndex, 0), fields.size());
+        newIndex = min(max(newIndex - 1, 0), fields.size());
 
         fields.add(newIndex, fields.remove(oldIndex.intValue()));
         fields.removeIf(Objects::isNull);

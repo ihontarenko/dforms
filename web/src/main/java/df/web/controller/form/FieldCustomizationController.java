@@ -8,9 +8,9 @@ import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldConfigDTO;
 import df.base.dto.form.FieldDTO;
 import df.base.dto.form.FieldOptionDTO;
+import df.base.mapping.form.DeepFieldMapper;
 import df.base.mapping.form.FieldAttributeMapper;
 import df.base.mapping.form.FieldConfigMapper;
-import df.base.mapping.form.FieldMapper;
 import df.base.mapping.form.FieldOptionMapper;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.exception.JpaResourceNotFoundException;
@@ -28,7 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static df.base.Messages.*;
-import static df.web.common.flash.FlashMessage.*;
+import static df.web.common.flash.FlashMessage.primary;
+import static df.web.common.flash.FlashMessage.success;
 import static df.web.controller.MAVConstants.REDIRECT_FIELD_CUSTOMIZATION;
 
 @Controller
@@ -36,13 +37,13 @@ public class FieldCustomizationController implements FieldCustomizationOperation
 
     private final ControllerHelper      helper;
     private final FieldService          service;
-    private final FieldMapper           mapper;
+    private final DeepFieldMapper       mapper;
     private final FieldConfigService    configService;
     private final FieldAttributeService attributeService;
     private final FieldOptionService    optionService;
 
     public FieldCustomizationController(
-            ControllerHelper helper, FieldService service, FieldMapper mapper,
+            ControllerHelper helper, FieldService service, DeepFieldMapper mapper,
             FieldConfigService configService, FieldAttributeService attributeService, FieldOptionService optionService) {
         this.helper = helper;
         this.service = service;

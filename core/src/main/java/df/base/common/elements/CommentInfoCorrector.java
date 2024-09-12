@@ -10,7 +10,6 @@ public class CommentInfoCorrector implements Corrector{
     public void accept(Node node) {
         node.insertBefore(new CommentNode("OPEN: [%s]".formatted(node)));
         node.insertAfter(new CommentNode("CLOSE: [%s]".formatted(node)));
-        node.addAttribute("data-generator-time", Instant.now().toString());
     }
 
 }

@@ -3,11 +3,15 @@ package df.base.mapping.form;
 import df.base.common.support.Mapper;
 import df.base.dto.form.FieldDTO;
 import df.base.persistence.entity.form.Field;
+import df.base.persistence.entity.support.ElementType;
+import df.base.persistence.entity.support.UsageType;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
 
+import static df.base.persistence.entity.support.ElementType.NONE;
+import static df.base.persistence.entity.support.UsageType.VIRTUAL;
 import static java.util.Optional.ofNullable;
 
 @Service
@@ -56,11 +60,10 @@ public class DeepFieldMapper implements Mapper<Field, FieldDTO> {
         ofNullable(source.getOptions()).ifPresent(options
             -> options.stream().map(optionMapper::map).forEach(destination::addOption));
 
-        ofNullable(source.getChildren()).ifPresent(children
-                -> children.stream().peek(NULL_RELATED).map(new FieldMapper()::map).forEach(destination::addChild));
-
-        ofNullable(source.getParents()).ifPresent(parents
-                -> parents.stream().peek(NULL_RELATED).map(new FieldMapper()::map).forEach(destination::addParent));
+        if (source.getElementType() == NONE || source.getUsageType() == VIRTUAL) {
+            ofNullable(source.getChildren()).ifPresent(children
+                -> children.stream().peek(NULL_RELATED).map(this::map).forEach(destination::addChild));
+        }
     }
 
     @Override
@@ -68,13 +71,13 @@ public class DeepFieldMapper implements Mapper<Field, FieldDTO> {
         new FieldMapper().reverse(source, destination);
 
         ofNullable(source.getConfigs()).ifPresent(configs
-                -> configs.values().stream().map(configMapper::reverse).forEach(destination::addConfig));
+                -> configs.stream().map(configMapper::reverse).forEach(destination::addConfig));
 
         ofNullable(source.getAttributes()).ifPresent(attributes
-                -> attributes.values().stream().map(attributeMapper::reverse).forEach(destination::addAttribute));
+                -> attributes.stream().map(attributeMapper::reverse).forEach(destination::addAttribute));
 
         ofNullable(source.getOptions()).ifPresent(options
-                -> options.values().stream().map(optionMapper::reverse).forEach(destination::addOption));
+                -> options.stream().map(optionMapper::reverse).forEach(destination::addOption));
 
         ofNullable(source.getChildren()).ifPresent(children
                 -> children.values().stream().map(new FieldMapper()::reverse).forEach(destination::addChild));

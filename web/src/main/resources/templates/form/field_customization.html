@@ -54,8 +54,7 @@
     </thead>
     <tbody>
     {% set elements = section == 'config' ? field.configs : section == 'attribute' ? field.attributes : field.options %}
-    {% for entry in elements %}
-    {% set item = entry.value %}
+    {% for item in elements %}
     <tr>
         <th scope="row">{{ item.id }}</th>
         <td>

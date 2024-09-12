@@ -12,7 +12,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
@@ -82,13 +84,13 @@ public class FieldDTO implements DTO {
     private Map<String, FieldDTO> children = new HashMap<>();
 
     @Valid
-    private Map<@Valid String, @Valid FieldOptionDTO> options = new HashMap<>();
+    private List<FieldOptionDTO> options = new ArrayList<>();
 
     @Valid
-    private Map<@Valid String, @Valid FieldAttributeDTO> attributes = new HashMap<>();
+    private List<FieldAttributeDTO> attributes = new ArrayList<>();
 
     @Valid
-    private Map<@Valid String, @Valid FieldConfigDTO> configs = new HashMap<>();
+    private List<FieldConfigDTO> configs = new ArrayList<>();
 
     public String id() {
         return id;
@@ -170,40 +172,40 @@ public class FieldDTO implements DTO {
         children.put(child.id(), child);
     }
 
-    public Map<String, FieldOptionDTO> getOptions() {
+    public List<FieldOptionDTO> getOptions() {
         return options;
     }
 
-    public void setOptions(Map<String, FieldOptionDTO> options) {
+    public void setOptions(List<FieldOptionDTO> options) {
         this.options = options;
     }
 
     public void addOption(FieldOptionDTO option) {
-        options.put(option.id(), option);
+        options.add(option);
     }
 
-    public Map<String, FieldAttributeDTO> getAttributes() {
+    public List<FieldAttributeDTO> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(Map<String, FieldAttributeDTO> attributes) {
+    public void setAttributes(List<FieldAttributeDTO> attributes) {
         this.attributes = attributes;
     }
 
     public void addAttribute(FieldAttributeDTO attribute) {
-        attributes.put(attribute.id(), attribute);
+        attributes.add(attribute);
     }
 
-    public Map<String, FieldConfigDTO> getConfigs() {
+    public List<FieldConfigDTO> getConfigs() {
         return configs;
     }
 
-    public void setConfigs(Map<String, FieldConfigDTO> configs) {
+    public void setConfigs(List<FieldConfigDTO> configs) {
         this.configs = configs;
     }
 
     public void addConfig(FieldConfigDTO config) {
-        configs.put(config.id(), config);
+        configs.add(config);
     }
 }
 

@@ -38,7 +38,7 @@ public class DeepFormMapper implements Mapper<Form, FormDTO> {
     @Override
     public void reverse(FormDTO source, Form destination) {
         new FormMapper().reverse(source, destination);
-        ofNullable(source.getFields()).ifPresent(fields -> fields.values().stream().map(new DeepFieldMapper()::reverse)
+        ofNullable(source.getFields()).ifPresent(fields -> fields.stream().map(new DeepFieldMapper()::reverse)
                 .forEach(destination::addField));
     }
 
