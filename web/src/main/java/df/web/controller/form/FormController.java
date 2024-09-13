@@ -2,8 +2,8 @@ package df.web.controller.form;
 
 import df.base.common.elements.Node;
 import df.base.common.elements.NodeContext;
-import df.base.common.elements.builder.Builder;
-import df.base.common.elements.builder.BuilderContext;
+import df.base.common.elements.builder.NodeBuilder;
+import df.base.common.elements.builder.NodeBuilderContext;
 import df.base.dto.form.FormDTO;
 import df.base.html.builder.AbstractBuilderStrategy;
 import df.base.html.builder.bootstrap.BootstrapBuilderStrategy;
@@ -41,15 +41,15 @@ public class FormController implements FormOperations {
     private final FormService      formService;
     private final ControllerHelper controllerHelper;
     private final NodeContext      nodeContext;
-    private final DeepFormMapper   mapper;
-    private final BuilderContext   builderContext;
+    private final DeepFormMapper     mapper;
+    private final NodeBuilderContext builderContext;
 
     public FormController(FormService formService, ControllerHelper controllerHelper, NodeContext nodeContext, DeepFormMapper mapper) {
         this.formService = formService;
         this.controllerHelper = controllerHelper;
         this.nodeContext = nodeContext;
         this.mapper = mapper;
-        this.builderContext = new BuilderContext();
+        this.builderContext = new NodeBuilderContext();
 
         this.builderContext.setStrategy(new BootstrapBuilderStrategy());
 
@@ -75,7 +75,7 @@ public class FormController implements FormOperations {
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_PREVIEW);
 
         AbstractBuilderStrategy strategy   = (AbstractBuilderStrategy) this.builderContext.getStrategy();
-        Builder<FormDTO>        builder    = strategy.getBuilder(FormDTO.class);
+        NodeBuilder<FormDTO>    builder    = strategy.getBuilder(FormDTO.class);
         Form                    formEntity = formService.loadFormWithFields(primaryId);
         FormDTO                 formDTO    = mapper.map(formEntity);
         Node                    root       = builder.build(formDTO, this.builderContext);

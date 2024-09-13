@@ -5,7 +5,7 @@ import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
-public class BuilderContext {
+public class NodeBuilderContext {
 
     private final Map<Object, Object> attributes = new HashMap<>();
 
@@ -27,12 +27,12 @@ public class BuilderContext {
         attributes.put(key, value);
     }
 
-    public BuilderStrategy getStrategy() {
-        return requireNonNull(this.getAttribute(BuilderStrategy.class));
+    public NodeBuilderStrategy getStrategy() {
+        return requireNonNull(this.getAttribute(NodeBuilderStrategy.class));
     }
 
-    public void setStrategy(BuilderStrategy strategy) {
-        this.setAttribute(BuilderStrategy.class, strategy);
+    public void setStrategy(NodeBuilderStrategy strategy) {
+        this.setAttribute(NodeBuilderStrategy.class, strategy);
     }
 
 }

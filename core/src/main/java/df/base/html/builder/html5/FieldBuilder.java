@@ -2,18 +2,18 @@ package df.base.html.builder.html5;
 
 import df.base.common.elements.Node;
 import df.base.common.elements.TagName;
-import df.base.common.elements.builder.Builder;
-import df.base.common.elements.builder.BuilderContext;
+import df.base.common.elements.builder.NodeBuilder;
+import df.base.common.elements.builder.NodeBuilderContext;
 import df.base.common.elements.node.ElementNode;
 import df.base.common.elements.node.TextNode;
 import df.base.dto.form.FieldDTO;
 import df.base.dto.form.FieldOptionDTO;
 import df.base.persistence.entity.support.ElementType;
 
-public class FieldBuilder implements Builder<FieldDTO> {
+public class FieldBuilder implements NodeBuilder<FieldDTO> {
 
     @Override
-    public Node build(FieldDTO fieldDTO, BuilderContext ctx) {
+    public Node build(FieldDTO fieldDTO, NodeBuilderContext ctx) {
         ElementType elementType = ElementType.valueOf(fieldDTO.getElementType());
 
         Node root = switch (elementType) {

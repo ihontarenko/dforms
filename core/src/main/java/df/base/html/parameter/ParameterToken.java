@@ -1,4 +1,4 @@
-package df.base.html.builder.parameters;
+package df.base.html.parameter;
 
 import df.base.common.libs.ast.token.Token;
 

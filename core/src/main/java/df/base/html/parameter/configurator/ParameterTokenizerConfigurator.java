@@ -1,4 +1,4 @@
-package df.base.html.builder.parameters;
+package df.base.html.parameter.configurator;
 
 import df.base.common.libs.ast.configurer.Configurator;
 import df.base.common.libs.ast.recognizer.PatternTokenRecognizer;
@@ -6,9 +6,9 @@ import df.base.common.libs.ast.token.Tokenizer;
 import df.base.common.libs.ast.token.TokenizerConfigurator;
 import df.base.common.libs.ast.token.TokenizerPattern;
 
-import static df.base.html.builder.parameters.ParameterToken.T_CONFIG_PARAMETER_SCOPE;
+import static df.base.html.parameter.ParameterToken.T_CONFIG_PARAMETER_SCOPE;
 
-public class TokenizerSetup implements Configurator<Tokenizer> {
+public class ParameterTokenizerConfigurator implements Configurator<Tokenizer> {
 
     public static final String SCOPE_REGEX = "\\@\\w+";
 
@@ -17,7 +17,7 @@ public class TokenizerSetup implements Configurator<Tokenizer> {
         new TokenizerConfigurator().configure(tokenizer);
 
         tokenizer.addPattern(new TokenizerPattern(SCOPE_REGEX, 100));
-        tokenizer.addRecognizer(new PatternTokenRecognizer(SCOPE_REGEX, T_CONFIG_PARAMETER_SCOPE, 100));
+        tokenizer.addRecognizer(new PatternTokenRecognizer(SCOPE_REGEX, T_CONFIG_PARAMETER_SCOPE, 7000));
     }
 
 }
