@@ -41,7 +41,7 @@ public class RoutePathGenerator {
         });
     }
 
-    public String getUrlFor(Class<?> controllerClass, String methodName, Map<String, Object> params) {
+    public String getUrlFor(Class<?> controllerClass, String methodName, Map<String, Object> parameters) {
         String key = getCacheKey(controllerClass, methodName);
         String url = routeCache.get(key);
 
@@ -49,7 +49,7 @@ public class RoutePathGenerator {
             throw new IllegalArgumentException("ROUTE NOT FOUND FOR %s".formatted(key));
         }
 
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
+        for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             url = url.replace(PLACEHOLDER.formatted(entry.getKey()), entry.getValue().toString());
         }
 

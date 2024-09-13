@@ -3,7 +3,7 @@ package df.base.dto.form;
 import df.base.common.support.jpa.JpaCriteria;
 import df.base.common.validation.jakarta.Fields;
 import df.base.common.validation.jakarta.constraint.JpaResource;
-import df.base.dto.SlaveDTO;
+import df.base.dto.NestedKeyValue;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.form.FieldOption;
 import df.base.validation.groups.Operations;
@@ -95,7 +95,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 predicate = "!#result.empty"
         ),
 })
-public class FieldOptionDTO implements DTO, SlaveDTO {
+public class FieldOptionDTO implements DTO, NestedKeyValue {
 
     @Size(max = 32, groups = Operations.Secondary.class)
     private String id;

@@ -1,6 +1,6 @@
 package df.base.dto;
 
-public interface SlaveDTO extends DTO {
+public interface NestedKeyValue extends DTO {
 
     String getPrimaryId();
 
@@ -8,7 +8,7 @@ public interface SlaveDTO extends DTO {
 
     String getValue();
 
-    record Simple(String id, String key, String value, String primaryId) implements SlaveDTO {
+    record Simple(String id, String key, String value, String primaryId) implements NestedKeyValue {
 
         @Override
         public String getPrimaryId() {

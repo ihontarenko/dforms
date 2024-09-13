@@ -1,7 +1,7 @@
 package df.base.dto.form;
 
 import df.base.common.support.jpa.JpaCriteria;
-import df.base.dto.DTO;
+import df.base.dto.NestedKeyValue;
 import df.base.persistence.entity.form.Form;
 import df.base.persistence.entity.form.FormConfig;
 import df.base.common.validation.jakarta.Fields;
@@ -89,7 +89,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 predicate = "!#result.empty"
         ),
 })
-public class FormConfigDTO implements DTO {
+public class FormConfigDTO implements NestedKeyValue {
 
     private String id;
 
@@ -135,5 +135,20 @@ public class FormConfigDTO implements DTO {
 
     public void setConfigValue(String configValue) {
         this.configValue = configValue;
+    }
+
+    @Override
+    public String getPrimaryId() {
+        return getFormId();
+    }
+
+    @Override
+    public String getKey() {
+        return getConfigName();
+    }
+
+    @Override
+    public String getValue() {
+        return getConfigValue();
     }
 }

@@ -1,16 +1,15 @@
-package df.base.parameter;
+package df.base.common.parameter.parsing;
 
 import df.base.common.libs.ast.lexer.Lexer;
-import df.base.common.libs.ast.node.Node;
 import df.base.common.libs.ast.parser.Parser;
 import df.base.common.libs.ast.parser.ParserContext;
 import df.base.common.libs.ast.token.Tokenizer;
-import df.base.parameter.ast.ParameterNode;
-import df.base.parameter.configurator.ParameterParserConfigurator;
-import df.base.parameter.configurator.ParameterTokenizerConfigurator;
-import df.base.parameter.parser.ScopeNameParser;
+import df.base.common.parameter.parsing.ast.ParameterNode;
+import df.base.common.parameter.parsing.configurator.ParameterParserConfigurator;
+import df.base.common.parameter.parsing.configurator.ParameterTokenizerConfigurator;
+import df.base.common.parameter.parsing.parser.ScopeNameParser;
 
-import static df.base.parameter.ParameterToken.T_CONFIG_PARAMETER_SCOPE;
+import static df.base.common.parameter.parsing.ParameterToken.T_CONFIG_PARAMETER_SCOPE;
 
 public class Demo {
 

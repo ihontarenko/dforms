@@ -4,9 +4,7 @@ import df.base.common.elements.Node;
 import df.base.common.elements.NodeType;
 import df.base.common.elements.TagName;
 
-import javax.lang.model.element.Element;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

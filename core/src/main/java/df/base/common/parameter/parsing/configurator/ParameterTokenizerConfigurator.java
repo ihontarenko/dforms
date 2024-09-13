@@ -1,11 +1,11 @@
-package df.base.parameter.configurator;
+package df.base.common.parameter.parsing.configurator;
 
 import df.base.common.libs.ast.configurer.Configurator;
 import df.base.common.libs.ast.recognizer.PatternTokenRecognizer;
 import df.base.common.libs.ast.token.Tokenizer;
 import df.base.common.libs.ast.token.TokenizerConfigurator;
 import df.base.common.libs.ast.token.TokenizerPattern;
-import df.base.parameter.ParameterToken;
+import df.base.common.parameter.parsing.ParameterToken;
 
 public class ParameterTokenizerConfigurator implements Configurator<Tokenizer> {
 

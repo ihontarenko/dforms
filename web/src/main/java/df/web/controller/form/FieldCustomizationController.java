@@ -3,7 +3,7 @@ package df.web.controller.form;
 import df.base.common.specification.SpecificationContext;
 import df.base.common.specification.SpecificationRunner;
 import df.base.common.validation.custom.ValidationContext;
-import df.base.dto.SlaveDTO;
+import df.base.dto.NestedKeyValue;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldConfigDTO;
 import df.base.dto.form.FieldDTO;
@@ -88,7 +88,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
                 default -> throw new JpaResourceNotFoundException(SUCCESS_CUSTOMIZATION_UNSUPPORTED
                         .formatted(section));
             };
-            bindAttributes((SlaveDTO) mapped, primaryId, section);
+            bindAttributes((NestedKeyValue) mapped, primaryId, section);
             mav = helper.resolveWithoutRedirect();
         } catch (Exception exception) {
             mav = helper.redirect(exception);
@@ -115,7 +115,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
         return doPerform("option", itemDTO, primaryId, result, attributes);
     }
 
-    private ModelAndView doPerform(String section, SlaveDTO itemDTO, String primaryId,
+    private ModelAndView doPerform(String section, NestedKeyValue itemDTO, String primaryId,
                                    BindingResult result, RedirectAttributes attributes) {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
@@ -185,7 +185,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
         return helper.redirect();
     }
 
-    private void bindAttributes(SlaveDTO slaveDTO, String primaryId, String section) {
+    private void bindAttributes(NestedKeyValue nestedKeyValue, String primaryId, String section) {
         Field field = service.requireById(primaryId);
         SpecificationContext context = new SpecificationContext.Builder().with("section", section)
                 .with("redirect", REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, "config")).build();
@@ -194,7 +194,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
                 field, context, new FieldSelectiveSpecification(), new FieldTypeSpecification());
 
         helper.attribute("embeddable",  service.getEmbeddableFields());
-        helper.attribute("slave",       slaveDTO);
+        helper.attribute("slave", nestedKeyValue);
         helper.attribute("field",       mapper.map(field));
         helper.attribute("section",     section);
     }
