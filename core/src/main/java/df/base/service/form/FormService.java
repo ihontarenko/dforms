@@ -142,9 +142,11 @@ public class FormService implements RedirectAware {
                     ERROR_SEQUENCE_ORDER_NOT_FOUND.formatted("form", "field", formId, fieldId));
         }
 
-        newIndex = min(max(newIndex - 1, 0), fields.size());
+        Field field = fields.remove(oldIndex.intValue());
 
-        fields.add(newIndex, fields.remove(oldIndex.intValue()));
+        newIndex = min(max(newIndex, 0), fields.size());
+
+        fields.add(newIndex, field);
         fields.removeIf(Objects::isNull);
 
         form.setFields(fields);
