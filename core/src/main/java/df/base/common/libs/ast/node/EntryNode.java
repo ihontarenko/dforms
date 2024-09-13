@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class EntryNode extends AbstractNode {
 
-    private final Token.Entry         entry;
-    private final Map<String, Object> attributes = new HashMap<>();
+    protected final Token.Entry         entry;
+    protected final Map<String, Object> attributes = new HashMap<>();
 
     public EntryNode(Token.Entry entry) {
         this.entry = entry;

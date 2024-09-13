@@ -1,4 +1,4 @@
-package df.base.configs;
+package df.base.configuration;
 
 import df.base.common.validation.custom.MessageResolver;
 import df.base.common.validation.custom.Validation;

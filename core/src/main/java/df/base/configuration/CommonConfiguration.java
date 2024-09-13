@@ -1,4 +1,4 @@
-package df.base.configs;
+package df.base.configuration;
 
 import df.base.Constants;
 import df.base.common.elements.NodeContext;

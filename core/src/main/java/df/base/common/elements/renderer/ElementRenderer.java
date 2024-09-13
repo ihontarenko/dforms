@@ -4,7 +4,6 @@ import df.base.common.elements.Node;
 import df.base.common.elements.NodeContext;
 import df.base.common.elements.NodeType;
 import df.base.common.elements.Renderer;
-import df.base.common.elements.node.TextNode;
 
 import java.util.ConcurrentModificationException;
 import java.util.Map;

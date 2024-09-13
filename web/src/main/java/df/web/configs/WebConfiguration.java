@@ -1,7 +1,7 @@
 package df.web.configs;
 
 import df.base.common.extensions.spring.resource.ContentHashVersionStrategy;
-import df.base.configs.CommonConfiguration;
+import df.base.configuration.CommonConfiguration;
 import df.base.property.ApplicationProperties;
 import df.web.common.pebble.PebbleExtension;
 import jakarta.servlet.http.HttpServletRequest;

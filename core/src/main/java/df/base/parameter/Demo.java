@@ -1,16 +1,16 @@
-package df.base.html.parameter;
+package df.base.parameter;
 
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.node.Node;
 import df.base.common.libs.ast.parser.Parser;
 import df.base.common.libs.ast.parser.ParserContext;
 import df.base.common.libs.ast.token.Tokenizer;
-import df.base.html.parameter.ast.ParameterNode;
-import df.base.html.parameter.configurator.ParameterParserConfigurator;
-import df.base.html.parameter.configurator.ParameterTokenizerConfigurator;
-import df.base.html.parameter.parser.ScopeNameParser;
+import df.base.parameter.ast.ParameterNode;
+import df.base.parameter.configurator.ParameterParserConfigurator;
+import df.base.parameter.configurator.ParameterTokenizerConfigurator;
+import df.base.parameter.parser.ScopeNameParser;
 
-import static df.base.html.parameter.ParameterToken.T_CONFIG_PARAMETER_SCOPE;
+import static df.base.parameter.ParameterToken.T_CONFIG_PARAMETER_SCOPE;
 
 public class Demo {
 
@@ -27,13 +27,11 @@ public class Demo {
         // make sure we start parsing with the correct token
         parser.ensureCurrent(lexer, T_CONFIG_PARAMETER_SCOPE);
 
-        Node  root  = new ParameterNode(lexer.current());
+        ParameterNode root = new ParameterNode(lexer.current());
 
         parser.parse(lexer, root, context);
 
-        System.out.println(
-                root
-        );
+        System.out.println(root);
     }
 
 }
