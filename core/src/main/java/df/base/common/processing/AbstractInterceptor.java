@@ -2,7 +2,7 @@ package df.base.common.processing;
 
 import java.util.List;
 
-public abstract class AbstractInterceptor<C extends ProcessingContext<T>, T> implements Interceptor<C, T> {
+public abstract class AbstractInterceptor<C extends ProcessingContext, T> implements Interceptor<C, T> {
     private final List<Processor<C, T>> processors;
 
     public AbstractInterceptor(List<Processor<C, T>> processors) {

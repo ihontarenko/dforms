@@ -1,12 +1,19 @@
 package df.base.common.parameter.processor;
 
 import df.base.common.processing.AbstractProcessingContext;
-import df.base.dto.NestedKeyValue;
+import org.springframework.stereotype.Service;
 
-public class ParameterProcessingContext extends AbstractProcessingContext<NestedKeyValue> {
+import java.util.List;
 
-    public ParameterProcessingContext(NestedKeyValue target) {
-        super(target);
+@Service
+public class ParameterProcessingContext extends AbstractProcessingContext {
+
+    @Override
+    protected void initialize() {
+        addInterceptor(ParameterInterceptor.class,
+                new ParameterInterceptor(List.of(new ParameterProcessor())));
+        addInterceptor(ParametersInterceptor.class,
+                new ParametersInterceptor(List.of(new ParametersProcessor())));
     }
 
 }

@@ -4,17 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class AbstractProcessingContext<T> implements ProcessingContext<T> {
+public abstract class AbstractProcessingContext implements ProcessingContext {
 
-    private T target;
-    private final Map<Object, Object> properties = new HashMap<>();
+    private final Map<Object, Object>              properties   = new HashMap<>();
+    private final Map<Class<?>, Interceptor<?, ?>> interceptors = new HashMap<>();
 
-    public AbstractProcessingContext(T target) {
-        this.target = target;
+    public AbstractProcessingContext() {
+        initialize();
     }
 
-    public T getTarget() {
-        return target;
+    public <I extends Interceptor<?, ?>> void addInterceptor(Class<I> type, I interceptor) {
+        interceptors.put(type, interceptor);
+    }
+
+    public <I extends Interceptor<?, ?>> I getInterceptor(Class<I> type) {
+        return type.cast(interceptors.get(type));
     }
 
     @Override
@@ -41,5 +45,7 @@ public abstract class AbstractProcessingContext<T> implements ProcessingContext<
     public <R> R getProperty(Object key, Object defaultValue) {
         return (R) properties.getOrDefault(key, defaultValue);
     }
+
+    abstract protected void initialize();
 
 }

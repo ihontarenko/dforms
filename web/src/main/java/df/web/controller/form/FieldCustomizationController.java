@@ -14,6 +14,7 @@ import df.base.mapping.form.FieldConfigMapper;
 import df.base.mapping.form.FieldOptionMapper;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.exception.JpaResourceNotFoundException;
+import df.base.service.ParameterService;
 import df.base.service.form.FieldAttributeService;
 import df.base.service.form.FieldConfigService;
 import df.base.service.form.FieldOptionService;
@@ -26,6 +27,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 import static df.base.Messages.*;
 import static df.web.common.flash.FlashMessage.primary;
@@ -41,16 +44,19 @@ public class FieldCustomizationController implements FieldCustomizationOperation
     private final FieldConfigService    configService;
     private final FieldAttributeService attributeService;
     private final FieldOptionService    optionService;
+    private final ParameterService      parameterService;
 
     public FieldCustomizationController(
             ControllerHelper helper, FieldService service, DeepFieldMapper mapper,
-            FieldConfigService configService, FieldAttributeService attributeService, FieldOptionService optionService) {
+            FieldConfigService configService, FieldAttributeService attributeService, FieldOptionService optionService,
+            ParameterService parameterService) {
         this.helper = helper;
         this.service = service;
         this.mapper = mapper;
         this.configService = configService;
         this.attributeService = attributeService;
         this.optionService = optionService;
+        this.parameterService = parameterService;
     }
 
     @Override
@@ -88,6 +94,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
                 default -> throw new JpaResourceNotFoundException(SUCCESS_CUSTOMIZATION_UNSUPPORTED
                         .formatted(section));
             };
+            parameterService.processParameters(List.of((NestedKeyValue) mapped));
             bindAttributes((NestedKeyValue) mapped, primaryId, section);
             mav = helper.resolveWithoutRedirect();
         } catch (Exception exception) {

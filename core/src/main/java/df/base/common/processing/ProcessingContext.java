@@ -2,9 +2,11 @@ package df.base.common.processing;
 
 import java.util.Map;
 
-public interface ProcessingContext<T> {
+public interface ProcessingContext {
 
-    T getTarget();
+    <I extends Interceptor<?, ?>> void addInterceptor(Class<I> type, I interceptor);
+
+    <I extends Interceptor<?, ?>> I getInterceptor(Class<I> type);
 
     Map<Object, Object> getProperties();
 
