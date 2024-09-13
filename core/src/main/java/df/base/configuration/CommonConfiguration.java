@@ -5,7 +5,12 @@ import df.base.common.elements.NodeContext;
 import df.base.common.elements.RendererFactory;
 import df.base.common.i18n.Translator;
 import df.base.common.extensions.persistence.entity_graph.support.EntityGraphRepositoryFactoryBean;
+import df.base.common.libs.ast.parser.ParserContext;
+import df.base.common.libs.ast.token.Tokenizer;
 import df.base.common.validation.custom.ValidationContextArgumentResolver;
+import df.base.common.parameter.parsing.ParameterTokenizer;
+import df.base.common.parameter.parsing.configurator.ParameterParserConfigurator;
+import df.base.common.parameter.parsing.configurator.ParameterTokenizerConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -109,6 +114,22 @@ public class CommonConfiguration implements WebMvcConfigurer {
     @Bean
     public NodeContext nodeContext() {
         return new NodeContext(new RendererFactory());
+    }
+
+    @Bean
+    public Tokenizer parameterTokenizer() {
+        Tokenizer     tokenizer = new ParameterTokenizer();
+
+        new ParameterTokenizerConfigurator().configure(tokenizer);
+
+        return tokenizer;
+    }
+
+    @Bean
+    public ParserContext parameterParserContext() {
+        new ParameterParserConfigurator().configure(ParserContext.CONTEXT);
+
+        return ParserContext.CONTEXT;
     }
 
     @Override

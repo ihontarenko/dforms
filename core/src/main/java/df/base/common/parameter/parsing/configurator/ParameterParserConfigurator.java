@@ -1,8 +1,8 @@
-package df.base.parameter.configurator;
+package df.base.common.parameter.parsing.configurator;
 
 import df.base.common.libs.ast.parser.ParserContext;
 import df.base.common.libs.ast.parser.ParserContextConfigurator;
-import df.base.parameter.parser.ScopeNameParser;
+import df.base.common.parameter.parsing.parser.ScopeNameParser;
 
 public class ParameterParserConfigurator extends ParserContextConfigurator {
 
