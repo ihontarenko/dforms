@@ -18,7 +18,7 @@ public abstract class ConfigLoader {
 
     public static ConfigLoader createLoader(String file) {
         final int lastIndex = file.lastIndexOf('.');
-        FileType  fileType  = FileType.valueOf(file.substring(lastIndex).toUpperCase());
+        FileType  fileType  = FileType.valueOf(file.substring(lastIndex + 1).toUpperCase());
 
         return switch (fileType) {
             case XML -> new XML();

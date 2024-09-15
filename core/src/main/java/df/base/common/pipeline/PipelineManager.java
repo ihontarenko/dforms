@@ -3,6 +3,8 @@ package df.base.common.pipeline;
 import df.base.common.pipeline.PipelineConfig.Link;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static df.base.common.libs.jbm.ReflectionUtils.instantiate;
 import static df.base.common.libs.jbm.ReflectionUtils.setFieldValue;
@@ -18,12 +20,12 @@ public class PipelineManager {
         loadProcessors(configPath);
     }
 
-    public PipelineChain loadProcessors(String config) {
+    public void loadProcessors(String config) {
         loadProcessors(createLoader(config).load(config));
     }
 
     public void loadProcessors(PipelineConfig config) {
-        Map<String, PipelineProcessor> processors = new HashMap<>();
+        Map<String, PipelineProcessor> processorsInstances = new HashMap<>();
 
         for (PipelineConfig.Processor processorConfig : config.processors()) {
             try {
@@ -34,20 +36,25 @@ public class PipelineManager {
                     setFieldValue(processor, parameter.getKey(), parameter.getValue());
                 }
 
-                processors.put(processorConfig.name(), processor);
+                processorsInstances.put(processorConfig.name(), processor);
             } catch (Exception e) {
                 throw new PipelineException(e);
             }
         }
 
-        var links = config.links().stream().collect(toMap(Link::name, identity()));
+        Map<String, Link> mappedLinks = config.links().stream().collect(toMap(Link::name, identity()));
+        Link              currentLink = config.links().get(0);
 
+        processors.add(processorsInstances.get(currentLink.name()));
 
-
+        while (currentLink != null) {
+            processors.add(processorsInstances.get(currentLink.next()));
+            currentLink = mappedLinks.get(currentLink.next());
+        }
     }
 
-    public void linkProcessors() {
-
+    public void runPipeline(PipelineContext context) throws Exception {
+        new PipelineProcessorChain(this.processors).proceed(context);
     }
 
 }

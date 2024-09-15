@@ -4,6 +4,9 @@ import df.base.common.elements.Node;
 import df.base.common.elements.NodeContext;
 import df.base.common.elements.builder.NodeBuilder;
 import df.base.common.elements.builder.NodeBuilderContext;
+import df.base.common.pipeline.DefaultPipelineContext;
+import df.base.common.pipeline.PipelineContext;
+import df.base.common.pipeline.PipelineManager;
 import df.base.dto.form.FormDTO;
 import df.base.html.builder.AbstractBuilderStrategy;
 import df.base.html.builder.bootstrap.BootstrapBuilderStrategy;
@@ -38,9 +41,9 @@ import static df.web.common.flash.FlashMessage.*;
 @Controller
 public class FormController implements FormOperations {
 
-    private final FormService      formService;
-    private final ControllerHelper controllerHelper;
-    private final NodeContext      nodeContext;
+    private final FormService        formService;
+    private final ControllerHelper   controllerHelper;
+    private final NodeContext        nodeContext;
     private final DeepFormMapper     mapper;
     private final NodeBuilderContext builderContext;
 
@@ -81,6 +84,16 @@ public class FormController implements FormOperations {
         Node                    root       = builder.build(formDTO, this.builderContext);
 
         root.execute(NodeContext.REORDER_NODE_CORRECTOR);
+
+        PipelineContext context = new DefaultPipelineContext();
+        context.setProperty(root);
+        context.setProperty(formEntity);
+
+        try {
+            new PipelineManager("/pipeline/df-pipeline.xml").runPipeline(context);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         controllerHelper.attribute("form", formEntity);
         controllerHelper.attribute("html", root.interpret(nodeContext));

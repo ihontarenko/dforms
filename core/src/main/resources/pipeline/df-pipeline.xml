@@ -1,0 +1,28 @@
+<pipeline>
+    <processors>
+
+        <processor name="startPipeline" processor="df.base.pipeline.form.LogStartPipelineContextProcessor">
+            <parameters name="requiredFields" value="name,email"/>
+        </processor>
+
+        <processor name="formEntity" processor="df.base.pipeline.form.LogFormEntityProcessor">
+            <parameters name="requiredRole" value="ADMIN"/>
+        </processor>
+
+        <processor name="htmlNode" processor="df.base.pipeline.form.LogHtmlNodeProcessor">
+            <parameters name="repository" ref="formRepository"/>
+        </processor>
+
+        <processor name="endPipeline" processor="df.base.pipeline.form.LogEndPipelineContextProcessor">
+            <parameters name="logLevel" value="INFO"/>
+        </processor>
+
+    </processors>
+
+    <links>
+        <link name="startPipeline" next="htmlNode"/>
+        <link name="formEntity" next="endPipeline"/>
+        <link name="htmlNode" next="formEntity"/>
+    </links>
+
+</pipeline>
