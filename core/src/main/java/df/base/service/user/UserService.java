@@ -1,5 +1,6 @@
 package df.base.service.user;
 
+import df.base.common.libs.jbm.StringUtils;
 import df.base.persistence.entity.user.Role;
 import df.base.persistence.entity.user.User;
 import df.base.persistence.repository.user.UserRepository;
@@ -18,6 +19,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static df.base.Messages.ERROR_USER_NOT_FOUND;
+import static df.base.common.libs.jbm.StringUtils.hasText;
+import static java.util.Optional.empty;
 
 // todo: implement ServiceInterface
 @Service
@@ -53,14 +56,18 @@ public class UserService implements RedirectAware {
 
     @Transactional
     public User createOrUpdate(UserDTO userDTO) {
-        // todo: check getId on empty string
-        User user = repository.findById(userDTO.id())
-                .map(u -> update(u, userDTO))
-                .orElseGet(() -> create(userDTO));
+        Optional<User> optional = hasText(userDTO.id()) ? repository.findById(userDTO.id()) : empty();
+        User           userEntity;
 
-        updateUserRoles(user, userDTO);
+        if (optional.isPresent()) {
+            userEntity = update(optional.get(), userDTO);
+        } else {
+            userEntity = create(userDTO);
+        }
 
-        return user;
+        updateUserRoles(userEntity, userDTO);
+
+        return userEntity;
     }
 
     @Transactional
@@ -100,7 +107,7 @@ public class UserService implements RedirectAware {
 
     @Transactional(readOnly = true)
     public Optional<User> getById(String id) {
-        return id == null ? Optional.empty() : repository.findById(id);
+        return id == null ? empty() : repository.findById(id);
     }
 
     @Transactional(readOnly = true)

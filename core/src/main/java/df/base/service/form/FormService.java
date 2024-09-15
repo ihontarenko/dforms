@@ -27,12 +27,14 @@ import static java.lang.Math.min;
 @Service
 public class FormService implements RedirectAware {
 
-    private final FormRepository repository;
-    private final FieldService   fieldService;
-    private       String         redirectUrl;
+    private final FormRepository    repository;
+    private final FieldService      fieldService;
+    private final FormConfigService configService;
+    private       String            redirectUrl;
 
-    public FormService(FormRepository repository, FieldService fieldService) {
+    public FormService(FormRepository repository, FieldService fieldService, FormConfigService configService) {
         this.repository = repository;
+        this.configService = configService;
         this.fieldService = fieldService;
     }
 
@@ -72,6 +74,7 @@ public class FormService implements RedirectAware {
             updated = this.update(optional.get(), formDTO);
         } else {
             updated = this.create(user, formDTO);
+            this.configService.createDefaultConfigs(updated);
         }
 
         return updated;

@@ -1,12 +1,8 @@
-package df.base.common.processing;
+package df.base.common.pipeline;
 
 import java.util.Map;
 
-public interface ProcessingContext {
-
-    <I extends Interceptor<?, ?>> void addInterceptor(Class<I> type, I interceptor);
-
-    <I extends Interceptor<?, ?>> I getInterceptor(Class<I> type);
+public interface PipelineContext {
 
     Map<Object, Object> getProperties();
 
@@ -19,5 +15,9 @@ public interface ProcessingContext {
     <R> R getProperty(Object key, Object defaultValue);
 
     boolean hasProperty(Object key);
+
+    boolean isStopped();
+
+    void stopProcessing();
 
 }

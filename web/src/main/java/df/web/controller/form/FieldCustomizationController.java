@@ -94,7 +94,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
                 default -> throw new JpaResourceNotFoundException(SUCCESS_CUSTOMIZATION_UNSUPPORTED
                         .formatted(section));
             };
-            parameterService.processParameters(List.of((NestedKeyValue) mapped));
+
             bindAttributes((NestedKeyValue) mapped, primaryId, section);
             mav = helper.resolveWithoutRedirect();
         } catch (Exception exception) {
@@ -193,17 +193,22 @@ public class FieldCustomizationController implements FieldCustomizationOperation
     }
 
     private void bindAttributes(NestedKeyValue nestedKeyValue, String primaryId, String section) {
-        Field field = service.requireById(primaryId);
+        Field    fieldEntity = service.requireById(primaryId);
+        FieldDTO fieldDTO    = mapper.map(fieldEntity);
         SpecificationContext context = new SpecificationContext.Builder().with("section", section)
                 .with("redirect", REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, "config")).build();
 
         new SpecificationRunner<Field>().checkAllSatisfied(
-                field, context, new FieldSelectiveSpecification(), new FieldTypeSpecification());
+                fieldEntity, context, new FieldSelectiveSpecification(), new FieldTypeSpecification());
 
-        helper.attribute("embeddable",  service.getEmbeddableFields());
+        parameterService.processParameters(fieldDTO.getConfigs(), configService);
+        parameterService.processParameters(fieldDTO.getAttributes(), attributeService);
+        parameterService.processParameters(fieldDTO.getOptions(), optionService);
+
+        helper.attribute("embeddable", service.getEmbeddableFields());
         helper.attribute("slave", nestedKeyValue);
-        helper.attribute("field",       mapper.map(field));
-        helper.attribute("section",     section);
+        helper.attribute("field", fieldDTO);
+        helper.attribute("section", section);
     }
 
 }

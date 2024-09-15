@@ -1,25 +1,13 @@
-package df.base.common.processing;
+package df.base.common.pipeline;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class AbstractProcessingContext implements ProcessingContext {
+public class DefaultPipelineContext implements PipelineContext {
 
-    private final Map<Object, Object>              properties   = new HashMap<>();
-    private final Map<Class<?>, Interceptor<?, ?>> interceptors = new HashMap<>();
-
-    public AbstractProcessingContext() {
-        initialize();
-    }
-
-    public <I extends Interceptor<?, ?>> void addInterceptor(Class<I> type, I interceptor) {
-        interceptors.put(type, interceptor);
-    }
-
-    public <I extends Interceptor<?, ?>> I getInterceptor(Class<I> type) {
-        return type.cast(interceptors.get(type));
-    }
+    private final Map<Object, Object> properties = new HashMap<>();
+    private boolean                   stopped    = false;
 
     @Override
     public Map<Object, Object> getProperties() {
@@ -51,6 +39,14 @@ public abstract class AbstractProcessingContext implements ProcessingContext {
         return properties.containsKey(key);
     }
 
-    abstract protected void initialize();
+    @Override
+    public boolean isStopped() {
+        return stopped;
+    }
+
+    @Override
+    public void stopProcessing() {
+        this.stopped = true;
+    }
 
 }

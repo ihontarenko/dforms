@@ -15,9 +15,10 @@ public class ParameterService {
         this.processingContext = processingContext;
     }
 
-    public void processParameters(Iterable<NestedKeyValue> values) {
+    public void processParameters(Iterable<? extends NestedKeyValue> values, CommonService<?, ?, ?> service) {
+        processingContext.setProperty(service);
         processingContext.getInterceptor(ParametersInterceptor.class)
-                .intercept(values, (ParameterProcessingContext) processingContext);
+                .intercept((Iterable<NestedKeyValue>) values, (ParameterProcessingContext) processingContext);
     }
 
 }

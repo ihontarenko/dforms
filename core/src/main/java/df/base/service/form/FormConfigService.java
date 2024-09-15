@@ -27,17 +27,22 @@ public class FormConfigService implements
     @Autowired
     private FormConfigRepository repository;
 
+    private static final String[] DEFAULT_CONFIG_KEYS = new String[] {
+            "CONFIG_FORM_ACTION",
+            "CONFIG_FORM_METHOD",
+    };
+
     private String redirectUrl;
 
     @Transactional
     public FormConfig create(Form form, FormConfigDTO formConfigDTO) {
-        FormConfig formConfig = new FormConfig();
+        FormConfig config = new FormConfig();
 
-        formConfig.setConfigName(formConfigDTO.getConfigName());
-        formConfig.setConfigValue(formConfigDTO.getConfigValue());
-        formConfig.setForm(form);
+        config.setConfigName(formConfigDTO.getConfigName());
+        config.setConfigValue(formConfigDTO.getConfigValue());
+        config.setForm(form);
 
-        return repository.save(formConfig);
+        return repository.save(config);
     }
 
     @Override
@@ -59,6 +64,15 @@ public class FormConfigService implements
             return create(form, configDTO);
         }
 
+    }
+
+    public void createDefaultConfigs(Form form) {
+        for (String defaultConfigKey : DEFAULT_CONFIG_KEYS) {
+            create(form, new FormConfigDTO(){{
+                setConfigName(defaultConfigKey);
+                setConfigValue("");
+            }});
+        }
     }
 
     @Override

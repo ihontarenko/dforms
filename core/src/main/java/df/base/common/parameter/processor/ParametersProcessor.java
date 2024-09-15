@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ParametersProcessor implements Processor<ParameterProcessingContext, Iterable<NestedKeyValue>> {
+
     @Override
     public void process(Iterable<NestedKeyValue> target, ParameterProcessingContext context) {
         for (NestedKeyValue value : target) {
