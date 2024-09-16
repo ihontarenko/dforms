@@ -22,6 +22,14 @@ public class PipelineManager {
         this.context.setProperty(RootDefinition.class, rootDefinition);
     }
 
+    public RootDefinition getRootDefinition() {
+        return rootDefinition;
+    }
+
+    public PipelineContext getContext() {
+        return context;
+    }
+
     public PipelineChain createProcessorChain(String chainName) {
         RootDefinition.Chain chainDefinition = rootDefinition.chains().get(chainName);
 

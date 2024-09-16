@@ -3,7 +3,7 @@
     <processor-chain name="default-chain" initial="pipeline-start">
         <processor-link name="pipeline-start">
             <processor class="df.base.pipeline.common.StartPipelineProcessor">
-                <parameter name="field" value="123" resolver="basic" converter="toInt" />
+                <parameter name="field" value="123" resolver="basic" />
                 <parameter name="contextClass" value="${ctx.class.name}" resolver="substitute" />
                 <parameter name="authUser" value="#auth.getUserEmail()" resolver="spel" />
             </processor>

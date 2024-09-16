@@ -1,4 +1,4 @@
-package df.base.common.processing;
+package df.base.common.interceptor;
 
 public interface Processor<C extends ProcessingContext, T> {
 

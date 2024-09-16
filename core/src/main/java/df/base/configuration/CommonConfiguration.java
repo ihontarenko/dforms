@@ -7,6 +7,8 @@ import df.base.common.i18n.Translator;
 import df.base.common.extensions.persistence.entity_graph.support.EntityGraphRepositoryFactoryBean;
 import df.base.common.libs.ast.parser.ParserContext;
 import df.base.common.libs.ast.token.Tokenizer;
+import df.base.common.pipeline.PipelineManager;
+import df.base.common.pipeline.context.DefaultPipelineContext;
 import df.base.common.validation.custom.ValidationContextArgumentResolver;
 import df.base.common.parameter.parsing.ParameterTokenizer;
 import df.base.common.parameter.parsing.configurator.ParameterParserConfigurator;
@@ -130,6 +132,11 @@ public class CommonConfiguration implements WebMvcConfigurer {
         new ParameterParserConfigurator().configure(ParserContext.CONTEXT);
 
         return ParserContext.CONTEXT;
+    }
+
+    @Bean
+    public PipelineManager pipelineManager() {
+        return new PipelineManager(new DefaultPipelineContext(), "/pipeline/pipeline-DEFAULT.xml");
     }
 
     @Override

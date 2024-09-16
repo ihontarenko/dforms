@@ -1,6 +1,6 @@
-package df.base.common.parameter.processor;
+package df.base.common.parameter.interception;
 
-import df.base.common.processing.AbstractProcessingContext;
+import df.base.common.interceptor.AbstractProcessingContext;
 import df.base.common.support.spel.SpelEvaluator;
 import org.springframework.stereotype.Service;
 

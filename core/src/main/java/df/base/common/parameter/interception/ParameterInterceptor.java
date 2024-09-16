@@ -1,7 +1,7 @@
-package df.base.common.parameter.processor;
+package df.base.common.parameter.interception;
 
-import df.base.common.processing.AbstractInterceptor;
-import df.base.common.processing.Processor;
+import df.base.common.interceptor.AbstractInterceptor;
+import df.base.common.interceptor.Processor;
 import df.base.dto.NestedKeyValue;
 
 import java.util.List;

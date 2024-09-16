@@ -1,8 +1,8 @@
 package df.base.service;
 
-import df.base.common.parameter.processor.ParameterProcessingContext;
-import df.base.common.parameter.processor.ParametersInterceptor;
-import df.base.common.processing.ProcessingContext;
+import df.base.common.parameter.interception.ParameterProcessingContext;
+import df.base.common.parameter.interception.ParametersInterceptor;
+import df.base.common.interceptor.ProcessingContext;
 import df.base.dto.NestedKeyValue;
 import org.springframework.stereotype.Service;
 
