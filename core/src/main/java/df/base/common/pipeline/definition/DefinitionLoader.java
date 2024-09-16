@@ -1,4 +1,4 @@
-package df.base.common.pipeline;
+package df.base.common.pipeline.definition;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,15 +8,15 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 import static df.base.common.resources.ResourceReader.readFileToString;
 
-public abstract class ConfigLoader {
+public abstract class DefinitionLoader {
 
-    abstract PipelineConfig load(String source);
+    abstract public RootDefinition load(String source);
 
     enum FileType {
         XML, JSON, YAML, YML, PROPERTIES
     }
 
-    public static ConfigLoader createLoader(String file) {
+    public static DefinitionLoader createLoader(String file) {
         final int lastIndex = file.lastIndexOf('.');
         FileType  fileType  = FileType.valueOf(file.substring(lastIndex + 1).toUpperCase());
 
@@ -28,45 +28,45 @@ public abstract class ConfigLoader {
         };
     }
 
-    public PipelineConfig readValue(ObjectMapper mapper, String source) {
+    public RootDefinition readValue(ObjectMapper mapper, String source) {
         try {
-            return mapper.readValue(readFileToString(source), PipelineConfig.class);
+            return mapper.readValue(readFileToString(source), RootDefinition.class);
         } catch (JsonProcessingException e) {
-            throw new PipelineConfigLoadingException(e);
+            throw new PipelineDefinitionException(e);
         }
     }
 
-    public static class XML extends ConfigLoader {
+    public static class XML extends DefinitionLoader {
 
         @Override
-        public PipelineConfig load(String source) {
+        public RootDefinition load(String source) {
             return readValue(new XmlMapper(), source);
         }
 
     }
 
-    public static class JSON extends ConfigLoader {
+    public static class JSON extends DefinitionLoader {
 
         @Override
-        public PipelineConfig load(String source) {
+        public RootDefinition load(String source) {
             return readValue(new ObjectMapper(), source);
         }
 
     }
 
-    public static class YAML extends ConfigLoader {
+    public static class YAML extends DefinitionLoader {
 
         @Override
-        public PipelineConfig load(String source) {
+        public RootDefinition load(String source) {
             return readValue(new YAMLMapper(), source);
         }
 
     }
 
-    public static class JavaProperties extends ConfigLoader {
+    public static class JavaProperties extends DefinitionLoader {
 
         @Override
-        public PipelineConfig load(String source) {
+        public RootDefinition load(String source) {
             return readValue(new JavaPropsMapper(), source);
         }
 

@@ -1,7 +1,12 @@
 package df.base.common.libs.jbm;
 
 import df.base.common.libs.jbm.bean.ObjectCreationException;
+import df.base.persistence.entity.form.Form;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
@@ -146,11 +151,20 @@ abstract public class ReflectionUtils {
         return value;
     }
 
-    public static List<Field> getObjectField(Object object, int modifiers) {
-        return getClassField(requireNonNull(object).getClass(), modifiers);
+    public static List<PropertyDescriptor> getPropertyDescriptors(Class<?> type) {
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(type);
+            return List.of(beanInfo.getPropertyDescriptors());
+        } catch (IntrospectionException e) {
+            throw new BeanReflectionException(e);
+        }
     }
 
-    public static List<Field> getClassField(Class<?> type, int modifiers) {
+    public static List<Field> getObjectFields(Object object, int modifiers) {
+        return getClassFields(requireNonNull(object).getClass(), modifiers);
+    }
+
+    public static List<Field> getClassFields(Class<?> type, int modifiers) {
         List<Field> fields = new ArrayList<>();
 
         for (Field field : type.getDeclaredFields()) {
@@ -251,6 +265,22 @@ abstract public class ReflectionUtils {
         }
 
         return staticMethods;
+    }
+
+    public static <T> T ifTypeNull(Object value, Class<T> classType) {
+        return classType.isAssignableFrom(requireNonNull(value, "Unable cast null object").getClass())
+                ? classType.cast(value) : null;
+    }
+
+    public static <T> T ifTypeOrThrow(Object object, Class<T> classType) {
+        T value = ifTypeNull(object, classType);
+
+        if (value == null) {
+            throw new BeanReflectionException("Unable cast object of type '%s' to '%s'"
+                .formatted(object.getClass(), classType));
+        }
+
+        return value;
     }
 
 }

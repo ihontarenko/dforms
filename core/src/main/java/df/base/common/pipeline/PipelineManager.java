@@ -1,60 +1,59 @@
 package df.base.common.pipeline;
 
-import df.base.common.pipeline.PipelineConfig.Link;
+import df.base.common.pipeline.definition.PipelineDefinitionException;
+import df.base.common.pipeline.definition.RootDefinition;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
-import static df.base.common.libs.jbm.ReflectionUtils.instantiate;
-import static df.base.common.libs.jbm.ReflectionUtils.setFieldValue;
-import static df.base.common.pipeline.ConfigLoader.createLoader;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
+import static df.base.common.pipeline.definition.DefinitionLoader.createLoader;
 
 public class PipelineManager {
 
-    private final List<PipelineProcessor> processors = new ArrayList<>();
+    private final Map<String, PipelineChain> chains = new HashMap<>();
+    private final RootDefinition             rootDefinition;
+    private final PipelineContext            context;
+    private final PipelineProcessorFactory   processorFactory;
 
-    public PipelineManager(String configPath) {
-        loadProcessors(configPath);
+    public PipelineManager(PipelineContext context, String definition) {
+        this.rootDefinition = createLoader(definition).load(definition);
+        this.context = context;
+        this.processorFactory = new PipelineProcessorFactory();
+        this.context.setProperty(RootDefinition.class, rootDefinition);
     }
 
-    public void loadProcessors(String config) {
-        loadProcessors(createLoader(config).load(config));
-    }
+    public PipelineChain createProcessorChain(String chainName) {
+        RootDefinition.Chain chainDefinition = rootDefinition.chains().get(chainName);
 
-    public void loadProcessors(PipelineConfig config) {
-        Map<String, PipelineProcessor> processorsInstances = new HashMap<>();
-
-        for (PipelineConfig.Processor processorConfig : config.processors()) {
-            try {
-                Class<? extends PipelineProcessor> clazz     = (Class<? extends PipelineProcessor>) Class.forName(processorConfig.processor());
-                PipelineProcessor                  processor = instantiate(clazz.getDeclaredConstructor());
-
-                for (Map.Entry<String, String> parameter : processorConfig.parameters().entrySet()) {
-                    setFieldValue(processor, parameter.getKey(), parameter.getValue());
-                }
-
-                processorsInstances.put(processorConfig.name(), processor);
-            } catch (Exception e) {
-                throw new PipelineException(e);
-            }
+        if (chainDefinition == null) {
+            throw new PipelineDefinitionException("No chain definition found: " + chainName);
         }
 
-        Map<String, Link> mappedLinks = config.links().stream().collect(toMap(Link::name, identity()));
-        Link              currentLink = config.links().get(0);
-
-        processors.add(processorsInstances.get(currentLink.name()));
-
-        while (currentLink != null) {
-            processors.add(processorsInstances.get(currentLink.next()));
-            currentLink = mappedLinks.get(currentLink.next());
+        if (chains.containsKey(chainDefinition.name())) {
+            return chains.get(chainDefinition.name());
         }
+
+        Map<String, PipelineProcessor> processors  = new HashMap<>();
+        Map<String, String>            transitions = new HashMap<>();
+
+        chainDefinition.links().forEach((linkName, linkDefinition) -> {
+            PipelineProcessor processor = processorFactory.createProcessor(linkDefinition.processor());
+
+            processors.put(linkName, processor);
+
+            linkDefinition.transitions().forEach((returnCode, nextProcessor)
+                -> transitions.put(returnCode, nextProcessor));
+        });
+
+        PipelineChain chain = new PipelineProcessorChain(processors, new Transitions(chainDefinition.initial(), transitions));
+
+        chains.put(chainDefinition.name(), chain);
+
+        return chain;
     }
 
-    public void runPipeline(PipelineContext context) throws Exception {
-        new PipelineProcessorChain(this.processors).proceed(context);
+    public void runPipeline(String chainName) throws Exception {
+        createProcessorChain(chainName).proceed(this.context);
     }
 
 }

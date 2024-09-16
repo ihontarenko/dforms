@@ -4,7 +4,7 @@ import df.base.common.elements.Node;
 import df.base.common.elements.NodeContext;
 import df.base.common.elements.builder.NodeBuilder;
 import df.base.common.elements.builder.NodeBuilderContext;
-import df.base.common.pipeline.DefaultPipelineContext;
+import df.base.common.pipeline.context.DefaultPipelineContext;
 import df.base.common.pipeline.PipelineContext;
 import df.base.common.pipeline.PipelineManager;
 import df.base.dto.form.FormDTO;
@@ -90,7 +90,7 @@ public class FormController implements FormOperations {
         context.setProperty(formEntity);
 
         try {
-            new PipelineManager("/pipeline/df-pipeline.xml").runPipeline(context);
+//            new PipelineManager(context, "/pipeline/pipeline-FORM.xml").runPipeline(context);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

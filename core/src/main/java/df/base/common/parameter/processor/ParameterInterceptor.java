@@ -10,5 +10,4 @@ public class ParameterInterceptor extends AbstractInterceptor<ParameterProcessin
     public ParameterInterceptor(List<Processor<ParameterProcessingContext, NestedKeyValue>> processors) {
         super(processors);
     }
-
 }

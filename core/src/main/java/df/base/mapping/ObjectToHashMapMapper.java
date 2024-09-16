@@ -26,7 +26,7 @@ public class ObjectToHashMapMapper implements Mapper<Object, Map<String, Object>
 
     @Override
     public void map(Object source, Map<String, Object> destination) {
-        for (Field field : ReflectionUtils.getObjectField(source, Modifier.PRIVATE)) {
+        for (Field field : ReflectionUtils.getObjectFields(source, Modifier.PRIVATE)) {
             destination.put(field.getName(), ReflectionUtils.getFieldValue(source, field));
         }
     }
