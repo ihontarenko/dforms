@@ -1,6 +1,8 @@
 package df.base.service.form;
 
 import df.base.common.extensions.persistence.entity_graph.JpaEntityGraph;
+import df.base.common.pipeline.PipelineContext;
+import df.base.common.pipeline.PipelineManager;
 import df.base.dto.form.FormDTO;
 import df.base.mapping.form.FormMapper;
 import df.base.persistence.entity.form.Field;
@@ -70,12 +72,29 @@ public class FormService implements RedirectAware {
         Optional<Form> optional = getById(formDTO.id());
         Form           updated;
 
+        PipelineManager pipelineManager = null;
+        PipelineContext context = pipelineManager.getContext();
+
+        // set args
+        context.setProperty(this);
+        context.setProperty(Optional.class, optional);
+        context.setProperty(formDTO);
+
+        try {
+            pipelineManager.runPipeline("process-form-entity");
+        } catch (Exception e) {
+
+        }
+
         if (optional.isPresent()) {
             updated = this.update(optional.get(), formDTO);
         } else {
             updated = this.create(user, formDTO);
             this.configService.createDefaultConfigs(updated);
         }
+
+
+        context.getPipelineResult();
 
         return updated;
     }

@@ -4,6 +4,7 @@ import df.base.common.libs.jbm.ReflectionUtils;
 import df.base.common.pipeline.definition.RootDefinition;
 
 import static df.base.common.libs.jbm.ReflectionUtils.instantiate;
+import static df.base.common.pipeline.Resolvers.valueOf;
 
 public class PipelineProcessorFactory {
 
@@ -28,13 +29,14 @@ public class PipelineProcessorFactory {
 
             return processor;
         } catch (Exception e) {
-            throw new ProcessorInstantiationException("Error creating processor: " + processorDefinition.className(), e);
+            throw new ProcessorInstantiationException(
+                    "Error creating processor: '%s'".formatted(processorDefinition.className()), e);
         }
     }
 
     private Object resolveParameter(RootDefinition.Parameter parameter) {
-        String resolverType = parameter.resolver();
-        Resolver resolver = resolversFactory.createResolver(Resolvers.valueOf(resolverType.toUpperCase()));
+        Resolvers resolverType = valueOf(parameter.resolver().toUpperCase());
+        Resolver  resolver     = resolversFactory.createResolver(resolverType);
         return resolver.resolve(parameter.value());
     }
 
