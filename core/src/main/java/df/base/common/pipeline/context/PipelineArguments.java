@@ -2,12 +2,16 @@ package df.base.common.pipeline.context;
 
 public interface PipelineArguments {
 
-    <T> T getArgument(String name);
+    <T> T requireArgument(Object name);
 
-    void setArgument(Object name, Object parameter);
+    <T> T getArgument(Object name);
 
-    void setArgument(Object parameter);
+    void setArgument(Object name, Object argument);
 
-    boolean hasArgument(Object key);
+    void setArgument(Object argument);
+
+    void setArguments(Object... arguments);
+
+    boolean hasArgument(Object name);
 
 }

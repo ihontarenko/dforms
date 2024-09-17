@@ -1,26 +1,20 @@
 <pipeline name="DEFAULT">
 
-    <processor-chain name="default-chain" initial="pipeline-start">
-        <processor-link name="pipeline-start">
-            <processor class="df.base.pipeline.common.StartPipelineProcessor">
-                <parameter name="field" value="123" resolver="basic" />
-                <parameter name="contextClass" value="${ctx.class.name}" resolver="substitute" />
-                <parameter name="authUser" value="#auth.getUserEmail()" resolver="spel" />
-            </processor>
-            <transition return="SINGLE_ITEM" link="single-item"/>
-            <transition return="BATCH_ITEMS" link="batch-items"/>
+    <processor-chain name="process-form-entity" initial="createOrUpdate">
+        <processor-link name="createOrUpdate">
+            <processor class="df.base.pipeline.form.FormCreateOrUpdateProcessor" />
+            <transition return="CREATE" next="createProcess" />
+            <transition return="UPDATE" next="updateProcess" />
         </processor-link>
-        <processor-link name="single-item">
-            <processor class="df.base.pipeline.common.SingleItemProcessor" />
-        </processor-link>
-        <processor-link name="batch-items">
-            <processor class="df.base.pipeline.common.BatchItemProcessor" />
+        <processor-link name="updateProcess">
+            <processor class="df.base.pipeline.form.FormUpdateProcessor" />
         </processor-link>
     </processor-chain>
 
+    <!--  Just for test  -->
     <processor-chain name="object-logging-chain">
         <processor-link name="print-object">
-            <processor class="df.base.pipeline.PrintObjectProcessor" />
+            <processor class="df.base.pipeline.common.PrintObjectProcessor" />
         </processor-link>
     </processor-chain>
 

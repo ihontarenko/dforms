@@ -1,8 +1,8 @@
 package df.base.service.form;
 
 import df.base.common.extensions.persistence.entity_graph.JpaEntityGraph;
-import df.base.common.pipeline.PipelineContext;
 import df.base.common.pipeline.PipelineManager;
+import df.base.common.pipeline.context.DefaultPipelineContext;
 import df.base.dto.form.FormDTO;
 import df.base.mapping.form.FormMapper;
 import df.base.persistence.entity.form.Field;
@@ -32,12 +32,16 @@ public class FormService implements RedirectAware {
     private final FormRepository    repository;
     private final FieldService      fieldService;
     private final FormConfigService configService;
+    private final PipelineManager   pipelineManager;
     private       String            redirectUrl;
 
-    public FormService(FormRepository repository, FieldService fieldService, FormConfigService configService) {
+    public FormService(
+            FormRepository repository, FieldService fieldService, FormConfigService configService,
+            PipelineManager pipelineManager) {
         this.repository = repository;
         this.configService = configService;
         this.fieldService = fieldService;
+        this.pipelineManager = pipelineManager;
     }
 
     @Transactional(readOnly = true)
@@ -72,31 +76,26 @@ public class FormService implements RedirectAware {
         Optional<Form> optional = getById(formDTO.id());
         Form           updated;
 
-        PipelineManager pipelineManager = null;
-        PipelineContext context = pipelineManager.getContext();
+        DefaultPipelineContext context         = (DefaultPipelineContext) pipelineManager.getContext();
 
-        // set args
-        context.setProperty(this);
-        context.setProperty(Optional.class, optional);
-        context.setProperty(formDTO);
+        context.setArgument(this);
+        context.setArgument(Optional.class, optional);
+        context.setArgument(formDTO);
 
         try {
             pipelineManager.runPipeline("process-form-entity");
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
-        if (optional.isPresent()) {
-            updated = this.update(optional.get(), formDTO);
-        } else {
-            updated = this.create(user, formDTO);
-            this.configService.createDefaultConfigs(updated);
-        }
+//        if (optional.isPresent()) {
+//            updated = this.update(optional.get(), formDTO);
+//        } else {
+//            updated = this.create(user, formDTO);
+//            this.configService.createDefaultConfigs(updated);
+//        }
 
-
-        context.getPipelineResult();
-
-        return updated;
+        return context.getReturnValue();
     }
 
     @Transactional

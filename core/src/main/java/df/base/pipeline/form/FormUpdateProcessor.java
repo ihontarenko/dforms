@@ -3,14 +3,21 @@ package df.base.pipeline.form;
 import df.base.common.pipeline.PipelineContext;
 import df.base.common.pipeline.PipelineProcessor;
 import df.base.common.pipeline.context.PipelineArguments;
+import df.base.persistence.entity.form.Form;
 
 import java.util.Optional;
 
-public class FormCreateOrUpdateProcessor implements PipelineProcessor {
+public class FormUpdateProcessor implements PipelineProcessor {
 
     @Override
     public Enum<?> process(PipelineContext context, PipelineArguments arguments) throws Exception {
-        return arguments.<Optional<?>>requireArgument(Optional.class).isPresent() ? ReturnCode.UPDATE : ReturnCode.CREATE;
+        Optional<Form> optional = arguments.getArgument(Optional.class);
+
+        if (optional.isPresent()) {
+            return ReturnCode.UPDATE;
+        }
+
+        return ReturnCode.CREATE;
     }
 
     enum ReturnCode {
