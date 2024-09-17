@@ -8,6 +8,7 @@ public interface PipelineProcessor {
         return process(context, context.getPipelineArguments());
     }
 
-    Enum<?> process(PipelineContext context, PipelineArguments arguments) throws Exception;
+    Enum<?> process(PipelineContext context, PipelineArguments arguments)
+            throws Exception;
 
 }

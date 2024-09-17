@@ -26,7 +26,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
 
                 },
                 entityClass = FormConfig.class,
-                message = "[NEW]: configuration with this key already taken",
+                message = "[NEW]: configurations with this key already taken",
                 applier = "!#hasText(id)"
         ),
         // validation for updating existing config
@@ -45,7 +45,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                                 entityField = "form.id"),
                 },
                 entityClass = FormConfig.class,
-                message = "[UPD]: configuration with this key already taken for this form",
+                message = "[UPD]: configurations with this key already taken for this form",
                 applier = "#hasText(id)"
         ),
         @JpaResource(
@@ -71,7 +71,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                                 entityField = "id")
                 },
                 entityClass = FormConfig.class,
-                message = "[UPD]: the current configuration does not belong to the requested form ID",
+                message = "[UPD]: the current configurations does not belong to the requested form ID",
                 applier = "#hasText(id) && #hasText(formId)",
                 predicate = "!#result.empty"
         ),
@@ -84,7 +84,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                                 entityField = "id")
                 },
                 entityClass = FormConfig.class,
-                message = "unable to update configuration for non-existent entry",
+                message = "unable to update configurations for non-existent entry",
                 applier = "#hasText(id)",
                 predicate = "!#result.empty"
         ),

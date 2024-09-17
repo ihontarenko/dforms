@@ -1,21 +1,69 @@
 <pipeline name="DEFAULT">
 
+    <!--  Form Entity Processing (Create, Update, Modification, etc.)  -->
     <processor-chain name="process-form-entity" initial="createOrUpdate">
+
         <processor-link name="createOrUpdate">
             <processor class="df.base.pipeline.form.FormCreateOrUpdateProcessor" />
-            <transition return="CREATE" next="createProcess" />
-            <transition return="UPDATE" next="updateProcess" />
+            <properties>
+                <configuration>
+                    <max-processor-calls>3</max-processor-calls>
+                </configuration>
+                <transition return="CREATE" link="createProcess" />
+                <transition return="UPDATE" link="updateProcess" />
+            </properties>
         </processor-link>
+
         <processor-link name="updateProcess">
             <processor class="df.base.pipeline.form.FormUpdateProcessor" />
+            <properties>
+                <configuration>
+                    <fallback>false</fallback>
+                </configuration>
+            </properties>
         </processor-link>
+
+        <processor-link name="createProcess">
+            <processor class="df.base.pipeline.form.FormCreateProcessor" />
+            <properties>
+                <transition return="POST_PERSISTENCE" link="postPersistence" />
+            </properties>
+        </processor-link>
+
+        <processor-link name="postPersistence">
+            <processor class="df.base.pipeline.form.FormPostPersistenceProcessor" />
+        </processor-link>
+
     </processor-chain>
 
-    <!--  Just for test  -->
-    <processor-chain name="object-logging-chain">
-        <processor-link name="print-object">
-            <processor class="df.base.pipeline.common.PrintObjectProcessor" />
+    <!--  Test Chain  -->
+    <processor-chain name="test-chain" initial="test3">
+
+        <processor-link name="test1">
+            <processor class="df.base.pipeline.test.Test1Processor" />
+            <properties>
+                <transition return="AA" link="test2" />
+            </properties>
         </processor-link>
+
+        <processor-link name="test2">
+            <processor class="df.base.pipeline.test.Test2Processor" />
+            <properties>
+                <transition return="BB" link="test3" />
+            </properties>
+        </processor-link>
+
+        <processor-link name="test3">
+            <processor class="df.base.pipeline.test.Test3Processor" />
+            <properties>
+                <configuration>
+                    <max-processor-calls>2</max-processor-calls>
+                </configuration>
+                <transition return="CC" link="test1" />
+            </properties>
+        </processor-link>
+
+
     </processor-chain>
 
 </pipeline>

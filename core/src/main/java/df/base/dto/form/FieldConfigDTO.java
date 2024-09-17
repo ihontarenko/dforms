@@ -76,7 +76,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                                 entityField = "id")
                 },
                 entityClass = FieldConfig.class,
-                message = "[UPD]: the current configuration does not belong to the requested field ID",
+                message = "[UPD]: the current configurations does not belong to the requested field ID",
                 applier = "#hasText(id) && #hasText(primaryId)",
                 predicate = "!#result.empty",
                 groups = Operations.Secondary.class
@@ -90,7 +90,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                                 entityField = "id")
                 },
                 entityClass = FieldConfig.class,
-                message = "unable to update configuration for non-existent entry",
+                message = "unable to update configurations for non-existent entry",
                 applier = "#hasText(id)",
                 predicate = "!#result.empty"
         ),

@@ -76,11 +76,8 @@ public class FormService implements RedirectAware {
         Optional<Form> optional = getById(formDTO.id());
         Form           updated;
 
-        DefaultPipelineContext context         = (DefaultPipelineContext) pipelineManager.getContext();
-
-        context.setArgument(this);
-        context.setArgument(Optional.class, optional);
-        context.setArgument(formDTO);
+        DefaultPipelineContext context = (DefaultPipelineContext) pipelineManager.getContext();
+        context.setArguments(this, optional, formDTO, user, configService);
 
         try {
             pipelineManager.runPipeline("process-form-entity");

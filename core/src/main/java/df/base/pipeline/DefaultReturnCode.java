@@ -1,5 +1,7 @@
 package df.base.pipeline;
 
 public enum DefaultReturnCode {
-    BATCH_ITEMS, SINGLE_ITEM
+    AA, AB, AC,
+    BA, BB, BC,
+    CA, CB, CC
 }

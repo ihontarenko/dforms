@@ -41,19 +41,23 @@ public class PipelineManager {
             return chains.get(chainDefinition.name());
         }
 
-        Map<String, PipelineProcessor> processors  = new HashMap<>();
-        Map<String, String>            transitions = new HashMap<>();
+        Map<String, PipelineProcessor>   processors = new HashMap<>();
+        Map<String, ProcessorProperties> properties = new HashMap<>();
 
         chainDefinition.links().forEach((linkName, linkDefinition) -> {
-            PipelineProcessor processor = processorFactory.createProcessor(linkDefinition.processor());
+            RootDefinition.ProcessorProperties propertiesDefinition = linkDefinition.properties();
+            PipelineProcessor                  processor            = processorFactory.createProcessor(
+                    linkDefinition.processor());
+            Map<String, String>                transitions          = propertiesDefinition == null
+                    ? new HashMap<>() : propertiesDefinition.transitions();
+            Map<String, String>                configuration        = propertiesDefinition == null
+                    ? new HashMap<>() : propertiesDefinition.configuration();
 
             processors.put(linkName, processor);
-
-            linkDefinition.transitions().forEach((returnCode, nextProcessor)
-                -> transitions.put(returnCode, nextProcessor));
+            properties.put(linkName, new ProcessorProperties(transitions, configuration));
         });
 
-        PipelineChain chain = new PipelineProcessorChain(processors, new Transitions(chainDefinition.initial(), transitions));
+        PipelineChain chain = new PipelineProcessorChain(chainDefinition.initial(), processors, properties);
 
         chains.put(chainDefinition.name(), chain);
 

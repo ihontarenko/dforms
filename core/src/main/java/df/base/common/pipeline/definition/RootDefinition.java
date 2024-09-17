@@ -18,7 +18,15 @@ public record RootDefinition(String name, Map<String, Chain> chains) {
         chains.put(chain.name(), chain);
     }
 
-    public record Chain(String name, String initial, Map<String, Link> links) {
+    public record Chain(
+            @JacksonXmlProperty(localName = "name")
+            String name,
+
+            @JacksonXmlProperty(localName = "initial")
+            String initial,
+
+            Map<String, Link> links
+    ) {
 
         public Chain {
             links = new HashMap<>();
@@ -32,25 +40,18 @@ public record RootDefinition(String name, Map<String, Chain> chains) {
     }
 
     public record Link(
+            @JacksonXmlElementWrapper(useWrapping = false)
+            @JacksonXmlProperty(localName = "name")
             String name,
 
             @JacksonXmlElementWrapper(useWrapping = false)
             @JacksonXmlProperty(localName = "processor")
             Processor processor,
 
-            Map<String, String> transitions
-    ) {
-
-        public Link {
-            transitions = new LinkedHashMap<>();
-        }
-
-        @JsonAnySetter
-        public void addTransition(String name, Transition transition) {
-            transitions.put(transition.returnCode(), transition.link());
-        }
-
-    }
+            @JacksonXmlElementWrapper(useWrapping = false)
+            @JacksonXmlProperty(localName = "properties")
+            ProcessorProperties properties
+    ) { }
 
     public record Processor(
             @JacksonXmlElementWrapper(useWrapping = false)
@@ -61,6 +62,22 @@ public record RootDefinition(String name, Map<String, Chain> chains) {
             @JacksonXmlProperty(localName = "parameter")
             List<Parameter> parameters
     ) {}
+
+    public record ProcessorProperties(
+            Map<String, String> configuration,
+            Map<String, String> transitions
+    ) {
+
+        public ProcessorProperties {
+            transitions = new LinkedHashMap<>();
+        }
+
+        @JsonAnySetter
+        public void addTransition(String name, Transition transition) {
+            transitions.put(transition.returnCode(), transition.link());
+        }
+
+    }
 
     public record Transition(
             @JacksonXmlElementWrapper(useWrapping = false)

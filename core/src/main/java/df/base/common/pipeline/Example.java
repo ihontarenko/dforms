@@ -9,7 +9,7 @@ public class Example {
 
         PipelineManager manager = new PipelineManager(ctx, "/pipeline/pipeline-DEFAULT.xml");
 
-        manager.runPipeline("default-chain");
+        manager.runPipeline("test-chain");
     }
 
 }

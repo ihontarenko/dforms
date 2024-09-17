@@ -1,23 +1,24 @@
 package df.base.common.pipeline.context;
 
 import df.base.common.pipeline.PipelineContext;
+import org.springframework.util.ClassUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.Objects.requireNonNullElse;
 
 public class DefaultPipelineContext implements PipelineContext, PipelineArguments, PipelineResult {
 
     private final Map<Object, Object> properties = new HashMap<>();
     private       boolean             stopped    = false;
     private       PipelineResult      result;
-    private       PipelineArguments   parameters;
+    private       PipelineArguments   arguments;
 
     public DefaultPipelineContext() {
         this.result = new DefaultPipelineResult();
-        this.parameters = new DefaultPipelineArguments();
+        this.arguments = new DefaultPipelineArguments();
     }
 
     @Override
@@ -32,7 +33,8 @@ public class DefaultPipelineContext implements PipelineContext, PipelineArgument
 
     @Override
     public void setProperty(Object value) {
-        setProperty(Objects.requireNonNullElse(value, new Object()).getClass(), value);
+        Class<?> classKey = ClassUtils.getUserClass(requireNonNullElse(value, new Object()).getClass());
+        setProperty(classKey, value);
     }
 
     @Override
@@ -62,12 +64,12 @@ public class DefaultPipelineContext implements PipelineContext, PipelineArgument
 
     @Override
     public PipelineArguments getPipelineArguments() {
-        return parameters;
+        return arguments;
     }
 
     @Override
     public void setPipelineArguments(PipelineArguments arguments) {
-        this.parameters = arguments;
+        this.arguments = arguments;
     }
 
     @Override
@@ -215,7 +217,7 @@ public class DefaultPipelineContext implements PipelineContext, PipelineArgument
 
         @Override
         public void setArgument(Object argument) {
-            setArgument(requireNonNull(argument).getClass(), argument);
+            setArgument(ClassUtils.getUserClass(requireNonNull(argument).getClass()), argument);
         }
 
         @Override
