@@ -39,15 +39,21 @@ public interface Node {
     }
 
     default List<Node> find(Class<?> type) {
+        return find(type, Integer.MAX_VALUE);
+    }
+
+    default List<Node> find(Class<?> type, int maxDepth) {
         List<Node>      result = new ArrayList<>();
         Predicate<Node> tester = type::isInstance;
 
         if (hasChildren()) {
             for (Node child : children()) {
-                if (tester.test(child)) {
-                    result.add(child);
+                if (maxDepth > 0) {
+                    if (tester.test(child)) {
+                        result.add(child);
+                    }
+                    result.addAll(child.find(type, maxDepth - 1));
                 }
-                result.addAll(child.find(type));
             }
         }
 

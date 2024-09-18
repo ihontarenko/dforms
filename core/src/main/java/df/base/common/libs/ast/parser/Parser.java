@@ -9,6 +9,12 @@ public interface Parser {
 
     void parse(Lexer lexer, Node parent, ParserContext context);
 
+    default void ensureNext(Lexer lexer, Token... tokens) {
+        if (!lexer.isNext(tokens)) {
+            throwSyntaxErrorException(lexer, 1, tokens);
+        }
+    }
+
     default void ensureCurrent(Lexer lexer, Token... tokens) {
         if (!lexer.isCurrent(tokens)) {
             throwSyntaxErrorException(lexer, 0, tokens);

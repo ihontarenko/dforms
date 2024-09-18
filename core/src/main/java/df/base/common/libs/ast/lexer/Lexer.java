@@ -53,6 +53,16 @@ public interface Lexer extends ListIterator<Token.Entry>, Iterable<Token.Entry> 
         return is(1, 1, tokens);
     }
 
+    default boolean moveNext(Token token) {
+        boolean isNext = isNext(token);
+
+        if (isNext) {
+            next();
+        }
+
+        return isNext;
+    }
+
     default boolean isPrevious(Token... tokens) {
         return is(1, -1, tokens);
     }
