@@ -5,7 +5,7 @@ import df.base.common.pipeline.context.PipelineResult;
 
 import java.util.Map;
 
-public interface PipelineContext {
+public interface PipelineContext extends BeanProvider, BeanProviderAware {
 
     Map<Object, Object> getProperties();
 

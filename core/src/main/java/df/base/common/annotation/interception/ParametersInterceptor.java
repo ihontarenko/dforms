@@ -1,4 +1,4 @@
-package df.base.common.parameter.interception;
+package df.base.common.annotation.interception;
 
 import df.base.common.interceptor.AbstractInterceptor;
 import df.base.common.interceptor.Processor;

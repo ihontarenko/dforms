@@ -1,13 +1,13 @@
-package df.base.common.parameter.parsing;
+package df.base.common.annotation.parsing;
 
 import df.base.common.libs.ast.lexer.AbstractLexer;
 import df.base.common.libs.ast.token.Token;
 
 import java.util.List;
 
-public class ParameterLexer extends AbstractLexer {
+public class AnnotationLexer extends AbstractLexer {
 
-    public ParameterLexer(List<Token.Entry> entries) {
+    public AnnotationLexer(List<Token.Entry> entries) {
         super(entries);
     }
 

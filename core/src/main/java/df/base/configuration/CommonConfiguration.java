@@ -10,9 +10,9 @@ import df.base.common.libs.ast.token.Tokenizer;
 import df.base.common.pipeline.PipelineManager;
 import df.base.common.pipeline.context.DefaultPipelineContext;
 import df.base.common.validation.custom.ValidationContextArgumentResolver;
-import df.base.common.parameter.parsing.ParameterTokenizer;
-import df.base.common.parameter.parsing.configurator.ParameterParserConfigurator;
-import df.base.common.parameter.parsing.configurator.ParameterTokenizerConfigurator;
+import df.base.common.annotation.parsing.AnnotationTokenizer;
+import df.base.common.annotation.parsing.configurator.AnnotationParserConfigurator;
+import df.base.common.annotation.parsing.configurator.AnnotationTokenizerConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -120,16 +120,16 @@ public class CommonConfiguration implements WebMvcConfigurer {
 
     @Bean
     public Tokenizer parameterTokenizer() {
-        Tokenizer     tokenizer = new ParameterTokenizer();
+        Tokenizer     tokenizer = new AnnotationTokenizer();
 
-        new ParameterTokenizerConfigurator().configure(tokenizer);
+        new AnnotationTokenizerConfigurator().configure(tokenizer);
 
         return tokenizer;
     }
 
     @Bean
     public ParserContext parameterParserContext() {
-        new ParameterParserConfigurator().configure(ParserContext.CONTEXT);
+        new AnnotationParserConfigurator().configure(ParserContext.CONTEXT);
 
         return ParserContext.CONTEXT;
     }

@@ -1,4 +1,4 @@
-package df.base.common.parameter.parsing.parser;
+package df.base.common.annotation.parsing.parser;
 
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.node.Node;
@@ -6,15 +6,18 @@ import df.base.common.libs.ast.parser.IdentifierParser;
 import df.base.common.libs.ast.parser.Parser;
 import df.base.common.libs.ast.parser.ParserContext;
 
-import static df.base.common.libs.ast.token.DefaultToken.T_CLOSE_BRACE;
-import static df.base.common.libs.ast.token.DefaultToken.T_OPEN_BRACE;
+import static df.base.common.libs.ast.token.DefaultToken.*;
 
-public class ScopeNameParser implements Parser {
+public class AnnotationParser implements Parser {
 
     @Override
     public void parse(Lexer lexer, Node parent, ParserContext context) {
         shift(lexer, T_OPEN_BRACE);
-        context.getParser(IdentifierParser.class).parse(lexer, parent, context);
+
+        if (lexer.isNext(T_IDENTIFIER)) {
+            context.getParser(AnnotationParameterParser.class).parse(lexer, parent, context);
+        }
+
         shift(lexer, T_CLOSE_BRACE);
     }
 

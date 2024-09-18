@@ -1,4 +1,4 @@
-package df.base.common.parameter.interception;
+package df.base.common.annotation.interception;
 
 import df.base.common.interceptor.AbstractProcessingContext;
 import df.base.common.support.spel.SpelEvaluator;

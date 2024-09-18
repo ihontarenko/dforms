@@ -1,9 +1,9 @@
-package df.base.common.parameter.parsing;
+package df.base.common.annotation.parsing;
 
 import df.base.common.libs.ast.token.DefaultTokenizer;
 import df.base.common.libs.ast.token.Token;
 
-public class ParameterTokenizer extends DefaultTokenizer {
+public class AnnotationTokenizer extends DefaultTokenizer {
 
     @Override
     public Token.Entry entry(Token token, String value, int position, int ordinal) {

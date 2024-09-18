@@ -1,5 +1,7 @@
 package df.base.common.pipeline.context;
 
+import df.base.common.pipeline.BeanProvider;
+import df.base.common.pipeline.MissingBeanProviderException;
 import df.base.common.pipeline.PipelineContext;
 import org.springframework.util.ClassUtils;
 
@@ -8,6 +10,7 @@ import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.Objects.requireNonNullElse;
+import static java.util.Optional.ofNullable;
 
 public class DefaultPipelineContext implements PipelineContext, PipelineArguments, PipelineResult {
 
@@ -15,10 +18,33 @@ public class DefaultPipelineContext implements PipelineContext, PipelineArgument
     private       boolean             stopped    = false;
     private       PipelineResult      result;
     private       PipelineArguments   arguments;
+    private       BeanProvider        beanProvider;
 
     public DefaultPipelineContext() {
+        this(null);
+    }
+
+    public DefaultPipelineContext(BeanProvider beanProvider) {
+        this.beanProvider = beanProvider;
         this.result = new DefaultPipelineResult();
         this.arguments = new DefaultPipelineArguments();
+    }
+
+    @Override
+    public void setBeanProvider(BeanProvider beanProvider) {
+        this.beanProvider = beanProvider;
+    }
+
+    @Override
+    public <T> T getBean(Class<T> beanClass) {
+        return ofNullable(beanProvider).orElseThrow(() -> new MissingBeanProviderException(
+                "The BeanProvider has not been provided in this context. Ensure it is set before usage.")).getBean(beanClass);
+    }
+
+    @Override
+    public <T> T getBean(String beanName, Class<T> beanClass) {
+        return ofNullable(beanProvider).orElseThrow(() -> new MissingBeanProviderException(
+                "The BeanProvider has not been provided in this context. Ensure it is set before usage.")).getBean(beanName, beanClass);
     }
 
     @Override

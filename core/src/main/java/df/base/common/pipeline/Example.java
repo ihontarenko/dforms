@@ -7,6 +7,8 @@ public class Example {
     public static void main(String... arguments) throws Exception {
         PipelineContext   ctx  = new DefaultPipelineContext();
 
+        ctx.setBeanProvider(new SpringBeanProvider());
+
         PipelineManager manager = new PipelineManager(ctx, "/pipeline/pipeline-DEFAULT.xml");
 
         manager.runPipeline("test-chain");
