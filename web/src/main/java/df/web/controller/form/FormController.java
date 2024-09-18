@@ -7,8 +7,10 @@ import df.base.common.elements.builder.NodeBuilder;
 import df.base.common.elements.builder.NodeBuilderContext;
 import df.base.common.elements.node.HTMLElementNode;
 import df.base.common.elements.node.InputElementNode;
-import df.base.common.pipeline.context.DefaultPipelineContext;
+import df.base.common.pipeline.PipelineManager;
+import df.base.common.pipeline.SpringBeanProvider;
 import df.base.common.pipeline.PipelineContext;
+import df.base.common.pipeline.context.PipelineResult;
 import df.base.dto.form.FormDTO;
 import df.base.html.builder.AbstractBuilderStrategy;
 import df.base.html.builder.bootstrap.BootstrapBuilderStrategy;
@@ -49,12 +51,15 @@ public class FormController implements FormOperations {
     private final NodeContext        nodeContext;
     private final DeepFormMapper     mapper;
     private final NodeBuilderContext builderContext;
+    private final PipelineManager    pipelineManager;
 
-    public FormController(FormService formService, ControllerHelper controllerHelper, NodeContext nodeContext, DeepFormMapper mapper) {
+    public FormController(FormService formService, ControllerHelper controllerHelper,
+                          NodeContext nodeContext, DeepFormMapper mapper, PipelineManager pipelineManager) {
         this.formService = formService;
         this.controllerHelper = controllerHelper;
         this.nodeContext = nodeContext;
         this.mapper = mapper;
+        this.pipelineManager = pipelineManager;
 
         this.builderContext = new NodeBuilderContext();
         this.builderContext.setStrategy(new BootstrapBuilderStrategy());
@@ -92,11 +97,23 @@ public class FormController implements FormOperations {
     public ModelAndView demo(String primaryId, RedirectAttributes attributes) {
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_DEMO);
 
-        AbstractBuilderStrategy strategy   = (AbstractBuilderStrategy) this.builderContext.getStrategy();
-        NodeBuilder<FormDTO>    builder    = strategy.getBuilder(FormDTO.class);
-        Form                    formEntity = formService.loadFormWithFields(primaryId);
-        FormDTO                 formDTO    = mapper.map(formEntity);
-        Node                    root       = builder.build(formDTO, this.builderContext);
+        AbstractBuilderStrategy strategy        = (AbstractBuilderStrategy) this.builderContext.getStrategy();
+        NodeBuilder<FormDTO>    builder         = strategy.getBuilder(FormDTO.class);
+        Form                    formEntity      = formService.loadFormWithFields(primaryId);
+        FormDTO                 formDTO         = mapper.map(formEntity);
+        Node                    root            = builder.build(formDTO, this.builderContext);
+        PipelineContext         pipelineContext = pipelineManager.getContext();
+
+        pipelineContext.setBeanProvider(new SpringBeanProvider());
+        pipelineContext.getPipelineArguments().setArgument("PRIMARY_ID", primaryId);
+
+        PipelineResult result = pipelineContext.getPipelineResult();
+
+        try {
+            pipelineManager.runPipeline("process-form-html");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         InputElementNode submit = new InputElementNode();
         submit.setClass("btn btn-sm btn-dark");
@@ -115,12 +132,9 @@ public class FormController implements FormOperations {
 
         root.execute(NodeContext.REORDER_NODE_CORRECTOR);
 
-        PipelineContext context = new DefaultPipelineContext();
-        context.setProperty(root);
-        context.setProperty(formEntity);
-
         controllerHelper.attribute("form", formEntity);
         controllerHelper.attribute("html", root.interpret(nodeContext));
+        controllerHelper.attribute("html", result.getReturnValue());
 
         return controllerHelper.resolveWithoutRedirect();
     }

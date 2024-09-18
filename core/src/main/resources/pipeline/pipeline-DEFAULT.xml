@@ -4,11 +4,36 @@
     <processor-chain name="process-form-html" initial="prepareFormEntity">
 
         <processor-link name="prepareFormEntity">
-            <processor class="df.base.pipeline.form.FormCreateOrUpdateProcessor" />
+            <processor class="df.base.pipeline.form_render.PrepareFormEntityProcessor" />
             <properties>
-                <transition return="CREATE" link="createProcess" />
-                <transition return="UPDATE" link="updateProcess" />
+                <transition return="PRE_BUILD_NODE_TREE" link="buildNodeTree" />
             </properties>
+        </processor-link>
+
+        <processor-link name="preBuildNodeTree">
+            <processor class="df.base.pipeline.form_render.PreBuildNodeTreeProcessor" />
+            <properties>
+                <transition return="POST_BUILD_DEMO" link="postBuildDemo" />
+                <transition return="POST_BUILD_PUBLIC" link="postBuildPublic" />
+            </properties>
+        </processor-link>
+
+        <processor-link name="postBuildDemo">
+            <processor class="df.base.pipeline.form_render.PostBuildDemoProcessor" />
+            <properties>
+                <transition return="RENDER_NOTE_TREE" link="renderNodeTree" />
+            </properties>
+        </processor-link>
+
+        <processor-link name="postBuildPublic">
+            <processor class="df.base.pipeline.form_render.PostBuildPublicProcessor" />
+            <properties>
+                <transition return="RENDER_NOTE_TREE" link="renderNodeTree" />
+            </properties>
+        </processor-link>
+
+        <processor-link name="renderNodeTree">
+            <processor class="df.base.pipeline.form_render.PreBuildNodeTreeProcessor" />
         </processor-link>
 
     </processor-chain>
