@@ -65,7 +65,8 @@ public record RootDefinition(String name, Map<String, Chain> chains) {
 
     public record ProcessorProperties(
             Map<String, String> configuration,
-            Map<String, String> transitions
+            Map<String, String> transitions,
+            Fallback fallback
     ) {
 
         public ProcessorProperties {
@@ -88,6 +89,8 @@ public record RootDefinition(String name, Map<String, Chain> chains) {
             @JacksonXmlProperty(localName = "link")
             String link
     ) {}
+
+    public record Fallback(String link) {}
 
     public record Parameter(
             @JacksonXmlProperty(localName = "name")

@@ -6,7 +6,8 @@ import java.util.Map;
 import static java.util.Objects.requireNonNullElseGet;
 
 public record ProcessorProperties(Map<String, String> transitions,
-                                  Map<String, String> configurations) {
+                                  Map<String, String> configurations,
+                                  String fallback) {
 
     public String configuration(Configuration parameter) {
         return (String) requireNonNullElseGet(configurations(), HashMap::new)

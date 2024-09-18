@@ -1,7 +1,5 @@
 package df.base.common.resolver;
 
-import df.base.common.pipeline.Resolvers;
-
 public class ResolversFactory {
 
     public AbstractValueResolver createResolver(Resolvers resolverType) {

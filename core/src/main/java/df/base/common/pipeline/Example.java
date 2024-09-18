@@ -10,6 +10,8 @@ public class Example {
         PipelineManager manager = new PipelineManager(ctx, "/pipeline/pipeline-DEFAULT.xml");
 
         manager.runPipeline("test-chain");
+
+        System.out.println(ctx);
     }
 
 }

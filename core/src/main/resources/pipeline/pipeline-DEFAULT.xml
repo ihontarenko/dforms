@@ -1,14 +1,24 @@
 <pipeline name="DEFAULT">
 
+    <!--  Form HTML Rendering (For Demo and Public)  -->
+    <processor-chain name="process-form-html" initial="prepareFormEntity">
+
+        <processor-link name="prepareFormEntity">
+            <processor class="df.base.pipeline.form.FormCreateOrUpdateProcessor" />
+            <properties>
+                <transition return="CREATE" link="createProcess" />
+                <transition return="UPDATE" link="updateProcess" />
+            </properties>
+        </processor-link>
+
+    </processor-chain>
+
     <!--  Form Entity Processing (Create, Update, Modification, etc.)  -->
     <processor-chain name="process-form-entity" initial="createOrUpdate">
 
         <processor-link name="createOrUpdate">
             <processor class="df.base.pipeline.form.FormCreateOrUpdateProcessor" />
             <properties>
-                <configuration>
-                    <max-processor-calls>3</max-processor-calls>
-                </configuration>
                 <transition return="CREATE" link="createProcess" />
                 <transition return="UPDATE" link="updateProcess" />
             </properties>
@@ -16,11 +26,6 @@
 
         <processor-link name="updateProcess">
             <processor class="df.base.pipeline.form.FormUpdateProcessor" />
-            <properties>
-                <configuration>
-                    <fallback>false</fallback>
-                </configuration>
-            </properties>
         </processor-link>
 
         <processor-link name="createProcess">
@@ -50,6 +55,7 @@
             <processor class="df.base.pipeline.test.Test2Processor" />
             <properties>
                 <transition return="BB" link="test3" />
+                <fallback link="test1" />
             </properties>
         </processor-link>
 

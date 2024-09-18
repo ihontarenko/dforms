@@ -85,13 +85,6 @@ public class FormService implements RedirectAware {
             e.printStackTrace();
         }
 
-//        if (optional.isPresent()) {
-//            updated = this.update(optional.get(), formDTO);
-//        } else {
-//            updated = this.create(user, formDTO);
-//            this.configService.createDefaultConfigs(updated);
-//        }
-
         return context.getReturnValue();
     }
 

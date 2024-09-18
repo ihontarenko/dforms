@@ -1,61 +1,76 @@
 package df.base.common.pipeline;
 
-import df.base.pipeline.form.FormUpdateProcessor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static df.base.common.pipeline.ProcessorProperties.Configuration.MAX_PROCESSOR_CALLS;
-import static java.lang.Integer.parseInt;
-import static java.util.Optional.ofNullable;
+import static org.slf4j.LoggerFactory.getLogger;
 
-public final class PipelineProcessorChain implements PipelineChain {
+public record PipelineProcessorChain(String initial,
+                                     Map<String, PipelineProcessor> processors,
+                                     Map<String, ProcessorProperties> properties) implements PipelineChain {
 
-    private static final Logger                           LOGGER = LoggerFactory.getLogger(FormUpdateProcessor.class);
-    private final        String                           initial;
-    private final        Map<String, PipelineProcessor>   processors;
-    private final        Map<String, ProcessorProperties> properties;
-
-    public PipelineProcessorChain(String initial, Map<String, PipelineProcessor> processors, Map<String, ProcessorProperties> properties) {
-        this.processors = processors;
-        this.initial = initial;
-        this.properties = properties;
-    }
+    private static final Logger            LOGGER             = getLogger(PipelineProcessorChain.class);
+    private static final PipelineProcessor FALLBACK_PROCESSOR = new DefaultFallbackProcessor();
 
     public void proceed(PipelineContext context) throws Exception {
-        String               processorName = initial;
-        Map<String, Integer> countLimit    = new HashMap<>();
+        String              processorName = initial;
+        Map<String, Object> visitor       = new HashMap<>();
 
         LOGGER.info("[PIPELINE-CHAIN]: INITIAL PROCESS {}", initial);
 
         do {
+            Enum<?>             returnCode;
             ProcessorProperties currentProperties = properties.get(processorName);
             PipelineProcessor   currentProcessor  = processors.get(processorName);
-            int                 limit             = parseInt(ofNullable(
-                    currentProperties.configuration(MAX_PROCESSOR_CALLS)).orElse("1"));
 
-            countLimit.putIfAbsent(processorName, 0);
-
-            if (limit <= countLimit.get(processorName)) {
-                throw new RecursiveCallThresholdException("Processor '%s' has exceeded the maximum allowed threshold of '%d' recursive calls"
-                    .formatted(currentProcessor.getClass().getSimpleName(), limit));
+            if (visitor.containsValue(processorName)) {
+                throw new CyclicInvocationDetected(
+                        "Processor '%s' encountered a recursive call".formatted(processorName));
             }
 
-            Enum<?> returnCode = currentProcessor.process(context);
-
-            if (returnCode == null) {
+            try {
+                returnCode = currentProcessor.process(context);
+            } catch (Exception exception) {
+                handleFallback(context, currentProperties, exception);
                 break;
             }
 
-            countLimit.computeIfPresent(processorName, (key, count) -> ++count);
+            if (context.isStopped()) {
+                LOGGER.info("[PIPELINE-CHAIN]: PROCESSOR '{}' STOPPED THE PROCESSOR-CHAIN", processorName);
+                break;
+            }
+
+            if (returnCode == null) {
+                throw new InvalidProcessorReturnException(
+                        "Processor '%s' must return a valid code; null is unacceptable".formatted(processorName));
+            }
+
+            visitor.put(processorName, true);
 
             processorName = currentProperties.getNext(returnCode.name());
 
-            LOGGER.info("[PIPELINE-CHAIN]: RETURN CODE: '{}', NEXT PROCESSOR: '{}'", returnCode, processorName);
+            LOGGER.info("[PIPELINE-CHAIN]: RETURN: '{}' -> NEXT: '{}'", returnCode, processorName);
+
         } while (processorName != null);
     }
 
+    private void handleFallback(PipelineContext context, ProcessorProperties properties, Exception exception)
+            throws Exception {
+        PipelineProcessor fallback = FALLBACK_PROCESSOR;
+
+        if (properties.fallback() != null) {
+            fallback = processors.get(properties.fallback());
+        }
+
+        fallback.process(context);
+
+        context.getPipelineResult().addError("EXCEPTION", exception.getMessage());
+        context.setProperty(Throwable.class, exception);
+
+        LOGGER.error("[PIPELINE-CHAIN]: ERROR OCCURRED: '{}', FALLBACK PROCESSOR: '{}'",
+                     exception.getMessage(), fallback.getClass().getName());
+    }
 
 }

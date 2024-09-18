@@ -18,10 +18,11 @@ public interface MAVConstants {
     String REDIRECT_PRIVILEGE        = REQUEST_MAPPING_PRIVILEGE;
 
     // form
-    String VIEW_FORM_INDEX      = "form/form_index";
-    String VIEW_FORM_PREVIEW    = "form/form_preview";
-    String REQUEST_MAPPING_FORM = "/form";
-    String REDIRECT_FORM        = REQUEST_MAPPING_FORM;
+    String VIEW_FORM_INDEX           = "form/form_index";
+    String VIEW_FORM_DEMO            = "form/form_demo";
+    String REQUEST_MAPPING_FORM      = "/form";
+    String REQUEST_DEMO_MAPPING_FORM = "/form/%s/demo";
+    String REDIRECT_FORM             = REQUEST_MAPPING_FORM;
 
     // form field embedded
     String VIEW_FORM_EMBEDDED            = "form/form_embedded";

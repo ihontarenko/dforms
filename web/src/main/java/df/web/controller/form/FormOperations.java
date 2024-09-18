@@ -4,11 +4,14 @@ import df.base.common.breadcrumb.Breadcrumbs;
 import df.base.dto.form.FormDTO;
 import df.web.controller.DefaultOperations;
 import df.web.controller.MAVConstants;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Map;
 
 @RequestMapping(MAVConstants.REQUEST_MAPPING_FORM)
 public interface FormOperations extends DefaultOperations<FormDTO> {
@@ -26,8 +29,19 @@ public interface FormOperations extends DefaultOperations<FormDTO> {
             @Breadcrumbs.Item(label = "Forms", url = "/form"),
             @Breadcrumbs.Item(label = "Preview Form")
     })
-    @GetMapping("/{primaryId}/preview")
-    ModelAndView preview(@PathVariable("primaryId") String primaryId, RedirectAttributes attributes);
+    @GetMapping("/{primaryId}/demo")
+    ModelAndView demo(@PathVariable("primaryId") String primaryId, RedirectAttributes attributes);
+
+    @Breadcrumbs({
+            @Breadcrumbs.Item(label = "Home", url = "/"),
+            @Breadcrumbs.Item(label = "Forms", url = "/form"),
+            @Breadcrumbs.Item(label = "Preview Form")
+    })
+    @PostMapping("/{primaryId}/demo")
+    ModelAndView demo(@PathVariable("primaryId") String primaryId,
+                      @RequestParam Map<String, Object> postData,
+                      HttpServletRequest request,
+                      RedirectAttributes attributes);
 
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),

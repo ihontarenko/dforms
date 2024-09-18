@@ -9,7 +9,7 @@ public class Test3Processor implements PipelineProcessor {
 
     @Override
     public Enum<?> process(PipelineContext context, PipelineArguments arguments) throws Exception {
-        System.out.println(getClass());
+        context.getPipelineArguments().requireArgument(Test2Processor.class).getClass();
         return DefaultReturnCode.CC;
     }
 

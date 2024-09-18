@@ -10,11 +10,13 @@ import df.base.common.libs.jbm.StringUtils;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldDTO;
 import df.base.dto.form.FieldOptionDTO;
+import df.base.persistence.entity.support.ElementType;
 
 import java.util.Collection;
 import java.util.List;
 
 import static df.base.persistence.entity.support.ElementType.valueOf;
+import static java.util.stream.Collectors.joining;
 
 public class FieldBuilder implements NodeBuilder<FieldDTO> {
 
@@ -49,6 +51,7 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         input.addAttribute("placeholder", fieldDTO.getLabel());
         input.addAttribute("id", fieldDTO.id());
         input.addAttribute("class", "form-control");
+        input.addAttribute("name", fieldDTO.getName());
 
         addElementAttributes(input, fieldDTO.getAttributes());
 
@@ -114,20 +117,28 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
     private Node createTextarea(FieldDTO fieldDTO) {
         Node textarea = new ElementNode(TagName.TEXTAREA);
 
+        textarea.addAttribute("name", fieldDTO.getName());
         addElementAttributes(textarea, fieldDTO.getAttributes());
 
         return textarea;
     }
 
     private Node createVirtual(FieldDTO fieldDTO, NodeBuilderContext ctx) {
-        Node                 node     = new ElementNode(TagName.DIV);
-        Collection<FieldDTO> children = fieldDTO.getChildren().values();
+        Node                 input       = new ElementNode(TagName.INPUT);
+        Node                 node        = new ElementNode(TagName.DIV);
+        Collection<FieldDTO> children    = fieldDTO.getChildren().values();
+        String               virtualName = children.stream().map(FieldDTO::getName).collect(joining("_"));
 
         addElementAttributes(node, fieldDTO.getAttributes());
+
+        input.addAttribute("name", virtualName);
+        input.addAttribute("type", "hidden");
 
         for (FieldDTO child : children) {
             node.addChild(build(child, ctx));
         }
+
+        node.addChild(input);
 
         return node;
     }

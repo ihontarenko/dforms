@@ -2,9 +2,11 @@ package df.base.common.pipeline;
 
 import df.base.common.pipeline.definition.PipelineDefinitionException;
 import df.base.common.pipeline.definition.RootDefinition;
+import df.base.common.pipeline.definition.RootDefinition.Fallback;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static df.base.common.pipeline.definition.DefinitionLoader.createLoader;
 
@@ -48,13 +50,13 @@ public class PipelineManager {
             RootDefinition.ProcessorProperties propertiesDefinition = linkDefinition.properties();
             PipelineProcessor                  processor            = processorFactory.createProcessor(
                     linkDefinition.processor(), context);
-            Map<String, String>                transitions          = propertiesDefinition == null
-                    ? new HashMap<>() : propertiesDefinition.transitions();
-            Map<String, String>                configuration        = propertiesDefinition == null
-                    ? new HashMap<>() : propertiesDefinition.configuration();
+            Map<String, String>                transitions          = propertiesDefinition == null ? new HashMap<>() : propertiesDefinition.transitions();
+            Map<String, String>                configuration        = propertiesDefinition == null ? new HashMap<>() : propertiesDefinition.configuration();
+            Optional<Fallback>                 fallback             = propertiesDefinition == null ? Optional.empty() : Optional.ofNullable(
+                    propertiesDefinition.fallback());
 
             processors.put(linkName, processor);
-            properties.put(linkName, new ProcessorProperties(transitions, configuration));
+            properties.put(linkName, new ProcessorProperties(transitions, configuration, fallback.map(Fallback::link).orElse(null)));
         });
 
         PipelineChain chain = new PipelineProcessorChain(chainDefinition.initial(), processors, properties);

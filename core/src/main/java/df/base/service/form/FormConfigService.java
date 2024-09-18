@@ -30,6 +30,7 @@ public class FormConfigService implements
     private static final String[] DEFAULT_CONFIG_KEYS = new String[] {
             "CONFIG_FORM_ACTION",
             "CONFIG_FORM_METHOD",
+            "CONFIG_SUBMIT_TEXT",
     };
 
     private String redirectUrl;

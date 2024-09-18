@@ -1,14 +1,14 @@
 package df.base.common.pipeline;
 
-import df.base.common.libs.jbm.ReflectionUtils;
 import df.base.common.pipeline.definition.RootDefinition;
 import df.base.common.pipeline.definition.RootDefinition.Processor;
 import df.base.common.resolver.Resolver;
+import df.base.common.resolver.Resolvers;
 import df.base.common.resolver.ResolversFactory;
 
 import static df.base.common.libs.jbm.ReflectionUtils.instantiate;
 import static df.base.common.libs.jbm.ReflectionUtils.setFieldValue;
-import static df.base.common.pipeline.Resolvers.valueOf;
+import static df.base.common.resolver.Resolvers.valueOf;
 
 public class PipelineProcessorFactory {
 

@@ -1,8 +1,8 @@
 {% extends "common/layout" %}
-{% block title %}Preview Form: {{ form.name | upper }}{% endblock %}
+{% block title %}Demo Form: {{ form.name | upper }}{% endblock %}
 {% block headerButtons %}
 <div class="btn-group pt-2" role="group">
-    <button onclick="window.location = '/form/{{ form.id }}/preview'" type="button" class="btn btn-sm btn-light">PREVIEW</button>
+    <button onclick="window.location = '/form/{{ form.id }}/demo'" type="button" class="btn btn-sm btn-light">DEMO</button>
     <button onclick="window.location = '/form/{{ form.id }}/config'" type="button" class="btn btn-sm btn-dark">CONFIG</button>
     <button onclick="window.location = '/form/{{ form.id }}/embedded'" type="button" class="btn btn-sm btn-warning">EMBEDDED</button>
 </div>

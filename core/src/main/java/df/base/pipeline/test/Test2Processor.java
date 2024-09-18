@@ -10,7 +10,7 @@ public class Test2Processor implements PipelineProcessor {
     @Override
     public Enum<?> process(PipelineContext context, PipelineArguments arguments) throws Exception {
         System.out.println(getClass());
-        return DefaultReturnCode.BB;
+        throw new RuntimeException("Error Occurred");
     }
 
 }
