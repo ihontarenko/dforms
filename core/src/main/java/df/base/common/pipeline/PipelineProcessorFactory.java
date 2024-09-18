@@ -2,8 +2,12 @@ package df.base.common.pipeline;
 
 import df.base.common.libs.jbm.ReflectionUtils;
 import df.base.common.pipeline.definition.RootDefinition;
+import df.base.common.pipeline.definition.RootDefinition.Processor;
+import df.base.common.resolver.Resolver;
+import df.base.common.resolver.ResolversFactory;
 
 import static df.base.common.libs.jbm.ReflectionUtils.instantiate;
+import static df.base.common.libs.jbm.ReflectionUtils.setFieldValue;
 import static df.base.common.pipeline.Resolvers.valueOf;
 
 public class PipelineProcessorFactory {
@@ -14,7 +18,7 @@ public class PipelineProcessorFactory {
         this.resolversFactory = new ResolversFactory();
     }
 
-    public PipelineProcessor createProcessor(RootDefinition.Processor processorDefinition) {
+    public PipelineProcessor createProcessor(Processor processorDefinition, PipelineContext context) {
         try {
 
             Class<?>          processorClass = Class.forName(processorDefinition.className());
@@ -23,7 +27,7 @@ public class PipelineProcessorFactory {
             if (processorDefinition.parameters() != null) {
                 for (RootDefinition.Parameter parameter : processorDefinition.parameters()) {
                     Object resolvedValue = resolveParameter(parameter);
-                    ReflectionUtils.setFieldValue(processor, parameter.name(), resolvedValue);
+                    setFieldValue(processor, parameter.name(), resolvedValue);
                 }
             }
 
@@ -37,7 +41,8 @@ public class PipelineProcessorFactory {
     private Object resolveParameter(RootDefinition.Parameter parameter) {
         Resolvers resolverType = valueOf(parameter.resolver().toUpperCase());
         Resolver  resolver     = resolversFactory.createResolver(resolverType);
-        return resolver.resolve(parameter.value());
+
+        return resolver.resolve(parameter.value(), null);
     }
 
 }

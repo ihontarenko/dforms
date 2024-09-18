@@ -47,7 +47,7 @@ public class PipelineManager {
         chainDefinition.links().forEach((linkName, linkDefinition) -> {
             RootDefinition.ProcessorProperties propertiesDefinition = linkDefinition.properties();
             PipelineProcessor                  processor            = processorFactory.createProcessor(
-                    linkDefinition.processor());
+                    linkDefinition.processor(), context);
             Map<String, String>                transitions          = propertiesDefinition == null
                     ? new HashMap<>() : propertiesDefinition.transitions();
             Map<String, String>                configuration        = propertiesDefinition == null
