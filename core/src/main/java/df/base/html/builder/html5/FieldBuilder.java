@@ -42,7 +42,7 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         Node root = new ElementNode(TagName.OPTION);
 
         root.addAttribute("value", option.getKey());
-        root.addChild(new TextNode(option.getValue()));
+        root.append(new TextNode(option.getValue()));
 
         return root;
     }
@@ -68,12 +68,12 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
             input.addAttribute("value", option.getKey());
 
             Node label = new ElementNode(TagName.LABEL);
-            label.addChild(new TextNode(option.getValue()));
+            label.append(new TextNode(option.getValue()));
 
-            wrapper.addChild(input);
-            wrapper.addChild(label);
+            wrapper.append(input);
+            wrapper.append(label);
 
-            root.addChild(wrapper);
+            root.append(wrapper);
         }
 
         return root;
@@ -91,11 +91,11 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
             input.addAttribute("value", option.getKey());
 
             Node label = new ElementNode(TagName.LABEL);
-            label.addChild(new TextNode(option.getValue()));
+            label.append(new TextNode(option.getValue()));
 
-            checkboxWrapper.addChild(input);
-            checkboxWrapper.addChild(label);
-            wrapper.addChild(checkboxWrapper);
+            checkboxWrapper.append(input);
+            checkboxWrapper.append(label);
+            wrapper.append(checkboxWrapper);
         }
 
         return wrapper;
@@ -106,7 +106,7 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         select.addAttribute("name", fieldDTO.getName());
 
         for (FieldOptionDTO option : fieldDTO.getOptions()) {
-            select.addChild(render(option));
+            select.append(render(option));
         }
 
         return select;

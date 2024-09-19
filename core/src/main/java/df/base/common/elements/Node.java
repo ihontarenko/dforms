@@ -1,6 +1,5 @@
 package df.base.common.elements;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,7 +14,9 @@ public interface Node /*extends df.base.common.libs.parser.node.Node*/ {
 
     NodeType getNodeType();
 
-    void addChild(Node child);
+    void prepend(Node child);
+
+    void append(Node child);
 
     void removeChild(Node child);
 

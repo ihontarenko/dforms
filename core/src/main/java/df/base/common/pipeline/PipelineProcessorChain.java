@@ -25,6 +25,12 @@ public record PipelineProcessorChain(String initial,
             ProcessorProperties currentProperties = properties.get(processorName);
             PipelineProcessor   currentProcessor  = processors.get(processorName);
 
+            if (currentProcessor == null) {
+                throw new MissingProcessorLinkException(
+                        "No processor with the link name '%s' was located. Check the pipeline file for correct linking."
+                                .formatted(processorName));
+            }
+
             if (visitor.containsValue(processorName)) {
                 throw new CyclicInvocationDetected(
                         "Processor '%s' encountered a recursive call".formatted(processorName));
@@ -60,7 +66,7 @@ public record PipelineProcessorChain(String initial,
             throws Exception {
         PipelineProcessor fallback = FALLBACK_PROCESSOR;
 
-        if (properties.fallback() != null) {
+        if (properties != null && properties.fallback() != null) {
             fallback = processors.get(properties.fallback());
         }
 

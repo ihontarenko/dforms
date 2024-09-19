@@ -6,7 +6,7 @@
         <processor-link name="prepareFormEntity">
             <processor class="df.base.pipeline.form_render.PrepareFormEntityProcessor" />
             <properties>
-                <transition return="PRE_BUILD_NODE_TREE" link="buildNodeTree" />
+                <transition return="PRE_BUILD_NODE_TREE" link="preBuildNodeTree" />
             </properties>
         </processor-link>
 
@@ -33,7 +33,7 @@
         </processor-link>
 
         <processor-link name="renderNodeTree">
-            <processor class="df.base.pipeline.form_render.PreBuildNodeTreeProcessor" />
+            <processor class="df.base.pipeline.form_render.RenderNodeTreeProcessor" />
         </processor-link>
 
     </processor-chain>

@@ -18,12 +18,12 @@ public class FormBuilder implements NodeBuilder<FormDTO> {
         Node                 root    = new ElementNode(TagName.FORM);
         Node                 wrapper = new ElementNode(TagName.FIELDSET);
 
-        root.addChild(wrapper);
+        root.append(wrapper);
 
         for (FieldDTO field : fields) {
             var  builder = ctx.getStrategy().getBuilder(FieldDTO.class);
             Node node    = builder.build(field, ctx);
-            wrapper.addChild(node);
+            wrapper.append(node);
             node.addAttribute("class", "mt-4");
         }
 

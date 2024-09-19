@@ -10,7 +10,6 @@ import df.base.common.libs.jbm.StringUtils;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldDTO;
 import df.base.dto.form.FieldOptionDTO;
-import df.base.persistence.entity.support.ElementType;
 
 import java.util.Collection;
 import java.util.List;
@@ -43,7 +42,7 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         Node label = new ElementNode(TagName.LABEL);
         Node small = new ElementNode(TagName.SMALL);
 
-        label.addChild(new TextNode(fieldDTO.getLabel()));
+        label.append(new TextNode(fieldDTO.getLabel()));
         label.addAttribute("for", fieldDTO.id());
         label.addAttribute("class", "form-label");
 
@@ -55,12 +54,12 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
 
         addElementAttributes(input, fieldDTO.getAttributes());
 
-        root.addChild(label);
-        root.addChild(input);
+        root.append(label);
+        root.append(input);
 
         if (StringUtils.hasText(fieldDTO.getDescription())) {
-            small.addChild(new TextNode(fieldDTO.getDescription()));
-            root.addChild(small);
+            small.append(new TextNode(fieldDTO.getDescription()));
+            root.append(small);
         }
 
         return root;
@@ -81,12 +80,12 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
 
             Node label = new ElementNode(TagName.LABEL);
 
-            label.addChild(new TextNode(option.getValue()));
+            label.append(new TextNode(option.getValue()));
 
-            wrapper.addChild(input);
-            wrapper.addChild(label);
+            wrapper.append(input);
+            wrapper.append(label);
 
-            root.addChild(wrapper);
+            root.append(wrapper);
         }
 
         return root;
@@ -99,7 +98,7 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         addElementAttributes(select, fieldDTO.getAttributes());
 
         for (FieldOptionDTO option : fieldDTO.getOptions()) {
-            select.addChild(createSelectOption(option));
+            select.append(createSelectOption(option));
         }
 
         return select;
@@ -109,7 +108,7 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         Node root = new ElementNode(TagName.OPTION);
 
         root.addAttribute("value", option.getKey());
-        root.addChild(new TextNode(option.getValue()));
+        root.append(new TextNode(option.getValue()));
 
         return root;
     }
@@ -135,10 +134,10 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         input.addAttribute("type", "hidden");
 
         for (FieldDTO child : children) {
-            node.addChild(build(child, ctx));
+            node.append(build(child, ctx));
         }
 
-        node.addChild(input);
+        node.append(input);
 
         return node;
     }

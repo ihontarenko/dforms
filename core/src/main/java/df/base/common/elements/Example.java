@@ -21,11 +21,11 @@ public class Example {
 
         TextNode text = new TextNode("Hello, World!");
 
-        div.addChild(p);
-        p.addChild(text);
-        body.addChild(div);
-        body.addChild(comment);
-        html.addChild(body);
+        div.append(p);
+        p.append(text);
+        body.append(div);
+        body.append(comment);
+        html.append(body);
 
         html.execute(new CommentInfoCorrector());
 

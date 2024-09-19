@@ -1,18 +1,17 @@
 package df.web.controller.form;
 
-import df.base.common.elements.Node;
 import df.base.common.elements.NodeContext;
 import df.base.common.elements.TagName;
-import df.base.common.elements.builder.NodeBuilder;
 import df.base.common.elements.builder.NodeBuilderContext;
 import df.base.common.elements.node.HTMLElementNode;
 import df.base.common.elements.node.InputElementNode;
+import df.base.common.exception.ApplicationException;
+import df.base.common.pipeline.PipelineContext;
 import df.base.common.pipeline.PipelineManager;
 import df.base.common.pipeline.SpringBeanProvider;
-import df.base.common.pipeline.PipelineContext;
+import df.base.common.pipeline.context.PipelineArguments;
 import df.base.common.pipeline.context.PipelineResult;
 import df.base.dto.form.FormDTO;
-import df.base.html.builder.AbstractBuilderStrategy;
 import df.base.html.builder.bootstrap.BootstrapBuilderStrategy;
 import df.base.mapping.form.DeepFormMapper;
 import df.base.mapping.form.FormMapper;
@@ -28,6 +27,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -82,13 +82,12 @@ public class FormController implements FormOperations {
     }
 
     @Override
-    public ModelAndView demo(String primaryId, Map<String, Object> postData,
+    public ModelAndView demo(String primaryId, MultiValueMap<String, String> postData,
                              HttpServletRequest request,  RedirectAttributes attributes) {
         controllerHelper.setRedirectAttributes(attributes);
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_INDEX);
 
         System.out.println(request.getParameterMap());
-
 
         return controllerHelper.redirect();
     }
@@ -96,44 +95,29 @@ public class FormController implements FormOperations {
     @Override
     public ModelAndView demo(String primaryId, RedirectAttributes attributes) {
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_DEMO);
+        controllerHelper.setRedirectAttributes(attributes);
 
-        AbstractBuilderStrategy strategy        = (AbstractBuilderStrategy) this.builderContext.getStrategy();
-        NodeBuilder<FormDTO>    builder         = strategy.getBuilder(FormDTO.class);
-        Form                    formEntity      = formService.loadFormWithFields(primaryId);
-        FormDTO                 formDTO         = mapper.map(formEntity);
-        Node                    root            = builder.build(formDTO, this.builderContext);
-        PipelineContext         pipelineContext = pipelineManager.getContext();
+        Form              entity          = formService.loadFormWithFields(primaryId);
+        PipelineContext   pipelineContext = pipelineManager.getContext();
+        PipelineArguments arguments       = pipelineContext.getPipelineArguments();
+        PipelineResult    result          = pipelineContext.getPipelineResult();
 
         pipelineContext.setBeanProvider(new SpringBeanProvider());
-        pipelineContext.getPipelineArguments().setArgument("PRIMARY_ID", primaryId);
 
-        PipelineResult result = pipelineContext.getPipelineResult();
+        arguments.setArgument("PRIMARY_ID", primaryId);
+        arguments.setArgument("ENV_NAME", "DEMO");
 
         try {
             pipelineManager.runPipeline("process-form-html");
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ApplicationException(e.getMessage(), MAVConstants.REDIRECT_FORM);
         }
 
-        InputElementNode submit = new InputElementNode();
-        submit.setClass("btn btn-sm btn-dark");
-        submit.setType("submit");
-        submit.setValue("Submit Demo!");
+        if (result.hasErrors()) {
+            throw new ApplicationException(result.getError("EXCEPTION").message(), MAVConstants.REDIRECT_FORM);
+        }
 
-        HTMLElementNode wrapper = new HTMLElementNode(TagName.DIV);
-        wrapper.setClass("mt-4");
-
-        wrapper.addChild(submit);
-
-        root.addChild(wrapper);
-        root.addAttribute("action", MAVConstants.REQUEST_DEMO_MAPPING_FORM.formatted(primaryId));
-        root.addAttribute("data-info", "Created for the purpose of demo view of the form");
-        root.addAttribute("method", "post");
-
-        root.execute(NodeContext.REORDER_NODE_CORRECTOR);
-
-        controllerHelper.attribute("form", formEntity);
-        controllerHelper.attribute("html", root.interpret(nodeContext));
+        controllerHelper.attribute("form", entity);
         controllerHelper.attribute("html", result.getReturnValue());
 
         return controllerHelper.resolveWithoutRedirect();

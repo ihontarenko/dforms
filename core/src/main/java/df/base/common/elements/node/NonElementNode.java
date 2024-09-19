@@ -25,7 +25,12 @@ abstract public class NonElementNode extends AbstractNode {
     }
 
     @Override
-    public void addChild(Node child) {
+    public void prepend(Node child) {
+        throw new UnsupportedOperationException("Node [%s] can to have child nodes".formatted(this));
+    }
+
+    @Override
+    public void append(Node child) {
         throw new UnsupportedOperationException("Node [%s] can to have child nodes".formatted(this));
     }
 

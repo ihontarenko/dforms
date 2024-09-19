@@ -30,7 +30,14 @@ abstract public class AbstractNode implements Node {
     }
 
     @Override
-    public void addChild(Node child) {
+    public void prepend(Node child) {
+        child.setDepth(this.depth + 1);
+        child.setParent(this);
+        children.add(0, child);
+    }
+
+    @Override
+    public void append(Node child) {
         child.setDepth(this.depth + 1);
         child.setParent(this);
         children.add(child);
@@ -83,7 +90,7 @@ abstract public class AbstractNode implements Node {
             if (index != -1) {
                 wrapper.setParent(parent);
                 parent.getChildren().set(index, wrapper);
-                wrapper.addChild(this);
+                wrapper.append(this);
                 setParent(wrapper);
                 wrapper.setDepth(parent.getDepth() + 1);
             }

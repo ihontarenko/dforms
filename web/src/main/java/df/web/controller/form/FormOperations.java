@@ -6,6 +6,7 @@ import df.web.controller.DefaultOperations;
 import df.web.controller.MAVConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,7 +40,7 @@ public interface FormOperations extends DefaultOperations<FormDTO> {
     })
     @PostMapping("/{primaryId}/demo")
     ModelAndView demo(@PathVariable("primaryId") String primaryId,
-                      @RequestParam Map<String, Object> postData,
+                      @RequestParam MultiValueMap<String, String> postData,
                       HttpServletRequest request,
                       RedirectAttributes attributes);
 

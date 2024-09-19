@@ -23,7 +23,7 @@ public class FormBuilder implements NodeBuilder<FormDTO> {
 
         for (FieldDTO field : fields) {
             NodeBuilder<FieldDTO> builder = ctx.getStrategy().getBuilder(FieldDTO.class);
-            root.addChild(builder.build(field, ctx));
+            root.append(builder.build(field, ctx));
         }
 
         return root;

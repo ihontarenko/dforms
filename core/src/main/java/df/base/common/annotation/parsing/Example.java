@@ -1,10 +1,12 @@
 package df.base.common.annotation.parsing;
 
+import df.base.common.annotation.parsing.ast.AnnotationArrayNode;
 import df.base.common.annotation.parsing.ast.AnnotationNode;
 import df.base.common.annotation.parsing.ast.AnnotationParameterNode;
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.node.Node;
 import df.base.common.libs.ast.node.RootNode;
+import df.base.common.libs.ast.node.ast.Literal;
 import df.base.common.libs.ast.parser.Parser;
 import df.base.common.libs.ast.parser.ParserContext;
 import df.base.common.libs.ast.token.Token;
@@ -13,6 +15,7 @@ import df.base.common.annotation.parsing.configurator.AnnotationParserConfigurat
 import df.base.common.annotation.parsing.configurator.AnnotationTokenizerConfigurator;
 import df.base.common.annotation.parsing.parser.AnnotationParser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,9 +50,23 @@ public class Example {
 
         for (Node node : root.find(AnnotationNode.class, 1)) {
             for (Node parameterNode : node.find(AnnotationParameterNode.class, 1)) {
-                System.out.println(parameterNode);
+                if (parameterNode instanceof AnnotationParameterNode parameter) {
+                    Object value = null;
+
+                    if (parameter.getValue() instanceof AnnotationArrayNode arrayNode) {
+                        value = new ArrayList<>();
+                    } else if (parameter.getValue() instanceof Literal literal) {
+                        value = literal.getValue();
+                    } else {
+                        value = new Object();
+                    }
+
+                    params.put(parameter.getKey(), value);
+                }
             }
         }
+
+        System.out.println(params);
     }
 
 }
