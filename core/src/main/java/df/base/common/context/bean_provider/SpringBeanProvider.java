@@ -1,5 +1,6 @@
-package df.base.common.context;
+package df.base.common.context.bean_provider;
 
+import df.base.common.context.BeanProvider;
 import df.base.common.extensions.spring.context.SpringApplicationContext;
 import org.springframework.context.ApplicationContext;
 

@@ -2,6 +2,7 @@ package df.base.common.context;
 
 import java.util.Map;
 
+@SuppressWarnings({"unused"})
 public interface Context extends BeanProvider, BeanProviderAware {
 
     Map<Object, Object> getProperties();
@@ -15,14 +16,6 @@ public interface Context extends BeanProvider, BeanProviderAware {
     <R> R getProperty(Object key, Object defaultValue);
 
     boolean hasProperty(Object key);
-
-    ResultContext getResultContext();
-
-    void setResultContext(ResultContext result);
-
-    ArgumentsContext getArgumentsContext();
-
-    void setArgumentsContext(ArgumentsContext arguments);
 
     boolean isStopped();
 

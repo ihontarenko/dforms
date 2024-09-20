@@ -69,4 +69,14 @@ abstract public class AbstractContext implements Context {
         return properties.containsKey(key);
     }
 
+    @Override
+    public boolean isStopped() {
+        return false;
+    }
+
+    @Override
+    public void stopProcessing() {
+
+    }
+
 }

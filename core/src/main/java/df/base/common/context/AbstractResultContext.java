@@ -6,7 +6,7 @@ import java.util.Map;
 abstract public class AbstractResultContext implements ResultContext {
 
     private final Map<String, ErrorDetails> errors;
-    private   Object                    value;
+    private       Object                    value;
 
     public AbstractResultContext() {
         this.errors = new HashMap<>();

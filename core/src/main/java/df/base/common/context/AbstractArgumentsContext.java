@@ -21,6 +21,7 @@ abstract public class AbstractArgumentsContext implements ArgumentsContext {
     }
 
     @Override
+    @SuppressWarnings({"unchecked"})
     public <T> T getArgument(Object name) {
         return (T) arguments.getOrDefault(name, new Object());
     }

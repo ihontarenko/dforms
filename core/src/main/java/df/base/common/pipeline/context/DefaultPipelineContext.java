@@ -2,7 +2,8 @@ package df.base.common.pipeline.context;
 
 import df.base.common.context.*;
 
-public class DefaultPipelineContext extends AbstractContext implements PipelineContext, ArgumentsContext, ResultContext {
+public class DefaultPipelineContext extends AbstractContext implements
+        PipelineContext, ArgumentsContext, ResultContext {
 
     private boolean          stopped = false;
     private ResultContext    result;

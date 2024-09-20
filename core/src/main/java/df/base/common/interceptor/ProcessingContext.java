@@ -1,23 +1,11 @@
 package df.base.common.interceptor;
 
-import java.util.Map;
+import df.base.common.context.Context;
 
-public interface ProcessingContext {
+public interface ProcessingContext extends Context {
 
     <I extends Interceptor<?, ?>> void addInterceptor(Class<I> type, I interceptor);
 
     <I extends Interceptor<?, ?>> I getInterceptor(Class<I> type);
-
-    Map<Object, Object> getProperties();
-
-    void setProperty(Object key, Object value);
-
-    void setProperty(Object value);
-
-    <R> R getProperty(Object key);
-
-    <R> R getProperty(Object key, Object defaultValue);
-
-    boolean hasProperty(Object key);
 
 }

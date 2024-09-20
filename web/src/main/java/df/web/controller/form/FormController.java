@@ -4,7 +4,7 @@ import df.base.common.elements.builder.NodeBuilderContext;
 import df.base.common.exception.ApplicationException;
 import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.pipeline.PipelineManager;
-import df.base.common.context.SpringBeanProvider;
+import df.base.common.context.bean_provider.SpringBeanProvider;
 import df.base.common.context.ArgumentsContext;
 import df.base.common.context.ResultContext;
 import df.base.dto.form.FormDTO;
