@@ -1,4 +1,4 @@
-package df.base.common.pipeline;
+package df.base.common.context;
 
 import df.base.common.extensions.spring.context.SpringApplicationContext;
 import org.springframework.context.ApplicationContext;

@@ -5,15 +5,15 @@ import df.base.common.elements.TagName;
 import df.base.common.elements.node.HTMLElementNode;
 import df.base.common.elements.node.InputElementNode;
 import df.base.common.elements.node.TextNode;
-import df.base.common.pipeline.PipelineContext;
+import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.pipeline.PipelineProcessor;
-import df.base.common.pipeline.context.PipelineArguments;
+import df.base.common.context.ArgumentsContext;
 import df.base.persistence.entity.form.Form;
 
 public class PostBuildDemoProcessor implements PipelineProcessor {
 
     @Override
-    public Enum<?> process(PipelineContext context, PipelineArguments arguments) throws Exception {
+    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
         Form             entity  = arguments.requireArgument(Form.class);
         Node             root    = arguments.requireArgument(Node.class);
         InputElementNode submit  = new InputElementNode();

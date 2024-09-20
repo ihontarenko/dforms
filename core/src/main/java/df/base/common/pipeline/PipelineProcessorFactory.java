@@ -1,5 +1,6 @@
 package df.base.common.pipeline;
 
+import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.pipeline.definition.RootDefinition;
 import df.base.common.pipeline.definition.RootDefinition.Processor;
 import df.base.common.resolver.Resolver;

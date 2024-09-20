@@ -1,6 +1,7 @@
-package df.base.common.pipeline.context;
+package df.base.common.context;
 
 public class ArgumentNotFoundException extends RuntimeException {
+
     public ArgumentNotFoundException() {
         super();
     }
@@ -12,4 +13,5 @@ public class ArgumentNotFoundException extends RuntimeException {
     public ArgumentNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }

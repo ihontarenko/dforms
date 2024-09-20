@@ -1,8 +1,8 @@
 package df.base.pipeline.form_render;
 
-import df.base.common.pipeline.PipelineContext;
+import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.pipeline.PipelineProcessor;
-import df.base.common.pipeline.context.PipelineArguments;
+import df.base.common.context.ArgumentsContext;
 import df.base.dto.form.FormDTO;
 import df.base.mapping.form.DeepFormMapper;
 import df.base.persistence.entity.form.Form;
@@ -11,7 +11,7 @@ import df.base.service.form.FormService;
 public class PrepareFormEntityProcessor implements PipelineProcessor {
 
     @Override
-    public Enum<?> process(PipelineContext context, PipelineArguments arguments) throws Exception {
+    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
         FormService service = context.getBean(FormService.class);
         Form        entity  = service.loadFormWithFields(arguments.requireArgument("PRIMARY_ID"));
 

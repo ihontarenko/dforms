@@ -1,6 +1,6 @@
-package df.base.common.pipeline.context;
+package df.base.common.context;
 
-public interface PipelineArguments {
+public interface ArgumentsContext {
 
     <T> T requireArgument(Object name);
 

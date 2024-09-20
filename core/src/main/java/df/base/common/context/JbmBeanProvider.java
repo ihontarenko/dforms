@@ -1,4 +1,4 @@
-package df.base.common.pipeline;
+package df.base.common.context;
 
 import df.base.common.libs.jbm.bean.context.JbmContext;
 

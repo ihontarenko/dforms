@@ -1,4 +1,4 @@
-package df.base.common.pipeline;
+package df.base.common.context;
 
 public interface BeanProvider {
 

@@ -1,9 +1,9 @@
 package df.base.pipeline.form;
 
-import df.base.common.pipeline.PipelineContext;
+import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.pipeline.PipelineProcessor;
 import df.base.common.pipeline.context.DefaultPipelineContext;
-import df.base.common.pipeline.context.PipelineArguments;
+import df.base.common.context.ArgumentsContext;
 import df.base.dto.form.FormDTO;
 import df.base.persistence.entity.user.User;
 import df.base.service.form.FormService;
@@ -15,7 +15,7 @@ public class FormCreateProcessor implements PipelineProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(FormCreateProcessor.class);
 
     @Override
-    public Enum<?> process(PipelineContext context, PipelineArguments arguments) throws Exception {
+    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
         FormDTO        formDTO  = arguments.requireArgument(FormDTO.class);
         FormService    service  = arguments.requireArgument(FormService.class);
 

@@ -1,6 +1,6 @@
-package df.base.common.pipeline.context;
+package df.base.common.context;
 
-public interface PipelineResult {
+public interface ResultContext {
 
     <T> T getReturnValue();
 

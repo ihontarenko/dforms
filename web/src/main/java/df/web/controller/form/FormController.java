@@ -1,19 +1,14 @@
 package df.web.controller.form;
 
-import df.base.common.elements.NodeContext;
-import df.base.common.elements.TagName;
 import df.base.common.elements.builder.NodeBuilderContext;
-import df.base.common.elements.node.HTMLElementNode;
-import df.base.common.elements.node.InputElementNode;
 import df.base.common.exception.ApplicationException;
-import df.base.common.pipeline.PipelineContext;
+import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.pipeline.PipelineManager;
-import df.base.common.pipeline.SpringBeanProvider;
-import df.base.common.pipeline.context.PipelineArguments;
-import df.base.common.pipeline.context.PipelineResult;
+import df.base.common.context.SpringBeanProvider;
+import df.base.common.context.ArgumentsContext;
+import df.base.common.context.ResultContext;
 import df.base.dto.form.FormDTO;
 import df.base.html.builder.bootstrap.BootstrapBuilderStrategy;
-import df.base.mapping.form.DeepFormMapper;
 import df.base.mapping.form.FormMapper;
 import df.base.persistence.entity.form.Form;
 import df.base.persistence.entity.support.FormStatus;
@@ -92,10 +87,10 @@ public class FormController implements FormOperations {
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_DEMO);
         controllerHelper.setRedirectAttributes(attributes);
 
-        Form              entity          = formService.loadFormWithFields(primaryId);
-        PipelineContext   pipelineContext = pipelineManager.getContext();
-        PipelineArguments arguments       = pipelineContext.getPipelineArguments();
-        PipelineResult    result          = pipelineContext.getPipelineResult();
+        Form             entity          = formService.loadFormWithFields(primaryId);
+        PipelineContext  pipelineContext = pipelineManager.getContext();
+        ArgumentsContext arguments       = pipelineContext.getArgumentsContext();
+        ResultContext    result    = pipelineContext.getResultContext();
 
         pipelineContext.setBeanProvider(new SpringBeanProvider());
 

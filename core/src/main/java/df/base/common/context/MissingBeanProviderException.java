@@ -1,6 +1,6 @@
-package df.base.common.pipeline;
+package df.base.common.context;
 
-public class MissingBeanProviderException extends PipelineRuntimeException {
+public class MissingBeanProviderException extends RuntimeException {
 
     public MissingBeanProviderException() {
         super();

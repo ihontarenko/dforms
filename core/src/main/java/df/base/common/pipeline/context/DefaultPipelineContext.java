@@ -1,166 +1,106 @@
 package df.base.common.pipeline.context;
 
-import df.base.common.pipeline.BeanProvider;
-import df.base.common.pipeline.MissingBeanProviderException;
-import df.base.common.pipeline.PipelineContext;
-import org.springframework.util.ClassUtils;
+import df.base.common.context.*;
 
-import java.util.HashMap;
-import java.util.Map;
+public class DefaultPipelineContext extends AbstractContext implements PipelineContext, ArgumentsContext, ResultContext {
 
-import static java.util.Objects.requireNonNull;
-import static java.util.Objects.requireNonNullElse;
-import static java.util.Optional.ofNullable;
-
-public class DefaultPipelineContext implements PipelineContext, PipelineArguments, PipelineResult {
-
-    private final Map<Object, Object> properties = new HashMap<>();
-    private       boolean             stopped    = false;
-    private       PipelineResult      result;
-    private       PipelineArguments   arguments;
-    private       BeanProvider        beanProvider;
+    private boolean          stopped = false;
+    private ResultContext    result;
+    private ArgumentsContext arguments;
 
     public DefaultPipelineContext() {
         this(null);
     }
 
     public DefaultPipelineContext(BeanProvider beanProvider) {
-        this.beanProvider = beanProvider;
+        super(beanProvider);
         this.result = new DefaultPipelineResult();
         this.arguments = new DefaultPipelineArguments();
     }
 
     @Override
-    public void setBeanProvider(BeanProvider beanProvider) {
-        this.beanProvider = beanProvider;
-    }
-
-    @Override
-    public <T> T getBean(Class<T> beanClass) {
-        return ofNullable(beanProvider).orElseThrow(() -> new MissingBeanProviderException(
-                "The BeanProvider has not been provided in this context. Ensure it is set before usage.")).getBean(beanClass);
-    }
-
-    @Override
-    public <T> T getBean(String beanName, Class<T> beanClass) {
-        return ofNullable(beanProvider).orElseThrow(() -> new MissingBeanProviderException(
-                "The BeanProvider has not been provided in this context. Ensure it is set before usage.")).getBean(beanName, beanClass);
-    }
-
-    @Override
-    public Map<Object, Object> getProperties() {
-        return properties;
-    }
-
-    @Override
-    public void setProperty(Object key, Object value) {
-        properties.put(key, value);
-    }
-
-    @Override
-    public void setProperty(Object value) {
-        Class<?> classKey = ClassUtils.getUserClass(requireNonNullElse(value, new Object()).getClass());
-        setProperty(classKey, value);
-    }
-
-    @Override
-    public <R> R getProperty(Object key) {
-        return getProperty(key, null);
-    }
-
-    @Override
-    public <R> R getProperty(Object key, Object defaultValue) {
-        return (R) properties.getOrDefault(key, defaultValue);
-    }
-
-    @Override
-    public boolean hasProperty(Object key) {
-        return properties.containsKey(key);
-    }
-
-    @Override
-    public PipelineResult getPipelineResult() {
+    public ResultContext getResultContext() {
         return result;
     }
 
     @Override
-    public void setPipelineResult(PipelineResult result) {
+    public void setResultContext(ResultContext result) {
         this.result = result;
     }
 
     @Override
-    public PipelineArguments getPipelineArguments() {
+    public ArgumentsContext getArgumentsContext() {
         return arguments;
     }
 
     @Override
-    public void setPipelineArguments(PipelineArguments arguments) {
+    public void setArgumentsContext(ArgumentsContext arguments) {
         this.arguments = arguments;
     }
 
     @Override
     public <T> T requireArgument(Object name) {
-        return getPipelineArguments().requireArgument(name);
+        return getArgumentsContext().requireArgument(name);
     }
 
     @Override
     public <T> T getArgument(Object name) {
-        return getPipelineArguments().getArgument(name);
+        return getArgumentsContext().getArgument(name);
     }
 
     @Override
     public void setArgument(Object name, Object argument) {
-        getPipelineArguments().setArgument(name, argument);
+        getArgumentsContext().setArgument(name, argument);
     }
 
     @Override
     public void setArgument(Object argument) {
-        getPipelineArguments().setArgument(argument);
+        getArgumentsContext().setArgument(argument);
     }
 
     @Override
     public void setArguments(Object... arguments) {
-        getPipelineArguments().setArguments(arguments);
+        getArgumentsContext().setArguments(arguments);
     }
 
     @Override
     public boolean hasArgument(Object name) {
-        return getPipelineArguments().hasArgument(name);
+        return getArgumentsContext().hasArgument(name);
     }
 
     @Override
     public <T> T getReturnValue() {
-        return getPipelineResult().getReturnValue();
+        return getResultContext().getReturnValue();
     }
 
     @Override
     public void setReturnValue(Object value) {
-        getPipelineResult().setReturnValue(value);
+        getResultContext().setReturnValue(value);
     }
 
     @Override
     public boolean hasErrors() {
-        return getPipelineResult().hasErrors();
+        return getResultContext().hasErrors();
     }
 
     @Override
     public Iterable<ErrorDetails> getErrors() {
-        return getPipelineResult().getErrors();
+        return getResultContext().getErrors();
     }
 
     @Override
     public ErrorDetails getError(String name) {
-        return getPipelineResult().getError(name);
+        return getResultContext().getError(name);
     }
 
     @Override
     public void addError(ErrorDetails errorDetails) {
-        getPipelineResult().addError(errorDetails);
+        getResultContext().addError(errorDetails);
     }
 
     @Override
     public void addError(String code, String message) {
-        getPipelineResult().addError(code, message);
+        getResultContext().addError(code, message);
     }
 
     @Override
@@ -173,95 +113,12 @@ public class DefaultPipelineContext implements PipelineContext, PipelineArgument
         this.stopped = true;
     }
 
-    public static class DefaultPipelineResult implements PipelineResult {
+    public static class DefaultPipelineResult extends AbstractResultContext {
 
-        private final Map<String, ErrorDetails> errors;
-        private       Object                    value;
-
-        public DefaultPipelineResult() {
-            this.errors = new HashMap<>();
-        }
-
-        @Override
-        public <T> T getReturnValue() {
-            return (T) value;
-        }
-
-        @Override
-        public void setReturnValue(Object value) {
-            this.value = value;
-        }
-
-        @Override
-        public boolean hasErrors() {
-            return errors.size() > 0;
-        }
-
-        @Override
-        public Iterable<ErrorDetails> getErrors() {
-            return errors.values();
-        }
-
-        @Override
-        public ErrorDetails getError(String name) {
-            return errors.get(name);
-        }
-
-        @Override
-        public void addError(ErrorDetails errorDetails) {
-            errors.put(errorDetails.code(), errorDetails);
-        }
-
-        @Override
-        public void addError(String code, String message) {
-            addError(new ErrorDetails(code, message));
-        }
     }
 
-    public static class DefaultPipelineArguments implements PipelineArguments {
+    public static class DefaultPipelineArguments extends AbstractArgumentsContext {
 
-        private final Map<Object, Object> arguments = new HashMap<>();
-
-        @Override
-        public <T> T requireArgument(Object name) {
-            if (hasArgument(name)) {
-                return getArgument(name);
-            }
-
-            throw new ArgumentNotFoundException("Required argument not found [%s]".formatted(name));
-        }
-
-        @Override
-        public <T> T getArgument(Object name) {
-            return (T) arguments.getOrDefault(name, new Object());
-        }
-
-        @Override
-        public void setArgument(Object name, Object argument) {
-            arguments.put(name, argument);
-        }
-
-        @Override
-        public void setArgument(Object argument) {
-            setArgument(ClassUtils.getUserClass(requireNonNull(argument).getClass()), argument);
-        }
-
-        @Override
-        public void setArguments(Object... arguments) {
-            for (Object argument : arguments) {
-                setArgument(argument);
-            }
-        }
-
-        @Override
-        public boolean hasArgument(Object name) {
-            return arguments.containsKey(name);
-        }
-
-        @Override
-        public String toString() {
-            return "ARGUMENTS: %s".formatted(arguments);
-        }
     }
 
 }

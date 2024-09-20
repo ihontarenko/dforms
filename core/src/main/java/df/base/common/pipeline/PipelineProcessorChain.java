@@ -1,5 +1,6 @@
 package df.base.common.pipeline;
 
+import df.base.common.pipeline.context.PipelineContext;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
@@ -72,7 +73,7 @@ public record PipelineProcessorChain(String initial,
 
         fallback.process(context);
 
-        context.getPipelineResult().addError("EXCEPTION", exception.getMessage());
+        context.getResultContext().addError("EXCEPTION", exception.getMessage());
         context.setProperty(Throwable.class, exception);
 
         LOGGER.error("[PIPELINE-CHAIN]: ERROR OCCURRED: '{}', FALLBACK PROCESSOR: '{}'",
