@@ -3,6 +3,7 @@ package df.base.common.annotation.parsing;
 import df.base.common.annotation.parsing.ast.AnnotationArrayNode;
 import df.base.common.annotation.parsing.ast.AnnotationNode;
 import df.base.common.annotation.parsing.ast.AnnotationParameterNode;
+import df.base.common.annotation.parsing.parser.AnnotationParameterParser;
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.node.Node;
 import df.base.common.libs.ast.node.RootNode;
@@ -31,10 +32,11 @@ public class Example {
         new AnnotationParserConfigurator().configure(context);
 
         Parser parser = context.getParser(AnnotationParser.class);
-        Lexer  lexer  = new AnnotationLexer(tokenizer.tokenize("@NotEmpty(message = \"form description is required\", size={@Size(max = 32)}, item=@Size(max = 32))"));
+//        Lexer  lexer  = new AnnotationLexer(tokenizer.tokenize("@NotEmpty(message = \"form description is required\", size={@Size(max = 32)}, item=@Size(max = 32))"));
+        Lexer  lexer  = new AnnotationLexer(tokenizer.tokenize("(class=df.base.validation.custom.constraint.FieldUsageTypeValidator, minLength=10, maxLength=32)"));
 
         // make sure we start parsing with the correct token
-        parser.ensureCurrent(lexer, T_ANNOTATION);
+//        parser.ensureCurrent(lexer, T_ANNOTATION);
 
         for (Token.Entry entry : lexer) {
             System.out.println(entry);
@@ -44,7 +46,7 @@ public class Example {
 
         Node root = new RootNode();
 
-        parser.parse(lexer, root, context);
+        context.getParser(AnnotationParameterParser.class).parse(lexer, root, context);
 
         Map<String, Object> params = new HashMap<>();
 

@@ -34,6 +34,14 @@
 
         <processor-link name="renderNodeTree">
             <processor class="df.base.pipeline.form_render.RenderNodeTreeProcessor" />
+            <properties>
+                <transition return="FINISH" link="printResultValue" />
+            </properties>
+        </processor-link>
+
+        <!--  For Debug Purposes  -->
+        <processor-link name="printResultValue">
+            <processor class="df.base.pipeline.PrintResultValueProcessor" />
         </processor-link>
 
     </processor-chain>

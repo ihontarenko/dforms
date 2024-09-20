@@ -1,7 +1,6 @@
 package df.base.common.libs.jbm;
 
 import df.base.common.libs.jbm.bean.ObjectCreationException;
-import df.base.persistence.entity.form.Form;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -25,6 +24,7 @@ abstract public class ReflectionUtils {
             double.class, 0D,
             char.class, '\0'
     );
+    public static final  String                PROXY_CLASS_NAME_SEPARATOR     = "$$";
 
     public static <T> T instantiate(Constructor<T> constructor, Object... arguments) {
         final int parametersCount = constructor.getParameterCount();
@@ -149,6 +149,12 @@ abstract public class ReflectionUtils {
         }
 
         return value;
+    }
+
+    public static void readPropertyDescriptors(Class<?> type, Map<String, PropertyDescriptor> propertyDescriptors) {
+        for (PropertyDescriptor propertyDescriptor : getPropertyDescriptors(type)) {
+            propertyDescriptors.put(propertyDescriptor.getName(), propertyDescriptor);
+        }
     }
 
     public static List<PropertyDescriptor> getPropertyDescriptors(Class<?> type) {
@@ -281,6 +287,30 @@ abstract public class ReflectionUtils {
         }
 
         return value;
+    }
+
+    public static Class<?> unwrapAnonymousClass(Class<?> classType) {
+        Class<?> userClass = classType;
+
+        while (userClass.isAnonymousClass()) {
+            userClass = userClass.getSuperclass();
+        }
+
+        return userClass;
+    }
+
+    public static Class<?> unwrapProxyClass(Class<?> classType) {
+        Class<?> userClass = classType;
+
+        if (classType.getName().contains(PROXY_CLASS_NAME_SEPARATOR)) {
+            Class<?> superClass = userClass.getSuperclass();
+
+            if (superClass != null && superClass != Object.class) {
+                userClass = superClass;
+            }
+        }
+
+        return userClass;
     }
 
 }

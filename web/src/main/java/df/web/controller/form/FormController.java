@@ -48,17 +48,12 @@ public class FormController implements FormOperations {
 
     private final FormService        formService;
     private final ControllerHelper   controllerHelper;
-    private final NodeContext        nodeContext;
-    private final DeepFormMapper     mapper;
     private final NodeBuilderContext builderContext;
     private final PipelineManager    pipelineManager;
 
-    public FormController(FormService formService, ControllerHelper controllerHelper,
-                          NodeContext nodeContext, DeepFormMapper mapper, PipelineManager pipelineManager) {
+    public FormController(FormService formService, ControllerHelper controllerHelper, PipelineManager pipelineManager) {
         this.formService = formService;
         this.controllerHelper = controllerHelper;
-        this.nodeContext = nodeContext;
-        this.mapper = mapper;
         this.pipelineManager = pipelineManager;
 
         this.builderContext = new NodeBuilderContext();

@@ -6,7 +6,7 @@ public interface Token {
 
     int type();
 
-    String[] expressions();
+    String[] examples();
 
     Token[] tokens();
 

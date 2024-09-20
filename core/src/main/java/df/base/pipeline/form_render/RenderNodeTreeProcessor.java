@@ -18,7 +18,7 @@ public class RenderNodeTreeProcessor implements PipelineProcessor {
 
         result.setReturnValue(root.interpret(context.getBean(NodeContext.class)));
 
-        return FormRenderReturnCode.END;
+        return FormRenderReturnCode.FINISH;
     }
 
 }

@@ -64,7 +64,7 @@ public enum DefaultToken implements Token {
     }
 
     @Override
-    public String[] expressions() {
+    public String[] examples() {
         return values;
     }
 

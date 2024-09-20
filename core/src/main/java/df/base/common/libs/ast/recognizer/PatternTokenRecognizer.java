@@ -8,12 +8,13 @@ import java.util.function.Supplier;
 
 public class PatternTokenRecognizer extends PredicateSupplierRecognizer<Token, String> {
 
-    private final Token token;
-    private final String expression;
+    private final Token  token;
+    private final String regularExpression;
 
-    public PatternTokenRecognizer(String expression, Token token, int priority) {
-        super(priority);
-        this.expression = expression;
+    public PatternTokenRecognizer(String regularExpression, Token token, int order) {
+        super(order);
+        
+        this.regularExpression = regularExpression;
         this.token = token;
     }
 
@@ -24,7 +25,7 @@ public class PatternTokenRecognizer extends PredicateSupplierRecognizer<Token, S
 
     @Override
     public Predicate<String> getPredicate() {
-        return input -> input.matches(expression);
+        return input -> input.matches(regularExpression);
     }
 
 }

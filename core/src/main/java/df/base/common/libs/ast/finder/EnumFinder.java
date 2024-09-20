@@ -11,8 +11,8 @@ public class EnumFinder<T extends Enum<T> & Token> implements Finder<T, String, 
         Optional<T> token = Optional.empty();
 
         for (T current : values) {
-            if (current.expressions().length > 0) {
-                for (String example : current.expressions()) {
+            if (current.examples().length > 0) {
+                for (String example : current.examples()) {
                     if (example.equalsIgnoreCase(value)) {
                         token = Optional.of(current);
                         break;

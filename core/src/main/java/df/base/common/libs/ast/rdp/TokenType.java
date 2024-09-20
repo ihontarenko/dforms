@@ -1,19 +1,23 @@
-package df.base.common.libs.confio.parser;
+package df.base.common.libs.ast.rdp;
 
 import df.base.common.libs.ast.token.Token;
 
-public enum ConfioToken implements Token {
+public enum TokenType implements Token {
 
-    T_CONFIO_FILE_NAME(9100);
+    IDENTIFIER(1000),
+    CONDITION(1100),
+    METHOD_CALL(1200),
+    SYMBOL(9000),
+    EOF(9999);
 
     private final int      type;
     private final String[] values;
 
-    ConfioToken(final int type) {
+    TokenType(final int type) {
         this(type, new String[0]);
     }
 
-    ConfioToken(final int type, final String... values) {
+    TokenType(final int type, final String... values) {
         this.type = type;
         this.values = values;
     }
@@ -29,7 +33,7 @@ public enum ConfioToken implements Token {
     }
 
     @Override
-    public ConfioToken[] tokens() {
+    public TokenType[] tokens() {
         return values();
     }
 

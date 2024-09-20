@@ -20,23 +20,23 @@ public enum Regexps {
     R_NEW_LINE("\n+"),
     R_SPECIAL_SYMBOLS("\\S+?");
 
-    private final String expression;
+    private final String regulatExpression;
 
-    Regexps(String expression) {
-        this.expression = expression;
+    Regexps(String regularExpression) {
+        this.regulatExpression = regularExpression;
     }
 
     public Predicate<String> predicate() {
-        return input -> input.matches(this.expression);
+        return input -> input.matches(this.regulatExpression);
     }
 
-    public String expression() {
-        return this.expression;
+    public String regularExpression() {
+        return this.regulatExpression;
     }
 
     @Override
     public String toString() {
-        return expression;
+        return regulatExpression;
     }
 
 }

@@ -4,7 +4,8 @@ import df.base.common.libs.ast.token.Token;
 
 public enum AnnotationToken implements Token {
 
-    T_ANNOTATION(9100);
+    T_ANNOTATION(9100),
+    T_ANNOTATION_CLASS_NAME(9200);
 
     private final int      type;
     private final String[] values;
@@ -24,7 +25,7 @@ public enum AnnotationToken implements Token {
     }
 
     @Override
-    public String[] expressions() {
+    public String[] examples() {
         return values;
     }
 
