@@ -21,9 +21,11 @@ public class Validation {
     private final Map<String, List<Validator>> fieldsValidators = new HashMap<>();
     private final String                       name;
     private final MessageResolver              resolver;
+    private final BindingResultMapper          bindingResultMapper;
 
     public Validation(String name, MessageResolver resolver, ApplicationContext context) {
         this.beanFactory = context.getAutowireCapableBeanFactory();
+        this.bindingResultMapper = new BindingResultMapper();
         this.name = name;
         this.resolver = resolver;
     }
@@ -60,7 +62,7 @@ public class Validation {
             bindingResult = result;
         }
 
-        new BindingResultMapper().map(validate(object, validationContext), bindingResult);
+        bindingResultMapper.map(validate(object, validationContext), bindingResult);
     }
 
     public Errors validate(Object object, String fieldName, ValidationContext validationContext) {
@@ -86,7 +88,7 @@ public class Validation {
             bindingResult = result;
         }
 
-        new BindingResultMapper().map(validate(object, fieldName, validationContext), bindingResult);
+        bindingResultMapper.map(validate(object, fieldName, validationContext), bindingResult);
     }
 
     private void applyValidator(Object object, Validator validator, ValidationContext validationContext, Errors errors) {
