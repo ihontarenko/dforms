@@ -47,6 +47,11 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
     }
 
     @Transactional(readOnly = true)
+    public List<Field> getAllByNames(Iterable<String> names) {
+        return repository.findAllByNameIn(names, fetch("configs"));
+    }
+
+    @Transactional(readOnly = true)
     public List<Field> getEmbeddableFields() {
         return repository.findAllByUsageType(EMBEDDABLE, fetch("parents"));
     }

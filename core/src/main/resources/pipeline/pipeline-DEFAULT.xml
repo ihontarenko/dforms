@@ -74,6 +74,46 @@
 
     </processor-chain>
 
+    <!--  Dynamic Form Handling  -->
+    <processor-chain name="dynamic-form-handler" initial="prepare">
+
+        <!--  Fetch Field Configs Related To Dynamic Form's Fields  -->
+        <processor-link name="prepare">
+            <processor class="df.base.pipeline.dynamic_form.PrepareRequestPostDataProcessor" />
+            <properties>
+                <transition return="INITIALIZE_VALIDATORS" link="validatorsInitialize" />
+            </properties>
+        </processor-link>
+
+        <!--  Build Validator According To Field Names  -->
+        <processor-link name="validatorsInitialize">
+            <processor class="df.base.pipeline.dynamic_form.InitializeValidatorsProcessor" />
+            <properties>
+                <transition return="VALIDATE" link="validate" />
+            </properties>
+        </processor-link>
+
+        <!--  Validate Request Data  -->
+        <processor-link name="validate">
+            <processor class="df.base.pipeline.dynamic_form.ValidateDynamicFormProcessor" />
+            <properties>
+                <transition return="VALIDATION_PASS" link="persistDynamicForm" />
+                <transition return="VALIDATION_FAIL" link="bindErrors" />
+            </properties>
+        </processor-link>
+
+        <!--  Persist Dynamic Form  -->
+        <processor-link name="persistDynamicForm">
+            <processor class="df.base.pipeline.dynamic_form.PersistDynamicFormDataProcessor" />
+        </processor-link>
+
+        <!--  Handle Errors  -->
+        <processor-link name="bindErrors">
+            <processor class="df.base.pipeline.dynamic_form.BindValidationErrorsProcessor" />
+        </processor-link>
+
+    </processor-chain>
+
     <!--  Test Chain  -->
     <processor-chain name="test-chain" initial="test3">
 

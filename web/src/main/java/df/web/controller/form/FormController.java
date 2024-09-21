@@ -1,24 +1,31 @@
 package df.web.controller.form;
 
-import df.base.common.elements.builder.NodeBuilderContext;
-import df.base.common.exception.ApplicationException;
-import df.base.common.pipeline.context.PipelineContext;
-import df.base.common.pipeline.PipelineManager;
-import df.base.common.context.bean_provider.SpringBeanProvider;
 import df.base.common.context.ArgumentsContext;
 import df.base.common.context.ResultContext;
+import df.base.common.context.bean_provider.SpringBeanProvider;
+import df.base.common.elements.builder.NodeBuilderContext;
+import df.base.common.exception.ApplicationException;
+import df.base.common.pipeline.PipelineManager;
+import df.base.common.pipeline.context.PipelineContext;
+import df.base.common.validation.custom.BasicValidators;
+import df.base.common.validation.custom.Validator;
+import df.base.dto.form.FieldConfigDTO;
 import df.base.dto.form.FormDTO;
 import df.base.html.builder.bootstrap.BootstrapBuilderStrategy;
+import df.base.mapping.form.FieldConfigMapper;
 import df.base.mapping.form.FormMapper;
+import df.base.mapping.form.MultiValueMapMapper;
+import df.base.persistence.entity.form.Field;
+import df.base.persistence.entity.form.FieldConfig;
 import df.base.persistence.entity.form.Form;
 import df.base.persistence.entity.support.FormStatus;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.security.UserInfo;
+import df.base.service.form.FieldService;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
 import df.web.controller.MAVConstants;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -29,24 +36,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 import static df.base.Messages.*;
+import static df.base.common.validation.custom.ValidatorConstraintFactory.BASIC_FACTORY;
 import static df.web.common.flash.FlashMessage.*;
 
 @Controller
 public class FormController implements FormOperations {
 
     private final FormService        formService;
+    private final FieldService       fieldService;
     private final ControllerHelper   controllerHelper;
     private final NodeBuilderContext builderContext;
     private final PipelineManager    pipelineManager;
 
-    public FormController(FormService formService, ControllerHelper controllerHelper, PipelineManager pipelineManager) {
+    public FormController(FormService formService, FieldService fieldService, ControllerHelper controllerHelper, PipelineManager pipelineManager) {
+        this.fieldService = fieldService;
         this.formService = formService;
         this.controllerHelper = controllerHelper;
         this.pipelineManager = pipelineManager;
@@ -72,12 +79,40 @@ public class FormController implements FormOperations {
     }
 
     @Override
-    public ModelAndView demo(String primaryId, MultiValueMap<String, String> postData,
-                             HttpServletRequest request,  RedirectAttributes attributes) {
+    public ModelAndView demo(String primaryId, MultiValueMap<String, String> postData, RedirectAttributes attributes) {
         controllerHelper.setRedirectAttributes(attributes);
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_INDEX);
 
-        System.out.println(request.getParameterMap());
+        Map<String, Object> requestData = new MultiValueMapMapper().map(postData);
+
+        List<Field>                       fields  = fieldService.getAllByNames(requestData.keySet());
+        Map<String, List<FieldConfigDTO>> configs = new HashMap<>();
+
+        try {
+            pipelineManager.runPipeline("dynamic-form-handler");
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage(), MAVConstants.REDIRECT_FORM);
+        }
+
+        FieldConfigMapper mapper = new FieldConfigMapper();
+
+        for (Field field : fields) {
+            configs.putIfAbsent(field.getName(), new ArrayList<>());
+            for (FieldConfig config : field.getConfigs()) {
+                FieldConfigDTO configDTO  = mapper.map(config);
+                String         configName = configDTO.getKey();
+
+                if (configName.startsWith("#validation")) {
+                    String          validatorName = configName.substring(configName.indexOf(':') + 1);
+                    BasicValidators validatorType = BasicValidators.valueOf(validatorName.toUpperCase());
+                    Validator       validator     = BASIC_FACTORY.getValidator(validatorType);
+
+                    System.out.println(validator);
+
+                    configs.get(field.getName()).add(configDTO);
+                }
+            }
+        }
 
         return controllerHelper.redirect();
     }
@@ -90,7 +125,7 @@ public class FormController implements FormOperations {
         Form             entity          = formService.loadFormWithFields(primaryId);
         PipelineContext  pipelineContext = pipelineManager.getContext();
         ArgumentsContext arguments       = pipelineContext.getArgumentsContext();
-        ResultContext    result    = pipelineContext.getResultContext();
+        ResultContext    result          = pipelineContext.getResultContext();
 
         pipelineContext.setBeanProvider(new SpringBeanProvider());
 

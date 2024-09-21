@@ -8,6 +8,8 @@ import static df.base.common.validation.custom.ErrorCode.Default.NULL_OBJECT;
 
 public class NotNullValidator implements Validator {
 
+    private String message;
+
     @Override
     public void validate(Object object, ValidationContext validationContext) throws ValidationException {
         if (object == null) {
