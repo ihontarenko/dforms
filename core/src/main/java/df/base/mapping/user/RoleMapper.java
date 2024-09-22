@@ -2,7 +2,7 @@ package df.base.mapping.user;
 
 import df.base.persistence.entity.user.Privilege;
 import df.base.persistence.entity.user.Role;
-import df.base.common.support.Mapper;
+import df.base.common.mapping.Mapper;
 import df.base.dto.user.RoleDTO;
 import org.springframework.stereotype.Service;
 

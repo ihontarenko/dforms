@@ -1,6 +1,6 @@
 package df.base.mapping.form;
 
-import df.base.common.support.Mapper;
+import df.base.common.mapping.Mapper;
 import org.springframework.util.MultiValueMap;
 
 import java.util.HashMap;

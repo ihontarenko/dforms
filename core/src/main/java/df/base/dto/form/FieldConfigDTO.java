@@ -105,7 +105,7 @@ public class FieldConfigDTO implements DTO, NestedKeyValue {
     private String fieldId;
 
     @NotEmpty(groups = Operations.Secondary.class)
-    @Size(max = 32, groups = Operations.Secondary.class)
+    @Size(max = 96, groups = Operations.Secondary.class)
     private String key;
 
     @NotEmpty(groups = Operations.Secondary.class)

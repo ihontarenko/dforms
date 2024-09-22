@@ -26,6 +26,14 @@ abstract public class ReflectionUtils {
     );
     public static final  String                PROXY_CLASS_NAME_SEPARATOR     = "$$";
 
+    public static Class<?> getClassFor(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static <T> T instantiate(Constructor<T> constructor, Object... arguments) {
         final int parametersCount = constructor.getParameterCount();
         T         instance;

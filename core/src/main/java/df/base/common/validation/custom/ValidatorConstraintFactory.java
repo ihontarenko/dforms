@@ -1,17 +1,29 @@
 package df.base.common.validation.custom;
 
+import df.base.common.validation.custom.constraint.NonEmptyValidator;
 import df.base.common.validation.custom.constraint.NotNullValidator;
+import df.base.common.mapping.ObjectFieldMapper;
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+
+import static df.base.common.libs.jbm.ReflectionUtils.*;
 
 public class ValidatorConstraintFactory {
 
     public static final ValidatorConstraintFactory BASIC_FACTORY = new ValidatorConstraintFactory();
 
     static {
+        // add validator instances
         BASIC_FACTORY.addValidator(BasicValidators.NOT_NULL, new NotNullValidator());
         BASIC_FACTORY.addValidator(BasicValidators.SIZE, new NotNullValidator());
+
+        // add validator classes for dynamic creation
+        BASIC_FACTORY.addValidator(BasicValidators.NOT_NULL, NotNullValidator.class);
+        BASIC_FACTORY.addValidator(BasicValidators.NON_EMPTY, NonEmptyValidator.class);
+        BASIC_FACTORY.addValidator(BasicValidators.SIZE, NotNullValidator.class);
+        BASIC_FACTORY.addValidator(BasicValidators.URL, NotNullValidator.class);
     }
 
     private final Map<Enum<?>, Validator>                  validators       = new HashMap<>();
@@ -29,8 +41,8 @@ public class ValidatorConstraintFactory {
         Validator validator = validators.get(key);
 
         if (validator == null) {
-            throw new ValidatorNotFoundException(
-                    "The validator with key '%s' not registered for ValidatorConstraintFactory"
+            throw new UnregisteredValidatorException(
+                    "Validator object with the enum key '%s' is not found in the ValidatorConstraintFactory. Please ensure it is registered."
                             .formatted(key));
         }
 
@@ -41,8 +53,8 @@ public class ValidatorConstraintFactory {
         Class<? extends Validator> validatorClass = validatorClasses.get(key);
 
         if (validatorClass == null) {
-            throw new ValidatorNotFoundException(
-                    "The validator class with key '%s' not registered for ValidatorConstraintFactory"
+            throw new UnregisteredValidatorException(
+                    "Validator class with the enum key '%s' is not found in the ValidatorConstraintFactory. Please ensure it is registered."
                             .formatted(key));
         }
 
@@ -50,7 +62,22 @@ public class ValidatorConstraintFactory {
     }
 
     public Validator createNewValidator(Enum<?> key) {
-        return null;
+        return createNewValidator(key, null);
+    }
+
+    public Validator createNewValidator(Enum<?> key, Map<String, Object> parameters) {
+        return createNewValidator(getValidatorClass(key), parameters);
+    }
+
+    public Validator createNewValidator(Class<? extends Validator> validatorClass, Map<String, Object> parameters) {
+        Constructor<?>             constructor    = findFirstConstructor(validatorClass);
+        Validator                  validator      = (Validator) instantiate(constructor);
+
+        if (parameters != null) {
+            new ObjectFieldMapper().reverse(parameters, validator);
+        }
+
+        return validator;
     }
 
 }

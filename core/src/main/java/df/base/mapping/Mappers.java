@@ -1,6 +1,6 @@
 package df.base.mapping;
 
-import df.base.common.support.Mapper;
+import df.base.common.mapping.Mapper;
 import df.base.dto.form.*;
 import df.base.dto.user.PrivilegeDTO;
 import df.base.dto.user.RoleDTO;

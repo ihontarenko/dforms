@@ -1,14 +1,12 @@
 package df.base.mapping.form;
 
-import df.base.common.support.Mapper;
+import df.base.common.mapping.Mapper;
 import df.base.dto.form.FieldDTO;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.support.ElementType;
 import df.base.persistence.entity.support.FieldStatus;
 import df.base.persistence.entity.support.UsageType;
 import org.springframework.stereotype.Service;
-
-import java.util.function.Consumer;
 
 @Service
 public class FieldMapper implements Mapper<Field, FieldDTO> {

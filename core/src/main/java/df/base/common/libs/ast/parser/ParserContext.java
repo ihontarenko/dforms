@@ -5,13 +5,13 @@ import java.util.Map;
 
 public interface ParserContext {
 
-    ParserContext CONTEXT = new Context();
+    ParserContext CONTEXT = new SimpleContext();
 
     Parser getParser(Class<? extends Parser> type);
 
     void add(Parser parser);
 
-    class Context implements ParserContext {
+    class SimpleContext implements ParserContext {
 
         private final Map<Class<? extends Parser>, Parser> parsers = new HashMap<>();
 

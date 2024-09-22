@@ -1,6 +1,5 @@
-package df.base.mapping;
+package df.base.common.mapping;
 
-import df.base.common.support.Mapper;
 import df.base.common.libs.jbm.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -8,7 +7,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ObjectToHashMapMapper implements Mapper<Object, Map<String, Object>> {
+public class ObjectFieldMapper implements Mapper<Object, Map<String, Object>> {
 
     @Override
     public Map<String, Object> map(Object source) {
