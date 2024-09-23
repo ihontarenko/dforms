@@ -1,4 +1,4 @@
-package df.base.pipeline.form_render;
+package df.base.pipeline.df.rendering;
 
 import df.base.common.elements.Node;
 import df.base.common.elements.builder.NodeBuilder;
@@ -9,9 +9,6 @@ import df.base.common.context.ArgumentsContext;
 import df.base.dto.form.FormDTO;
 import df.base.html.builder.AbstractBuilderStrategy;
 import df.base.html.builder.bootstrap.BootstrapBuilderStrategy;
-
-import static df.base.pipeline.form_render.FormRenderReturnCode.POST_BUILD_DEMO;
-import static df.base.pipeline.form_render.FormRenderReturnCode.POST_BUILD_PUBLIC;
 
 public class PreBuildNodeTreeProcessor implements PipelineProcessor {
 
@@ -27,7 +24,7 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
 
         arguments.setArgument(Node.class, builder.build(arguments.requireArgument(FormDTO.class), builderContext));
 
-        return (environment != null && environment.equals("DEMO")) ? POST_BUILD_DEMO : POST_BUILD_PUBLIC;
+        return (environment != null && environment.equals("DEMO")) ? FormRenderReturnCode.POST_BUILD_DEMO : FormRenderReturnCode.POST_BUILD_PUBLIC;
     }
 
 }

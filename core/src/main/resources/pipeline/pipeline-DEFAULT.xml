@@ -4,14 +4,14 @@
     <processor-chain name="process-form-html" initial="prepareFormEntity">
 
         <processor-link name="prepareFormEntity">
-            <processor class="df.base.pipeline.form_render.PrepareFormEntityProcessor" />
+            <processor class="df.base.pipeline.df.rendering.PrepareFormEntityProcessor" />
             <properties>
                 <transition return="PRE_BUILD_NODE_TREE" link="preBuildNodeTree" />
             </properties>
         </processor-link>
 
         <processor-link name="preBuildNodeTree">
-            <processor class="df.base.pipeline.form_render.PreBuildNodeTreeProcessor" />
+            <processor class="df.base.pipeline.df.rendering.PreBuildNodeTreeProcessor" />
             <properties>
                 <transition return="POST_BUILD_DEMO" link="postBuildDemo" />
                 <transition return="POST_BUILD_PUBLIC" link="postBuildPublic" />
@@ -19,21 +19,21 @@
         </processor-link>
 
         <processor-link name="postBuildDemo">
-            <processor class="df.base.pipeline.form_render.PostBuildDemoProcessor" />
+            <processor class="df.base.pipeline.df.rendering.PostBuildDemoProcessor" />
             <properties>
                 <transition return="RENDER_NOTE_TREE" link="renderNodeTree" />
             </properties>
         </processor-link>
 
         <processor-link name="postBuildPublic">
-            <processor class="df.base.pipeline.form_render.PostBuildPublicProcessor" />
+            <processor class="df.base.pipeline.df.rendering.PostBuildPublicProcessor" />
             <properties>
                 <transition return="RENDER_NOTE_TREE" link="renderNodeTree" />
             </properties>
         </processor-link>
 
         <processor-link name="renderNodeTree">
-            <processor class="df.base.pipeline.form_render.RenderNodeTreeProcessor" />
+            <processor class="df.base.pipeline.df.rendering.RenderNodeTreeProcessor" />
             <properties>
                 <transition return="FINISH" link="printResultValue" />
             </properties>
@@ -79,7 +79,7 @@
 
         <!--  Fetch Field Configs Related To Dynamic Form's Fields  -->
         <processor-link name="prepare">
-            <processor class="df.base.pipeline.dynamic_form.PrepareRequestPostDataProcessor" />
+            <processor class="df.base.pipeline.df.performing.PrepareRequestPostDataProcessor" />
             <properties>
                 <transition return="INITIALIZE_VALIDATORS" link="validatorsInitialize" />
             </properties>
@@ -87,7 +87,7 @@
 
         <!--  Build Validator According To Field Names  -->
         <processor-link name="validatorsInitialize">
-            <processor class="df.base.pipeline.dynamic_form.InitializeValidatorsProcessor" />
+            <processor class="df.base.pipeline.df.performing.InitializeValidatorsProcessor" />
             <properties>
                 <transition return="VALIDATE" link="validate" />
             </properties>
@@ -95,7 +95,7 @@
 
         <!--  Validate Request Data  -->
         <processor-link name="validate">
-            <processor class="df.base.pipeline.dynamic_form.ValidateDynamicFormProcessor" />
+            <processor class="df.base.pipeline.df.performing.ValidateDynamicFormProcessor" />
             <properties>
                 <transition return="VALIDATION_PASS" link="persistDynamicForm" />
                 <transition return="VALIDATION_FAIL" link="bindErrors" />
@@ -104,12 +104,12 @@
 
         <!--  Persist Dynamic Form  -->
         <processor-link name="persistDynamicForm">
-            <processor class="df.base.pipeline.dynamic_form.PersistDynamicFormDataProcessor" />
+            <processor class="df.base.pipeline.df.performing.PersistDynamicFormDataProcessor" />
         </processor-link>
 
         <!--  Handle Errors  -->
         <processor-link name="bindErrors">
-            <processor class="df.base.pipeline.dynamic_form.BindValidationErrorsProcessor" />
+            <processor class="df.base.pipeline.df.performing.BindValidationErrorsProcessor" />
         </processor-link>
 
     </processor-chain>
