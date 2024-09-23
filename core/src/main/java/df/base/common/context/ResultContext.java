@@ -16,6 +16,8 @@ public interface ResultContext {
 
     void addError(String code, String message);
 
+    void cleanup();
+
     record ErrorDetails(String code, String message) { }
 
 }

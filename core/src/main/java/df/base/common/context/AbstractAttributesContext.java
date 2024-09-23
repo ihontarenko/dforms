@@ -23,7 +23,7 @@ abstract public class AbstractAttributesContext implements AttributesContext {
     @Override
     @SuppressWarnings({"unchecked"})
     public <T> T getAttribute(Object name) {
-        return (T) attributes.getOrDefault(name, new Object());
+        return (T) attributes.get(name);
     }
 
     @Override

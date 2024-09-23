@@ -22,7 +22,6 @@ public class PipelineManager {
         this.rootDefinition = createLoader(definition).load(definition);
         this.context = context;
         this.processorFactory = new PipelineProcessorFactory();
-        this.context.setProperty(RootDefinition.class, rootDefinition);
     }
 
     public RootDefinition getRootDefinition() {
@@ -68,6 +67,7 @@ public class PipelineManager {
     }
 
     public void runPipeline(String chainName) throws Exception {
+        this.context.getResultContext().cleanup();
         createProcessorChain(chainName).proceed(this.context);
     }
 

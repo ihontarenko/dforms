@@ -12,8 +12,7 @@ public class PrepareFormEntityProcessor implements PipelineProcessor {
 
     @Override
     public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
-        FormService service = context.getBean(FormService.class);
-        Form        entity  = service.loadFormWithFields(arguments.requireArgument("PRIMARY_ID"));
+        Form entity = arguments.getArgument(Form.class);
 
         if (entity == null) {
             throw new FormRenderProcessorException(

@@ -105,6 +105,11 @@ public class DefaultPipelineContext extends AbstractContext implements
     }
 
     @Override
+    public void cleanup() {
+        getResultContext().cleanup();
+    }
+
+    @Override
     public boolean isStopped() {
         return stopped;
     }

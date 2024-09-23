@@ -1,17 +1,12 @@
 package df.base.common.validation.custom;
 
 import df.base.common.beans.BeanObjectInfo;
-import df.base.common.beans.BeanObjectInfoFactory;
 import df.base.common.beans.FieldAccessor;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Validation {
@@ -20,14 +15,12 @@ public class Validation {
     private final List<Validator>              globalValidators = new ArrayList<>();
     private final Map<String, List<Validator>> fieldsValidators = new HashMap<>();
     private final String                       name;
-    private final MessageResolver              resolver;
     private final BindingResultMapper          bindingResultMapper;
 
-    public Validation(String name, MessageResolver resolver, ApplicationContext context) {
+    public Validation(String name, ApplicationContext context) {
         this.beanFactory = context.getAutowireCapableBeanFactory();
         this.bindingResultMapper = new BindingResultMapper();
         this.name = name;
-        this.resolver = resolver;
     }
 
     public String getName() {
@@ -43,76 +36,68 @@ public class Validation {
     }
 
     @SuppressWarnings({"all"})
-    public Errors validate(Object object, ValidationContext validationContext) {
+    public Errors validate(Object object, ValidationContext context) {
         Errors errors = new Errors();
 
-        validationContext.setAttribute(ValidationContext.VALIDATION_MANAGER_KEY, this);
+        context.setAttribute(ValidationContext.VALIDATION_MANAGER_KEY, this);
 
         for (Validator validator : globalValidators) {
-            applyValidator(object, validator, validationContext, errors);
+            applyValidator(object, validator, context, errors);
         }
 
         return errors;
     }
 
-    public void validate(Object object, ValidationContext validationContext, BindingResult result) {
-        BindingResult bindingResult = validationContext.getAttribute(ValidationContext.BINDING_RESULT_KEY);
+    public void validate(Object object, ValidationContext context, BindingResult result) {
+        BindingResult bindingResult = context.getAttribute(ValidationContext.BINDING_RESULT_KEY);
 
         if (bindingResult == null) {
             bindingResult = result;
         }
 
-        bindingResultMapper.map(validate(object, validationContext), bindingResult);
+        bindingResultMapper.map(validate(object, context), bindingResult);
     }
 
-    public Errors validate(Object object, String fieldName, ValidationContext validationContext) {
-        Errors errors = new Errors();
-        validationContext.setAttribute(ValidationContext.VALIDATION_MANAGER_KEY, this);
+    public void validate(BeanObjectInfo beanInfo, String fieldName, Errors errors, ValidationContext context) {
+        context.setAttribute(ValidationContext.VALIDATION_MANAGER_KEY, this);
 
-        BeanObjectInfo  beanInfo   = createBeanObjectInfo(object);
         FieldAccessor   accessor   = beanInfo.getBeanField(fieldName).getFieldAccessor();
-        Object          fieldValue = accessor.getValue();
-        List<Validator> validators = fieldsValidators.getOrDefault(fieldName, new ArrayList<>());
+        Object          value      = accessor.getValue();
+        List<Validator> validators = fieldsValidators.getOrDefault(fieldName, Collections.emptyList());
+
+        context.setPointer(fieldName);
 
         for (Validator validator : validators) {
-            applyValidator(fieldValue, validator, validationContext, errors);
+            applyValidator(value, validator, context, errors);
+        }
+
+        context.setPointer(null);
+    }
+
+    public Errors validate(BeanObjectInfo beanInfo, List<String> fieldNames, ValidationContext context) {
+        Errors errors = new Errors();
+
+        for (String fieldName : fieldNames) {
+            validate(beanInfo, fieldName, errors, context);
         }
 
         return errors;
     }
 
-    public void validate(Object object, String fieldName, ValidationContext validationContext, BindingResult result) {
-        BindingResult bindingResult = validationContext.getAttribute(ValidationContext.BINDING_RESULT_KEY);
-
-        if (bindingResult == null) {
-            bindingResult = result;
-        }
-
-        bindingResultMapper.map(validate(object, fieldName, validationContext), bindingResult);
+    public void validate(BeanObjectInfo beanInfo, List<String> fieldNames,
+                         ValidationContext context, BindingResult bindingResult) {
+        bindingResultMapper.map(validate(beanInfo, fieldNames, context), bindingResult);
     }
 
-    private void applyValidator(Object object, Validator validator, ValidationContext validationContext, Errors errors) {
-        Class<?> objectType = object == null ? Object.class : object.getClass();
-
-        if (validator.supports(objectType)) {
+    private void applyValidator(Object object, Validator validator, ValidationContext context, Errors errors) {
+        if (validator.supports(object)) {
             try {
                 beanFactory.autowireBean(validator);
-                validator.validate(object, validationContext);
+                validator.validate(object, errors, context);
             } catch (ValidationException exception) {
-                ErrorMessage message = resolver.resolve(name, exception.getErrorCode(), exception.getErrorContext());
-
-                // overwrite error message if any in exception
-                if (StringUtils.hasText(exception.getMessage())) {
-                    message = new ErrorMessage(message.code(), exception.getMessage(), message.pointer());
-                }
-
-                errors.add(message);
+                errors.rejectValue(exception.getPointer(), exception.getMessage(), exception.getCode().name());
             }
         }
-    }
-
-    private BeanObjectInfo createBeanObjectInfo(Object object) {
-        return BeanObjectInfoFactory.createBeanObjectInfo(object);
     }
 
     public void configure(Consumer<Validation> consumer) {

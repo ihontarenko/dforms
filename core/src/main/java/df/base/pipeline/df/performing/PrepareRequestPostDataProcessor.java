@@ -27,6 +27,7 @@ public class PrepareRequestPostDataProcessor implements PipelineProcessor {
 
         Map<String, Field> fields = getFields(context, requestData.keySet());
 
+        arguments.setArgument("REQUEST_DATA", requestData);
         arguments.setArgument("FIELDS", fields);
         arguments.setArgument("VALIDATION_CONFIGS", getValidationConfigs(context, fields));
 

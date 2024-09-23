@@ -47,4 +47,9 @@ abstract public class AbstractResultContext implements ResultContext {
         addError(new ErrorDetails(code, message));
     }
 
+    @Override
+    public void cleanup() {
+        errors.clear();
+        value = null;
+    }
 }

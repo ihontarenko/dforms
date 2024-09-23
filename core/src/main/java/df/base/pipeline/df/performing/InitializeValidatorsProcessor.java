@@ -57,10 +57,7 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
     }
 
     private Validation createValidation(PipelineContext context) {
-        ApplicationContext applicationContext = context.getProperty(ApplicationContext.class);
-        MessageResolver    messageResolver    = context.getBean(MessageResolver.class);
-
-        return new Validation("DYNAMIC_FORM_VALIDATION", messageResolver, applicationContext);
+        return new Validation("DYNAMIC_FORM_VALIDATION", context.getProperty(ApplicationContext.class));
     }
 
     private Map<String, Object> normalizeParameters(Node root) {

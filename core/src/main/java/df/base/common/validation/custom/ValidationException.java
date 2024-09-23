@@ -2,48 +2,48 @@ package df.base.common.validation.custom;
 
 public class ValidationException extends RuntimeException {
 
-    private final ErrorCode    errorCode;
-    private final ErrorContext errorContext;
+    private final String       pointer;
+    private final ErrorCode    code;
+    private final ErrorContext context;
 
-    private final boolean breakOnFail;
-
-    public ValidationException(String message, Throwable cause, ErrorCode errorCode, ErrorContext errorContext, boolean breakOnFail) {
+    public ValidationException(String pointer, String message, Throwable cause, ErrorCode code, ErrorContext context) {
         super(message, cause);
-        this.errorContext = errorContext;
-        this.errorCode = errorCode;
-        this.breakOnFail = breakOnFail;
+
+        this.context = context;
+        this.code = code;
+        this.pointer = pointer;
     }
 
-    public ValidationException(ErrorCode errorCode, boolean breakOnFail) {
-        this(null, null, errorCode, null, breakOnFail);
+    public ValidationException(ErrorCode code) {
+        this(null, null, null, code, null);
     }
 
-    public ValidationException(ErrorCode errorCode, ErrorContext errorContext, boolean breakOnFail) {
-        this(null, null, errorCode, errorContext, breakOnFail);
+    public ValidationException(ErrorCode code, String message) {
+        this(null, message, null, code, null);
     }
 
-    public ValidationException(ErrorCode errorCode) {
-        this(null, null, errorCode, null, false);
+    public ValidationException(ErrorCode code, ErrorContext context) {
+        this(null, null, null, code, context);
     }
 
-    public ValidationException(ErrorCode errorCode, String message) {
-        this(message, null, errorCode, null, false);
+    public ValidationException(String pointer, ErrorCode code, String message) {
+        this(pointer, message, null, code, null);
     }
 
-    public ValidationException(ErrorCode errorCode, ErrorContext errorContext) {
-        this(null, null, errorCode, errorContext, false);
+    public ValidationException(String pointer, ErrorCode code, ErrorContext context) {
+        this(pointer, null, null, code, context);
     }
 
-    public ErrorCode getErrorCode() {
-        return errorCode;
+    public String getPointer() {
+        return pointer;
     }
 
-    public ErrorContext getErrorContext() {
-        return errorContext;
+    public ErrorCode getCode() {
+        return code;
     }
 
-    public boolean isBreakOnFail() {
-        return breakOnFail;
+    public ErrorContext getContext() {
+        return context;
     }
 }
 
