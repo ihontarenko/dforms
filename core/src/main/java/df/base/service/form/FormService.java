@@ -71,6 +71,11 @@ public class FormService implements RedirectAware {
         return repository.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public List<String> getFieldNames(String formId) {
+        return repository.findFieldNamesByFormId(formId);
+    }
+
     @Transactional
     public Form createOrUpdate(FormDTO formDTO, User user) {
         Optional<Form> optional = getById(formDTO.id());

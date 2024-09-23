@@ -2,7 +2,6 @@ package df.base.persistence.generator;
 
 import df.base.common.extensions.hibernate.generator.IdPrefixGenerator;
 import df.base.common.extensions.hibernate.generator.PrefixedId;
-import df.base.common.libs.jbm.StringUtils;
 import df.base.persistence.entity.EntityNameAware;
 
 import static df.base.common.libs.jbm.StringUtils.underscored;
@@ -30,9 +29,19 @@ public class NamedEntityIdGenerator implements IdPrefixGenerator {
         String prefix    = annotation.prefixValue();
         String separator = annotation.prefixSeparator();
         String id        = annotation.numberFormat().formatted(ordinalID);
-        String name      = slugify(underscored(requireNonNull(entityNameAware.getName()))).toLowerCase();
+        String name      = getNameForEntity(entityNameAware).toLowerCase();
 
         return (prefix + separator + name + separator + id).toLowerCase();
+    }
+
+    private static String getNameForEntity(EntityNameAware nameAware) {
+        String underscored = underscored(requireNonNull(nameAware.getName()));
+
+        if (underscored.indexOf('.') != -1) {
+            underscored = underscored.substring(underscored.lastIndexOf('.') + 1);
+        }
+
+        return slugify(underscored);
     }
 
 }

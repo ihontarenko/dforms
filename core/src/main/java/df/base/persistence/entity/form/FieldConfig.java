@@ -18,7 +18,7 @@ public class FieldConfig implements EntityNameAware {
     @Id
     @PrefixedId(
             prefixValue = "cfg",
-            sequenceName = "FIELD_CFG",
+            sequenceName = "FIELD_CONFIG",
             prefixGenerator = NamedEntityIdGenerator.class,
             numberFormat = "%04d",
             initialValue = 1000,

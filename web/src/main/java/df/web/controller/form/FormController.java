@@ -1,21 +1,17 @@
 package df.web.controller.form;
 
-import df.base.common.context.ArgumentsContext;
 import df.base.common.context.ResultContext;
-import df.base.common.context.bean_provider.SpringBeanProvider;
-import df.base.common.elements.builder.NodeBuilderContext;
 import df.base.common.exception.ApplicationException;
 import df.base.common.pipeline.PipelineManager;
-import df.base.common.pipeline.context.DefaultPipelineContext;
 import df.base.common.pipeline.context.PipelineContext;
 import df.base.dto.form.FormDTO;
-import df.base.html.builder.bootstrap.BootstrapBuilderStrategy;
 import df.base.mapping.form.FormMapper;
 import df.base.persistence.entity.form.Form;
 import df.base.persistence.entity.support.FormStatus;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.security.UserInfo;
 import df.base.service.form.FieldService;
+import df.base.service.form.FormManagmentService;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
@@ -31,11 +27,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static df.base.Messages.*;
-import static df.base.common.validation.custom.ValidatorConstraintFactory.BASIC_FACTORY;
 import static df.web.common.flash.FlashMessage.*;
 
 @Controller
@@ -45,19 +43,18 @@ public class FormController implements FormOperations {
     private final FormService        formService;
     private final FieldService       fieldService;
     private final ControllerHelper   controllerHelper;
-    private final NodeBuilderContext builderContext;
     private final PipelineManager    pipelineManager;
 
+    private final FormManagmentService managmentService;
+
     public FormController(ApplicationContext applicationContext, FormService formService, FieldService fieldService,
-                          ControllerHelper controllerHelper, PipelineManager pipelineManager) {
+                          ControllerHelper controllerHelper, PipelineManager pipelineManager, FormManagmentService managmentService) {
         this.applicationContext = applicationContext;
         this.fieldService = fieldService;
         this.formService = formService;
         this.controllerHelper = controllerHelper;
         this.pipelineManager = pipelineManager;
-
-        this.builderContext = new NodeBuilderContext();
-        this.builderContext.setStrategy(new BootstrapBuilderStrategy());
+        this.managmentService = managmentService;
 
         formService.setRedirectUrl(MAVConstants.REDIRECT_FORM);
         controllerHelper.setRedirectUrl(MAVConstants.REDIRECT_FORM);
@@ -78,18 +75,7 @@ public class FormController implements FormOperations {
 
     @Override
     public ModelAndView demo(String primaryId, MultiValueMap<String, String> postData, RedirectAttributes attributes) {
-        DefaultPipelineContext ctx = (DefaultPipelineContext) pipelineManager.getContext();
-
-        ctx.setArgument(MultiValueMap.class, postData);
-        ctx.setArgument(FieldService.class, fieldService);
-        ctx.setProperty(ApplicationContext.class, applicationContext);
-        ctx.setProperty(BindingResult.class, null);
-
-        try {
-            pipelineManager.runPipeline("dynamic-form-handler");
-        } catch (Exception e) {
-            throw new ApplicationException(e.getMessage(), MAVConstants.REDIRECT_FORM);
-        }
+        PipelineContext context = managmentService.performDynamicForm(primaryId, postData);
 
         controllerHelper.setRedirectAttributes(attributes);
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_INDEX);
@@ -99,29 +85,16 @@ public class FormController implements FormOperations {
 
     @Override
     public ModelAndView demo(String primaryId, RedirectAttributes attributes) {
-        controllerHelper.setViewName(MAVConstants.VIEW_FORM_DEMO);
-        controllerHelper.setRedirectAttributes(attributes);
-
-        Form             entity          = formService.loadFormWithFields(primaryId);
-        PipelineContext  pipelineContext = pipelineManager.getContext();
-        ArgumentsContext arguments       = pipelineContext.getArgumentsContext();
-        ResultContext    result          = pipelineContext.getResultContext();
-
-        pipelineContext.setBeanProvider(new SpringBeanProvider());
-
-        arguments.setArgument("PRIMARY_ID", primaryId);
-        arguments.setArgument("ENV_NAME", "DEMO");
-
-        try {
-            pipelineManager.runPipeline("process-form-html");
-        } catch (Exception e) {
-            throw new ApplicationException(e.getMessage(), MAVConstants.REDIRECT_FORM);
-        }
+        Form            entity  = formService.loadFormWithFields(primaryId);
+        PipelineContext context = managmentService.renderDynamicForm(primaryId, entity);
+        ResultContext   result  = context.getResultContext();
 
         if (result.hasErrors()) {
             throw new ApplicationException(result.getError("EXCEPTION").message(), MAVConstants.REDIRECT_FORM);
         }
 
+        controllerHelper.setViewName(MAVConstants.VIEW_FORM_DEMO);
+        controllerHelper.setRedirectAttributes(attributes);
         controllerHelper.attribute("form", entity);
         controllerHelper.attribute("html", result.getReturnValue());
 

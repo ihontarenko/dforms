@@ -4,7 +4,9 @@ import df.base.common.validation.custom.ValidationContext;
 import df.base.common.validation.custom.ValidationException;
 import df.base.common.validation.custom.Validator;
 
-public class EnumValuesValidator implements Validator {
+public class SetOfValuesValidator implements Validator {
+
+    private String message;
 
     @Override
     public void validate(Object object, ValidationContext validationContext) throws ValidationException {

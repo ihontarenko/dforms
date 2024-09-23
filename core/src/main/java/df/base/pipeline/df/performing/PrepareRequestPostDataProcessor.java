@@ -9,6 +9,7 @@ import df.base.mapping.form.MultiValueMapMapper;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.form.FieldConfig;
 import df.base.service.form.FieldService;
+import df.base.service.form.FormService;
 import org.springframework.util.MultiValueMap;
 
 import java.util.*;
@@ -20,15 +21,23 @@ public class PrepareRequestPostDataProcessor implements PipelineProcessor {
         MultiValueMapMapper           mapper      = new MultiValueMapMapper();
         MultiValueMap<String, String> postData    = arguments.requireArgument(MultiValueMap.class);
         Map<String, Object>           requestData = mapper.map(postData);
-        Map<String, Field>            fields      = getFields(context, requestData.keySet());
 
-        // todo: call form with related fields and fill absent names with NULL for correct validation
-        // Form entity = formService.loadFormWithFields(primaryId);
+        // need to fulfil absent names with NULLs for correct validation
+        fulfilAbsentFieldWithNulls(context, requestData);
+
+        Map<String, Field> fields = getFields(context, requestData.keySet());
 
         arguments.setArgument("FIELDS", fields);
         arguments.setArgument("VALIDATION_CONFIGS", getValidationConfigs(context, fields));
 
         return ReturnCodes.INITIALIZE_VALIDATORS;
+    }
+
+    private void fulfilAbsentFieldWithNulls(PipelineContext context, Map<String, Object> requestData) {
+        String       primaryId  = context.getArgumentsContext().requireArgument("PRIMARY_ID");
+        FormService  service    = context.getBean(FormService.class);
+        List<String> fieldNames = service.getFieldNames(primaryId);
+        fieldNames.forEach(name -> requestData.putIfAbsent(name, null));
     }
 
     private Map<String, Field> getFields(PipelineContext context, Set<String> fieldNames) {
