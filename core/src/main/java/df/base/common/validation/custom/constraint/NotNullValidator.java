@@ -13,7 +13,7 @@ public class NotNullValidator implements Validator {
     @Override
     public void validate(Object object, Errors errors, ValidationContext validationContext) {
         if (object == null) {
-            errors.rejectValue(null, "non null");
+            errors.rejectValue(validationContext.getPointer(), message);
         }
     }
 

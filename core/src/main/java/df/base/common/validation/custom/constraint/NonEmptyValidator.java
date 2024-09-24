@@ -12,9 +12,9 @@ public class NonEmptyValidator implements Validator {
     private String message;
 
     @Override
-    public void validate(Object object, Errors errors, ValidationContext validationContext) throws ValidationException {
+    public void validate(Object object, Errors errors, ValidationContext validationContext) {
         if (object == null || (object instanceof String string && string.isBlank())) {
-            throw new ValidationException(STRING_BLANK, message);
+            errors.rejectValue(validationContext.getPointer(), message);
         }
     }
 

@@ -75,12 +75,23 @@ public class FormController implements FormOperations {
 
     @Override
     public ModelAndView demo(String primaryId, MultiValueMap<String, String> postData, RedirectAttributes attributes) {
-        PipelineContext context = managmentService.performDynamicForm(primaryId, postData);
+        PipelineContext context       = managmentService.performDynamicForm(primaryId, postData);
+        BindingResult   bindingResult = context.getProperty(BindingResult.class);
 
         controllerHelper.setRedirectAttributes(attributes);
-        controllerHelper.setViewName(MAVConstants.VIEW_FORM_INDEX);
+        controllerHelper.setViewName(MAVConstants.VIEW_FORM_DEMO);
+        controllerHelper.setBindingResult(bindingResult);
 
-        return controllerHelper.redirect();
+        if (bindingResult.hasErrors()) {
+            Form            entity        = formService.loadFormWithFields(primaryId);
+            PipelineContext renderContext = managmentService.renderDynamicForm(primaryId, entity);
+
+            controllerHelper.attribute("form", entity);
+            controllerHelper.attribute("errors", bindingResult);
+            controllerHelper.attribute("html", renderContext.getResultContext().getReturnValue());
+        }
+
+        return controllerHelper.resolveWithRedirect();
     }
 
     @Override

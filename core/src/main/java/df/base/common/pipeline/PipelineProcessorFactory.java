@@ -19,7 +19,7 @@ public class PipelineProcessorFactory {
         this.resolversFactory = new ResolversFactory();
     }
 
-    public PipelineProcessor createProcessor(Processor processorDefinition, PipelineContext context) {
+    public PipelineProcessor createProcessor(Processor processorDefinition) {
         try {
 
             Class<?>          processorClass = Class.forName(processorDefinition.className());

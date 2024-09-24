@@ -23,11 +23,11 @@ public class ValidateDynamicFormProcessor implements PipelineProcessor {
         Validation          validation        = context.getProperty(Validation.class);
         BeanObjectInfo      beanInfo          = BeanObjectInfoFactory.createBeanObjectInfo(requestData);
 
-
+        validation.validate(beanInfo, requestData.keySet(), validationContext, bindingResult);
 
         context.setProperty(BindingResult.class, bindingResult);
 
-        return ReturnCodes.VALIDATION_FAIL;
+        return bindingResult.hasFieldErrors() ? ReturnCodes.VALIDATION_FAIL : ReturnCodes.VALIDATION_PASS;
     }
 
 }

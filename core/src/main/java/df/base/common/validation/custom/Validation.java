@@ -74,7 +74,7 @@ public class Validation {
         context.setPointer(null);
     }
 
-    public Errors validate(BeanObjectInfo beanInfo, List<String> fieldNames, ValidationContext context) {
+    public Errors validate(BeanObjectInfo beanInfo, Iterable<String> fieldNames, ValidationContext context) {
         Errors errors = new Errors();
 
         for (String fieldName : fieldNames) {
@@ -84,7 +84,7 @@ public class Validation {
         return errors;
     }
 
-    public void validate(BeanObjectInfo beanInfo, List<String> fieldNames,
+    public void validate(BeanObjectInfo beanInfo, Iterable<String> fieldNames,
                          ValidationContext context, BindingResult bindingResult) {
         bindingResultMapper.map(validate(beanInfo, fieldNames, context), bindingResult);
     }
