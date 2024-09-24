@@ -13,11 +13,13 @@ abstract public class AbstractAttributesContext implements AttributesContext {
 
     @Override
     public <T> T requireAttribute(Object name) {
-        if (hasAttribute(name)) {
-            return getAttribute(name);
+        T value = getAttribute(name);
+
+        if (value == null) {
+            throw new AttributeNotFoundException("Required attribute not found [%s]".formatted(name));
         }
 
-        throw new AttributeNotFoundException("Required attribute not found [%s]".formatted(name));
+        return value;
     }
 
     @Override

@@ -13,7 +13,7 @@ import static df.base.validation.custom.FieldErrorCode.INCOMPATIBLE_USAGE_TYPE;
 public class FieldUsageTypeValidator implements Validator {
 
     @Override
-    public void validate(Object object, Errors errors, ValidationContext validationContext) throws ValidationException {
+    public void validate(Object object, Errors errors, ValidationContext context) throws ValidationException {
         FieldDTO    fieldDTO    = (FieldDTO) object;
 
         if (fieldDTO.getElementType() == null || fieldDTO.getUsageType() == null) {

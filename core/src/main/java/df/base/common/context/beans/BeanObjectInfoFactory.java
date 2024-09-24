@@ -1,4 +1,4 @@
-package df.base.common.beans;
+package df.base.common.context.beans;
 
 import java.util.Map;
 

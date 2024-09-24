@@ -18,6 +18,4 @@ public interface ResultContext {
 
     void cleanup();
 
-    record ErrorDetails(String code, String message) { }
-
 }

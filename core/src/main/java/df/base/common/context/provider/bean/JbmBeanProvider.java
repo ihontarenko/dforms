@@ -1,4 +1,4 @@
-package df.base.common.context.bean_provider;
+package df.base.common.context.provider.bean;
 
 import df.base.common.context.BeanProvider;
 import df.base.common.libs.jbm.bean.context.JbmContext;

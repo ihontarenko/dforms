@@ -10,7 +10,7 @@ public class SetOfValuesValidator implements Validator {
     private String message;
 
     @Override
-    public void validate(Object object, Errors errors, ValidationContext validationContext) throws ValidationException {
+    public void validate(Object object, Errors errors, ValidationContext context) throws ValidationException {
 
     }
 

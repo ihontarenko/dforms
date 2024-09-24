@@ -136,7 +136,7 @@ public class CommonConfiguration implements WebMvcConfigurer {
 
     @Bean
     public PipelineManager pipelineManager() {
-        return new PipelineManager(new DefaultPipelineContext(), "/pipeline/pipeline-DEFAULT.xml");
+        return new PipelineManager("/pipeline/pipeline-DEFAULT.xml");
     }
 
     @Override

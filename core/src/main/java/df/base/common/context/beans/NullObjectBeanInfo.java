@@ -1,11 +1,8 @@
-package df.base.common.beans;
+package df.base.common.context.beans;
 
 import java.beans.PropertyDescriptor;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-
-import static df.base.common.libs.jbm.ReflectionUtils.readPropertyDescriptors;
 
 public class NullObjectBeanInfo implements BeanObjectInfo {
 

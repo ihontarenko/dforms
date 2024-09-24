@@ -1,7 +1,7 @@
 package df.base.pipeline.df.performing;
 
-import df.base.common.beans.BeanObjectInfo;
-import df.base.common.beans.BeanObjectInfoFactory;
+import df.base.common.context.beans.BeanObjectInfo;
+import df.base.common.context.beans.BeanObjectInfoFactory;
 import df.base.common.context.ArgumentsContext;
 import df.base.common.pipeline.PipelineProcessor;
 import df.base.common.pipeline.context.PipelineContext;

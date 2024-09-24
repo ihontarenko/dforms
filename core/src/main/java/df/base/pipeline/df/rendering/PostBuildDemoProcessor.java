@@ -21,7 +21,7 @@ public class PostBuildDemoProcessor implements PipelineProcessor {
 
         submit.setClass("btn btn-sm btn-dark");
         submit.setType("submit");
-        submit.setValue("Submit Demo!");
+        submit.setValue("Submit");
 
         wrapper.setClass("mt-4");
         wrapper.append(submit);
@@ -41,7 +41,7 @@ public class PostBuildDemoProcessor implements PipelineProcessor {
 
         header.append(new TextNode("Demo Mode Notice"));
 
-        div.setClass("alert alert-danger");
+        div.setClass("alert alert-warning");
         div.append(header);
         div.append(new TextNode("The form you are viewing is displayed in DEMO mode. It is only for illustrative purposes, and no actual submission or data handling will occur."));
 

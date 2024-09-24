@@ -11,9 +11,9 @@ public class NotNullValidator implements Validator {
     private String message;
 
     @Override
-    public void validate(Object object, Errors errors, ValidationContext validationContext) {
+    public void validate(Object object, Errors errors, ValidationContext context) {
         if (object == null) {
-            errors.rejectValue(validationContext.getPointer(), message);
+            errors.rejectValue(context.getPointer(), message);
         }
     }
 

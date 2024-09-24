@@ -1,8 +1,11 @@
 package df.web.controller.form;
 
+import df.base.common.context.ArgumentsContext;
 import df.base.common.context.ResultContext;
 import df.base.common.exception.ApplicationException;
+import df.base.common.pipeline.PipelineContextFactoty;
 import df.base.common.pipeline.PipelineManager;
+import df.base.common.pipeline.context.DefaultPipelineContext;
 import df.base.common.pipeline.context.PipelineContext;
 import df.base.dto.form.FormDTO;
 import df.base.mapping.form.FormMapper;
@@ -27,10 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 import static df.base.Messages.*;
@@ -75,16 +75,28 @@ public class FormController implements FormOperations {
 
     @Override
     public ModelAndView demo(String primaryId, MultiValueMap<String, String> postData, RedirectAttributes attributes) {
-        PipelineContext context       = managmentService.performDynamicForm(primaryId, postData);
-        BindingResult   bindingResult = context.getProperty(BindingResult.class);
+        PipelineContext performContext = PipelineContextFactoty.createByDefault();
+
+        managmentService.performDynamicForm((DefaultPipelineContext) performContext, primaryId, postData);
+
+        BindingResult bindingResult = performContext.getProperty(BindingResult.class);
 
         controllerHelper.setRedirectAttributes(attributes);
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_DEMO);
         controllerHelper.setBindingResult(bindingResult);
 
         if (bindingResult.hasErrors()) {
-            Form            entity        = formService.loadFormWithFields(primaryId);
-            PipelineContext renderContext = managmentService.renderDynamicForm(primaryId, entity);
+            PipelineContext  renderContext = PipelineContextFactoty.createByDefault();
+            ArgumentsContext arguments     = renderContext.getArgumentsContext();
+            Form             entity        = formService.loadFormWithFields(primaryId);
+
+            //  prepare context and pass necessary data to arguments
+            arguments.setArgument(Form.class, entity);
+            arguments.copyArgument("REQUEST_DATA", performContext.getArgumentsContext());
+            arguments.setArgument(BindingResult.class, bindingResult);
+
+            // render dynamic form
+            managmentService.renderDynamicForm((DefaultPipelineContext) renderContext, primaryId);
 
             controllerHelper.attribute("form", entity);
             controllerHelper.attribute("errors", bindingResult);
@@ -96,9 +108,17 @@ public class FormController implements FormOperations {
 
     @Override
     public ModelAndView demo(String primaryId, RedirectAttributes attributes) {
-        Form            entity  = formService.loadFormWithFields(primaryId);
-        PipelineContext context = managmentService.renderDynamicForm(primaryId, entity);
-        ResultContext   result  = context.getResultContext();
+        Form             entity    = formService.loadFormWithFields(primaryId);
+        PipelineContext  context   = PipelineContextFactoty.createByDefault();
+        ResultContext    result    = context.getResultContext();
+        ArgumentsContext arguments = context.getArgumentsContext();
+
+        arguments.setArgument(Form.class, entity);
+        arguments.setArgument("REQUEST_DATA", Collections.emptyMap());
+        arguments.setArgument("ERROR_DATA", Collections.emptyMap());
+
+        // proceed html nodes and render
+        managmentService.renderDynamicForm((DefaultPipelineContext) context, primaryId);
 
         if (result.hasErrors()) {
             throw new ApplicationException(result.getError("EXCEPTION").message(), MAVConstants.REDIRECT_FORM);

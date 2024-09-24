@@ -79,6 +79,11 @@ abstract public class AbstractNode implements Node {
     }
 
     @Override
+    public String getAttribute(String name) {
+        return attributes.get(name);
+    }
+
+    @Override
     public Map<String, String> getAttributes() {
         return attributes;
     }

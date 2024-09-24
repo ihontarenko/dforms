@@ -1,7 +1,7 @@
 package df.base.common.validation.custom;
 
-import df.base.common.beans.BeanObjectInfo;
-import df.base.common.beans.FieldAccessor;
+import df.base.common.context.beans.BeanObjectInfo;
+import df.base.common.context.beans.FieldAccessor;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.validation.BindingResult;

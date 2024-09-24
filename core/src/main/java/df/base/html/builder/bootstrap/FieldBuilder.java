@@ -1,9 +1,11 @@
 package df.base.html.builder.bootstrap;
 
 import df.base.common.elements.Node;
+import df.base.common.elements.PostDataProvider;
 import df.base.common.elements.TagName;
 import df.base.common.elements.builder.NodeBuilder;
 import df.base.common.elements.builder.NodeBuilderContext;
+import df.base.common.elements.node.CommentNode;
 import df.base.common.elements.node.ElementNode;
 import df.base.common.elements.node.TextNode;
 import df.base.common.libs.jbm.StringUtils;
@@ -22,10 +24,10 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
     @Override
     public Node build(FieldDTO fieldDTO, NodeBuilderContext ctx) {
         return switch (valueOf(fieldDTO.getElementType())) {
-            case TEXT, NUMBER, URL, EMAIL, DATE -> createTextInput(fieldDTO);
-            case SELECT -> createSelectOptions(fieldDTO);
-            case TEXTAREA -> createTextarea(fieldDTO);
-            case CHECKBOX, RADIO -> createInputOptions(fieldDTO);
+            case TEXT, NUMBER, URL, EMAIL, DATE -> createTextInput(fieldDTO, ctx);
+            case SELECT -> createSelectOptions(fieldDTO, ctx);
+            case TEXTAREA -> createTextarea(fieldDTO, ctx);
+            case CHECKBOX, RADIO -> createInputOptions(fieldDTO, ctx);
             case NONE -> createVirtual(fieldDTO, ctx);
         };
     }
@@ -36,11 +38,12 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         }
     }
 
-    private Node createTextInput(FieldDTO fieldDTO) {
-        Node root  = new ElementNode(TagName.DIV);
-        Node input = new ElementNode(TagName.INPUT);
-        Node label = new ElementNode(TagName.LABEL);
-        Node small = new ElementNode(TagName.SMALL);
+    private Node createTextInput(FieldDTO fieldDTO, NodeBuilderContext ctx) {
+        Node             root             = new ElementNode(TagName.DIV);
+        Node             input            = new ElementNode(TagName.INPUT);
+        Node             label            = new ElementNode(TagName.LABEL);
+        Node             small            = new ElementNode(TagName.SMALL);
+        PostDataProvider postDataProvider = ctx.getDataProvider();
 
         label.append(new TextNode(fieldDTO.getLabel()));
         label.addAttribute("for", fieldDTO.id());
@@ -54,8 +57,19 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
 
         addElementAttributes(input, fieldDTO.getAttributes());
 
+        Object value = postDataProvider.getValue(fieldDTO.getName());
+
+        if (value != null) {
+            input.addAttribute("value", (String) value);
+        }
+
         root.append(label);
         root.append(input);
+
+        if (postDataProvider.hasError(fieldDTO.getName())) {
+            input.addAttribute("class", "%s is-invalid".formatted(input.getAttribute("class")));
+            root.append(createInvalidFeedback(postDataProvider.getError(fieldDTO.getName()).message()));
+        }
 
         if (StringUtils.hasText(fieldDTO.getDescription())) {
             small.append(new TextNode(fieldDTO.getDescription()));
@@ -65,7 +79,7 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         return root;
     }
 
-    private Node createInputOptions(FieldDTO fieldDTO) {
+    private Node createInputOptions(FieldDTO fieldDTO, NodeBuilderContext ctx) {
         Node root = new ElementNode(TagName.DIV);
 
         for (FieldOptionDTO option : fieldDTO.getOptions()) {
@@ -91,20 +105,20 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         return root;
     }
 
-    private Node createSelectOptions(FieldDTO fieldDTO) {
+    private Node createSelectOptions(FieldDTO fieldDTO, NodeBuilderContext ctx) {
         Node select = new ElementNode(TagName.SELECT);
 
         select.addAttribute("name", fieldDTO.getName());
         addElementAttributes(select, fieldDTO.getAttributes());
 
         for (FieldOptionDTO option : fieldDTO.getOptions()) {
-            select.append(createSelectOption(option));
+            select.append(createSelectOption(option, ctx));
         }
 
         return select;
     }
 
-    public Node createSelectOption(FieldOptionDTO option) {
+    public Node createSelectOption(FieldOptionDTO option, NodeBuilderContext ctx) {
         Node root = new ElementNode(TagName.OPTION);
 
         root.addAttribute("value", option.getKey());
@@ -113,7 +127,7 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         return root;
     }
 
-    private Node createTextarea(FieldDTO fieldDTO) {
+    private Node createTextarea(FieldDTO fieldDTO, NodeBuilderContext ctx) {
         Node textarea = new ElementNode(TagName.TEXTAREA);
 
         textarea.addAttribute("name", fieldDTO.getName());
@@ -140,6 +154,15 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
         node.append(input);
 
         return node;
+    }
+
+    private Node createInvalidFeedback(String message) {
+        Node feedback = new ElementNode(TagName.DIV);
+
+        feedback.addAttribute("class", "invalid-feedback");
+        feedback.append(new TextNode(message));
+
+        return feedback;
     }
 
 }

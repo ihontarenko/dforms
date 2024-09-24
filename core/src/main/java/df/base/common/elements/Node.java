@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 @SuppressWarnings({"unused"})
 
 public interface Node /*extends df.base.common.libs.parser.node.Node*/ {
+
     int getDepth();
 
     void setDepth(int depth);
@@ -47,6 +48,8 @@ public interface Node /*extends df.base.common.libs.parser.node.Node*/ {
     TagName getTagName();
 
     void addAttribute(String key, String value);
+
+    String getAttribute(String name);
 
     Map<String, String> getAttributes();
 

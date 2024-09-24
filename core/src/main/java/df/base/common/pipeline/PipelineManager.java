@@ -15,21 +15,15 @@ public class PipelineManager {
 
     private final Map<String, PipelineChain> chains = new HashMap<>();
     private final RootDefinition           rootDefinition;
-    private final PipelineContext          context;
     private final PipelineProcessorFactory processorFactory;
 
-    public PipelineManager(PipelineContext context, String definition) {
+    public PipelineManager(String definition) {
         this.rootDefinition = createLoader(definition).load(definition);
-        this.context = context;
         this.processorFactory = new PipelineProcessorFactory();
     }
 
     public RootDefinition getRootDefinition() {
         return rootDefinition;
-    }
-
-    public PipelineContext getContext() {
-        return context;
     }
 
     public PipelineChain createProcessorChain(String chainName) {
@@ -66,9 +60,9 @@ public class PipelineManager {
         return chain;
     }
 
-    public void runPipeline(String chainName) throws Exception {
-        this.context.getResultContext().cleanup();
-        createProcessorChain(chainName).proceed(this.context);
+    public void runPipeline(String chainName, PipelineContext context) throws Exception {
+        context.getResultContext().cleanup();
+        createProcessorChain(chainName).proceed(context);
     }
 
 }
