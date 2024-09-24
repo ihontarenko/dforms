@@ -9,12 +9,6 @@
 {% endblock %}
 {% block content %}
 
-    <ul>
-        {% for error in errors.fieldErrors %}
-        <li><b>{{ error.field }}</b>: {{ error.defaultMessage }}</li>
-        {% endfor %}
-    </ul>
-
     {{ html | raw }}
 
 {% endblock %}
