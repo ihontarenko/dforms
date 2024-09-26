@@ -14,4 +14,6 @@ public interface MethodInvocation {
 
     int getOrdinal();
 
+    ProxyConfig getProxyConfig();
+
 }

@@ -12,11 +12,13 @@ public class MethodInvocationChain implements MethodInvocation {
     protected final Method                  method;
     protected final Object[]                arguments;
     protected final Object                  proxy;
+    protected final ProxyConfig             proxyConfig;
     protected       int                     currentIndex = -1;
 
     public MethodInvocationChain(Object proxy, Object target, Method method, Object[] arguments,
-                                 List<MethodInterceptor> interceptors) {
+                                 List<MethodInterceptor> interceptors, ProxyConfig proxyConfig) {
         this.interceptors = interceptors;
+        this.proxyConfig = proxyConfig;
         this.proxy = proxy;
         this.target = target;
         this.method = method;
@@ -52,5 +54,10 @@ public class MethodInvocationChain implements MethodInvocation {
     @Override
     public int getOrdinal() {
         return currentIndex;
+    }
+
+    @Override
+    public ProxyConfig getProxyConfig() {
+        return proxyConfig;
     }
 }

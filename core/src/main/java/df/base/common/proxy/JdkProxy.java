@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import static df.base.common.libs.jbm.ReflectionUtils.isEqualsMethod;
+import static df.base.common.libs.jbm.ReflectionUtils.isHashCodeMethod;
 import static java.lang.reflect.Proxy.newProxyInstance;
 
 public class JdkProxy implements InvocationHandler, Proxy {
@@ -20,9 +22,16 @@ public class JdkProxy implements InvocationHandler, Proxy {
         Class<?> returnClass = method.getReturnType();
         Object   target      = proxyConfig.getTarget();
 
+        if (isEqualsMethod(method) && !proxyConfig.hasEquals()) {
+
+        } else if (isHashCodeMethod(method) && !proxyConfig.hasHashCode()) {
+
+        }
+
         try {
             List<MethodInterceptor> interceptors = proxyConfig.getInterceptors();
-            MethodInvocation        invocation   = new MethodInvocationChain(proxy, target, method, arguments, interceptors);
+            MethodInvocation        invocation   = new MethodInvocationChain(
+                    proxy, target, method, arguments, interceptors, proxyConfig);
 
             returnValue = invocation.proceed();
         } catch (Throwable throwable) {

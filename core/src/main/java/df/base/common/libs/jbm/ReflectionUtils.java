@@ -216,6 +216,18 @@ abstract public class ReflectionUtils {
         }
     }
 
+    public static boolean hasMethod(Class<?> targetClass, String methodName) {
+        return getMethod(targetClass, methodName).isPresent();
+    }
+
+    public static boolean isEqualsMethod(Method method) {
+        return method != null && "equals".equals(method.getName()) && method.getParameterCount() == 1;
+    }
+
+    public static boolean isHashCodeMethod(Method method) {
+        return method != null && "hashCode".equals(method.getName()) && method.getParameterCount() == 0;
+    }
+
     public static Object getMethodValue(Object object, Method method) {
         Object value = null;
 
