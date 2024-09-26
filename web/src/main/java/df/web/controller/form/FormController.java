@@ -14,7 +14,7 @@ import df.base.persistence.entity.support.FormStatus;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.security.UserInfo;
 import df.base.service.form.FieldService;
-import df.base.service.form.FormManagmentService;
+import df.base.service.form.FormManagement;
 import df.base.service.form.FormService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
@@ -39,22 +39,15 @@ import static df.web.common.flash.FlashMessage.*;
 @Controller
 public class FormController implements FormOperations {
 
-    private final ApplicationContext applicationContext;
     private final FormService        formService;
-    private final FieldService       fieldService;
     private final ControllerHelper   controllerHelper;
-    private final PipelineManager    pipelineManager;
 
-    private final FormManagmentService managmentService;
+    private final FormManagement managementService;
 
-    public FormController(ApplicationContext applicationContext, FormService formService, FieldService fieldService,
-                          ControllerHelper controllerHelper, PipelineManager pipelineManager, FormManagmentService managmentService) {
-        this.applicationContext = applicationContext;
-        this.fieldService = fieldService;
+    public FormController(FormService formService, ControllerHelper controllerHelper, FormManagement management) {
         this.formService = formService;
         this.controllerHelper = controllerHelper;
-        this.pipelineManager = pipelineManager;
-        this.managmentService = managmentService;
+        this.managementService = management;
 
         formService.setRedirectUrl(MAVConstants.REDIRECT_FORM);
         controllerHelper.setRedirectUrl(MAVConstants.REDIRECT_FORM);
@@ -77,7 +70,7 @@ public class FormController implements FormOperations {
     public ModelAndView demo(String primaryId, MultiValueMap<String, String> postData, RedirectAttributes attributes) {
         PipelineContext performContext = PipelineContextFactoty.createByDefault();
 
-        managmentService.performDynamicForm((DefaultPipelineContext) performContext, primaryId, postData);
+        managementService.performDynamicForm((DefaultPipelineContext) performContext, primaryId, postData);
 
         BindingResult bindingResult = performContext.getProperty(BindingResult.class);
 
@@ -96,7 +89,7 @@ public class FormController implements FormOperations {
             arguments.setArgument(BindingResult.class, bindingResult);
 
             // render dynamic form
-            managmentService.renderDynamicForm((DefaultPipelineContext) renderContext, primaryId);
+            managementService.renderDynamicForm((DefaultPipelineContext) renderContext, primaryId);
 
             controllerHelper.attribute("form", entity);
             controllerHelper.attribute("errors", bindingResult);
@@ -118,7 +111,7 @@ public class FormController implements FormOperations {
         arguments.setArgument("ERROR_DATA", Collections.emptyMap());
 
         // proceed html nodes and render
-        managmentService.renderDynamicForm((DefaultPipelineContext) context, primaryId);
+        managementService.renderDynamicForm((DefaultPipelineContext) context, primaryId);
 
         if (result.hasErrors()) {
             throw new ApplicationException(result.getError("EXCEPTION").message(), MAVConstants.REDIRECT_FORM);

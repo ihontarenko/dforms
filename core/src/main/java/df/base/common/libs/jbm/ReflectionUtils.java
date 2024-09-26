@@ -191,13 +191,19 @@ abstract public class ReflectionUtils {
     }
 
     public static Optional<Field> getField(Class<?> targetClass, String fieldName) {
-        try {
-            Field field = targetClass.getDeclaredField(fieldName);
-            field.setAccessible(true);
-            return Optional.of(field);
-        } catch (NoSuchFieldException e) {
-            return Optional.empty();
+        Class<?> currentClass = targetClass;
+
+        while (currentClass != null && currentClass != Object.class) {
+            try {
+                Field field = currentClass.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                return Optional.of(field);
+            } catch (NoSuchFieldException e) {
+                currentClass = currentClass.getSuperclass();
+            }
         }
+
+        return Optional.empty();
     }
 
     public static Optional<Method> getMethod(Class<?> targetClass, String methodName) {
@@ -319,6 +325,21 @@ abstract public class ReflectionUtils {
         }
 
         return userClass;
+    }
+
+    public static Class<?>[] getClassInterfaces(Class<?> baseClass) {
+        Set<Class<?>> interfaces = new HashSet<>();
+
+        if (baseClass.isInterface()) {
+            interfaces.add(baseClass);
+        } else {
+            while (baseClass != null) {
+                interfaces.addAll(Set.of(baseClass.getInterfaces()));
+                baseClass = baseClass.getSuperclass();
+            }
+        }
+
+        return interfaces.toArray(Class[]::new);
     }
 
 }

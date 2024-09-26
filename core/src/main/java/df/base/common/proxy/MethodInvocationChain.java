@@ -7,14 +7,15 @@ import static df.base.common.libs.jbm.ReflectionUtils.invokeMethod;
 
 public class MethodInvocationChain implements MethodInvocation {
 
-    protected final List<Interceptor> interceptors;
-    protected final Object            target;
-    protected final Method            method;
-    protected final Object[]          arguments;
-    protected final Object            proxy;
-    protected       int               currentIndex = -1;
+    protected final List<MethodInterceptor> interceptors;
+    protected final Object                  target;
+    protected final Method                  method;
+    protected final Object[]                arguments;
+    protected final Object                  proxy;
+    protected       int                     currentIndex = -1;
 
-    public MethodInvocationChain(Object proxy, Object target, Method method, Object[] arguments, List<Interceptor> interceptors) {
+    public MethodInvocationChain(Object proxy, Object target, Method method, Object[] arguments,
+                                 List<MethodInterceptor> interceptors) {
         this.interceptors = interceptors;
         this.proxy = proxy;
         this.target = target;
@@ -24,10 +25,12 @@ public class MethodInvocationChain implements MethodInvocation {
 
     @Override
     public Object proceed() throws Throwable {
+        // shift and execute next interceptor in the chain
         if (interceptors.size() > ++currentIndex) {
             return interceptors.get(currentIndex).invoke(this);
         }
 
+        // invoke real target method in the end of chain
         return invokeMethod(target, method, arguments);
     }
 
@@ -46,4 +49,8 @@ public class MethodInvocationChain implements MethodInvocation {
         return target;
     }
 
+    @Override
+    public int getOrdinal() {
+        return currentIndex;
+    }
 }

@@ -1,14 +1,17 @@
 package df.base.common.validation.custom;
 
+import df.base.BasePackage;
+import df.base.common.mapping.ObjectFieldMapper;
+import df.base.common.proxy.AnnotationProxyFactory;
 import df.base.common.validation.custom.constraint.NonEmptyValidator;
 import df.base.common.validation.custom.constraint.NotNullValidator;
-import df.base.common.mapping.ObjectFieldMapper;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
-import static df.base.common.libs.jbm.ReflectionUtils.*;
+import static df.base.common.libs.jbm.ReflectionUtils.findFirstConstructor;
+import static df.base.common.libs.jbm.ReflectionUtils.instantiate;
 
 public class ValidatorConstraintFactory {
 
@@ -70,14 +73,15 @@ public class ValidatorConstraintFactory {
     }
 
     public Validator createNewValidator(Class<? extends Validator> validatorClass, Map<String, Object> parameters) {
-        Constructor<?>             constructor    = findFirstConstructor(validatorClass);
-        Validator                  validator      = (Validator) instantiate(constructor);
+        Constructor<?> constructor    = findFirstConstructor(validatorClass);
+        Validator      validator      = (Validator) instantiate(constructor);
+        Validator      proxyValidator = new AnnotationProxyFactory(validator, BasePackage.class).getProxy();
 
         if (parameters != null) {
             new ObjectFieldMapper().reverse(parameters, validator);
         }
 
-        return validator;
+        return proxyValidator;
     }
 
 }

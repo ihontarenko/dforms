@@ -2,31 +2,24 @@ package df.base.common.proxy;
 
 public class ProxyFactory implements Proxy {
 
-    private final ProxyConfig proxyConfig;
+    protected final ProxyConfig proxyConfig;
 
     public ProxyFactory(Object target) {
         this.proxyConfig = new ProxyConfig(target);
     }
 
-    public void addInterceptor(Interceptor interceptor) {
+    public void addInterceptor(MethodInterceptor interceptor) {
         this.proxyConfig.addInterceptor(interceptor);
     }
 
     @Override
     public <T> T getProxy(ClassLoader classLoader) {
-        Proxy proxy;
-
-        if (proxyConfig.getInterfaces().isEmpty() && !proxyConfig.getTargetClass().isInterface()) {
-            proxy = new CglibProxy(this.proxyConfig);
-        } else {
-            proxy = new JdkProxy(this.proxyConfig);
-        }
-
-        return proxy.getProxy(classLoader);
+        return (T) new JdkProxy(this.proxyConfig).getProxy(classLoader);
     }
 
     @Override
     public ProxyEngine getProxyEngine() {
         throw new UnsupportedOperationException("PROXY ENGINE IS UNKNOWN");
     }
+
 }

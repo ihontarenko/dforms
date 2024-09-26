@@ -18,10 +18,17 @@
         <apache-commons-text.version>1.12.0</apache-commons-text.version>
         <mariadb-java-client.version>2.7.0</mariadb-java-client.version>
         <cglib.version>3.3.0</cglib.version>
+        <byte-buddy.version>1.12.10</byte-buddy.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- ByteBuddy -->
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>${byte-buddy.version}</version>
+            </dependency>
             <!-- CGLib -->
             <dependency>
                 <groupId>cglib</groupId>

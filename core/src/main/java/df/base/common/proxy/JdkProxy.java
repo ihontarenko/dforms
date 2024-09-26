@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import static java.lang.reflect.Proxy.newProxyInstance;
+
 public class JdkProxy implements InvocationHandler, Proxy {
 
     private final ProxyConfig proxyConfig;
@@ -19,8 +21,8 @@ public class JdkProxy implements InvocationHandler, Proxy {
         Object   target      = proxyConfig.getTarget();
 
         try {
-            List<Interceptor> interceptors = proxyConfig.getInterceptors();
-            MethodInvocation  invocation   = new MethodInvocationChain(proxy, target, method, arguments, interceptors);
+            List<MethodInterceptor> interceptors = proxyConfig.getInterceptors();
+            MethodInvocation        invocation   = new MethodInvocationChain(proxy, target, method, arguments, interceptors);
 
             returnValue = invocation.proceed();
         } catch (Throwable throwable) {
@@ -41,7 +43,7 @@ public class JdkProxy implements InvocationHandler, Proxy {
 
     @Override
     public Object getProxy(ClassLoader classLoader) {
-        return java.lang.reflect.Proxy.newProxyInstance(classLoader, proxyConfig.getInterfaces().toArray(Class[]::new), this);
+        return newProxyInstance(classLoader, proxyConfig.getInterfaces().toArray(Class[]::new), this);
     }
 
     @Override

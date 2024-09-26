@@ -1,9 +1,12 @@
 package df.base.common.pipeline;
 
+import df.base.BasePackage;
 import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.pipeline.definition.PipelineDefinitionException;
 import df.base.common.pipeline.definition.RootDefinition;
 import df.base.common.pipeline.definition.RootDefinition.Fallback;
+import df.base.common.proxy.AnnotationProxyFactory;
+import df.base.common.proxy.ProxyFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +17,8 @@ import static df.base.common.pipeline.definition.DefinitionLoader.createLoader;
 public class PipelineManager {
 
     private final Map<String, PipelineChain> chains = new HashMap<>();
-    private final RootDefinition           rootDefinition;
-    private final PipelineProcessorFactory processorFactory;
+    private final RootDefinition             rootDefinition;
+    private final PipelineProcessorFactory   processorFactory;
 
     public PipelineManager(String definition) {
         this.rootDefinition = createLoader(definition).load(definition);
@@ -44,18 +47,24 @@ public class PipelineManager {
             RootDefinition.ProcessorProperties propertiesDefinition = linkDefinition.properties();
             PipelineProcessor                  processor            = processorFactory.createProcessor(
                     linkDefinition.processor());
-            Map<String, String>                transitions          = propertiesDefinition == null ? new HashMap<>() : propertiesDefinition.transitions();
-            Map<String, String>                configuration        = propertiesDefinition == null ? new HashMap<>() : propertiesDefinition.configuration();
-            Optional<Fallback>                 fallback             = propertiesDefinition == null ? Optional.empty() : Optional.ofNullable(
+            Map<String, String>                transitions          = propertiesDefinition == null ? new HashMap<>()
+                    : propertiesDefinition.transitions();
+            Map<String, String>                configuration        = propertiesDefinition == null ? new HashMap<>()
+                    : propertiesDefinition.configuration();
+            Optional<Fallback> fallback = propertiesDefinition == null ? Optional.empty() : Optional.ofNullable(
                     propertiesDefinition.fallback());
 
-            processors.put(linkName, processor);
-            properties.put(linkName, new ProcessorProperties(transitions, configuration, fallback.map(Fallback::link).orElse(null)));
+            ProxyFactory proxyFactory = new AnnotationProxyFactory(processor, BasePackage.class);
+
+            processors.put(linkName, proxyFactory.getProxy());
+            properties.put(linkName, new ProcessorProperties(
+                    transitions, configuration, fallback.map(Fallback::link).orElse(null)));
         });
 
-        PipelineChain chain = new PipelineProcessorChain(chainDefinition.initial(), processors, properties);
+        PipelineChain chain        = new PipelineProcessorChain(chainDefinition.initial(), processors, properties);
+        ProxyFactory  proxyFactory = new AnnotationProxyFactory(chain, BasePackage.class);
 
-        chains.put(chainDefinition.name(), chain);
+        chains.put(chainDefinition.name(), proxyFactory.getProxy());
 
         return chain;
     }

@@ -1,13 +1,8 @@
 package df.base.validation.custom.constraint;
 
-import df.base.common.validation.custom.Errors;
-import df.base.common.validation.custom.ValidationContext;
-import df.base.common.validation.custom.ValidationException;
-import df.base.common.validation.custom.Validator;
+import df.base.common.validation.custom.*;
 
-public class SetOfValuesValidator implements Validator {
-
-    private String message;
+public class SetOfValuesValidator extends AbstractValidator {
 
     @Override
     public void validate(Object object, Errors errors, ValidationContext context) throws ValidationException {

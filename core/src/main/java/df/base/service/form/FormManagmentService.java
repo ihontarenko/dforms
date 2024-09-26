@@ -5,11 +5,9 @@ import df.base.common.exception.ApplicationException;
 import df.base.common.pipeline.PipelineManager;
 import df.base.common.pipeline.context.DefaultPipelineContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
-@Service
-public class FormManagmentService {
+public class FormManagmentService implements FormManagement {
 
     public static final String PROCESS_FORM_HTML_PIPELINE    = "process-form-html";
     public static final String DYNAMIC_FORM_HANDLER_PIPELINE = "dynamic-form-handler";
@@ -25,6 +23,7 @@ public class FormManagmentService {
         this.applicationContext = applicationContext;
     }
 
+    @Override
     public void performDynamicForm(DefaultPipelineContext ctx, String primaryId, MultiValueMap<String, String> postData) {
         ctx.setArgument(MultiValueMap.class, postData);
         ctx.setArgument(PRIMARY_ID, primaryId);
@@ -39,6 +38,7 @@ public class FormManagmentService {
 
     }
 
+    @Override
     public void renderDynamicForm(DefaultPipelineContext ctx, String primaryId) {
         ctx.setArgument(PRIMARY_ID, primaryId);
         ctx.setArgument(ENV_NAME, DEMO);

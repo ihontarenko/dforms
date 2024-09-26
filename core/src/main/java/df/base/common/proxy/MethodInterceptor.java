@@ -1,6 +1,6 @@
 package df.base.common.proxy;
 
-public interface Interceptor {
+public interface MethodInterceptor {
 
     Object invoke(MethodInvocation invocation) throws Throwable;
 
