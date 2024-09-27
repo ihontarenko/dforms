@@ -4,22 +4,15 @@ import df.base.common.libs.ast.node.EntryNode;
 import df.base.common.libs.ast.node.EvaluationContext;
 import df.base.common.libs.ast.token.Token;
 
-public class Literal extends EntryNode {
+public class Variable extends EntryNode {
 
-    private final Object value;
-
-    public Literal(Token.Entry entry) {
+    public Variable(Token.Entry entry) {
         super(entry);
-        this.value = entry.value();
-    }
-
-    public Object getValue() {
-        return value;
     }
 
     @Override
     public Object evaluate(EvaluationContext ctx) {
-        return null;
+        return ctx.getVariable(entry.value());
     }
 
 }

@@ -106,6 +106,8 @@ public interface Node {
         }
     }
 
+    Object evaluate(EvaluationContext ctx);
+
     enum Order {DESC, ASC}
 
 }

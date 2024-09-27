@@ -88,7 +88,7 @@ public interface Token {
 
         @Override
         public String toString() {
-            return String.format("#%05d %s(%s) %s", ordinal, token, position, value);
+            return String.format("%04d-%04d %s(%s)", position, ordinal, token, value);
         }
 
         @Override
