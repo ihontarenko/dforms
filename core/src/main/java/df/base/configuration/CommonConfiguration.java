@@ -8,11 +8,10 @@ import df.base.common.extensions.persistence.entity_graph.support.EntityGraphRep
 import df.base.common.libs.ast.parser.ParserContext;
 import df.base.common.libs.ast.token.Tokenizer;
 import df.base.common.pipeline.PipelineManager;
-import df.base.common.pipeline.context.DefaultPipelineContext;
 import df.base.common.validation.custom.ValidationContextArgumentResolver;
-import df.base.common.annotation.parsing.AnnotationTokenizer;
-import df.base.common.annotation.parsing.configurator.AnnotationParserConfigurator;
-import df.base.common.annotation.parsing.configurator.AnnotationTokenizerConfigurator;
+import df.base.common.parser.DefaultTokenizer;
+import df.base.common.parser.configurator.DefaultParserConfigurator;
+import df.base.common.parser.configurator.DefaultTokenizerConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -120,16 +119,16 @@ public class CommonConfiguration implements WebMvcConfigurer {
 
     @Bean
     public Tokenizer parameterTokenizer() {
-        Tokenizer     tokenizer = new AnnotationTokenizer();
+        Tokenizer     tokenizer = new DefaultTokenizer();
 
-        new AnnotationTokenizerConfigurator().configure(tokenizer);
+        new DefaultTokenizerConfigurator().configure(tokenizer);
 
         return tokenizer;
     }
 
     @Bean
     public ParserContext parameterParserContext() {
-        new AnnotationParserConfigurator().configure(ParserContext.CONTEXT);
+        new DefaultParserConfigurator().configure(ParserContext.CONTEXT);
 
         return ParserContext.CONTEXT;
     }

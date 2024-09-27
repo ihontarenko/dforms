@@ -13,6 +13,10 @@ public class EntryNode extends AbstractNode {
     protected final Token.Entry         entry;
     protected final Map<String, Object> properties = new HashMap<>();
 
+    public EntryNode() {
+        this(null);
+    }
+
     public EntryNode(Token.Entry entry) {
         this.entry = entry;
     }
@@ -37,6 +41,13 @@ public class EntryNode extends AbstractNode {
     public String toString() {
         return String.format("%s ENTRY: [%s] PROPERTIES: %s", underscored(getClass().getSimpleName(), true),
                 entry, properties);
+    }
+
+    @Override
+    public Object evaluate(EvaluationContext ctx) {
+        throw new UnsupportedOperationException(
+                "Evaluation is not supported for base class '%s'. It should be implemented in subclass '%s'.".formatted(
+                        EntryNode.class, getClass()));
     }
 
 }

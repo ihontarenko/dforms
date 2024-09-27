@@ -1,20 +1,18 @@
 package df.base.common.extensions.persistence.entity_graph.proxy;
 
+import df.base.BasePackage;
 import df.base.common.extensions.persistence.entity_graph.ObjectsHolder;
 import df.base.common.extensions.persistence.entity_graph.EntityGraphQueryHint;
-import df.base.common.extensions.persistence.entity_graph.MethodInvocationDecorator;
+import df.base.common.proxy.*;
 import df.base.common.extensions.persistence.entity_graph.injector.QueryParametersInjector;
 import df.base.common.extensions.persistence.entity_graph.invocation.EntityManagerMethodInvocation;
 import jakarta.persistence.Query;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
 
-import static df.base.common.extensions.persistence.entity_graph.ProxyUtils.proxy;
 import static java.util.Arrays.asList;
 
 public class EntityManagerProxy implements MethodInterceptor {
@@ -45,7 +43,9 @@ public class EntityManagerProxy implements MethodInterceptor {
         // catch create methods ["createQuery", "createNamedQuery"]
         if (CREATE_QUERY_METHODS.contains(methodName) && result instanceof Query query && ObjectsHolder.exists(EntityGraphQueryHint.class)) {
             // if applicable method name and result is Query and EntityGraphQueryHint is present then we proxy it
-            result = proxy(query, new QueryProxy());
+            ProxyFactory factory = new AnnotationProxyFactory(query, BasePackage.class);
+            factory.addInterceptor(new QueryProxy());
+            result = factory.getProxy();
         }
 
         return result;

@@ -26,6 +26,10 @@ public interface Node {
 
     Node[] children();
 
+    Node first();
+
+    Node last();
+
     void add(Node node);
 
     boolean delete(Node node);
@@ -105,6 +109,8 @@ public interface Node {
             }
         }
     }
+
+    Object evaluate(EvaluationContext ctx);
 
     enum Order {DESC, ASC}
 

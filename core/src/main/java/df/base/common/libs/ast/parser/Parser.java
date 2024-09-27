@@ -2,12 +2,21 @@ package df.base.common.libs.ast.parser;
 
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.matching.Matcher;
+import df.base.common.libs.ast.node.EntryNode;
 import df.base.common.libs.ast.node.Node;
 import df.base.common.libs.ast.token.Token;
 
 public interface Parser {
 
     void parse(Lexer lexer, Node parent, ParserContext context);
+
+    default Node parse(Lexer lexer, ParserContext context) {
+        Node node = new EntryNode();
+
+        parse(lexer, node, context);
+
+        return node.first();
+    }
 
     default void ensureNext(Lexer lexer, Token... tokens) {
         if (!lexer.isNext(tokens)) {
@@ -35,6 +44,10 @@ public interface Parser {
 
     default void throwSyntaxErrorException(Lexer lexer, int offset, Token... token) {
         throw new SyntaxErrorException(this, lexer.lookAhead(offset), token);
+    }
+
+    default void throwSyntaxErrorException(Lexer lexer, int offset, String expected) {
+        throw new SyntaxErrorException(this, lexer.lookAhead(offset), expected);
     }
 
 }

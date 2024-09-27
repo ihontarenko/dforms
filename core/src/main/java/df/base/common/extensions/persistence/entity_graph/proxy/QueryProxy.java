@@ -1,11 +1,12 @@
 package df.base.common.extensions.persistence.entity_graph.proxy;
 
+import df.base.common.extensions.persistence.entity_graph.EntityGraphQueryHint;
 import df.base.common.extensions.persistence.entity_graph.ObjectsHolder;
 import df.base.common.extensions.persistence.entity_graph.injector.QueryHintInjector;
 import df.base.common.extensions.persistence.entity_graph.invocation.QueryMethodInvocation;
-import df.base.common.extensions.persistence.entity_graph.EntityGraphQueryHint;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
+import df.base.common.proxy.MethodInterceptor;
+import df.base.common.proxy.MethodInvocation;
+import df.base.common.proxy.MethodInvocationDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,31 +19,32 @@ public class QueryProxy implements MethodInterceptor {
 
     private static final Logger       LOGGER                = LoggerFactory.getLogger(QueryProxy.class);
     private static final String       UNWRAP_METHOD         = "unwrap";
-    private static final List<String> EXECUTE_QUERY_METHODS = asList("getResultList", "getSingleResult", "getResultStream", "scroll");
+    private static final List<String> EXECUTE_QUERY_METHODS = asList("getResultList", "getSingleResult",
+                                                                     "getResultStream", "scroll");
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-        QueryMethodInvocation decorator  = new QueryMethodInvocation(invocation);
-        String                methodName = decorator.getMethodName();
+        String                    methodName = invocation.getMethod().getName();
+        MethodInvocationDecorator decorator  = new QueryMethodInvocation(invocation);
 
         if (isUnwrapNull(decorator)) {
             /**
              * @link https://github.com/Cosium/spring-data-jpa-entity-graph/blob/master/core/src/main/java/com/cosium/spring/data/jpa/entity/graph/repository/support/RepositoryQueryEntityGraphInjector.java#L47
              * */
             LOGGER.warn("QUERY_PROXY: UNWRAP NULL DETECTED");
-            return invocation.getThis();
+            return invocation.getTarget();
         } else if (EXECUTE_QUERY_METHODS.contains(methodName)) {
             LOGGER.debug("QUERY_PROXY: EXECUTE_QUERY_METHOD [{}#{}]",
                     decorator.getMethodClassName(), decorator.getMethodName());
             Optional<EntityGraphQueryHint> optional = ObjectsHolder.getAndRemove(EntityGraphQueryHint.class);
             // inject entity graph
-            optional.ifPresent(hint -> new QueryHintInjector().inject(hint, decorator.getThis()));
+            optional.ifPresent(hint -> new QueryHintInjector().inject(hint, decorator.getTarget()));
         }
 
         return decorator.proceed();
     }
 
-    private boolean isUnwrapNull(QueryMethodInvocation invocation) {
+    private boolean isUnwrapNull(MethodInvocationDecorator invocation) {
         Object[] arguments  = invocation.getArguments();
         String   methodName = invocation.getMethodName();
 

@@ -45,6 +45,21 @@ abstract public class AbstractNode implements Node {
     }
 
     @Override
+    public Node first() {
+        return hasChildren() ? children.get(0) : null;
+    }
+
+    @Override
+    public Node last() {
+        return hasChildren() ? children.get(children.size() - 1) : null;
+    }
+
+    @Override
+    public Object evaluate(EvaluationContext ctx) {
+        return null;
+    }
+
+    @Override
     public boolean delete(Node node) {
         return this.children.remove(node);
     }

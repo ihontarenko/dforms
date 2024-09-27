@@ -56,8 +56,8 @@ public interface CommonService<D extends DTO, E, R extends JpaEntityGraphReposit
     }
 
     @Transactional
-    default void delete(E config) {
-        getRepository().delete(config);
+    default void delete(E entity) {
+        getRepository().delete(entity);
     }
 
     @Transactional
@@ -66,8 +66,8 @@ public interface CommonService<D extends DTO, E, R extends JpaEntityGraphReposit
     }
 
     @Transactional
-    default void deleteIfExists(E config) {
-        Optional.ofNullable(config).ifPresent(this::delete);
+    default void deleteIfExists(E entity) {
+        Optional.ofNullable(entity).ifPresent(this::delete);
     }
     
     R getRepository();

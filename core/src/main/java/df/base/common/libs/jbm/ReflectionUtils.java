@@ -147,6 +147,16 @@ abstract public class ReflectionUtils {
         return constructors;
     }
 
+    public static Class<?>[] getArgumentsTypes(Object... arguments) {
+        Class<?>[] argumentTypes = new Class<?>[arguments.length];
+
+        for (int i = 0; i < arguments.length; i++) {
+            argumentTypes[i] = arguments[i] != null ? arguments[i].getClass() : Object.class;
+        }
+
+        return argumentTypes;
+    }
+
     public static Object invokeMethod(Object object, Method method, Object... arguments) {
         Object value = null;
 
@@ -206,15 +216,15 @@ abstract public class ReflectionUtils {
         return Optional.empty();
     }
 
-    public static Optional<Method> getMethod(Class<?> targetClass, String methodName) {
+/*    public static Optional<Method> getMethod(Class<?> targetClass, String methodName, Class<?>... types) {
         try {
-            Method method = targetClass.getDeclaredMethod(methodName);
+            Method method = targetClass.getDeclaredMethod(methodName, types);
             method.setAccessible(true);
-            return Optional.ofNullable(method);
+            return Optional.of(method);
         } catch (NoSuchMethodException e) {
             return Optional.empty();
         }
-    }
+    }*/
 
     public static boolean hasMethod(Class<?> targetClass, String methodName) {
         return getMethod(targetClass, methodName).isPresent();
@@ -352,6 +362,60 @@ abstract public class ReflectionUtils {
         }
 
         return interfaces.toArray(Class[]::new);
+    }
+
+    public static Optional<Method> getMethod(Class<?> targetClass, String methodName, Class<?>... types) {
+        try {
+            Method method = targetClass.getDeclaredMethod(methodName, types);
+            method.setAccessible(true);
+            return Optional.of(method);
+        } catch (NoSuchMethodException ignored) {
+        }
+
+        // Пошук метода з більшою гнучкістю для типів аргументів
+        for (Method method : targetClass.getDeclaredMethods()) {
+            if (method.getName().equals(methodName) && parametersMatch(method.getParameterTypes(), types)) {
+                method.setAccessible(true);
+                return Optional.of(method);
+            }
+        }
+
+        Class<?> superClass = targetClass.getSuperclass();
+        while (superClass != null) {
+            Optional<Method> methodOptional = getMethod(superClass, methodName, types);
+
+            if (methodOptional.isPresent()) {
+                return methodOptional;
+            }
+
+            superClass = superClass.getSuperclass();
+        }
+
+        return Optional.empty();
+    }
+
+    private static boolean parametersMatch(Class<?>[] methodParams, Class<?>[] inputParams) {
+        if (methodParams.length != inputParams.length) {
+            return false;
+        }
+
+        for (int i = 0; i < methodParams.length; i++) {
+            if (!isCompatibleType(methodParams[i], inputParams[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean isCompatibleType(Class<?> methodParamType, Class<?> inputParamType) {
+        if (TypeMapper.isPrimitive(methodParamType)) {
+            return TypeMapper.getWrapperFor(methodParamType).equals(inputParamType);
+        } else if (TypeMapper.isPrimitive(inputParamType)) {
+            return methodParamType.equals(TypeMapper.getWrapperFor(inputParamType));
+        }
+
+        return methodParamType.isAssignableFrom(inputParamType);
     }
 
 }

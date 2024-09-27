@@ -29,13 +29,15 @@ abstract public class AbstractContext implements Context {
     @Override
     public <T> T getBean(Class<T> beanClass) {
         return ofNullable(beanProvider).orElseThrow(() -> new MissingBeanProviderException(
-                "The BeanProvider has not been provided in this context. Ensure it is set before usage.")).getBean(beanClass);
+                "The BeanProvider has not been provided in this context. Ensure it is set before usage.")).getBean(
+                        beanClass);
     }
 
     @Override
     public <T> T getBean(String beanName, Class<T> beanClass) {
         return ofNullable(beanProvider).orElseThrow(() -> new MissingBeanProviderException(
-                "The BeanProvider has not been provided in this context. Ensure it is set before usage.")).getBean(beanName, beanClass);
+                "The BeanProvider has not been provided in this context. Ensure it is set before usage.")).getBean(
+                        beanName, beanClass);
     }
 
     @Override

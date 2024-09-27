@@ -60,4 +60,9 @@ public class MethodInvocationChain implements MethodInvocation {
     public ProxyConfig getProxyConfig() {
         return proxyConfig;
     }
+
+    @Override
+    public Object getProxy() {
+        return proxy;
+    }
 }
