@@ -59,28 +59,14 @@ public class MethodMatchers {
         return new MethodNameWithMatcher(textMatcher);
     }
 
-    static class MethodNameWithMatcher implements Matcher<Method> {
-
-        private final Matcher<? super String> textMatcher;
-
-        MethodNameWithMatcher(Matcher<? super String> textMatcher) {
-            this.textMatcher = textMatcher;
-        }
-
+    private record MethodNameWithMatcher(Matcher<? super String> textMatcher) implements Matcher<Method> {
         @Override
         public boolean matches(Method item, MatchContext context) {
             return textMatcher.matches(item.getName(), context);
         }
-
     }
 
-    static class ParameterTypesMatcher implements Matcher<Method> {
-        private final Class<?>[] expectedTypes;
-
-        public ParameterTypesMatcher(Class<?>... expectedTypes) {
-            this.expectedTypes = expectedTypes;
-        }
-
+    private record ParameterTypesMatcher(Class<?>... expectedTypes) implements Matcher<Method> {
         @Override
         public boolean matches(Method method, MatchContext context) {
             Class<?>[] actualTypes = method.getParameterTypes();
@@ -97,67 +83,34 @@ public class MethodMatchers {
 
             return true;
         }
-
     }
 
-    static class ParameterCountMatcher implements Matcher<Method> {
-
-        private final int expectedCount;
-
-        public ParameterCountMatcher(int expectedCount) {
-            this.expectedCount = expectedCount;
-        }
-
+    private record ParameterCountMatcher(int expectedCount) implements Matcher<Method> {
         @Override
         public boolean matches(Method method, MatchContext context) {
             return method.getParameterCount() == expectedCount;
         }
-
     }
 
-    static class ModifierMatcher implements Matcher<Method> {
-
-        private final int modifier;
-
-        public ModifierMatcher(int modifier) {
-            this.modifier = modifier;
-        }
-
+    private record ModifierMatcher(int modifier) implements Matcher<Method> {
         @Override
         public boolean matches(Method method, MatchContext context) {
             return (method.getModifiers() & modifier) != 0;
         }
-
     }
 
-    static class AnnotatedMatcher implements Matcher<Method> {
-
-        private final Class<? extends Annotation> annotation;
-
-        public AnnotatedMatcher(Class<? extends Annotation> annotation) {
-            this.annotation = annotation;
-        }
-
+    private record AnnotatedMatcher(Class<? extends Annotation> annotation) implements Matcher<Method> {
         @Override
         public boolean matches(Method method, MatchContext context) {
             return method.isAnnotationPresent(annotation);
         }
-
     }
 
-    static class ReturnTypeMatcher implements Matcher<Method> {
-
-        private final Class<?> returnType;
-
-        public ReturnTypeMatcher(Class<?> returnType) {
-            this.returnType = returnType;
-        }
-
+    private record ReturnTypeMatcher(Class<?> returnType) implements Matcher<Method> {
         @Override
         public boolean matches(Method method, MatchContext context) {
             return method.getReturnType().equals(returnType);
         }
-
     }
 
 }
