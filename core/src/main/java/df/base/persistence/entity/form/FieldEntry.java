@@ -1,15 +1,25 @@
 package df.base.persistence.entity.form;
 
 import df.base.common.extensions.hibernate.generator.PrefixedId;
+import df.base.persistence.entity.EntityNameAware;
+import df.base.persistence.generator.NamedEntityIdGenerator;
 import df.base.persistence.support.EntityConstants;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = EntityConstants.TABLE_FIELD_ENTRIES)
-public class FieldEntry {
+public class FieldEntry implements EntityNameAware {
 
     @Id
-    @PrefixedId(prefixValue = "E", sequenceName = "FORM_FIELD_ENTRY")
+    @PrefixedId(
+            prefixValue = "E",
+            sequenceName = "FORM_FIELD_ENTRY",
+            prefixGenerator = NamedEntityIdGenerator.class,
+            numberFormat = "%04d",
+            initialValue = 1000,
+            incrementBy = 1,
+            prefixSeparator = "_"
+    )
     @Column(name = "ID")
     private String id;
 
@@ -55,5 +65,11 @@ public class FieldEntry {
     public void setValue(String value) {
         this.value = value;
     }
+
+    @Override
+    public String getName() {
+        return getField().getName();
+    }
+
 }
 

@@ -1,4 +1,4 @@
-package df.base.pipeline.df.rendering;
+package df.base.pipeline.management.rendering;
 
 import df.base.common.context.ArgumentsContext;
 import df.base.common.context.provider.data.DataProvider;

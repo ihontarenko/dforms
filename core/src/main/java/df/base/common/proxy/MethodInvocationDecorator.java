@@ -1,14 +1,11 @@
-package df.base.common.extensions.persistence.entity_graph;
+package df.base.common.proxy;
 
-import org.aopalliance.intercept.MethodInvocation;
-
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
 import static java.util.Arrays.stream;
 
-abstract public class MethodInvocationDecorator implements MethodInvocation {
+public class MethodInvocationDecorator implements MethodInvocation {
 
     protected final MethodInvocation delegate;
 
@@ -20,11 +17,6 @@ abstract public class MethodInvocationDecorator implements MethodInvocation {
     public <T> Optional<T> getTypedArgument(Class<T> type) {
         return (Optional<T>) stream(delegate.getArguments())
                 .filter(argument -> type.isAssignableFrom(argument.getClass())).findFirst();
-    }
-
-    @Override
-    public Method getMethod() {
-        return delegate.getMethod();
     }
 
     public String getMethodName() {
@@ -40,11 +32,7 @@ abstract public class MethodInvocationDecorator implements MethodInvocation {
     }
 
     public Class<?> getThisClass() {
-        return getThis().getClass();
-    }
-
-    public String getThisClassName() {
-        return getThisClass().getSimpleName();
+        return getTarget().getClass();
     }
 
     @Override
@@ -53,18 +41,33 @@ abstract public class MethodInvocationDecorator implements MethodInvocation {
     }
 
     @Override
+    public Method getMethod() {
+        return delegate.getMethod();
+    }
+
+    @Override
+    public Object getTarget() {
+        return delegate.getTarget();
+    }
+
+    @Override
+    public int getOrdinal() {
+        return delegate.getOrdinal();
+    }
+
+    @Override
+    public ProxyConfig getProxyConfig() {
+        return delegate.getProxyConfig();
+    }
+
+    @Override
+    public Object getProxy() {
+        return delegate.getProxy();
+    }
+
+    @Override
     public Object proceed() throws Throwable {
         return delegate.proceed();
-    }
-
-    @Override
-    public Object getThis() {
-        return delegate.getThis();
-    }
-
-    @Override
-    public AccessibleObject getStaticPart() {
-        return delegate.getStaticPart();
     }
 
 }

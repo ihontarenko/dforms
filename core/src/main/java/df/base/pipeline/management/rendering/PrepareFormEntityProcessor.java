@@ -1,4 +1,4 @@
-package df.base.pipeline.df.rendering;
+package df.base.pipeline.management.rendering;
 
 import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.pipeline.PipelineProcessor;
@@ -6,7 +6,6 @@ import df.base.common.context.ArgumentsContext;
 import df.base.dto.form.FormDTO;
 import df.base.mapping.form.DeepFormMapper;
 import df.base.persistence.entity.form.Form;
-import df.base.service.form.FormService;
 
 public class PrepareFormEntityProcessor implements PipelineProcessor {
 

@@ -7,7 +7,7 @@ import df.base.common.pipeline.context.DefaultPipelineContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.MultiValueMap;
 
-public class FormManagmentService implements FormManagement {
+public class FormManagementService implements FormManagement {
 
     public static final String PROCESS_FORM_HTML_PIPELINE    = "process-form-html";
     public static final String DYNAMIC_FORM_HANDLER_PIPELINE = "dynamic-form-handler";
@@ -18,7 +18,7 @@ public class FormManagmentService implements FormManagement {
     private final PipelineManager    pipelineManager;
     private final ApplicationContext applicationContext;
 
-    public FormManagmentService(PipelineManager pipelineManager, ApplicationContext applicationContext) {
+    public FormManagementService(PipelineManager pipelineManager, ApplicationContext applicationContext) {
         this.pipelineManager = pipelineManager;
         this.applicationContext = applicationContext;
     }

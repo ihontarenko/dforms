@@ -2,11 +2,12 @@ package df.base.common.proxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 
 import static df.base.common.libs.jbm.ReflectionUtils.isEqualsMethod;
 import static df.base.common.libs.jbm.ReflectionUtils.isHashCodeMethod;
-import static java.lang.reflect.Proxy.newProxyInstance;
+import static java.lang.reflect.Proxy.*;
 
 public class JdkProxy implements InvocationHandler, Proxy {
 
@@ -22,13 +23,15 @@ public class JdkProxy implements InvocationHandler, Proxy {
         Class<?> returnClass = method.getReturnType();
         Object   target      = proxyConfig.getTarget();
 
-        if (isEqualsMethod(method) && !proxyConfig.hasEquals()) {
-
-        } else if (isHashCodeMethod(method) && !proxyConfig.hasHashCode()) {
-
-        }
-
         try {
+            if (isEqualsMethod(method) && !proxyConfig.hasEquals()) {
+                // if target does not have own 'equals' method
+                return this.equals(arguments[0]);
+            } else if (isHashCodeMethod(method) && !proxyConfig.hasHashCode()) {
+                // if target does not have own 'hashCode' method
+                return this.hashCode();
+            }
+
             List<MethodInterceptor> interceptors = proxyConfig.getInterceptors();
             MethodInvocation        invocation   = new MethodInvocationChain(
                     proxy, target, method, arguments, interceptors, proxyConfig);
@@ -60,4 +63,42 @@ public class JdkProxy implements InvocationHandler, Proxy {
         return ProxyEngine.JDK;
     }
 
+    @Override
+    public int hashCode() {
+        return JdkProxy.class.hashCode() * 13 + proxyConfig.getTarget().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (that == this) {
+            return true;
+        } else if (that == null) {
+            return false;
+        }
+
+        JdkProxy proxy;
+
+        if (that instanceof JdkProxy jdkProxy) {
+            proxy = jdkProxy;
+        } else if (isProxyClass(that.getClass())) {
+            InvocationHandler invocationHandler = getInvocationHandler(that);
+            if (!(invocationHandler instanceof JdkProxy jdkProxy)) {
+                return false;
+            }
+            proxy = jdkProxy;
+        } else {
+            return false;
+        }
+
+        Class<?>[] interfacesA = proxy.proxyConfig.getInterfaces().toArray(Class[]::new);
+        Class<?>[] interfacesB = proxyConfig.getInterfaces().toArray(Class[]::new);
+
+        return Arrays.equals(interfacesA, interfacesB)
+                && proxy.proxyConfig.getTarget().equals(proxyConfig.getTarget());
+    }
+
+    @Override
+    public String toString() {
+        return "JDK PROXY [%s] [%s]".formatted(hashCode(), super.toString());
+    }
 }

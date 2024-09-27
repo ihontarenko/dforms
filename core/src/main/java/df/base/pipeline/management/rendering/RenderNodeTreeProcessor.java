@@ -1,4 +1,4 @@
-package df.base.pipeline.df.rendering;
+package df.base.pipeline.management.rendering;
 
 import df.base.common.elements.Node;
 import df.base.common.elements.NodeContext;

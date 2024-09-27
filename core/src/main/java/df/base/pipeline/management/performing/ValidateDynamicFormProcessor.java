@@ -1,4 +1,4 @@
-package df.base.pipeline.df.performing;
+package df.base.pipeline.management.performing;
 
 import df.base.common.context.beans.BeanObjectInfo;
 import df.base.common.context.beans.BeanObjectInfoFactory;
