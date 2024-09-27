@@ -8,19 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AnnotationNode extends EntryNode {
-
-    private final Map<String, Node> parameters = new HashMap<>();
-
     public AnnotationNode(Token.Entry entry) {
         super(entry);
-    }
-
-    @Override
-    public void add(Node node) {
-        super.add(node);
-
-        if (node instanceof AnnotationParameterNode parameterNode) {
-            parameters.put(parameterNode.getKey(), parameterNode.getValue());
-        }
     }
 }

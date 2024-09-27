@@ -13,7 +13,7 @@ public class AnnotationParser implements Parser {
 
     @Override
     public void parse(Lexer lexer, Node parent, ParserContext context) {
-        ensureCurrent(lexer, T_ANNOTATION);
+        ensureNext(lexer, T_ANNOTATION);
 
         AnnotationNode annotation = new AnnotationNode(lexer.current());
 

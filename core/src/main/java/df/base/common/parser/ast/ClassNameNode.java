@@ -1,16 +1,16 @@
 package df.base.common.parser.ast;
 
 import df.base.common.libs.ast.node.EvaluationContext;
-import df.base.common.libs.ast.node.ast.Literal;
+import df.base.common.libs.ast.node.ast.LiteralNode;
 import df.base.common.libs.ast.token.Token;
 
 import static df.base.common.libs.jbm.ReflectionUtils.getClassFor;
 
-public class AnnotationClassNameNode extends Literal {
+public class ClassNameNode extends LiteralNode {
 
     private String className;
 
-    public AnnotationClassNameNode(Token.Entry entry) {
+    public ClassNameNode(Token.Entry entry) {
         super(entry);
     }
 

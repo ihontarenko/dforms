@@ -14,7 +14,6 @@ import df.base.mapping.form.FieldConfigMapper;
 import df.base.mapping.form.FieldOptionMapper;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.exception.JpaResourceNotFoundException;
-import df.base.service.ParameterService;
 import df.base.service.form.FieldAttributeService;
 import df.base.service.form.FieldConfigService;
 import df.base.service.form.FieldOptionService;
@@ -44,19 +43,16 @@ public class FieldCustomizationController implements FieldCustomizationOperation
     private final FieldConfigService    configService;
     private final FieldAttributeService attributeService;
     private final FieldOptionService    optionService;
-    private final ParameterService      parameterService;
 
     public FieldCustomizationController(
             ControllerHelper helper, FieldService service, DeepFieldMapper mapper,
-            FieldConfigService configService, FieldAttributeService attributeService, FieldOptionService optionService,
-            ParameterService parameterService) {
+            FieldConfigService configService, FieldAttributeService attributeService, FieldOptionService optionService) {
         this.helper = helper;
         this.service = service;
         this.mapper = mapper;
         this.configService = configService;
         this.attributeService = attributeService;
         this.optionService = optionService;
-        this.parameterService = parameterService;
     }
 
     @Override
@@ -200,10 +196,6 @@ public class FieldCustomizationController implements FieldCustomizationOperation
 
         new SpecificationRunner<Field>().checkAllSatisfied(
                 fieldEntity, context, new FieldSelectiveSpecification(), new FieldTypeSpecification());
-
-        parameterService.processParameters(fieldDTO.getConfigs(), configService);
-        parameterService.processParameters(fieldDTO.getAttributes(), attributeService);
-        parameterService.processParameters(fieldDTO.getOptions(), optionService);
 
         helper.attribute("embeddable", service.getEmbeddableFields());
         helper.attribute("slave", nestedKeyValue);

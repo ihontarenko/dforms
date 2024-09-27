@@ -1,6 +1,6 @@
 package df.base.common.parser.parser;
 
-import df.base.common.parser.ast.AnnotationClassNameNode;
+import df.base.common.parser.ast.ClassNameNode;
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.node.Node;
 import df.base.common.libs.ast.parser.Parser;
@@ -15,8 +15,8 @@ public class ClassNameParser implements Parser {
     public void parse(Lexer lexer, Node parent, ParserContext context) {
         ensureCurrent(lexer, ExtendedToken.T_CLASS_NAME);
 
-        Entry                   entry = lexer.current();
-        AnnotationClassNameNode node  = new AnnotationClassNameNode(entry);
+        Entry         entry = lexer.current();
+        ClassNameNode node  = new ClassNameNode(entry);
 
         node.setClassName(entry.value());
 

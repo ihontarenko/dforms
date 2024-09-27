@@ -13,6 +13,10 @@ public class EntryNode extends AbstractNode {
     protected final Token.Entry         entry;
     protected final Map<String, Object> properties = new HashMap<>();
 
+    public EntryNode() {
+        this(null);
+    }
+
     public EntryNode(Token.Entry entry) {
         this.entry = entry;
     }

@@ -5,7 +5,8 @@ import df.base.common.libs.ast.token.Token;
 public enum ExtendedToken implements Token {
 
     T_ANNOTATION(9100),
-    T_CLASS_NAME(9200);
+    T_CLASS_NAME(9200),
+    T_VARIABLE(9300);
 
     private final int      type;
     private final String[] values;

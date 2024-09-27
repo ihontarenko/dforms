@@ -26,6 +26,10 @@ public interface Node {
 
     Node[] children();
 
+    Node first();
+
+    Node last();
+
     void add(Node node);
 
     boolean delete(Node node);

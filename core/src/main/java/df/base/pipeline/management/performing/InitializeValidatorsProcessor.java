@@ -1,17 +1,18 @@
 package df.base.pipeline.management.performing;
 
-import df.base.common.parser.ParameterParser;
-import df.base.common.parser.ast.AnnotationParameterNode;
 import df.base.common.context.ArgumentsContext;
+import df.base.common.libs.ast.node.EvaluationContext;
 import df.base.common.libs.ast.node.Node;
-import df.base.common.libs.ast.node.ast.Literal;
+import df.base.common.parser.ParameterParser;
 import df.base.common.pipeline.PipelineProcessor;
 import df.base.common.pipeline.context.PipelineContext;
-import df.base.common.validation.custom.*;
+import df.base.common.validation.custom.BasicValidators;
+import df.base.common.validation.custom.Validation;
+import df.base.common.validation.custom.Validator;
+import df.base.common.validation.custom.ValidatorConstraintFactory;
 import df.base.dto.form.FieldConfigDTO;
 import org.springframework.context.ApplicationContext;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,15 +24,17 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
     public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
         Map<String, List<FieldConfigDTO>> validationConfigs = arguments.requireArgument("VALIDATION_CONFIGS");
         Validation                        validation        = createValidation(context);
+        EvaluationContext                 evaluationContext = context.hasProperty(
+                EvaluationContext.class) ? context.getProperty(EvaluationContext.class) : new EvaluationContext();
 
         validationConfigs.forEach((fieldName, configs) -> {
             for (FieldConfigDTO configDTO : configs) {
                 String validatorParameters = configDTO.getValue();
                 String configName          = configDTO.getKey();
                 String validatorName       = configName.substring(configName.indexOf(':') + 1);
+                Node   root                = context.getBean(ParameterParser.class).parse(validatorParameters);
 
-                Map<String, Object> parameters = normalizeParameters(
-                        context.getBean(ParameterParser.class).parse(validatorParameters));
+                Map<String, Object> parameters = normalizeParameters(root, evaluationContext);
 
                 validation.addValidator(fieldName, resolveValidator(validatorName, parameters));
             }
@@ -60,20 +63,8 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
         return new Validation("DYNAMIC_FORM_VALIDATION", context.getProperty(ApplicationContext.class));
     }
 
-    private Map<String, Object> normalizeParameters(Node root) {
-        Map<String, Object> parameters = new HashMap<>();
-
-        for (Node child : root.children()) {
-            if (child instanceof AnnotationParameterNode parameterNode) {
-                if (parameterNode.getValue() instanceof Literal literal) {
-                    parameters.put(parameterNode.getKey(), literal.getValue());
-                } else {
-                    throw new IllegalArgumentException("Parameter values must be literals; other types are not allowed.");
-                }
-            }
-        }
-
-        return parameters;
+    private Map<String, Object> normalizeParameters(Node root, EvaluationContext evaluationContext) {
+        return (Map<String, Object>) root.first().evaluate(evaluationContext);
     }
 
 }

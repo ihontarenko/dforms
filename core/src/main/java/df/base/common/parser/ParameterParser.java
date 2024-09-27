@@ -1,7 +1,7 @@
 package df.base.common.parser;
 
-import df.base.common.parser.configurator.AnnotationParserConfigurator;
-import df.base.common.parser.configurator.AnnotationTokenizerConfigurator;
+import df.base.common.parser.configurator.DefaultParserConfigurator;
+import df.base.common.parser.configurator.DefaultTokenizerConfigurator;
 import df.base.common.parser.parser.ParametersParser;
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.node.Node;
@@ -26,8 +26,8 @@ public class ParameterParser {
     }
 
     private void initialize() {
-        new AnnotationParserConfigurator().configure(context);
-        new AnnotationTokenizerConfigurator().configure(tokenizer);
+        new DefaultParserConfigurator().configure(context);
+        new DefaultTokenizerConfigurator().configure(tokenizer);
 
         this.parser = context.getParser(ParametersParser.class);
     }

@@ -1,13 +1,10 @@
 package df.base.common.parser.configurator;
 
-import df.base.common.parser.parser.ArrayParser;
-import df.base.common.parser.parser.ClassNameParser;
-import df.base.common.parser.parser.ParametersParser;
+import df.base.common.parser.parser.*;
 import df.base.common.libs.ast.parser.ParserContext;
 import df.base.common.libs.ast.parser.ParserContextConfigurator;
-import df.base.common.parser.parser.AnnotationParser;
 
-public class AnnotationParserConfigurator extends ParserContextConfigurator {
+public class DefaultParserConfigurator extends ParserContextConfigurator {
 
     @Override
     public void configure(ParserContext context) {
@@ -16,6 +13,8 @@ public class AnnotationParserConfigurator extends ParserContextConfigurator {
         context.add(new ParametersParser());
         context.add(new ArrayParser());
         context.add(new ClassNameParser());
+        context.add(new ExternalVariableParser());
+        context.add(new CommaSeparatedParser());
     }
 
 }
