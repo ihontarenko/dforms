@@ -3,6 +3,8 @@ package df.base.common.libs.jbm.scanner;
 import df.base.common.libs.jbm.filter.Filter;
 import df.base.common.libs.jbm.filter.FilterAware;
 import df.base.common.libs.jbm.filter.FilteringMode;
+import df.base.common.matcher.reflection.ClassMatchers;
+import df.base.common.matcher.Matcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +13,10 @@ import java.util.stream.Stream;
 
 public abstract class AbstractScanner<T> implements Scanner<T>, CompositeScanner<T>, FilterAware<Filter<T>> {
 
-    private final   List<Predicate<T>> filters  = new ArrayList<>();
-    private         FilteringMode      mode     = FilteringMode.AND;
-    protected final List<Scanner<T>>   scanners = new ArrayList<>();
+    protected final List<Scanner<T>>   scanners     = new ArrayList<>();
+    private final   List<Predicate<T>> filters      = new ArrayList<>();
+    private final   Matcher<Class<?>>  classMatcher = ClassMatchers.isPublic();
+    private         FilteringMode      mode         = FilteringMode.AND;
 
     @Override
     public void addScanner(Scanner<T> scanner) {

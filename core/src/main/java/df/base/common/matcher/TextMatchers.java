@@ -1,4 +1,5 @@
 package df.base.common.matcher;
+
 public class TextMatchers {
 
     public static Matcher<String> contains(String substring) {
@@ -17,52 +18,28 @@ public class TextMatchers {
         return new TextEndsWithMatcher(suffix);
     }
 
-    static class TextEqualsMatcher implements Matcher<String> {
-        private final String string;
-
-        public TextEqualsMatcher(String string) {
-            this.string = string;
-        }
-
+    private record TextEqualsMatcher(String string) implements Matcher<String> {
         @Override
         public boolean matches(String item, MatchContext context) {
             return item != null && item.equals(string);
         }
     }
 
-    static class TextContainsMatcher implements Matcher<String> {
-        private final String substring;
-
-        public TextContainsMatcher(String substring) {
-            this.substring = substring;
-        }
-
+    private record TextContainsMatcher(String substring) implements Matcher<String> {
         @Override
         public boolean matches(String item, MatchContext context) {
             return item != null && item.contains(substring);
         }
     }
 
-    static class TextStartsWithMatcher implements Matcher<String> {
-        private final String prefix;
-
-        public TextStartsWithMatcher(String prefix) {
-            this.prefix = prefix;
-        }
-
+    private record TextStartsWithMatcher(String prefix) implements Matcher<String> {
         @Override
         public boolean matches(String item, MatchContext context) {
             return item != null && item.startsWith(prefix);
         }
     }
 
-    static class TextEndsWithMatcher implements Matcher<String> {
-        private final String suffix;
-
-        public TextEndsWithMatcher(String suffix) {
-            this.suffix = suffix;
-        }
-
+    private record TextEndsWithMatcher(String suffix) implements Matcher<String> {
         @Override
         public boolean matches(String item, MatchContext context) {
             return item != null && item.endsWith(suffix);

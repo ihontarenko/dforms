@@ -1,4 +1,8 @@
-package df.base.common.matcher;
+package df.base.common.matcher.reflection;
+
+import df.base.common.matcher.MatchContext;
+import df.base.common.matcher.Matcher;
+import df.base.common.matcher.TextMatchers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

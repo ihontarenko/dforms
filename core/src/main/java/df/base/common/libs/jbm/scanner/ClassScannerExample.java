@@ -31,7 +31,7 @@ public class ClassScannerExample {
         scanner.setFilteringMode(FilteringMode.AND);
 
 //        Set<Class<?>> classes = scanner.scan("df.base.internal.application_context", loader);
-        Set<Class<?>> classes = scanner.scan("df.base.internal.validation", loader);
+        Set<Class<?>> classes = scanner.scan("df.base.common", loader);
 
         for (Class<?> type : classes) {
             System.out.println(type);

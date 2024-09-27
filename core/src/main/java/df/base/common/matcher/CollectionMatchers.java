@@ -20,14 +20,7 @@ public class CollectionMatchers {
         return new CollectionAnyOfMatcher<>(itemMatcher);
     }
 
-    static class CollectionAnyOfMatcher<T> implements Matcher<Collection<T>> {
-
-        private final Matcher<? super T> itemMatcher;
-
-        public CollectionAnyOfMatcher(Matcher<? super T> itemMatcher) {
-            this.itemMatcher = itemMatcher;
-        }
-
+    private record CollectionAnyOfMatcher<T>(Matcher<? super T> itemMatcher) implements Matcher<Collection<T>> {
         @Override
         public boolean matches(Collection<T> collection, MatchContext context) {
             for (T item : collection) {
@@ -39,41 +32,25 @@ public class CollectionMatchers {
         }
     }
 
-    static class CollectionContainsMatcher<T> implements Matcher<Collection<T>> {
-
-        private final T element;
-
-        public CollectionContainsMatcher(T element) {
-            this.element = element;
-        }
-
+    private record CollectionContainsMatcher<T>(T element) implements Matcher<Collection<T>> {
         @Override
         public boolean matches(Collection<T> collection, MatchContext context) {
             return collection != null && collection.contains(element);
         }
-
     }
 
-    static class CollectionEmptyMatcher<T> implements Matcher<Collection<T>> {
+    private static class CollectionEmptyMatcher<T> implements Matcher<Collection<T>> {
         @Override
         public boolean matches(Collection<T> collection, MatchContext context) {
             return collection != null && collection.isEmpty();
         }
     }
 
-    static class CollectionSizeMatcher<T> implements Matcher<Collection<T>> {
-
-        private final int expectedSize;
-
-        public CollectionSizeMatcher(int expectedSize) {
-            this.expectedSize = expectedSize;
-        }
-
+    private record CollectionSizeMatcher<T>(int expectedSize) implements Matcher<Collection<T>> {
         @Override
         public boolean matches(Collection<T> collection, MatchContext context) {
             return collection != null && collection.size() == expectedSize;
         }
-
     }
 
 }
