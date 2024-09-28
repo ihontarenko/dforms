@@ -1,36 +1,49 @@
 package df.base.common.matcher;
 
-import df.base.common.extensions.hibernate.generator.PrefixedId;
-import df.base.common.libs.jbm.ReflectionUtils;
-import df.base.common.reflection.FieldFinder;
-import df.base.common.reflection.Finder;
-import df.base.persistence.entity.form.FieldConfig;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
+import df.base.common.matcher.reflection.MethodMatchers;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import static df.base.common.matcher.MatchContext.createDefault;
-import static df.base.common.matcher.reflection.FieldMatchers.isAnnotatedWith;
 
 public class Example {
 
     public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         MatchContext context = createDefault();
 
-        System.out.println("v1");
-        for (Field allAnnotatedField : ReflectionUtils.findAllAnnotatedFields(FieldConfig.class, Column.class)) {
-            System.out.println(allAnnotatedField);
+        class MyClass {
+            private int value;
+
+            // Копіюючий конструктор
+            public MyClass(MyClass other) {
+                this.value = other.value;
+            }
+
+            // Інший конструктор
+            public MyClass(int value) {
+                this.value = value;
+            }
+
+            // Метод для демонстрації (не використовується для перевірки)
+            public void setValue(int value) {
+                this.value = value;
+            }
         }
 
-        Finder<Field>  finder  = new FieldFinder();
-        Matcher<Field> matcher = Matcher.or(isAnnotatedWith(Column.class), isAnnotatedWith(ManyToOne.class));
+        // Отримуємо всі конструктори класу MyClass
+        Constructor<?>[] constructors = MyClass.class.getDeclaredConstructors();
 
-        System.out.println("finder + matcher");
-        for (Field field : FieldFinder.getAnnotatedWith(FieldConfig.class, PrefixedId.class, ManyToOne.class)) {
-            System.out.println(field);
+        // Створюємо наш матчер для копіюючого конструктора
+        Matcher<Constructor<?>> copyConstructorMatcher = MethodMatchers.isCopyConstructor();
+
+        // Перевіряємо кожен конструктор
+        for (Constructor<?> constructor : constructors) {
+            boolean isCopyConstructor = copyConstructorMatcher.matches(constructor, context);
+            System.out.println("Constructor: " + constructor);
+            System.out.println("Is Copy Constructor: " + isCopyConstructor);
         }
+
 
     }
 }
