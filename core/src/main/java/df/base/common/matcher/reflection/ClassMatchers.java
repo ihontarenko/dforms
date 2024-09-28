@@ -84,6 +84,10 @@ public class ClassMatchers {
         return new ClassNameWithMatcher(textMatcher);
     }
 
+    public static Matcher<Class<?>> isSimilar(Class<?> expectedType) {
+        return new SimilarTypeMatcher(expectedType);
+    }
+
     private record ClassNameWithMatcher(Matcher<? super String> textMatcher) implements Matcher<Class<?>> {
         @Override
         public boolean matches(Class<?> item, MatchContext context) {
@@ -138,6 +142,13 @@ public class ClassMatchers {
                 }
             }
             return false;
+        }
+    }
+
+    private record SimilarTypeMatcher(Class<?> expectedType) implements Matcher<Class<?>> {
+        @Override
+        public boolean matches(Class<?> actualType, MatchContext context) {
+            return TypeMatchers.isSimilar(expectedType).matches(actualType, context);
         }
     }
 

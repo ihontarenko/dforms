@@ -7,6 +7,7 @@ import df.base.common.matcher.TextMatchers;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.List;
 
 @SuppressWarnings({"unused"})
 public class MethodMatchers {
@@ -41,6 +42,10 @@ public class MethodMatchers {
 
     public static Matcher<Method> hasParameterTypes(Class<?>... parameterTypes) {
         return new ParameterTypesMatcher(parameterTypes);
+    }
+
+    public static Matcher<Method> throwsException(Class<? extends Throwable> exceptionType) {
+        return (method, context) -> List.of(method.getExceptionTypes()).contains(exceptionType);
     }
 
     public static Matcher<Method> nameStarts(String prefix) {
