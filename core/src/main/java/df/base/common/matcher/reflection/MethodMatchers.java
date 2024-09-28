@@ -9,6 +9,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+import static df.base.common.matcher.reflection.TypeMatchers.isSimilar;
+import static df.base.common.matcher.reflection.TypeMatchers.isSubtype;
+
 @SuppressWarnings({"unused"})
 public class MethodMatchers {
 
@@ -42,6 +45,10 @@ public class MethodMatchers {
 
     public static Matcher<Method> hasParameterTypes(Class<?>... parameterTypes) {
         return new ParameterTypesMatcher(parameterTypes);
+    }
+
+    public static Matcher<Method> hasSoftParameterTypes(Class<?>... parameterTypes) {
+        return new SoftParameterTypesMatcher(parameterTypes);
     }
 
     public static Matcher<Method> throwsException(Class<? extends Throwable> exceptionType) {
@@ -100,6 +107,26 @@ public class MethodMatchers {
             return method.getParameterCount() == expectedCount;
         }
     }
+
+    private record SoftParameterTypesMatcher(Class<?>... expectedTypes) implements Matcher<Method> {
+        @Override
+            public boolean matches(Method method, MatchContext context) {
+                Class<?>[] actualTypes = method.getParameterTypes();
+
+                if (actualTypes.length != expectedTypes.length) {
+                    return false;
+                }
+
+                for (int i = 0; i < actualTypes.length; i++) {
+                    Matcher<Class<?>> matcher = isSubtype(expectedTypes[i]).or(isSimilar(expectedTypes[i]));
+                    if (!matcher.matches(actualTypes[i], context)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
 
     private record ModifierMatcher(int modifier) implements Matcher<Method> {
         @Override

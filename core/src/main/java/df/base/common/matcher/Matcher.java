@@ -37,6 +37,10 @@ public interface Matcher<T> {
         return new NotMatcher<>(matcher);
     }
 
+    static <T> Matcher<T> empty(boolean value) {
+        return (item, context) -> value;
+    }
+
     class AndMatcher<T> implements Matcher<T> {
 
         private final Matcher<? super T> left;

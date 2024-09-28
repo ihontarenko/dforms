@@ -88,6 +88,10 @@ public class ClassMatchers {
         return new SimilarTypeMatcher(expectedType);
     }
 
+    public static Matcher<Class<?>> isSubtype(Class<?> expectedType) {
+        return new SubtypeTypeMatcher(expectedType);
+    }
+
     private record ClassNameWithMatcher(Matcher<? super String> textMatcher) implements Matcher<Class<?>> {
         @Override
         public boolean matches(Class<?> item, MatchContext context) {
@@ -149,6 +153,13 @@ public class ClassMatchers {
         @Override
         public boolean matches(Class<?> actualType, MatchContext context) {
             return TypeMatchers.isSimilar(expectedType).matches(actualType, context);
+        }
+    }
+
+    private record SubtypeTypeMatcher(Class<?> expectedType) implements Matcher<Class<?>> {
+        @Override
+        public boolean matches(Class<?> actualType, MatchContext context) {
+            return TypeMatchers.isSubtype(expectedType).matches(actualType, context);
         }
     }
 

@@ -12,6 +12,10 @@ public class TypeMatchers {
         return new SimilarTypeMatcher(expectedType);
     }
 
+    public static Matcher<Class<?>> isSubtype(Class<?> expectedType) {
+        return new SubtypeTypeMatcher(expectedType);
+    }
+
     private record SimilarTypeMatcher(Class<?> expectedType) implements Matcher<Class<?>> {
         @Override
         public boolean matches(Class<?> actualType, MatchContext context) {
@@ -20,6 +24,13 @@ public class TypeMatchers {
                 return wrapper != null && wrapper.equals(actualType);
             }
             return true;
+        }
+    }
+
+    private record SubtypeTypeMatcher(Class<?> expectedType) implements Matcher<Class<?>> {
+        @Override
+        public boolean matches(Class<?> actualType, MatchContext context) {
+            return actualType.isAssignableFrom(expectedType);
         }
     }
 

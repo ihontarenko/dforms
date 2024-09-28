@@ -1,4 +1,4 @@
-package df.base.common.libs.ast.node.ast;
+package df.base.common.parser.ast;
 
 import df.base.common.libs.ast.node.EntryNode;
 import df.base.common.libs.ast.node.EvaluationContext;

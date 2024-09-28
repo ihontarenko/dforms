@@ -1,6 +1,6 @@
 package df.base.common.libs.ast.matching;
 
-import df.base.common.libs.ast.parser.LiteralParser;
+import df.base.common.parser.parser.LiteralParser;
 import df.base.common.libs.ast.token.DefaultToken;
 import df.base.common.libs.ast.lexer.Lexer;
 

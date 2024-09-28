@@ -1,14 +1,15 @@
 package df.base.common.parser.configurator;
 
+import df.base.common.libs.ast.configurer.Configurator;
 import df.base.common.parser.parser.*;
 import df.base.common.libs.ast.parser.ParserContext;
-import df.base.common.libs.ast.parser.ParserContextConfigurator;
 
-public class DefaultParserConfigurator extends ParserContextConfigurator {
+public class DefaultParserConfigurator implements Configurator<ParserContext> {
 
     @Override
     public void configure(ParserContext context) {
-        super.configure(context);
+        context.add(new IdentifierParser());
+        context.add(new LiteralParser());
         context.add(new AnnotationParser());
         context.add(new ParametersParser());
         context.add(new ArrayParser());

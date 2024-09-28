@@ -32,8 +32,10 @@ public class Example {
         new DefaultTokenizerConfigurator().configure(tokenizer);
         new DefaultParserConfigurator().configure(context);
 
+        String test = "test string";
+
         Lexer lexer = new DefaultLexer(tokenizer.tokenize(
-                "(result=#service.getValue(123, '456'), staticValue=#random(), complex=#service.hello(#random(), #stringVar, 12.34), provider=df.base.common.support.spel.SpelEvaluator, minLength=10, maxLength=32, array={1, 2, 3})"));
+                "(result=#service.getValue(123, '456'), staticValue=#random(), complex=#service.hello(#random(), #stringVar.toUpperCase(), 12.34), provider=df.base.common.support.spel.SpelEvaluator, minLength=10 + 2, maxLength=32, array={1, 2, 3})"));
 //        Lexer lexer = new DefaultLexer(tokenizer.tokenize("#service.methodName(123, '456')"));
         Node   root   = new RootNode();
         Parser parser = context.getParser(ParametersParser.class);
@@ -41,6 +43,8 @@ public class Example {
         parser.shift(lexer, DefaultToken.T_OPEN_BRACE);
 
         parser.parse(lexer, root, context);
+
+        parser.shift(lexer, DefaultToken.T_CLOSE_BRACE);
 
         evaluationContext.setVariable("service", new TestService());
 
