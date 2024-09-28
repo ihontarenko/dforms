@@ -1,5 +1,6 @@
 package df.base.common.matcher;
 
+import df.base.common.extensions.hibernate.generator.PrefixedId;
 import df.base.common.libs.jbm.ReflectionUtils;
 import df.base.common.reflection.FieldFinder;
 import df.base.common.reflection.Finder;
@@ -27,7 +28,7 @@ public class Example {
         Matcher<Field> matcher = Matcher.or(isAnnotatedWith(Column.class), isAnnotatedWith(ManyToOne.class));
 
         System.out.println("finder + matcher");
-        for (Field field : finder.find(FieldConfig.class, matcher, context)) {
+        for (Field field : FieldFinder.getAnnotatedWith(FieldConfig.class, PrefixedId.class, ManyToOne.class)) {
             System.out.println(field);
         }
 

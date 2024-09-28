@@ -10,9 +10,10 @@ import static df.base.common.matcher.reflection.FieldMatchers.isAnnotatedWith;
 
 public class FieldFinder extends AbstractFinder<Field> {
 
+    @SafeVarargs
     public static Field[] getAnnotatedWith(Class<?> clazz, Class<? extends Annotation>... annotations) {
         Finder<Field>  finder  = new FieldFinder();
-        Matcher<Field> matcher = Matcher.empty(true);
+        Matcher<Field> matcher = Matcher.empty(false);
 
         for (Class<? extends Annotation> annotation : annotations) {
             matcher = matcher.or(isAnnotatedWith(annotation));
