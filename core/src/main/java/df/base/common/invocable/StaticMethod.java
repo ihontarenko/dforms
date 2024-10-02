@@ -1,5 +1,6 @@
 package df.base.common.invocable;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class StaticMethod extends AbstractInvocable {
@@ -8,8 +9,12 @@ public class StaticMethod extends AbstractInvocable {
         super(clazz, methodName, parameterTypes);
     }
 
+    public StaticMethod(Method method) {
+        super(method);
+    }
+
     @Override
-    public Object invoke() {
+    public InvokeResult invoke() {
         if ((descriptor.getNativeMethod().getModifiers() & Modifier.STATIC) == 0) {
             throw new InvocationException("The method '%s' is not static and cannot be invoked as such."
                     .formatted(descriptor.getName()));

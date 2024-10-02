@@ -34,7 +34,7 @@ public class Example {
         new DefaultParserConfigurator().configure(context);
 
         Lexer lexer = new DefaultLexer(tokenizer.tokenize(
-                "(map={1, #user, (key1=123, key2='Hello!', key3={1, 2, 3, #service.random()}, key4=#user)})"));
+                "(map={1, #user, (key1=123, key2='Hello!', key3={1, 2, 3, #service.getValue(1, 'test')}, key4=#user)})"));
 
         Node   root   = new RootNode();
         Parser parser = context.getParser(AnyExpressionParser.class);

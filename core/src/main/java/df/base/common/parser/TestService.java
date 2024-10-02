@@ -5,7 +5,7 @@ import java.util.Random;
 public class TestService {
 
     public String getValue(int value, String name) {
-        return getClass().getName() + value + name;
+        throw new RuntimeException("some shit happend");
     }
 
     public static int random() {

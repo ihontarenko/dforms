@@ -361,4 +361,20 @@ abstract public class Reflections {
         return interfaces.toArray(Class[]::new);
     }
 
+    /**
+     * Convert object array to corresponding types
+     *
+     * @param arguments that be converted
+     * @return an array of object types
+     */
+    public static Class<?>[] getArgumentsTypes(Object... arguments) {
+        Class<?>[] argumentTypes = new Class<?>[arguments.length];
+
+        for (int i = 0; i < arguments.length; i++) {
+            argumentTypes[i] = arguments[i] != null ? arguments[i].getClass() : Object.class;
+        }
+
+        return argumentTypes;
+    }
+
 }

@@ -14,7 +14,13 @@ final public class Invoker {
             Method method = invocable.getDescriptor().getNativeMethod();
             result.setReturnValue(method.invoke(invocable.getTarget(), invocable.getPreparedParameters()));
         } catch (IllegalAccessException | InvocationTargetException e) {
-            result.addError(new ErrorDetails(null, e.getMessage()));
+            String exceptionMessage = e.getMessage();
+
+            if (exceptionMessage == null) {
+                exceptionMessage = e.getCause().getMessage();
+            }
+
+            result.addError(new ErrorDetails(null, exceptionMessage));
         }
 
         return result;
