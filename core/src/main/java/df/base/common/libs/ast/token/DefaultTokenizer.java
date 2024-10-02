@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
+import static df.base.common.libs.ast.token.DefaultToken.T_EOL;
 import static df.base.common.libs.ast.token.DefaultToken.T_UNKNOWN;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static java.util.regex.Pattern.compile;
@@ -59,6 +60,8 @@ public class DefaultTokenizer implements Tokenizer {
 
             tokens.add(entry(token.get(), value, position, ++ordinal));
         }
+
+        tokens.add(entry(T_EOL, "END-OF-LINE TOKEN", -1, ++ordinal));
 
         return tokens;
     }

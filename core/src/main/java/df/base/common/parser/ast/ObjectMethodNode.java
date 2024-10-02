@@ -4,14 +4,14 @@ import df.base.common.libs.ast.node.EntryNode;
 import df.base.common.libs.ast.node.EvaluationContext;
 import df.base.common.libs.ast.node.Node;
 import df.base.common.libs.jbm.ReflectionUtils;
-import df.base.common.libs.jbm.bean.MethodNotFoundException;
 import df.base.common.matcher.MatchContext;
 import df.base.common.matcher.Matcher;
-import df.base.common.matcher.reflection.MethodMatchers;
+import df.base.common.parser.EvaluationException;
 import df.base.common.reflection.Finder;
 import df.base.common.reflection.MethodFinder;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 
 import static df.base.common.matcher.reflection.MethodMatchers.hasSoftParameterTypes;
@@ -23,8 +23,8 @@ public class ObjectMethodNode extends EntryNode {
     private String methodName;
     private Node   arguments;
 
-    private Finder<Method> finder  = new MethodFinder();
-    private MatchContext   context = MatchContext.createDefault();
+    private final Finder<Method> finder  = new MethodFinder();
+    private final MatchContext   context = MatchContext.createDefault();
 
     public String getObjectName() {
         return objectName;
@@ -51,14 +51,14 @@ public class ObjectMethodNode extends EntryNode {
     }
 
     @Override
-    public Object evaluate(EvaluationContext ctx) {
-        Object[]        arguments     = this.arguments == null ? new Object[0] : ((List<?>) this.arguments.evaluate(ctx)).toArray(Object[]::new);
+    public Object evaluate(EvaluationContext evaluationContext) {
+        Object[]        arguments     = this.arguments == null ? new Object[0] : ((List<?>) this.arguments.evaluate(evaluationContext)).toArray(Object[]::new);
         Class<?>[]      argumentTypes = ReflectionUtils.getArgumentsTypes(arguments);
-        Object          object        = ctx.requireVariable(objectName);
+        Object          object        = evaluationContext.requireVariable(objectName);
         Matcher<Method> matcher       = Matcher.and(nameEquals(methodName), hasSoftParameterTypes(argumentTypes));
 
-        Method method = finder.findFirst(object.getClass(), matcher, context).orElseThrow(()
-                -> new MethodNotFoundException("NO SUCH METHOD '%s' FOUND".formatted(methodName)));
+        Method method = finder.findFirst(object.getClass(), matcher, context).orElseThrow(() -> new EvaluationException(
+                "No such method '%s#%s(%s)'".formatted(object.getClass().getName(), methodName, Arrays.toString(argumentTypes))));
 
         return ReflectionUtils.invokeMethod(object, method, arguments);
     }

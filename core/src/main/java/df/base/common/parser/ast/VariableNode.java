@@ -11,8 +11,8 @@ public class VariableNode extends EntryNode {
     }
 
     @Override
-    public Object evaluate(EvaluationContext ctx) {
-        return ctx.requireVariable(entry.value().substring(1));
+    public Object evaluate(EvaluationContext evaluationContext) {
+        return evaluationContext.requireVariable(entry.value().substring(1));
     }
 
 }

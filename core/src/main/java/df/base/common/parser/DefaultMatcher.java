@@ -11,5 +11,7 @@ final public class DefaultMatcher {
             -> lexer.sequence(ExtendedToken.T_VARIABLE, DefaultToken.T_OPEN_BRACE);
     public static final Matcher OBJECT_METHOD = lexer
             -> lexer.sequence(ExtendedToken.T_VARIABLE, DefaultToken.T_DOT, DefaultToken.T_IDENTIFIER, DefaultToken.T_OPEN_BRACE);
+    public static final Matcher PARAMETERS = lexer
+            -> lexer.sequence(DefaultToken.T_OPEN_BRACE, DefaultToken.T_IDENTIFIER, DefaultToken.T_EQ);
 
 }

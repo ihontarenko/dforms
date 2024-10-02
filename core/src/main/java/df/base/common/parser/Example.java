@@ -11,6 +11,7 @@ import df.base.common.libs.ast.token.Tokenizer;
 import df.base.common.libs.jbm.ReflectionUtils;
 import df.base.common.parser.configurator.DefaultParserConfigurator;
 import df.base.common.parser.configurator.DefaultTokenizerConfigurator;
+import df.base.common.parser.parser.AnyExpressionParser;
 import df.base.common.parser.parser.ParametersParser;
 
 import java.lang.reflect.Method;
@@ -27,24 +28,18 @@ public class Example {
             evaluationContext.setFunction(method);
         }
 
-        evaluationContext.setVariable("stringVar", "olololo");
+        evaluationContext.setVariable("user", "Ivan");
 
         new DefaultTokenizerConfigurator().configure(tokenizer);
         new DefaultParserConfigurator().configure(context);
 
-        String test = "test string";
-
         Lexer lexer = new DefaultLexer(tokenizer.tokenize(
-                "(result=#service.getValue(123, '456'), staticValue=#random(), complex=#service.hello(#random(), #stringVar.toUpperCase(), 12.34), provider=df.base.common.support.spel.SpelEvaluator, minLength=10 + 2, maxLength=32, array={1, 2, 3})"));
-//        Lexer lexer = new DefaultLexer(tokenizer.tokenize("#service.methodName(123, '456')"));
-        Node   root   = new RootNode();
-        Parser parser = context.getParser(ParametersParser.class);
+                "(map={1, #user, (key1=123, key2='Hello!', key3={1, 2, 3, #service.random()}, key4=#user)})"));
 
-        parser.shift(lexer, DefaultToken.T_OPEN_BRACE);
+        Node   root   = new RootNode();
+        Parser parser = context.getParser(AnyExpressionParser.class);
 
         parser.parse(lexer, root, context);
-
-        parser.shift(lexer, DefaultToken.T_CLOSE_BRACE);
 
         evaluationContext.setVariable("service", new TestService());
 

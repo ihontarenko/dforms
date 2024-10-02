@@ -3,6 +3,7 @@ package df.base.common.libs.ast.token;
 public enum DefaultToken implements Token {
 
     T_UNKNOWN(1),
+    T_EOL(-1),
 
     T_EQ(1010, "=", "==", "EQ"),
     T_NE(1020, "!=", "<>"),

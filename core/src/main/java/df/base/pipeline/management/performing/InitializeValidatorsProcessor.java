@@ -27,6 +27,7 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
         EvaluationContext                 evaluationContext = context.hasProperty(
                 EvaluationContext.class) ? context.getProperty(EvaluationContext.class) : new EvaluationContext();
 
+        // todo: think about binding some useful variables to EvaluationContext
         validationConfigs.forEach((fieldName, configs) -> {
             for (FieldConfigDTO configDTO : configs) {
                 String validatorParameters = configDTO.getValue();

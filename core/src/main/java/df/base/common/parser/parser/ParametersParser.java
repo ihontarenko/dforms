@@ -16,40 +16,17 @@ public class ParametersParser implements Parser {
     public void parse(Lexer lexer, Node parent, ParserContext context) {
         ParametersNode parameters = new ParametersNode();
 
+        shift(lexer, T_OPEN_BRACE);
+
         do {
             ensureNext(lexer, T_IDENTIFIER);
 
             ParameterNode parameter = new ParameterNode();
-
             // parser identifier and shift to equal symbol 'identifier='
             Node identifier = context.getParser(IdentifierParser.class).parse(lexer, context);
             parameter.setKey(identifier);
-
             shift(lexer, T_EQ);
-
-            Node valueNode;
-
-            // resolve next expression after equal
-            if (lexer.isNext(T_OPEN_CURLY_BRACE)) {
-                // resolve array expression '{"string", "literal", etc.}'
-                valueNode = context.getParser(ArrayParser.class).parse(lexer, context);
-            } else if (lexer.isNext(T_ANNOTATION)) {
-                // resolve nested annotation 'nextAnnotation=@AnnotationName(...)'
-                shift(lexer, T_ANNOTATION);
-                valueNode = context.getParser(AnnotationParser.class).parse(lexer, context);
-            } else if (lexer.isNext(T_CLASS_NAME)) {
-                // resolve java-class name 'className=com.example.validator.NotNullValidator'
-                shift(lexer, T_CLASS_NAME);
-                valueNode = context.getParser(ClassNameParser.class).parse(lexer, context);
-            } else if (lexer.isNext(T_VARIABLE)) {
-                // either #variable, #staticMethod or #instance.method()
-                valueNode = context.getParser(ExternalVariableParser.class).parse(lexer, context);
-            } else {
-                // after all only literals available to parse 'value=100' || 'value="string"'
-                valueNode = context.getParser(LiteralParser.class).parse(lexer, context);
-            }
-
-            parameter.setValue(valueNode);
+            parameter.setValue(context.getParser(AnyExpressionParser.class).parse(lexer, context));
 
             // soft move
             lexer.moveNext(T_COMMA);
@@ -57,6 +34,8 @@ public class ParametersParser implements Parser {
             parameters.addParameter(parameter);
 
         } while (lexer.isCurrent(T_COMMA));
+
+        shift(lexer, T_CLOSE_BRACE);
 
         parent.add(parameters);
     }

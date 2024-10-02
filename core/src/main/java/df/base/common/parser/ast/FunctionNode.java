@@ -8,7 +8,7 @@ import df.base.common.libs.jbm.ReflectionUtils;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public class StaticMethodNode extends EntryNode {
+public class FunctionNode extends EntryNode {
 
     private String     methodName;
     private Node arguments;
@@ -30,12 +30,12 @@ public class StaticMethodNode extends EntryNode {
     }
 
     @Override
-    public Object evaluate(EvaluationContext ctx) {
+    public Object evaluate(EvaluationContext evaluationContext) {
         Object[] arguments = new Object[0];
-        Method   method    = ctx.getFunction(methodName);
+        Method   method    = evaluationContext.getFunction(methodName);
 
         if (this.arguments != null) {
-            arguments = ((List<?>) this.arguments.evaluate(ctx)).toArray(Object[]::new);
+            arguments = ((List<?>) this.arguments.evaluate(evaluationContext)).toArray(Object[]::new);
         }
 
         return ReflectionUtils.invokeMethod(null, method, arguments);

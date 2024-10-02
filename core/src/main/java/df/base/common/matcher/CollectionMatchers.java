@@ -20,6 +20,10 @@ public class CollectionMatchers {
         return new CollectionAnyOfMatcher<>(itemMatcher);
     }
 
+    public static <T> Matcher<Collection<T>> allOf(Matcher<? super T> itemMatcher) {
+        return new CollectionAllOfMatcher<>(itemMatcher);
+    }
+
     private record CollectionAnyOfMatcher<T>(Matcher<? super T> itemMatcher) implements Matcher<Collection<T>> {
         @Override
         public boolean matches(Collection<T> collection, MatchContext context) {
@@ -29,6 +33,18 @@ public class CollectionMatchers {
                 }
             }
             return false;
+        }
+    }
+
+    private record CollectionAllOfMatcher<T>(Matcher<? super T> itemMatcher) implements Matcher<Collection<T>> {
+        @Override
+        public boolean matches(Collection<T> collection, MatchContext context) {
+            for (T item : collection) {
+                if (!itemMatcher.matches(item, context)) {
+                    return true;
+                }
+            }
+            return true;
         }
     }
 

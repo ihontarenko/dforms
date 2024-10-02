@@ -6,7 +6,7 @@ import com.fasterxml.jackson.dataformat.javaprop.JavaPropsMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
-import static df.base.common.resources.ResourceReader.readFileToString;
+import static df.base.common.support.ResourceReader.readFileToString;
 
 public abstract class DefinitionLoader {
 

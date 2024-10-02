@@ -1,4 +1,4 @@
-package df.base.common.resources;
+package df.base.common.support;
 
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;

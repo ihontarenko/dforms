@@ -4,7 +4,7 @@ import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.token.DefaultTokenizer;
 import df.base.common.libs.ast.token.Token;
 import df.base.common.libs.ast.token.Tokenizer;
-import df.base.common.resources.ResourceReader;
+import df.base.common.support.ResourceReader;
 
 public class Run {
 
