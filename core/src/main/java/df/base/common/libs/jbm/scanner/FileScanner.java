@@ -22,7 +22,7 @@ public class FileScanner extends AbstractScanner<Path> {
     @Override
     public Set<Path> scan(URL resource, String name, ClassLoader loader) {
         try (Stream<Path> stream = Files.walk(Paths.get(resource.toURI()))) {
-            return stream.filter(this::doFilter).collect(toSet());
+            return stream.filter(this::filter).collect(toSet());
         } catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }

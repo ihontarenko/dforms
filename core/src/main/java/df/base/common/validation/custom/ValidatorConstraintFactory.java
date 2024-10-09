@@ -1,6 +1,6 @@
 package df.base.common.validation.custom;
 
-import df.base.BasePackage;
+import df.base.PackageCoreRoot;
 import df.base.common.mapping.ObjectFieldMapper;
 import df.base.common.proxy.AnnotationProxyFactory;
 import df.base.common.validation.custom.constraint.NonEmptyValidator;
@@ -75,7 +75,7 @@ public class ValidatorConstraintFactory {
     public Validator createNewValidator(Class<? extends Validator> validatorClass, Map<String, Object> parameters) {
         Constructor<?> constructor    = findFirstConstructor(validatorClass);
         Validator      validator      = (Validator) instantiate(constructor);
-        Validator      proxyValidator = new AnnotationProxyFactory(validator, BasePackage.class).getProxy();
+        Validator      proxyValidator = new AnnotationProxyFactory(validator, PackageCoreRoot.class).getProxy();
 
         if (parameters != null) {
             new ObjectFieldMapper().reverse(parameters, validator);

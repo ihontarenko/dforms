@@ -1,27 +1,31 @@
 package df.base.common.libs.jbm.bean;
 
 import df.base.common.libs.jbm.scanner.ClassScanner;
-import df.base.common.libs.jbm.scanner.filter.type.ClassAnnotatedClassFilter;
-import df.base.common.libs.jbm.scanner.filter.type.MethodAnnotatedClassFilter;
-import df.base.common.libs.jbm.scanner.filter.type.TypeFilter;
+import df.base.common.matcher.Matcher;
+import df.base.common.matcher.reflection.ClassMatchers;
 
-import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
+import static df.base.common.matcher.reflection.MethodMatchers.isAnnotatedWith;
+import static df.base.common.matcher.reflection.MethodMatchers.isPublic;
+
 public class BeanClassScanner extends ClassScanner {
 
-    public static final  TypeFilter   METHOD_BEAN_ANNOTATED_CLASS_FILTER         = new MethodAnnotatedClassFilter(Bean.class, Modifier.PUBLIC);
-    public static final  TypeFilter   CLASS_BEAN_ANNOTATED_CLASS_FILTER          = new ClassAnnotatedClassFilter(Bean.class);
-    public static final  TypeFilter   CLASS_CONFIGURATION_ANNOTATED_CLASS_FILTER = new ClassAnnotatedClassFilter(BeansProvider.class);
-    private static final ClassScanner CLASS_SCANNER                              = ClassScanner.getDefaultScanner();
+    public static final  Matcher<Class<?>> METHOD_BEAN_ANNOTATED_CLASS_FILTER         = ClassMatchers.hasMethod(
+            isAnnotatedWith(Bean.class).and(isPublic()));
+    public static final  Matcher<Class<?>> CLASS_BEAN_ANNOTATED_CLASS_FILTER          = ClassMatchers.isAnnotatedWith(
+            Bean.class);
+    public static final  Matcher<Class<?>> CLASS_CONFIGURATION_ANNOTATED_CLASS_FILTER = ClassMatchers.isAnnotatedWith(
+            BeansProvider.class);
+    private static final ClassScanner      CLASS_SCANNER                              = ClassScanner.getDefaultScanner();
 
-    public static Set<Class<?>> scanPackagesWithFilter(TypeFilter filter, Class<?>... baseClasses) {
+    public static Set<Class<?>> scanPackagesWithFilter(Matcher<Class<?>> filter, Class<?>... baseClasses) {
         Set<Class<?>> classes = new HashSet<>();
         ClassLoader   loader  = Thread.currentThread().getContextClassLoader();
 
-        CLASS_SCANNER.clearFilters();
-        CLASS_SCANNER.addFilter(filter);
+        // matching
+        CLASS_SCANNER.setMatcher(filter);
 
         for (Class<?> baseClass : baseClasses) {
             classes.addAll(CLASS_SCANNER.scan(baseClass.getPackageName(), loader));

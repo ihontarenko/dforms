@@ -1,6 +1,6 @@
 package df.base.configuration;
 
-import df.base.BasePackage;
+import df.base.PackageCoreRoot;
 import df.base.common.pipeline.PipelineManager;
 import df.base.common.proxy.AnnotationProxyFactory;
 import df.base.service.form.FormManagement;
@@ -15,7 +15,7 @@ public class ProxyServiceConfiguration {
     @Bean
     public FormManagement getFormManagment(PipelineManager pipelineManager, ApplicationContext applicationContext) {
         return new AnnotationProxyFactory(new FormManagementService(
-                pipelineManager, applicationContext), BasePackage.class).getProxy();
+                pipelineManager, applicationContext), PackageCoreRoot.class).getProxy();
     }
 
 }

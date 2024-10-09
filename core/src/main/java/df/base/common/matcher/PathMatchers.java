@@ -18,7 +18,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> existsMatcher = PathMatchers.exists();
-     * boolean result = existsMatcher.matches(Path.of("/path/to/file"), context); // returns true if the file exists
+     * boolean result = existsMatcher.matches(Path.of("/path/to/file")); // returns true if the file exists
      * }</pre>
      */
     public static Matcher<Path> exists() {
@@ -32,7 +32,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> dirMatcher = PathMatchers.isDirectory();
-     * boolean result = dirMatcher.matches(Path.of("/path/to/directory"), context); // returns true if it's a directory
+     * boolean result = dirMatcher.matches(Path.of("/path/to/directory")); // returns true if it's a directory
      * }</pre>
      */
     public static Matcher<Path> isDirectory() {
@@ -46,7 +46,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> fileMatcher = PathMatchers.isFile();
-     * boolean result = fileMatcher.matches(Path.of("/path/to/file"), context); // returns true if it's a file
+     * boolean result = fileMatcher.matches(Path.of("/path/to/file")); // returns true if it's a file
      * }</pre>
      */
     public static Matcher<Path> isFile() {
@@ -61,7 +61,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> extensionMatcher = PathMatchers.hasExtension("txt");
-     * boolean result = extensionMatcher.matches(Path.of("/path/to/file.txt"), context); // returns true for .txt files
+     * boolean result = extensionMatcher.matches(Path.of("/path/to/file.txt")); // returns true for .txt files
      * }</pre>
      */
     public static Matcher<Path> hasExtension(String extension) {
@@ -75,7 +75,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> readableMatcher = PathMatchers.isReadable();
-     * boolean result = readableMatcher.matches(Path.of("/path/to/file"), context); // returns true if it's readable
+     * boolean result = readableMatcher.matches(Path.of("/path/to/file")); // returns true if it's readable
      * }</pre>
      */
     public static Matcher<Path> isReadable() {
@@ -89,7 +89,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> writableMatcher = PathMatchers.isWritable();
-     * boolean result = writableMatcher.matches(Path.of("/path/to/file"), context); // returns true if it's writable
+     * boolean result = writableMatcher.matches(Path.of("/path/to/file")); // returns true if it's writable
      * }</pre>
      */
     public static Matcher<Path> isWritable() {
@@ -104,7 +104,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> sizeMatcher = PathMatchers.size(1024);
-     * boolean result = sizeMatcher.matches(Path.of("/path/to/file"), context); // returns true if file is 1KB
+     * boolean result = sizeMatcher.matches(Path.of("/path/to/file")); // returns true if file is 1KB
      * }</pre>
      */
     public static Matcher<Path> size(long expectedSize) {
@@ -119,7 +119,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> sizeGreaterMatcher = PathMatchers.sizeGreaterThan(1024);
-     * boolean result = sizeGreaterMatcher.matches(Path.of("/path/to/file"), context); // returns true if file is larger than 1KB
+     * boolean result = sizeGreaterMatcher.matches(Path.of("/path/to/file")); // returns true if file is larger than 1KB
      * }</pre>
      */
     public static Matcher<Path> sizeGreaterThan(long expectedSize) {
@@ -134,7 +134,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> sizeLessMatcher = PathMatchers.sizeLessThan(1024);
-     * boolean result = sizeLessMatcher.matches(Path.of("/path/to/file"), context); // returns true if file is smaller than 1KB
+     * boolean result = sizeLessMatcher.matches(Path.of("/path/to/file")); // returns true if file is smaller than 1KB
      * }</pre>
      */
     public static Matcher<Path> sizeLessThan(long expectedSize) {
@@ -148,7 +148,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> execMatcher = PathMatchers.isExecutable();
-     * boolean result = execMatcher.matches(Path.of("/path/to/executable"), context); // returns true if it's executable
+     * boolean result = execMatcher.matches(Path.of("/path/to/executable")); // returns true if it's executable
      * }</pre>
      */
     public static Matcher<Path> isExecutable() {
@@ -163,7 +163,7 @@ public class PathMatchers {
      * @example
      * <pre>{@code
      * Matcher<Path> patternMatcher = PathMatchers.matchesPattern(".*\\.txt");
-     * boolean result = patternMatcher.matches(Path.of("/path/to/file.txt"), context); // returns true for .txt files
+     * boolean result = patternMatcher.matches(Path.of("/path/to/file.txt")); // returns true for .txt files
      * }</pre>
      */
     public static Matcher<Path> matchesPattern(String regex) {
@@ -173,28 +173,28 @@ public class PathMatchers {
     // Matchers implementations
     private static class PathExistsMatcher implements Matcher<Path> {
         @Override
-        public  boolean matches(Path path, MatchContext context) {
+        public  boolean matches(Path path) {
             return Files.exists(path);
         }
     }
 
     private static class PathIsDirectoryMatcher implements Matcher<Path> {
         @Override
-        public  boolean matches(Path path, MatchContext context) {
+        public  boolean matches(Path path) {
             return Files.isDirectory(path);
         }
     }
 
     private static class PathIsFileMatcher implements Matcher<Path> {
         @Override
-        public  boolean matches(Path path, MatchContext context) {
+        public  boolean matches(Path path) {
             return Files.isRegularFile(path);
         }
     }
 
     private record PathHasExtensionMatcher(String extension) implements Matcher<Path> {
         @Override
-        public boolean matches(Path path, MatchContext context) {
+        public boolean matches(Path path) {
             String fileName = path.getFileName().toString();
             return fileName.endsWith("." + extension);
         }
@@ -202,21 +202,21 @@ public class PathMatchers {
 
     private static class PathIsReadableMatcher implements Matcher<Path> {
         @Override
-        public  boolean matches(Path path, MatchContext context) {
+        public  boolean matches(Path path) {
             return Files.isReadable(path);
         }
     }
 
     private static class PathIsWritableMatcher implements Matcher<Path> {
         @Override
-        public  boolean matches(Path path, MatchContext context) {
+        public  boolean matches(Path path) {
             return Files.isWritable(path);
         }
     }
 
     private record PathSizeEqualsMatcher(long expectedSize) implements Matcher<Path> {
         @Override
-        public boolean matches(Path path, MatchContext context) {
+        public boolean matches(Path path) {
             try {
                 return Files.size(path) == expectedSize;
             } catch (Exception e) {
@@ -227,7 +227,7 @@ public class PathMatchers {
 
     private record PathSizeGreaterThanMatcher(long expectedSize) implements Matcher<Path> {
         @Override
-        public boolean matches(Path path, MatchContext context) {
+        public boolean matches(Path path) {
             try {
                 return Files.size(path) > expectedSize;
             } catch (Exception e) {
@@ -238,7 +238,7 @@ public class PathMatchers {
 
     private record PathSizeLessThanMatcher(long expectedSize) implements Matcher<Path> {
         @Override
-        public boolean matches(Path path, MatchContext context) {
+        public boolean matches(Path path) {
             try {
                 return Files.size(path) < expectedSize;
             } catch (Exception e) {
@@ -249,7 +249,7 @@ public class PathMatchers {
 
     private static class PathIsExecutableMatcher implements Matcher<Path> {
         @Override
-        public  boolean matches(Path path, MatchContext context) {
+        public  boolean matches(Path path) {
             return Files.isExecutable(path);
         }
     }
@@ -262,7 +262,7 @@ public class PathMatchers {
         }
 
         @Override
-        public  boolean matches(Path path, MatchContext context) {
+        public  boolean matches(Path path) {
             return pattern.matcher(path.getFileName().toString()).matches();
         }
     }

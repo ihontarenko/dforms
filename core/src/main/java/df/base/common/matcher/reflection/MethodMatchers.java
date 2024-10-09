@@ -1,6 +1,5 @@
 package df.base.common.matcher.reflection;
 
-import df.base.common.matcher.MatchContext;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.TextMatchers;
 
@@ -207,7 +206,7 @@ public class MethodMatchers {
      * }</pre>
      */
     public static Matcher<Executable> throwsException(Class<? extends Throwable> exceptionType) {
-        return (method, context) -> List.of(method.getExceptionTypes()).contains(exceptionType);
+        return (method) -> List.of(method.getExceptionTypes()).contains(exceptionType);
     }
 
     /**
@@ -308,28 +307,28 @@ public class MethodMatchers {
 
     private record CopyConstructorMatcher() implements Matcher<Constructor<?>> {
         @Override
-        public boolean matches(Constructor<?> constructor, MatchContext context) {
-            return Matcher.and(hasParameterCount(1), hasParameterTypes(constructor.getDeclaringClass())).matches(constructor, context);
+        public boolean matches(Constructor<?> constructor) {
+            return Matcher.and(hasParameterCount(1), hasParameterTypes(constructor.getDeclaringClass())).matches(constructor);
         }
     }
 
     private record DefaultConstructorMatcher() implements Matcher<Constructor<?>> {
         @Override
-        public boolean matches(Constructor<?> item, MatchContext context) {
-            return hasParameterCount(0).matches(item, context);
+        public boolean matches(Constructor<?> item) {
+            return hasParameterCount(0).matches(item);
         }
     }
 
     private record MethodNameWithMatcher(Matcher<? super String> textMatcher) implements Matcher<Executable> {
         @Override
-        public boolean matches(Executable item, MatchContext context) {
-            return textMatcher.matches(item.getName(), context);
+        public boolean matches(Executable item) {
+            return textMatcher.matches(item.getName());
         }
     }
 
     private record ParameterTypesMatcher(Class<?>... expectedTypes) implements Matcher<Executable> {
         @Override
-        public boolean matches(Executable method, MatchContext context) {
+        public boolean matches(Executable method) {
             Class<?>[] actualTypes = method.getParameterTypes();
 
             if (actualTypes.length != expectedTypes.length) {
@@ -348,14 +347,14 @@ public class MethodMatchers {
 
     private record ParameterCountMatcher(int expectedCount) implements Matcher<Executable> {
         @Override
-        public boolean matches(Executable method, MatchContext context) {
+        public boolean matches(Executable method) {
             return method.getParameterCount() == expectedCount;
         }
     }
 
     private record SoftParameterTypesMatcher(Class<?>... expectedTypes) implements Matcher<Executable> {
         @Override
-        public boolean matches(Executable method, MatchContext context) {
+        public boolean matches(Executable method) {
             Class<?>[] actualTypes = method.getParameterTypes();
 
             if (actualTypes.length != expectedTypes.length) {
@@ -364,7 +363,7 @@ public class MethodMatchers {
 
             for (int i = 0; i < actualTypes.length; i++) {
                 Matcher<Class<?>> matcher = isSubtype(expectedTypes[i]).or(isSimilar(expectedTypes[i]));
-                if (!matcher.matches(actualTypes[i], context)) {
+                if (!matcher.matches(actualTypes[i])) {
                     return false;
                 }
             }
@@ -375,28 +374,28 @@ public class MethodMatchers {
 
     private record IsDefaultMethodMatcher() implements Matcher<Method> {
         @Override
-        public boolean matches(Method method, MatchContext context) {
+        public boolean matches(Method method) {
             return method.isDefault();
         }
     }
 
     private record ModifierMatcher(int modifier) implements Matcher<Executable> {
         @Override
-        public boolean matches(Executable method, MatchContext context) {
+        public boolean matches(Executable method) {
             return (method.getModifiers() & modifier) != 0;
         }
     }
 
     private record AnnotatedMatcher(Class<? extends Annotation> annotation) implements Matcher<Executable> {
         @Override
-        public boolean matches(Executable method, MatchContext context) {
+        public boolean matches(Executable method) {
             return method.isAnnotationPresent(annotation);
         }
     }
 
     private record ReturnTypeMatcher(Class<?> returnType) implements Matcher<Method> {
         @Override
-        public boolean matches(Method method, MatchContext context) {
+        public boolean matches(Method method) {
             return method.getReturnType().equals(returnType);
         }
     }

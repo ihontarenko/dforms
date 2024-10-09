@@ -1,6 +1,5 @@
 package df.base.common.reflection;
 
-import df.base.common.matcher.MatchContext;
 import df.base.common.matcher.Matcher;
 
 import java.lang.reflect.Member;
@@ -20,7 +19,6 @@ public interface Finder<T extends Member> {
      *
      * @param clazz   the class whose members are to be searched
      * @param matcher the matcher to apply for filtering members
-     * @param context an optional context that can be used to pass additional information during matching
      * @return a list of members that match the given conditions
      * @example
      * <pre>{@code
@@ -31,7 +29,7 @@ public interface Finder<T extends Member> {
      *      .forEach(method -> System.out.println(method.getName()));
      * }</pre>
      */
-    List<T> find(Class<?> clazz, Matcher<? super T> matcher, MatchContext context);
+    List<T> find(Class<?> clazz, Matcher<? super T> matcher);
 
     /**
      * Finds the first member of the given class that matches the specified {@link Matcher}.
@@ -39,7 +37,6 @@ public interface Finder<T extends Member> {
      *
      * @param clazz   the class whose members are to be searched
      * @param matcher the matcher to apply for filtering members
-     * @param context an optional context that can be used to pass additional information during matching
      * @return an {@link Optional} containing the first matching member, or {@link Optional#empty()} if no match is found
      * @example
      * <pre>{@code
@@ -49,8 +46,8 @@ public interface Finder<T extends Member> {
      * firstPublicMethod.ifPresent(method -> System.out.println("Found method: " + method.getName()));
      * }</pre>
      */
-    default Optional<T> findFirst(Class<?> clazz, Matcher<? super T> matcher, MatchContext context) {
-        return find(clazz, matcher, context).stream().findFirst();
+    default Optional<T> findFirst(Class<?> clazz, Matcher<? super T> matcher) {
+        return find(clazz, matcher).stream().findFirst();
     }
 
 }

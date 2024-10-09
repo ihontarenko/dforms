@@ -1,7 +1,6 @@
 package df.base.common.reflection;
 
 import df.base.common.libs.jbm.bean.ObjectCreationException;
-import df.base.common.matcher.MatchContext;
 import df.base.common.matcher.reflection.FieldMatchers;
 import df.base.common.matcher.reflection.MethodMatchers;
 
@@ -53,7 +52,7 @@ abstract public class Reflections {
      * }</pre>
      */
     public static Constructor<?> findFirstConstructor(Class<?> clazz, Class<?>... types) {
-        return new ConstructorFinder().findFirst(clazz, MethodMatchers.hasParameterTypes(types), MatchContext.createDefault())
+        return new ConstructorFinder().findFirst(clazz, MethodMatchers.hasParameterTypes(types))
                 .orElseThrow(() -> new ObjectCreationException("CONSTRUCTOR WITH (" + Arrays.toString(types) + ") PARAMETERS NOT FOUND"));
     }
 
@@ -71,7 +70,7 @@ abstract public class Reflections {
      * }</pre>
      */
     public static Constructor<?> findFirstAnnotatedConstructor(Class<?> clazz, Class<? extends Annotation> annotation) {
-        return new ConstructorFinder().findFirst(clazz, MethodMatchers.isAnnotatedWith(annotation), MatchContext.createDefault())
+        return new ConstructorFinder().findFirst(clazz, MethodMatchers.isAnnotatedWith(annotation))
                 .orElseThrow(() -> new ObjectCreationException("ANNOTATED CONSTRUCTOR NOT FOUND"));
     }
 
@@ -88,7 +87,7 @@ abstract public class Reflections {
      * }</pre>
      */
     public static Set<Field> findAllAnnotatedFields(Class<?> clazz, Class<? extends Annotation> annotation) {
-        return new HashSet<>(new FieldFinder().find(clazz, FieldMatchers.isAnnotatedWith(annotation), MatchContext.createDefault()));
+        return new HashSet<>(new FieldFinder().find(clazz, FieldMatchers.isAnnotatedWith(annotation)));
     }
 
     /**
@@ -104,7 +103,7 @@ abstract public class Reflections {
      * }</pre>
      */
     public static Set<Method> findAllAnnotatedMethods(Class<?> clazz, Class<? extends Annotation> annotation) {
-        return new HashSet<>(new MethodFinder().find(clazz, MethodMatchers.isAnnotatedWith(annotation), MatchContext.createDefault()));
+        return new HashSet<>(new MethodFinder().find(clazz, MethodMatchers.isAnnotatedWith(annotation)));
     }
 
     /**
@@ -120,7 +119,7 @@ abstract public class Reflections {
      * }</pre>
      */
     public static Optional<Field> getField(Class<?> targetClass, String fieldName) {
-        return new FieldFinder().findFirst(targetClass, FieldMatchers.nameEquals(fieldName), MatchContext.createDefault());
+        return new FieldFinder().findFirst(targetClass, FieldMatchers.nameEquals(fieldName));
     }
 
     /**
@@ -136,7 +135,7 @@ abstract public class Reflections {
      * }</pre>
      */
     public static List<Field> getClassFields(Class<?> type, int modifiers) {
-        return new FieldFinder().find(type, FieldMatchers.withModifier(modifiers), MatchContext.createDefault());
+        return new FieldFinder().find(type, FieldMatchers.withModifier(modifiers));
     }
 
     /**
@@ -255,7 +254,7 @@ abstract public class Reflections {
      * }</pre>
      */
     public static Optional<Method> getMethod(Class<?> targetClass, String methodName, Class<?>... types) {
-        return new MethodFinder().findFirst(targetClass, MethodMatchers.nameEquals(methodName).and(MethodMatchers.hasParameterTypes(types)), MatchContext.createDefault());
+        return new MethodFinder().findFirst(targetClass, MethodMatchers.nameEquals(methodName).and(MethodMatchers.hasParameterTypes(types)));
     }
 
     /**
@@ -294,7 +293,7 @@ abstract public class Reflections {
      * }</pre>
      */
     public static List<Method> getClassMethods(Class<?> clazz) {
-        return new MethodFinder().find(clazz, MethodMatchers.isPublic(), MatchContext.createDefault());
+        return new MethodFinder().find(clazz, MethodMatchers.isPublic());
     }
 
     /**

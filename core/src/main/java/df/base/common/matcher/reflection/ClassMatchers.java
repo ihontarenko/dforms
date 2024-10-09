@@ -1,6 +1,5 @@
 package df.base.common.matcher.reflection;
 
-import df.base.common.matcher.MatchContext;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.TextMatchers;
 
@@ -78,6 +77,20 @@ public class ClassMatchers {
     }
 
     /**
+     * Creates a matcher that checks if a class is interface.
+     *
+     * @return a matcher that checks if the class is interface.
+     * @see Modifier#INTERFACE
+     * @example
+     * <pre>{@code
+     * Matcher<Class<?>> ifaceMatcher = ClassMatchers.isInterface();
+     * }</pre>
+     */
+    public static Matcher<Class<?>> isInterface() {
+        return withModifier(Modifier.INTERFACE);
+    }
+
+    /**
      * Creates a matcher that checks if a class is abstract.
      *
      * @return a matcher that checks if the class is abstract
@@ -89,6 +102,34 @@ public class ClassMatchers {
      */
     public static Matcher<Class<?>> isAbstract() {
         return withModifier(Modifier.ABSTRACT);
+    }
+
+    /**
+     * Creates a matcher that checks if a class is annotation.
+     *
+     * @return a matcher that checks if the class is annotation
+     * @see Class#isAnnotation()
+     * @example
+     * <pre>{@code
+     * Matcher<Class<?>> annotationMatcher = ClassMatchers.isAnnotation();
+     * }</pre>
+     */
+    public static Matcher<Class<?>> isAnnotation() {
+        return (item) -> item.isAnnotation();
+    }
+
+    /**
+     * Creates a matcher that checks if a class is enum.
+     *
+     * @return a matcher that checks if the class is enum
+     * @see Class#isEnum()
+     * @example
+     * <pre>{@code
+     * Matcher<Class<?>> enumMatcher = ClassMatchers.isEnum();
+     * }</pre>
+     */
+    public static Matcher<Class<?>> isEnum() {
+        return (item) -> item.isEnum();
     }
 
     /**
@@ -303,14 +344,14 @@ public class ClassMatchers {
 
     private record ClassNameWithMatcher(Matcher<? super String> textMatcher) implements Matcher<Class<?>> {
         @Override
-        public boolean matches(Class<?> item, MatchContext context) {
-            return textMatcher.matches(item.getName(), context);
+        public boolean matches(Class<?> item) {
+            return textMatcher.matches(item.getName());
         }
     }
 
     private record ImplementsInterfaceMatcher(Class<?> interfaceClass) implements Matcher<Class<?>> {
         @Override
-        public boolean matches(Class<?> clazz, MatchContext context) {
+        public boolean matches(Class<?> clazz) {
             for (Class<?> implementedInterface : clazz.getInterfaces()) {
                 if (implementedInterface.equals(interfaceClass)) {
                     return true;
@@ -322,23 +363,23 @@ public class ClassMatchers {
 
     private record ModifierMatcher(int modifier) implements Matcher<Class<?>> {
         @Override
-        public boolean matches(Class<?> clazz, MatchContext context) {
+        public boolean matches(Class<?> clazz) {
             return (clazz.getModifiers() & modifier) != 0;
         }
     }
 
     private record AnnotatedClassMatcher(Class<? extends Annotation> annotation) implements Matcher<Class<?>> {
         @Override
-        public boolean matches(Class<?> clazz, MatchContext context) {
+        public boolean matches(Class<?> clazz) {
             return clazz.isAnnotationPresent(annotation);
         }
     }
 
     private record HasFieldMatcher(Matcher<? super Field> fieldMatcher) implements Matcher<Class<?>> {
         @Override
-        public boolean matches(Class<?> clazz, MatchContext context) {
+        public boolean matches(Class<?> clazz) {
             for (Field field : clazz.getDeclaredFields()) {
-                if (fieldMatcher.matches(field, context)) {
+                if (fieldMatcher.matches(field)) {
                     return true;
                 }
             }
@@ -348,9 +389,9 @@ public class ClassMatchers {
 
     private record HasMethodMatcher(Matcher<? super Method> methodMatcher) implements Matcher<Class<?>> {
         @Override
-        public boolean matches(Class<?> clazz, MatchContext context) {
+        public boolean matches(Class<?> clazz) {
             for (Method method : clazz.getDeclaredMethods()) {
-                if (methodMatcher.matches(method, context)) {
+                if (methodMatcher.matches(method)) {
                     return true;
                 }
             }
@@ -360,15 +401,15 @@ public class ClassMatchers {
 
     private record SimilarTypeMatcher(Class<?> expectedType) implements Matcher<Class<?>> {
         @Override
-        public boolean matches(Class<?> actualType, MatchContext context) {
-            return TypeMatchers.isSimilar(expectedType).matches(actualType, context);
+        public boolean matches(Class<?> actualType) {
+            return TypeMatchers.isSimilar(expectedType).matches(actualType);
         }
     }
 
     private record SubtypeTypeMatcher(Class<?> expectedType) implements Matcher<Class<?>> {
         @Override
-        public boolean matches(Class<?> actualType, MatchContext context) {
-            return TypeMatchers.isSubtype(expectedType).matches(actualType, context);
+        public boolean matches(Class<?> actualType) {
+            return TypeMatchers.isSubtype(expectedType).matches(actualType);
         }
     }
 

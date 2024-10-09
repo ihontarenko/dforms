@@ -29,7 +29,7 @@ public class ClassScanner extends AbstractScanner<Class<?>> {
             classes.addAll(scanner.scan(name, loader));
         }
 
-        return classes.stream().filter(this::doFilter).collect(toSet());
+        return classes.stream().filter(this::filter).collect(toSet());
     }
 
 }

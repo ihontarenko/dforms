@@ -1,6 +1,5 @@
 package df.base.common.reflection;
 
-import df.base.common.matcher.MatchContext;
 import df.base.common.matcher.Matcher;
 
 import java.lang.reflect.Member;
@@ -32,7 +31,6 @@ public abstract class AbstractFinder<T extends Member> implements Finder<T> {
      *
      * @param clazz   the class whose members are to be searched
      * @param matcher the matcher to apply for filtering members
-     * @param context an optional context that can be used to pass additional information during matching
      * @return a list of members that match the given conditions
      * @example
      * <pre>{@code
@@ -43,12 +41,12 @@ public abstract class AbstractFinder<T extends Member> implements Finder<T> {
      * }</pre>
      */
     @Override
-    public List<T> find(Class<?> clazz, Matcher<? super T> matcher, MatchContext context) {
+    public List<T> find(Class<?> clazz, Matcher<? super T> matcher) {
         List<T> matchedMembers = new ArrayList<>();
 
         // Iterates through all members of the class and applies the matcher
         for (T member : getMembers(clazz)) {
-            if (matcher.matches(member, context)) {
+            if (matcher.matches(member)) {
                 matchedMembers.add(member);
             }
         }

@@ -1,7 +1,7 @@
 package df.base.common.libs.jbm.bean;
 
 import df.base.common.libs.jbm.Builder;
-import df.base.common.libs.jbm.scanner.filter.type.SubclassClassFilter;
+import df.base.common.matcher.reflection.TypeMatchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,15 +40,18 @@ public class BeanFacrotyBuilder implements Builder<BeanFactory> {
             // is bean interface founded
             if (candidate.isInterface()) {
 
-                LOGGER.info("A CANDIDATE BEAN IS AN INTERFACE. SCAN CHILD CLASSES: %d".formatted(candidates.size()));
+                LOGGER.info("A CANDIDATE BEAN IS AN INTERFACE. %s".formatted(candidate.getCanonicalName()));
 
                 // find all classes implemented current interface
                 List<Class<?>> subClasses = new ArrayList<>();
-                for (Class<?> subClass : scanPackagesWithFilter(new SubclassClassFilter(candidate), classes)) {
+                for (Class<?> subClass : scanPackagesWithFilter(TypeMatchers.isSupertype(candidate), classes)) {
                     if (!candidates.contains(subClass)) {
                         subClasses.add(subClass);
                     }
                 }
+
+                LOGGER.info("CHILD CLASSES: %d".formatted(subClasses.size()));
+
                 // no registration for this definition
                 factory.createBeanDefinition(candidate, subClasses);
             } else {

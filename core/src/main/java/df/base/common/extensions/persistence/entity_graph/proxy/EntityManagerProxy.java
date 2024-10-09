@@ -1,6 +1,6 @@
 package df.base.common.extensions.persistence.entity_graph.proxy;
 
-import df.base.BasePackage;
+import df.base.PackageCoreRoot;
 import df.base.common.extensions.persistence.entity_graph.ObjectsHolder;
 import df.base.common.extensions.persistence.entity_graph.EntityGraphQueryHint;
 import df.base.common.proxy.*;
@@ -43,7 +43,7 @@ public class EntityManagerProxy implements MethodInterceptor {
         // catch create methods ["createQuery", "createNamedQuery"]
         if (CREATE_QUERY_METHODS.contains(methodName) && result instanceof Query query && ObjectsHolder.exists(EntityGraphQueryHint.class)) {
             // if applicable method name and result is Query and EntityGraphQueryHint is present then we proxy it
-            ProxyFactory factory = new AnnotationProxyFactory(query, BasePackage.class);
+            ProxyFactory factory = new AnnotationProxyFactory(query, PackageCoreRoot.class);
             factory.addInterceptor(new QueryProxy());
             result = factory.getProxy();
         }

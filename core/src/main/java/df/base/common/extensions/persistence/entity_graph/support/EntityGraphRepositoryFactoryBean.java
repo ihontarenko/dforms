@@ -1,6 +1,6 @@
 package df.base.common.extensions.persistence.entity_graph.support;
 
-import df.base.BasePackage;
+import df.base.PackageCoreRoot;
 import df.base.common.extensions.persistence.entity_graph.ExtendedJpaRepositoryFactory;
 import df.base.common.extensions.persistence.entity_graph.proxy.EntityManagerProxy;
 import df.base.common.proxy.AnnotationProxyFactory;
@@ -24,7 +24,7 @@ public class EntityGraphRepositoryFactoryBean<R extends Repository<T, I>, T, I>
 
     @Override
     public void setEntityManager(EntityManager entityManager) {
-        ProxyFactory factory = new AnnotationProxyFactory(entityManager, BasePackage.class);
+        ProxyFactory factory = new AnnotationProxyFactory(entityManager, PackageCoreRoot.class);
         factory.addInterceptor(new EntityManagerProxy());
         super.setEntityManager(factory.getProxy());
     }

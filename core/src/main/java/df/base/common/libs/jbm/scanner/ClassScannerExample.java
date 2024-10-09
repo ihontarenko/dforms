@@ -26,9 +26,6 @@ public class ClassScannerExample {
 //        scanner.addFilter(Class::isAnnotation);
 //        scanner.addIncludeFilter(new AnnotationClassFilter(FunctionalInterface.class));
 //        scanner.addFilter(new SubclassClassFilter(BeanDefinition.class));
-        scanner.addFilter(new AccessModifierClassFilter(Modifier.ABSTRACT, true));
-
-        scanner.setFilteringMode(FilteringMode.AND);
 
 //        Set<Class<?>> classes = scanner.scan("df.base.internal.application_context", loader);
         Set<Class<?>> classes = scanner.scan("df.base.common", loader);

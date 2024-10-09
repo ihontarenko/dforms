@@ -37,21 +37,21 @@ public class MethodFinder extends AbstractFinder<Method> {
      * it recursively scans all superclasses and implemented interfaces to retrieve inherited methods.
      *
      * @param clazz           the class whose methods are to be retrieved
-     * @param withSuperclass  whether to scan superclasses and interfaces for methods
+     * @param deepScan  whether to scan superclasses and interfaces for methods
      * @return a collection of methods from the class and optionally from its superclasses and interfaces
      */
-    public static Collection<Method> getAllMethods(Class<?> clazz, boolean withSuperclass) {
+    public static Collection<Method> getAllMethods(Class<?> clazz, boolean deepScan) {
         Set<Method> methods = new HashSet<>(Set.of(clazz.getDeclaredMethods()));
 
         // Optionally scan superclasses for methods (except Object.class)
-        if (withSuperclass && clazz.getSuperclass() != null && clazz.getSuperclass() != Object.class) {
+        if (deepScan && clazz.getSuperclass() != null && clazz.getSuperclass() != Object.class) {
             methods.addAll(getAllMethods(clazz.getSuperclass(), true));
         }
 
         // Optionally scan interfaces for methods
-        if (withSuperclass) {
-            for (Class<?> iface : clazz.getInterfaces()) {
-                methods.addAll(getAllMethods(iface, true));
+        if (deepScan) {
+            for (Class<?> ifc : clazz.getInterfaces()) {
+                methods.addAll(getAllMethods(ifc, true));
             }
         }
 

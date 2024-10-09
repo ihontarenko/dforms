@@ -13,10 +13,9 @@ public interface Matcher<T> {
      * Evaluates whether the given {@code item} matches the criteria defined by this matcher.
      *
      * @param item the object to be evaluated
-     * @param context an optional context that can be used to pass additional information during matching
      * @return {@code true} if the item matches the criteria, {@code false} otherwise
      */
-    boolean matches(T item, MatchContext context);
+    boolean matches(T item);
 
     /**
      * Combines this matcher with another matcher using the logical AND operator.
@@ -30,8 +29,8 @@ public interface Matcher<T> {
      * Matcher<String> startsWithA = item -> item.startsWith("A");
      * Matcher<String> endsWithZ = item -> item.endsWith("Z");
      * Matcher<String> combinedMatcher = startsWithA.and(endsWithZ);
-     * combinedMatcher.matches("AZ", context); // returns true
-     * combinedMatcher.matches("BZ", context); // returns false
+     * combinedMatcher.matches("AZ"); // returns true
+     * combinedMatcher.matches("BZ"); // returns false
      * }</pre>
      */
     default Matcher<T> and(Matcher<? super T> other) {
@@ -50,9 +49,9 @@ public interface Matcher<T> {
      * Matcher<String> startsWithA = item -> item.startsWith("A");
      * Matcher<String> endsWithZ = item -> item.endsWith("Z");
      * Matcher<String> combinedMatcher = startsWithA.or(endsWithZ);
-     * combinedMatcher.matches("AZ", context); // returns true
-     * combinedMatcher.matches("BZ", context); // returns true
-     * combinedMatcher.matches("XY", context); // returns false
+     * combinedMatcher.matches("AZ"); // returns true
+     * combinedMatcher.matches("BZ"); // returns true
+     * combinedMatcher.matches("XY"); // returns false
      * }</pre>
      */
     default Matcher<T> or(Matcher<? super T> other) {
@@ -71,9 +70,9 @@ public interface Matcher<T> {
      * Matcher<String> startsWithA = item -> item.startsWith("A");
      * Matcher<String> endsWithZ = item -> item.endsWith("Z");
      * Matcher<String> combinedMatcher = startsWithA.xor(endsWithZ);
-     * combinedMatcher.matches("AZ", context); // returns false
-     * combinedMatcher.matches("A", context);  // returns true
-     * combinedMatcher.matches("Z", context);  // returns true
+     * combinedMatcher.matches("AZ"); // returns false
+     * combinedMatcher.matches("A");  // returns true
+     * combinedMatcher.matches("Z");  // returns true
      * }</pre>
      */
     default Matcher<T> xor(Matcher<? super T> other) {
@@ -88,8 +87,8 @@ public interface Matcher<T> {
      * <pre>{@code
      * Matcher<String> startsWithA = item -> item.startsWith("A");
      * Matcher<String> notMatcher = startsWithA.not();
-     * notMatcher.matches("AZ", context); // returns false
-     * notMatcher.matches("BZ", context); // returns true
+     * notMatcher.matches("AZ"); // returns false
+     * notMatcher.matches("BZ"); // returns true
      * }</pre>
      */
     default Matcher<T> not() {
@@ -108,7 +107,7 @@ public interface Matcher<T> {
      * Matcher<String> startsWithA = item -> item.startsWith("A");
      * Matcher<String> endsWithZ = item -> item.endsWith("Z");
      * Matcher<String> combinedMatcher = Matcher.and(startsWithA, endsWithZ);
-     * combinedMatcher.matches("AZ", context); // returns true
+     * combinedMatcher.matches("AZ"); // returns true
      * }</pre>
      */
     static <T> Matcher<T> and(Matcher<? super T> first, Matcher<? super T> second) {
@@ -161,11 +160,11 @@ public interface Matcher<T> {
      * for (Class<? extends Annotation> annotation : annotations) {
      *      matcher = matcher.or(FieldMatchers.isAnnotatedWith(annotation));
      * }
-     * matcher.matches(someField, context); // Will return true if the field has any of the annotations
+     * matcher.matches(someField); // Will return true if the field has any of the annotations
      * }</pre>
      */
     static <T> Matcher<T> empty(boolean value) {
-        return (item, context) -> value;
+        return item -> value;
     }
 
     /**
@@ -174,19 +173,12 @@ public interface Matcher<T> {
      *
      * @param <T> the type of the object being matched
      */
-    class AndMatcher<T> implements Matcher<T> {
-
-        private final Matcher<? super T> left;
-        private final Matcher<? super T> right;
-
-        public AndMatcher(Matcher<? super T> left, Matcher<? super T> right) {
-            this.left = left;
-            this.right = right;
-        }
+    record AndMatcher<T>(Matcher<? super T> left, Matcher<? super T> right)
+            implements Matcher<T> {
 
         @Override
-        public boolean matches(T item, MatchContext context) {
-            return left.matches(item, context) && right.matches(item, context);
+        public boolean matches(T item) {
+            return left.matches(item) && right.matches(item);
         }
 
         @Override
@@ -201,26 +193,18 @@ public interface Matcher<T> {
      *
      * @param <T> the type of the object being matched
      */
-    class OrMatcher<T> implements Matcher<T> {
-
-        private final Matcher<? super T> left;
-        private final Matcher<? super T> right;
-
-        public OrMatcher(Matcher<? super T> left, Matcher<? super T> right) {
-            this.left = left;
-            this.right = right;
-        }
+    record OrMatcher<T>(Matcher<? super T> left, Matcher<? super T> right)
+            implements Matcher<T> {
 
         @Override
-        public boolean matches(T item, MatchContext context) {
-            return left.matches(item, context) || right.matches(item, context);
+        public boolean matches(T item) {
+            return left.matches(item) || right.matches(item);
         }
 
         @Override
         public String toString() {
             return "OR";
         }
-
     }
 
     /**
@@ -229,26 +213,18 @@ public interface Matcher<T> {
      *
      * @param <T> the type of the object being matched
      */
-    class XorMatcher<T> implements Matcher<T> {
-
-        private final Matcher<? super T> left;
-        private final Matcher<? super T> right;
-
-        public XorMatcher(Matcher<? super T> left, Matcher<? super T> right) {
-            this.left = left;
-            this.right = right;
-        }
+    record XorMatcher<T>(Matcher<? super T> left, Matcher<? super T> right)
+            implements Matcher<T> {
 
         @Override
-        public boolean matches(T item, MatchContext context) {
-            return left.matches(item, context) ^ right.matches(item, context);
+        public boolean matches(T item) {
+            return left.matches(item) ^ right.matches(item);
         }
 
         @Override
         public String toString() {
             return "XOR";
         }
-
     }
 
     /**
@@ -256,24 +232,17 @@ public interface Matcher<T> {
      *
      * @param <T> the type of the object being matched
      */
-    class NotMatcher<T> implements Matcher<T> {
-
-        private final Matcher<? super T> matcher;
-
-        public NotMatcher(Matcher<? super T> matcher) {
-            this.matcher = matcher;
-        }
+    record NotMatcher<T>(Matcher<? super T> matcher) implements Matcher<T> {
 
         @Override
-        public boolean matches(T item, MatchContext context) {
-            return !matcher.matches(item, context);
+        public boolean matches(T item) {
+            return !matcher.matches(item);
         }
 
         @Override
         public String toString() {
             return "NOT";
         }
-
     }
 
 }

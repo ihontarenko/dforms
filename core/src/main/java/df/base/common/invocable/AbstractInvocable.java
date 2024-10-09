@@ -66,7 +66,7 @@ abstract public class AbstractInvocable implements Invocable {
             Class<?>          expectedType = parametersTypes[parameter.getIndex()];
             Matcher<Class<?>> softChecker  = isSimilar(expectedType).or(isSubtype(expectedType));
 
-            if (!softChecker.matches(parameter.getDescriptor().getNativeClass(), null)) {
+            if (!softChecker.matches(parameter.getDescriptor().getNativeClass())) {
                 throw new ParameterTypeException("Expected type '%s' for argument %d in method '%s', but got '%s'."
                         .formatted(parametersTypes[parameter.getIndex()], parameter.getIndex(), descriptor.getName(), parameter.getDescriptor().getNativeClass()));
             }

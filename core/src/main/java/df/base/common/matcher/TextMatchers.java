@@ -14,7 +14,7 @@ public class TextMatchers {
      * @example
      * <pre>{@code
      * Matcher<String> containsMatcher = TextMatchers.contains("example");
-     * boolean result = containsMatcher.matches("This is an example", context); // returns true
+     * boolean result = containsMatcher.matches("This is an example"); // returns true
      * }</pre>
      */
     public static Matcher<String> contains(String substring) {
@@ -29,7 +29,7 @@ public class TextMatchers {
      * @example
      * <pre>{@code
      * Matcher<String> equalsMatcher = TextMatchers.same("example");
-     * boolean result = equalsMatcher.matches("example", context); // returns true
+     * boolean result = equalsMatcher.matches("example"); // returns true
      * }</pre>
      */
     public static Matcher<String> same(String substring) {
@@ -44,7 +44,7 @@ public class TextMatchers {
      * @example
      * <pre>{@code
      * Matcher<String> startsWithMatcher = TextMatchers.startsWith("ex");
-     * boolean result = startsWithMatcher.matches("example", context); // returns true
+     * boolean result = startsWithMatcher.matches("example"); // returns true
      * }</pre>
      */
     public static Matcher<String> startsWith(String prefix) {
@@ -59,7 +59,7 @@ public class TextMatchers {
      * @example
      * <pre>{@code
      * Matcher<String> endsWithMatcher = TextMatchers.endsWith("ple");
-     * boolean result = endsWithMatcher.matches("example", context); // returns true
+     * boolean result = endsWithMatcher.matches("example"); // returns true
      * }</pre>
      */
     public static Matcher<String> endsWith(String suffix) {
@@ -71,7 +71,7 @@ public class TextMatchers {
      */
     private record TextEqualsMatcher(String string) implements Matcher<String> {
         @Override
-        public boolean matches(String item, MatchContext context) {
+        public boolean matches(String item) {
             return item != null && item.equals(string);
         }
     }
@@ -81,7 +81,7 @@ public class TextMatchers {
      */
     private record TextContainsMatcher(String substring) implements Matcher<String> {
         @Override
-        public boolean matches(String item, MatchContext context) {
+        public boolean matches(String item) {
             return item != null && item.contains(substring);
         }
     }
@@ -91,7 +91,7 @@ public class TextMatchers {
      */
     private record TextStartsWithMatcher(String prefix) implements Matcher<String> {
         @Override
-        public boolean matches(String item, MatchContext context) {
+        public boolean matches(String item) {
             return item != null && item.startsWith(prefix);
         }
     }
@@ -101,7 +101,7 @@ public class TextMatchers {
      */
     private record TextEndsWithMatcher(String suffix) implements Matcher<String> {
         @Override
-        public boolean matches(String item, MatchContext context) {
+        public boolean matches(String item) {
             return item != null && item.endsWith(suffix);
         }
     }

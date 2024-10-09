@@ -1,6 +1,5 @@
 package df.base.common.reflection;
 
-import df.base.common.matcher.MatchContext;
 import df.base.common.matcher.Matcher;
 
 import java.lang.annotation.Annotation;
@@ -43,7 +42,7 @@ public class FieldFinder extends AbstractFinder<Field> {
         }
 
         // Find and return fields matching any of the annotations
-        return finder.find(clazz, matcher, MatchContext.createDefault()).toArray(Field[]::new);
+        return finder.find(clazz, matcher).toArray(Field[]::new);
     }
 
     /**

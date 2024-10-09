@@ -7,14 +7,18 @@ import df.base.common.libs.jbm.bean.processor.InjectableFieldsFillerBeanProcesso
 import df.base.common.libs.jbm.bean.processor.LoggingBeanProcessor;
 import df.base.common.libs.jbm.bean.processor.PropertyValueBeanProcessor;
 import df.base.common.libs.jbm.example.User;
+import df.base.common.libs.jbm.example.services.ServiceA;
 import df.base.common.libs.jbm.example.services.ServiceInterface;
 import df.base.common.libs.jbm.example.services.Storage;
 
 public class JbmExample {
 
     public static void main(String... arguments) {
-        JbmContext context = AnnotationJbmContext.run(JbmExample.class);
 
+        System.out.println(ServiceInterface.class.isAssignableFrom(ServiceA.class));
+        System.out.println(ServiceA.class.isAssignableFrom(ServiceInterface.class));
+
+        JbmContext context = AnnotationJbmContext.run(JbmExample.class);
         System.getProperties().put("project.name", "jdi jbm jac");
 
         context.addBeanProcessor(new LoggingBeanProcessor(System.out::println));

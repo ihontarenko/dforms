@@ -5,7 +5,7 @@ import java.util.Random;
 public class TestService {
 
     public String getValue(int value, String name) {
-        throw new RuntimeException("some shit happend");
+        return getClass().getName();
     }
 
     public static int random() {
@@ -14,6 +14,10 @@ public class TestService {
 
     public String hello(int random, String var, double value) {
         return "%s - %s - %s".formatted(random, var, value);
+    }
+
+    public int sum(int a, int b) {
+        return a + b;
     }
 
 }

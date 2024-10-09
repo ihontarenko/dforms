@@ -26,9 +26,9 @@ public class CollectionMatchers {
 
     private record CollectionAnyOfMatcher<T>(Matcher<? super T> itemMatcher) implements Matcher<Collection<T>> {
         @Override
-        public boolean matches(Collection<T> collection, MatchContext context) {
+        public boolean matches(Collection<T> collection) {
             for (T item : collection) {
-                if (itemMatcher.matches(item, context)) {
+                if (itemMatcher.matches(item)) {
                     return true;
                 }
             }
@@ -38,9 +38,9 @@ public class CollectionMatchers {
 
     private record CollectionAllOfMatcher<T>(Matcher<? super T> itemMatcher) implements Matcher<Collection<T>> {
         @Override
-        public boolean matches(Collection<T> collection, MatchContext context) {
+        public boolean matches(Collection<T> collection) {
             for (T item : collection) {
-                if (!itemMatcher.matches(item, context)) {
+                if (!itemMatcher.matches(item)) {
                     return true;
                 }
             }
@@ -50,21 +50,21 @@ public class CollectionMatchers {
 
     private record CollectionContainsMatcher<T>(T element) implements Matcher<Collection<T>> {
         @Override
-        public boolean matches(Collection<T> collection, MatchContext context) {
+        public boolean matches(Collection<T> collection) {
             return collection != null && collection.contains(element);
         }
     }
 
     private static class CollectionEmptyMatcher<T> implements Matcher<Collection<T>> {
         @Override
-        public boolean matches(Collection<T> collection, MatchContext context) {
+        public boolean matches(Collection<T> collection) {
             return collection != null && collection.isEmpty();
         }
     }
 
     private record CollectionSizeMatcher<T>(int expectedSize) implements Matcher<Collection<T>> {
         @Override
-        public boolean matches(Collection<T> collection, MatchContext context) {
+        public boolean matches(Collection<T> collection) {
             return collection != null && collection.size() == expectedSize;
         }
     }

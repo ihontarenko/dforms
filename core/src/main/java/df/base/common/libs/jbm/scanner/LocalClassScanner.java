@@ -1,32 +1,26 @@
 package df.base.common.libs.jbm.scanner;
 
-import df.base.common.libs.jbm.scanner.filter.path.IsFileExtensionFilter;
-import df.base.common.libs.jbm.scanner.filter.path.IsRegularPathFilter;
-import df.base.common.matcher.PathMatchers;
-
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
-import static df.base.common.matcher.PathMatchers.hasExtension;
-import static df.base.common.matcher.PathMatchers.isFile;
+import static df.base.common.matcher.PathMatchers.*;
 
 public class LocalClassScanner extends AbstractScanner<Class<?>> {
 
-    private final FileScanner scanner = new FileScanner() {{
-        addFilter(new IsRegularPathFilter());
-        addFilter(new IsFileExtensionFilter("class"));
-        PathMatchers.exists()
-                .and(isFile()).and(hasExtension("class"));
-    }};
+    private static final FileScanner FILE_SCANNER = new FileScanner();
+
+    static {
+        FILE_SCANNER.setMatcher(exists().and(isFile()).and(hasExtension("class")));
+    }
 
     @Override
     public Set<Class<?>> scan(URL resource, String name, ClassLoader loader) {
         Set<Class<?>> classes = new HashSet<>();
 
-        for (Path path : scanner.scan(resource, name, loader)) {
+        for (Path path : FILE_SCANNER.scan(resource, name, loader)) {
             try {
                 String packagePath = path.toFile().getParent().replaceAll("[\\\\/]+", ".");
                 int    lastIndex   = packagePath.lastIndexOf(name);
@@ -47,6 +41,5 @@ public class LocalClassScanner extends AbstractScanner<Class<?>> {
     private String getClassName(String name, File file) {
         return name + '.' + file.getName().substring(0, file.getName().length() - CLASS_FILE_SUFFIX.length());
     }
-
 
 }

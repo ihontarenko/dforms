@@ -39,7 +39,7 @@ public class ReflectionClassTypeDescriptor implements ClassTypeDescriptor {
             matcher = matcher.and(hasParameterTypes(parameterTypes).or(hasSoftParameterTypes(parameterTypes)));
         }
 
-        List<Method> methods = METHOD_FINDER.find(getNativeClass(), matcher, null);
+        List<Method> methods = METHOD_FINDER.find(getNativeClass(), matcher);
 
         if (methods.size() > 1) {
             throw new AmbiguousDescriptorException(
@@ -60,7 +60,7 @@ public class ReflectionClassTypeDescriptor implements ClassTypeDescriptor {
         Matcher<Field> matcher = FieldMatchers.nameEquals(name);
         Finder<Field>  finder  = new FieldFinder();
 
-        Optional<Field> optional = finder.findFirst(getNativeClass(), matcher, null);
+        Optional<Field> optional = finder.findFirst(getNativeClass(), matcher);
         Field           field    = optional.orElseThrow(() -> new NoSuchFieldDescriptorException(
                 "No such field exists '%s' in class '%s'. Please check the method name and try again."
                         .formatted(name, nativeClass.getCanonicalName())));

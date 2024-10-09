@@ -1,6 +1,5 @@
 package df.base.common.matcher.reflection;
 
-import df.base.common.matcher.MatchContext;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.TextMatchers;
 
@@ -178,28 +177,28 @@ public class FieldMatchers {
 
     private record FieldNameWithMatcher(Matcher<? super String> textMatcher) implements Matcher<Field> {
         @Override
-        public boolean matches(Field item, MatchContext context) {
-            return textMatcher.matches(item.getName(), context);
+        public boolean matches(Field item) {
+            return textMatcher.matches(item.getName());
         }
     }
 
     private record FieldModifierMatcher(int modifier) implements Matcher<Field> {
         @Override
-        public boolean matches(Field field, MatchContext context) {
+        public boolean matches(Field field) {
             return (field.getModifiers() & modifier) != 0;
         }
     }
 
     private record FieldAnnotatedMatcher(Class<? extends Annotation> annotation) implements Matcher<Field> {
         @Override
-        public boolean matches(Field field, MatchContext context) {
+        public boolean matches(Field field) {
             return field.isAnnotationPresent(annotation);
         }
     }
 
     private record FieldTypeMatcher(Class<?> type) implements Matcher<Field> {
         @Override
-        public boolean matches(Field field, MatchContext context) {
+        public boolean matches(Field field) {
             return field.getType().equals(type);
         }
     }

@@ -13,7 +13,7 @@ public class Example {
     public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         MethodFinder finder = new MethodFinder();
 
-        for (Method method : finder.find(FieldRepository.class, MethodMatchers.nameStarts("find"), null)) {
+        for (Method method : finder.find(FieldRepository.class, MethodMatchers.nameStarts("find"))) {
             System.out.println(new ReflectionMethodDescriptor(method, method.getDeclaringClass()).getName());
         }
     }

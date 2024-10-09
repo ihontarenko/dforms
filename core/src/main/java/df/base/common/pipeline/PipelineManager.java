@@ -1,6 +1,6 @@
 package df.base.common.pipeline;
 
-import df.base.BasePackage;
+import df.base.PackageCoreRoot;
 import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.pipeline.definition.PipelineDefinitionException;
 import df.base.common.pipeline.definition.RootDefinition;
@@ -54,7 +54,7 @@ public class PipelineManager {
             Optional<Fallback> fallback = propertiesDefinition == null ? Optional.empty() : Optional.ofNullable(
                     propertiesDefinition.fallback());
 
-            ProxyFactory proxyFactory = new AnnotationProxyFactory(processor, BasePackage.class);
+            ProxyFactory proxyFactory = new AnnotationProxyFactory(processor, PackageCoreRoot.class);
 
             processors.put(linkName, proxyFactory.getProxy());
             properties.put(linkName, new ProcessorProperties(
@@ -62,7 +62,7 @@ public class PipelineManager {
         });
 
         PipelineChain chain        = new PipelineProcessorChain(chainDefinition.initial(), processors, properties);
-        ProxyFactory  proxyFactory = new AnnotationProxyFactory(chain, BasePackage.class);
+        ProxyFactory  proxyFactory = new AnnotationProxyFactory(chain, PackageCoreRoot.class);
 
         chains.put(chainDefinition.name(), proxyFactory.getProxy());
 
