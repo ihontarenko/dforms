@@ -2,6 +2,7 @@ package df.base.service;
 
 import df.base.common.libs.jbm.scanner.ClassScanner;
 import df.base.common.matcher.Matcher;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,7 +17,7 @@ public class ClassRepository {
 
     private final Class<?>[] baseClasses;
 
-    public ClassRepository(Class<?>... baseClasses) {
+    public ClassRepository(@Qualifier("baseClasses") Class<?>... baseClasses) {
         this.baseClasses = baseClasses;
     }
 
@@ -30,6 +31,8 @@ public class ClassRepository {
 
         if (!CLASSES.containsKey(cacheKey)) {
             Set<Class<?>> classes = new HashSet<>();
+
+            SCANNER.setMatcher(Matcher.empty(true));
 
             for (Class<?> baseClass : baseClasses) {
                 classes.addAll(SCANNER.scan(baseClass.getPackageName(), baseClass.getClassLoader()));

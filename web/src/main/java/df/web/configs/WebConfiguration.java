@@ -71,9 +71,9 @@ public class WebConfiguration implements WebMvcConfigurer {
         return new PebbleExtension(context, request);
     }
 
-    @Bean
-    public ClassRepository projectClassService() {
-        return new ClassRepository(PackageCoreRoot.class, PackageWebRoot.class);
+    @Bean("baseClasses")
+    public Class<?>[] baseClasses() {
+        return new Class[]{PackageWebRoot.class, PackageCoreRoot.class};
     }
 
 }

@@ -1,7 +1,12 @@
 {% extends "common/layout" %}
 {% block title %}Bean Console{% endblock %}
 {% block content %}
-<h3>Loaded Beans:</h3>
-<h3>Application Properties:</h3>
-<h3>Env Variables:</h3>
+<h3>Enums:</h3>
+<ul>
+    {% for enum in enums %}
+    <li>
+        <a href="{{ href('/bean-console/local/' + enum.name) }}">{{ enum.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}
