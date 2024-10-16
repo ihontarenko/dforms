@@ -7,17 +7,21 @@
 </div>
 {% endblock %}
 {% block content %}
-<h3>Enums:</h3>
+    <h3>Filter ({{ length }}):</h3>
 
-    {% for entry in enums %}
+    <form class="d-flex" method="get" action="/bean-console/search">
+        <input class="form-control me-sm-2" type="search" placeholder="Search" name="keyword" value="{{ keyword }}">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+    {% for entry in types %}
     <ul>
         <h4>{{ entry.key }}</h4>
-        {% for enum in entry.value %}
+        {% for type in entry.value %}
         <li>
-            <a href="{{ href('/bean-console/local/' + enum.name) }}">{{ enum.name }}</a>
+            <a href="{{ href('/bean-console/local/' + type.name) }}">{{ type.name }}</a>
         </li>
         {% endfor %}
     </ul>
     {% endfor %}
-
 {% endblock %}

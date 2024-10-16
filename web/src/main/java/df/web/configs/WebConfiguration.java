@@ -1,5 +1,6 @@
 package df.web.configs;
 
+import ch.qos.logback.core.LogbackException;
 import df.base.PackageCoreRoot;
 import df.base.common.extensions.spring.resource.ContentHashVersionStrategy;
 import df.base.configuration.CommonConfiguration;
@@ -73,7 +74,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Bean("baseClasses")
     public Class<?>[] baseClasses() {
-        return new Class[]{PackageWebRoot.class, PackageCoreRoot.class};
+        return new Class[]{PackageWebRoot.class, PackageCoreRoot.class, LogbackException.class};
     }
 
 }

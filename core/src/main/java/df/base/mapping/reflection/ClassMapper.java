@@ -1,9 +1,10 @@
 package df.base.mapping.reflection;
 
 import df.base.common.mapping.Mapper;
-import df.base.common.reflection.FieldFinder;
-import df.base.common.reflection.MethodFinder;
 import df.base.dto.reflection.ClassDTO;
+
+import static df.base.common.reflection.FieldFinder.getAllFields;
+import static df.base.common.reflection.MethodFinder.getAllMethods;
 
 public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
 
@@ -14,11 +15,17 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
         FieldMapper  fieldMapper  = new FieldMapper();
 
         classDTO.setName(source.getName());
-        MethodFinder.getAllMethods(source).stream()
-                .map(methodMapper::map).forEach(classDTO::addMethod);
-        FieldFinder.getAllFields(source).stream()
-                .map(fieldMapper::map).forEach(classDTO::addField);
         classDTO.setNativeClass(source);
+
+        try {
+            getAllFields(source).stream().map(fieldMapper::map)
+                    .forEach(classDTO::addField);
+            getAllMethods(source).stream().map(methodMapper::map)
+                    .forEach(classDTO::addMethod);
+        } catch (NoClassDefFoundError ignore) {
+            System.out.println(source);
+            classDTO.setUndefinedDependencies(true);
+        }
 
         return classDTO;
     }

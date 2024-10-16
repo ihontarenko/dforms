@@ -5,10 +5,11 @@ import java.util.List;
 
 public class ClassDTO {
 
-    private String name;
-    private Class<?> nativeClass;
-    private List<MethodDTO> methods = new ArrayList<>();
-    private List<FieldDTO> fields = new ArrayList<>();
+    private boolean         undefinedDependencies = false;
+    private String          name;
+    private Class<?>        nativeClass;
+    private List<MethodDTO> methods               = new ArrayList<>();
+    private List<FieldDTO>  fields                = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -48,5 +49,13 @@ public class ClassDTO {
 
     public void addMethod(MethodDTO method) {
         this.methods.add(method);
+    }
+
+    public boolean isUndefinedDependencies() {
+        return undefinedDependencies;
+    }
+
+    public void setUndefinedDependencies(boolean undefinedDependencies) {
+        this.undefinedDependencies = undefinedDependencies;
     }
 }

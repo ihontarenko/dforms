@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class TestService {
 
+    public String test;
+
     public String getValue(int value, String name) {
         return getClass().getName();
     }

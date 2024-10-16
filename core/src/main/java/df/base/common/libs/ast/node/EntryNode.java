@@ -46,8 +46,7 @@ public class EntryNode extends AbstractNode {
     @Override
     public Object evaluate(EvaluationContext ctx) {
         throw new UnsupportedOperationException(
-                "Evaluation is not supported for base class '%s'. It should be implemented in subclass '%s'.".formatted(
-                        EntryNode.class, getClass()));
+                "Evaluation is not implemented yet '%s'.".formatted(getClass()));
     }
 
 }
