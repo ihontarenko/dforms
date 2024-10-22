@@ -9,12 +9,12 @@
 {% block content %}
 <h3>Enums:</h3>
 
-    {% for entry in enums %}
+    {% for entry in types %}
     <ul>
         <h4>{{ entry.key }}</h4>
-        {% for enum in entry.value %}
+        {% for type in entry.value %}
         <li>
-            <a href="{{ href('/bean-console/local/' + enum.name) }}">{{ enum.name }}</a>
+            <a href="{{ href('/bean-console/local/' + type.name) }}">{{ type.name }}</a>
         </li>
         {% endfor %}
     </ul>

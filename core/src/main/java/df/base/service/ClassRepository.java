@@ -32,7 +32,7 @@ public class ClassRepository {
         if (!CLASSES.containsKey(cacheKey)) {
             Set<Class<?>> classes = new HashSet<>();
 
-            SCANNER.setMatcher(Matcher.empty(true));
+            SCANNER.setMatcher(Matcher.constant(true));
 
             for (Class<?> baseClass : baseClasses) {
                 classes.addAll(SCANNER.scan(baseClass.getPackageName(), baseClass.getClassLoader()));

@@ -2,6 +2,7 @@ package df.base.common.matcher.reflection;
 
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.TextMatchers;
+import df.base.common.reflection.Reflections;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -352,7 +353,7 @@ public class ClassMatchers {
     private record ImplementsInterfaceMatcher(Class<?> interfaceClass) implements Matcher<Class<?>> {
         @Override
         public boolean matches(Class<?> clazz) {
-            for (Class<?> implementedInterface : clazz.getInterfaces()) {
+            for (Class<?> implementedInterface : Reflections.getClassInterfaces(clazz)) {
                 if (implementedInterface.equals(interfaceClass)) {
                     return true;
                 }

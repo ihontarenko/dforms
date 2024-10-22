@@ -29,7 +29,7 @@ public class ClassService {
     }
 
     public Set<ClassDTO> findClassesByName(String name) {
-        return mapClasses(repository.findClasses(name == null ? Matcher.empty(false) : ClassMatchers.nameContains(name)));
+        return mapClasses(repository.findClasses(name == null ? Matcher.constant(false) : ClassMatchers.nameContains(name)));
     }
 
     public Set<ClassDTO> findAnnotations() {
@@ -45,7 +45,7 @@ public class ClassService {
     }
 
     public Set<ClassDTO> findImplementations(Class<?> interfaceClass) {
-        return mapClasses(repository.findClasses(ClassMatchers.implementsInterface(interfaceClass).not()));
+        return mapClasses(repository.findClasses(ClassMatchers.implementsInterface(interfaceClass).and(ClassMatchers.isAbstract().not())));
     }
 
     public Set<ClassDTO> mapClasses(Set<Class<?>> classes) {

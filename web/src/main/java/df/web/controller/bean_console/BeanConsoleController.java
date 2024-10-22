@@ -1,6 +1,7 @@
 package df.web.controller.bean_console;
 
 import df.base.common.breadcrumb.Breadcrumbs;
+import df.base.common.validation.custom.Validator;
 import df.base.dto.reflection.ClassDTO;
 import df.base.service.ClassService;
 import df.web.common.flash.FlashMessageService;
@@ -19,35 +20,28 @@ import java.util.Set;
 public class BeanConsoleController {
 
     private final FlashMessageService flashMessage;
-
-    private final ClassService classService;
+    private final ClassService        classService;
 
     public BeanConsoleController(FlashMessageService flashMessage, ClassService classService) {
         this.flashMessage = flashMessage;
         this.classService = classService;
     }
 
-    @Breadcrumbs({
-            @Breadcrumbs.Item(label = "Home", url = "/"),
-            @Breadcrumbs.Item(label = "Bean Console")
-    })
+    @Breadcrumbs({@Breadcrumbs.Item(label = "Home", url = "/"), @Breadcrumbs.Item(label = "Bean Console")})
     @GetMapping("/index")
     public ModelAndView index() {
         Map<String, Object> attributes = new HashMap<>();
+        Set<ClassDTO>       types      = classService.findImplementations(Validator.class);
 
-        Map<String, Set<ClassDTO>> grouped = classService.groupedClasses(
-                classService.findClassesByName("Proc"), dto -> dto.getNativeClass().getPackageName());
+        Map<String, Set<ClassDTO>> grouped = classService.groupedClasses(types, dto
+                -> dto.getNativeClass().getPackageName());
 
-        attributes.put("enums", grouped);
+        attributes.put("types", grouped);
 
         return new ModelAndView("bean_console/index", attributes);
     }
 
-    @Breadcrumbs({
-            @Breadcrumbs.Item(label = "Home", url = "/"),
-            @Breadcrumbs.Item(label = "Bean Console", url = "/bean-console/index"),
-            @Breadcrumbs.Item(label = "Search")
-    })
+    @Breadcrumbs({@Breadcrumbs.Item(label = "Home", url = "/"), @Breadcrumbs.Item(label = "Bean Console", url = "/bean-console/index"), @Breadcrumbs.Item(label = "Search")})
     @GetMapping("/search")
     public ModelAndView search(@RequestParam(value = "keyword", required = false) String keyword) {
         Map<String, Object> attributes = new HashMap<>();

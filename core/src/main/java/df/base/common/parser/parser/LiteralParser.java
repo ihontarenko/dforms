@@ -23,7 +23,7 @@ public class LiteralParser implements Parser {
         literal.setValue(entry.value());
 
         if (entry.token() instanceof Enum<?> tokenName) {
-            literal.property("type", tokenName.name());
+            literal.setAttribute("type", tokenName.name());
         }
 
         parent.add(literal);

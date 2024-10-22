@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class AbstractScanner<T> implements Scanner<T>, CompositeScanner<T> {
 
     protected final List<Scanner<T>> scanners = new ArrayList<>();
-    private         Matcher<T>       matcher  = Matcher.empty(true);
+    private         Matcher<T>       matcher  = Matcher.constant(true);
 
     @Override
     public void addScanner(Scanner<T> scanner) {

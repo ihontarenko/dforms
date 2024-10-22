@@ -156,14 +156,14 @@ public interface Matcher<T> {
      * @return a matcher that always returns {@code value}
      * @example
      * <pre>{@code
-     * Matcher<Field> matcher = Matcher.empty(false);
+     * Matcher<Field> matcher = Matcher.constant(false);
      * for (Class<? extends Annotation> annotation : annotations) {
      *      matcher = matcher.or(FieldMatchers.isAnnotatedWith(annotation));
      * }
      * matcher.matches(someField); // Will return true if the field has any of the annotations
      * }</pre>
      */
-    static <T> Matcher<T> empty(boolean value) {
+    static <T> Matcher<T> constant(boolean value) {
         return item -> value;
     }
 

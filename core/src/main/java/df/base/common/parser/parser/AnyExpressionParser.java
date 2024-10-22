@@ -31,7 +31,7 @@ public class AnyExpressionParser implements Parser {
             shift(lexer, T_CLASS_NAME);
             valueNode = context.getParser(ClassNameParser.class).parse(lexer, context);
         } else if (lexer.isNext(T_VARIABLE)) {
-            // either #variable, #staticMethod or #instance.method()
+            // either #variable, #staticMethod(#var, 123) or #instance.method(#sum(1, 2), 0)
 
             // by default #localVariable
             Class<? extends Parser> variableParser = VariableParser.class;

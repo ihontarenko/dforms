@@ -40,6 +40,7 @@ public enum DefaultToken implements Token {
     T_STRING(3000),
     T_INT(4000),
     T_FLOAT(5000),
+    // T_BOOLEAN(8000, "FALSE", "TRUE"),
 
     T_FALSE(9000, "FALSE"),
     T_TRUE(9001, "TRUE"),
