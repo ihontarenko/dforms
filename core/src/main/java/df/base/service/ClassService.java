@@ -3,6 +3,7 @@ package df.base.service;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.reflection.ClassMatchers;
 import df.base.dto.reflection.ClassDTO;
+import df.base.dto.reflection.MethodDTO;
 import df.base.mapping.reflection.ClassMapper;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,14 @@ public class ClassService {
 
     public ClassService(ClassRepository repository) {
         this.repository = repository;
+    }
+
+    public ClassDTO getClass(String className) {
+        try {
+            return classMapper.map(Class.forName(className));
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public Set<ClassDTO> findAnnotatedClasses(Class<? extends Annotation> annotation) {
@@ -54,6 +63,10 @@ public class ClassService {
 
     public Map<String, Set<ClassDTO>> groupedClasses(Set<ClassDTO> classes, Function<? super ClassDTO, String> classifier) {
         return classes.stream().collect(Collectors.groupingBy(classifier, Collectors.toSet()));
+    }
+
+    public Map<String, Set<MethodDTO>> groupedMethods(Set<MethodDTO> methods, Function<? super MethodDTO, String> classifier) {
+        return methods.stream().collect(Collectors.groupingBy(classifier, Collectors.toSet()));
     }
 
 }

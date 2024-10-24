@@ -1,5 +1,5 @@
 {% extends "common/layout" %}
-{% block title %}Bean Console{% endblock %}
+{% block title %}{{ class.fullName }}{% endblock %}
 {% block headerButtons %}
 <div class="btn-group pt-2" role="group">
     <button onclick="window.location = '/bean-console/index'" type="button" class="btn btn-sm btn-light">MAIN</button>
@@ -7,17 +7,20 @@
 </div>
 {% endblock %}
 {% block content %}
-<h3>Enums:</h3>
+<ul>
+    <h4>Methods:</h4>
 
-    {% for entry in types %}
+    {% for entry in methods %}
     <ul>
         <h4>{{ entry.key }}</h4>
-        {% for type in entry.value %}
+        {% for method in entry.value %}
         <li>
-            <a href="{{ href('/bean-console/_/' + type.fullName) }}">{{ type.fullName }}</a>
+            <a href="{{ href('/bean-console/_/' + method.declaringClass.fullName + '/' + method.name) }}">
+                {{ method.declaringClass.shortName }}#{{ method.name }}
+                ({% for type in method.parametersTypes %}<a href="{{ href('/bean-console/_/' + type.fullName) }}">{{ type.shortName }}</a>,&nbsp;{% endfor %})
+            </a>
         </li>
         {% endfor %}
     </ul>
     {% endfor %}
-
 {% endblock %}

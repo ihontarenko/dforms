@@ -65,8 +65,8 @@ public class FieldFinder extends AbstractFinder<Field> {
      * Retrieves all fields from the specified class, and optionally scans the superclasses
      * to retrieve inherited fields.
      *
-     * @param clazz           the class whose fields are to be retrieved
-     * @param scanSuperclass  whether to scan superclasses for fields
+     * @param clazz     the class whose fields are to be retrieved
+     * @param deepScan  whether to scan superclasses for fields
      * @return a collection of fields from the class and, optionally, its superclasses
      * @example
      * <pre>{@code
@@ -75,11 +75,11 @@ public class FieldFinder extends AbstractFinder<Field> {
      * fields.forEach(field -> System.out.println(field.getName()));
      * }</pre>
      */
-    public static Collection<Field> getAllFields(Class<?> clazz, boolean scanSuperclass) {
+    public static Collection<Field> getAllFields(Class<?> clazz, boolean deepScan) {
         Set<Field> fields = new HashSet<>(Set.of(clazz.getDeclaredFields()));
 
         // Optionally scan superclasses for fields
-        if (scanSuperclass && clazz.getSuperclass() != null) {
+        if (deepScan && clazz.getSuperclass() != null) {
             fields.addAll(getAllFields(clazz.getSuperclass(), true));
         }
 

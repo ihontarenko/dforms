@@ -1,5 +1,5 @@
 {% extends "common/layout" %}
-{% block title %}Bean Console{% endblock %}
+{% block title %}Search Class{% endblock %}
 {% block headerButtons %}
 <div class="btn-group pt-2" role="group">
     <button onclick="window.location = '/bean-console/index'" type="button" class="btn btn-sm btn-light">MAIN</button>
@@ -19,7 +19,7 @@
         <h4>{{ entry.key }}</h4>
         {% for type in entry.value %}
         <li>
-            <a href="{{ href('/bean-console/local/' + type.name) }}">{{ type.name }}</a>
+            <a href="{{ href('/bean-console/_/' + type.fullName) }}">{{ type.fullName }}</a>
         </li>
         {% endfor %}
     </ul>

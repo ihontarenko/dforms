@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 public class FieldDTO {
 
     private String   name;
+    private ClassDTO type;
     private Field    nativeField;
     private Class<?> nativeClass;
 
@@ -14,6 +15,14 @@ public class FieldDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ClassDTO getType() {
+        return type;
+    }
+
+    public void setType(ClassDTO type) {
+        this.type = type;
     }
 
     public Field getNativeField() {

@@ -6,7 +6,7 @@ import df.base.common.libs.ast.parser.Parser;
 import df.base.common.libs.ast.parser.ParserContext;
 
 import static df.base.common.libs.ast.token.DefaultToken.T_OPEN_CURLY_BRACE;
-import static df.base.common.parser.DefaultMatcher.*;
+import static df.base.common.parser.Checkers.*;
 import static df.base.common.parser.ExtendedToken.*;
 
 public class AnyExpressionParser implements Parser {
@@ -30,16 +30,16 @@ public class AnyExpressionParser implements Parser {
             // resolve java-class name 'className=com.example.validator.NotNullValidator'
             shift(lexer, T_CLASS_NAME);
             valueNode = context.getParser(ClassNameParser.class).parse(lexer, context);
-        } else if (lexer.isNext(T_VARIABLE)) {
+        } else if (lexer.check(VARIABLE)) {
             // either #variable, #staticMethod(#var, 123) or #instance.method(#sum(1, 2), 0)
 
             // by default #localVariable
             Class<? extends Parser> variableParser = VariableParser.class;
 
             // if #object.methodCall() or // if #staticMethodCall()
-            if (OBJECT_METHOD.test(lexer)) {
+            if (lexer.check(OBJECT_METHOD)) {
                 variableParser = ObjectMethodCallParser.class;
-            } else if (STATIC_METHOD.test(lexer)) {
+            } else if (lexer.check(STATIC_METHOD)) {
                 variableParser = FunctionCallParser.class;
             }
 

@@ -41,6 +41,7 @@ public class BreadcrumbService {
             return Stream.of(annotation.value())
                     .map(breadcrumb -> resolveBreadcrumbItem(breadcrumb, variables)).toList();
         }
+
         return null;
     }
 

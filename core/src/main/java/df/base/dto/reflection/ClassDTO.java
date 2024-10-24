@@ -6,17 +6,26 @@ import java.util.List;
 public class ClassDTO {
 
     private boolean         undefinedDependencies = false;
-    private String          name;
+    private String          shortName;
+    private String          fullName;
     private Class<?>        nativeClass;
     private List<MethodDTO> methods               = new ArrayList<>();
     private List<FieldDTO>  fields                = new ArrayList<>();
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public Class<?> getNativeClass() {

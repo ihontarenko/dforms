@@ -1,9 +1,12 @@
 package df.base.common.libs.ast.lexer;
 
 import df.base.common.libs.ast.token.Token;
+import df.base.common.parser.parser.LiteralParser;
 
 import java.util.ListIterator;
 import java.util.function.Predicate;
+
+import static df.base.common.libs.ast.token.DefaultToken.*;
 
 public interface Lexer extends ListIterator<Token.Entry>, Iterable<Token.Entry> {
 
@@ -91,6 +94,19 @@ public interface Lexer extends ListIterator<Token.Entry>, Iterable<Token.Entry> 
 
     default Token.Entry lookAhead() {
         return lookAhead(1);
+    }
+
+    default boolean check(Checker checker) {
+        return checker.test(this);
+    }
+
+    interface Checker extends Predicate<Lexer> {
+
+        Checker MATH_TESTER = lexer
+                -> lexer.isNext(T_PLUS, T_MINUS, T_DIVIDE, T_MULTIPLY);
+        Checker LITERAL     = lexer
+                -> lexer.isNext(LiteralParser.TOKENS);
+
     }
 
 }
