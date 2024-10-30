@@ -61,12 +61,12 @@ public class PipelineManager {
                     transitions, configuration, fallback.map(Fallback::link).orElse(null)));
         });
 
-        PipelineChain chain        = new PipelineProcessorChain(chainDefinition.initial(), processors, properties);
-        ProxyFactory  proxyFactory = new AnnotationProxyFactory(chain, PackageCoreRoot.class);
+        PipelineChain chain = new PipelineProcessorChain(chainDefinition.initial(), processors, properties);
+        PipelineChain proxy = new AnnotationProxyFactory(chain, PackageCoreRoot.class).getProxy();
 
-        chains.put(chainDefinition.name(), proxyFactory.getProxy());
+        chains.put(chainDefinition.name(), proxy);
 
-        return chain;
+        return proxy;
     }
 
     public void runPipeline(String chainName, PipelineContext context) throws Exception {

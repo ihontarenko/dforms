@@ -1,12 +1,12 @@
-package df.base.proxy.persistence;
+package df.base.proxy.pipeline;
 
+import df.base.common.pipeline.PipelineProcessor;
 import df.base.common.proxy.MethodInterceptor;
 import df.base.common.proxy.MethodInvocation;
 import df.base.common.proxy.annotation.Interceptor;
-import jakarta.persistence.Query;
 
-@Interceptor(target = Query.class)
-public class JpaQueryInterceptor implements MethodInterceptor {
+@Interceptor(target = PipelineProcessor.class)
+public class PipelineProcessorInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {

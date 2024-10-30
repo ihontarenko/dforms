@@ -2,12 +2,11 @@ package df.base.common.pipeline;
 
 import df.base.common.pipeline.definition.RootDefinition;
 import df.base.common.pipeline.definition.RootDefinition.Processor;
+import df.base.common.reflection.Reflections;
 import df.base.common.resolver.Resolver;
 import df.base.common.resolver.Resolvers;
 import df.base.common.resolver.ResolversFactory;
 
-import static df.base.common.libs.jbm.ReflectionUtils.instantiate;
-import static df.base.common.libs.jbm.ReflectionUtils.setFieldValue;
 import static df.base.common.resolver.Resolvers.valueOf;
 
 public class PipelineProcessorFactory {
@@ -22,12 +21,12 @@ public class PipelineProcessorFactory {
         try {
 
             Class<?>          processorClass = Class.forName(processorDefinition.className());
-            PipelineProcessor processor      = (PipelineProcessor) instantiate(processorClass.getDeclaredConstructor());
+            PipelineProcessor processor      = (PipelineProcessor) Reflections.instantiate(processorClass.getDeclaredConstructor());
 
             if (processorDefinition.parameters() != null) {
                 for (RootDefinition.Parameter parameter : processorDefinition.parameters()) {
                     Object resolvedValue = resolveParameter(parameter);
-                    setFieldValue(processor, parameter.name(), resolvedValue);
+                    Reflections.setFieldValue(processor, parameter.name(), resolvedValue);
                 }
             }
 

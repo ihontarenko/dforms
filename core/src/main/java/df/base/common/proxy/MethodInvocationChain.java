@@ -27,12 +27,16 @@ public class MethodInvocationChain implements MethodInvocation {
 
     @Override
     public Object proceed() throws Throwable {
+        MethodInterceptor interceptor;
+
         // shift and execute next interceptor in the chain
         if (interceptors.size() > ++currentIndex) {
-            return interceptors.get(currentIndex).invoke(this);
+            interceptor = interceptors.get(currentIndex);
+
+            return interceptor.invoke(this);
         }
 
-        // invoke real target method in the end of chain
+        // invoke real method from target object in the end of chain
         return invokeMethod(target, method, arguments);
     }
 

@@ -1,9 +1,12 @@
 package df.web.controller.bean_console;
 
 import df.base.common.breadcrumb.Breadcrumbs;
+import df.base.common.pipeline.PipelineContextFactoty;
+import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.validation.custom.Validator;
 import df.base.dto.reflection.ClassDTO;
 import df.base.dto.reflection.MethodDTO;
+import df.base.service.ClassManagmentService;
 import df.base.service.ClassService;
 import df.web.common.flash.FlashMessageService;
 import org.springframework.stereotype.Controller;
@@ -24,10 +27,12 @@ public class BeanConsoleController {
 
     private final FlashMessageService flashMessage;
     private final ClassService        classService;
+    private final ClassManagmentService classManagmentService;
 
-    public BeanConsoleController(FlashMessageService flashMessage, ClassService classService) {
+    public BeanConsoleController(FlashMessageService flashMessage, ClassService classService, ClassManagmentService classManagmentService) {
         this.flashMessage = flashMessage;
         this.classService = classService;
+        this.classManagmentService = classManagmentService;
     }
 
     @Breadcrumbs({
@@ -86,7 +91,10 @@ public class BeanConsoleController {
     @GetMapping("/_/{class}/{method}")
     public ModelAndView method(@PathVariable("class") String className) {
         Map<String, Object> attributes = new HashMap<>();
-        ClassDTO            classDTO   = classService.getClass(className);
+        ClassDTO        classDTO = classService.getClass(className);
+        PipelineContext context  = PipelineContextFactoty.createByDefault();
+
+        classManagmentService.performPipeline(context);
 
         attributes.put("class", classDTO);
         attributes.put("methods", classService.groupedMethods(new HashSet<>(classDTO.getMethods()), MethodDTO::getAccessLevel));
