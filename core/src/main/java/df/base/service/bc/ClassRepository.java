@@ -1,4 +1,4 @@
-package df.base.service;
+package df.base.service.bc;
 
 import df.base.common.libs.jbm.scanner.ClassScanner;
 import df.base.common.matcher.Matcher;
@@ -22,11 +22,15 @@ public class ClassRepository {
     }
 
     public Set<Class<?>> findClasses(Matcher<Class<?>> matcher) {
-        return getAllClasses(baseClasses).stream().filter(matcher::matches).collect(toSet());
+        return findAll(baseClasses).stream().filter(matcher::matches).collect(toSet());
+    }
+
+    public Set<Class<?>> findAll() {
+        return findAll(baseClasses);
     }
 
     @SuppressWarnings({"all"})
-    public static Set<Class<?>> getAllClasses(Class<?>... baseClasses) {
+    public static Set<Class<?>> findAll(Class<?>... baseClasses) {
         int cacheKey = Objects.hash(baseClasses);
 
         if (!CLASSES.containsKey(cacheKey)) {

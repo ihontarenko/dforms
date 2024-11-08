@@ -1,5 +1,6 @@
-package df.base.service;
+package df.base.service.bc;
 
+import df.base.common.context.ArgumentsContext;
 import df.base.common.context.provider.bean.SpringBeanProvider;
 import df.base.common.exception.ApplicationException;
 import df.base.common.pipeline.PipelineManager;
@@ -24,6 +25,10 @@ public class ClassManagmentService {
     public void performPipeline(PipelineContext ctx) {
         ctx.setProperty(ApplicationContext.class, applicationContext);
         ctx.setBeanProvider(new SpringBeanProvider());
+
+        ArgumentsContext arguments = ctx.getArgumentsContext();
+
+        arguments.setArgument(classService);
 
         try {
             pipelineManager.runPipeline(BEAN_CONSOLE_PIPELINE, ctx);

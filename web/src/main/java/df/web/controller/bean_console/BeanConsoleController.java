@@ -1,13 +1,17 @@
 package df.web.controller.bean_console;
 
 import df.base.common.breadcrumb.Breadcrumbs;
+import df.base.common.elements.Node;
+import df.base.common.elements.builder.NodeBuilderContext;
 import df.base.common.pipeline.PipelineContextFactoty;
 import df.base.common.pipeline.context.PipelineContext;
-import df.base.common.validation.custom.Validator;
+import df.base.common.proxy.MethodInterceptor;
 import df.base.dto.reflection.ClassDTO;
+import df.base.dto.reflection.ClassListDTO;
 import df.base.dto.reflection.MethodDTO;
-import df.base.service.ClassManagmentService;
-import df.base.service.ClassService;
+import df.base.html.bean_console.ClassBuilderStrategy;
+import df.base.service.bc.ClassManagmentService;
+import df.base.service.bc.ClassService;
 import df.web.common.flash.FlashMessageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +46,9 @@ public class BeanConsoleController {
     @GetMapping("/index")
     public ModelAndView index() {
         Map<String, Object> attributes = new HashMap<>();
-        Set<ClassDTO>       types      = classService.findImplementations(Validator.class);
+        Set<ClassDTO>       types      = classService.findImplementations(MethodInterceptor.class);
 
-        attributes.put("types", classService.groupedClasses(types, dto -> Validator.class.getName()));
+        attributes.put("types", classService.groupedClasses(types, dto -> MethodInterceptor.class.getName()));
 
         return new ModelAndView("bean_console/index", attributes);
     }
@@ -63,6 +67,11 @@ public class BeanConsoleController {
         attributes.put("keyword", keyword);
         attributes.put("length", classes.size());
 
+        NodeBuilderContext builderContext = new NodeBuilderContext();
+        builderContext.setStrategy(new ClassBuilderStrategy());
+        Node root = builderContext.getStrategy().getBuilder(ClassListDTO.class)
+                .build(classes, builderContext);
+
         return new ModelAndView("bean_console/search", attributes);
     }
 
@@ -72,12 +81,13 @@ public class BeanConsoleController {
             @Breadcrumbs.Item(label = "{class}")
     })
     @GetMapping("/_/{class}")
-    public ModelAndView clazz(@PathVariable("class") String className) {
+    public ModelAndView classDetails(@PathVariable("class") String className) {
         Map<String, Object> attributes = new HashMap<>();
         ClassDTO            classDTO   = classService.getClass(className);
 
         attributes.put("class", classDTO);
-        attributes.put("methods", classService.groupedMethods(new HashSet<>(classDTO.getMethods()), MethodDTO::getAccessLevel));
+        attributes.put("methods", classService.groupedMethods(new HashSet<>(classDTO.getMethods()), methodDTO
+                -> methodDTO.getDeclaringClass().getShortName()));
 
         return new ModelAndView("bean_console/class_item", attributes);
     }
@@ -89,10 +99,10 @@ public class BeanConsoleController {
             @Breadcrumbs.Item(label = "{method}")
     })
     @GetMapping("/_/{class}/{method}")
-    public ModelAndView method(@PathVariable("class") String className) {
+    public ModelAndView methodDetails(@PathVariable("class") String className) {
         Map<String, Object> attributes = new HashMap<>();
-        ClassDTO        classDTO = classService.getClass(className);
-        PipelineContext context  = PipelineContextFactoty.createByDefault();
+        ClassDTO            classDTO   = classService.getClass(className);
+        PipelineContext     context    = PipelineContextFactoty.createByDefault();
 
         classManagmentService.performPipeline(context);
 
