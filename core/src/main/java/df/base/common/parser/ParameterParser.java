@@ -2,7 +2,7 @@ package df.base.common.parser;
 
 import df.base.common.parser.configurator.DefaultParserConfigurator;
 import df.base.common.parser.configurator.DefaultTokenizerConfigurator;
-import df.base.common.parser.parser.ParametersParser;
+import df.base.common.parser.parser.AnyExpressionParser;
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.node.Node;
 import df.base.common.libs.ast.node.RootNode;
@@ -29,7 +29,7 @@ public class ParameterParser {
         new DefaultParserConfigurator().configure(context);
         new DefaultTokenizerConfigurator().configure(tokenizer);
 
-        this.parser = context.getParser(ParametersParser.class);
+        this.parser = context.getParser(AnyExpressionParser.class);
     }
 
     public Node parse(String inputString) {

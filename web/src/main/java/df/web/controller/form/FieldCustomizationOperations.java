@@ -2,7 +2,7 @@ package df.web.controller.form;
 
 import df.base.common.breadcrumb.Breadcrumbs;
 import df.base.common.validation.custom.ValidationContext;
-import df.base.dto.NestedKeyValue;
+import df.base.dto.KeyValuePair;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldConfigDTO;
 import df.base.dto.form.FieldDTO;
@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequestMapping(MAVConstants.FORM_FIELD_FIELD_ID_CUSTOMIZATION)
-public interface FieldCustomizationOperations extends DefaultOperations<NestedKeyValue> {
+public interface FieldCustomizationOperations extends DefaultOperations<KeyValuePair> {
 
 
     @Breadcrumbs({

@@ -3,7 +3,7 @@ package df.web.controller.form;
 import df.base.common.specification.SpecificationContext;
 import df.base.common.specification.SpecificationRunner;
 import df.base.common.validation.custom.ValidationContext;
-import df.base.dto.NestedKeyValue;
+import df.base.dto.KeyValuePair;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldConfigDTO;
 import df.base.dto.form.FieldDTO;
@@ -26,8 +26,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.List;
 
 import static df.base.Messages.*;
 import static df.web.common.flash.FlashMessage.primary;
@@ -91,7 +89,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
                         .formatted(section));
             };
 
-            bindAttributes((NestedKeyValue) mapped, primaryId, section);
+            bindAttributes((KeyValuePair) mapped, primaryId, section);
             mav = helper.resolveWithoutRedirect();
         } catch (Exception exception) {
             mav = helper.redirect(exception);
@@ -118,7 +116,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
         return doPerform("option", itemDTO, primaryId, result, attributes);
     }
 
-    private ModelAndView doPerform(String section, NestedKeyValue itemDTO, String primaryId,
+    private ModelAndView doPerform(String section, KeyValuePair itemDTO, String primaryId,
                                    BindingResult result, RedirectAttributes attributes) {
         helper.setBindingResult(result);
         helper.setRedirectAttributes(attributes);
@@ -188,7 +186,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
         return helper.redirect();
     }
 
-    private void bindAttributes(NestedKeyValue nestedKeyValue, String primaryId, String section) {
+    private void bindAttributes(KeyValuePair nestedKeyValue, String primaryId, String section) {
         Field    fieldEntity = service.requireById(primaryId);
         FieldDTO fieldDTO    = mapper.map(fieldEntity);
         SpecificationContext context = new SpecificationContext.Builder().with("section", section)

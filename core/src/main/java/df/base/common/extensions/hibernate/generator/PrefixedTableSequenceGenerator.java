@@ -134,7 +134,7 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
     }
 
     protected String getInsertQuery(GeneratorContext context) {
-        return "INSERT INTO %s (%s, %s) VALUES (?,?)"
+        return "INSERT INTO %s (%s, %s) VALUES (?, ?)"
                 .formatted(context.tableName, context.keyColumnName, context.valueColumnName);
     }
 
@@ -145,8 +145,8 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
         private String sequenceName;
         private String keyColumnName;
         private String valueColumnName;
-        private int initialValue;
-        private int incrementBy;
+        private int    initialValue;
+        private int    incrementBy;
 
         public GeneratorContext(String tableName, String sequenceName, String keyColumnName, String valueColumnName, int initialValue, int incrementBy) {
             this.tableName = tableName;

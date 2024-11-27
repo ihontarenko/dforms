@@ -1,6 +1,6 @@
 package df.base.dto;
 
-public interface NestedKeyValue extends DTO {
+public interface KeyValuePair extends DTO {
 
     String getPrimaryId();
 
@@ -8,7 +8,15 @@ public interface NestedKeyValue extends DTO {
 
     String getValue();
 
-    record Simple(String id, String key, String value, String primaryId) implements NestedKeyValue {
+    default String key() {
+        return getKey();
+    }
+
+    default String value() {
+        return getValue();
+    }
+
+    record Simple(String id, String key, String value, String primaryId) implements KeyValuePair {
 
         @Override
         public String getPrimaryId() {

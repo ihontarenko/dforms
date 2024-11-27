@@ -3,11 +3,13 @@ package df.base.service.bc;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.reflection.ClassMatchers;
 import df.base.dto.reflection.ClassDTO;
+import df.base.dto.reflection.ClassListDTO;
 import df.base.dto.reflection.MethodDTO;
 import df.base.mapping.reflection.ClassMapper;
 import org.springframework.stereotype.Service;
 
 import java.lang.annotation.Annotation;
+import java.util.AbstractCollection;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -57,8 +59,8 @@ public class ClassService {
         return mapClasses(repository.findClasses(ClassMatchers.implementsInterface(interfaceClass).and(ClassMatchers.isAbstract().not())));
     }
 
-    public Set<ClassDTO> mapClasses(Set<Class<?>> classes) {
-        return classes.stream().map(classMapper::map).collect(toSet());
+    public ClassListDTO mapClasses(Set<Class<?>> classes) {
+        return classes.stream().map(classMapper::map).collect(ClassListDTO::new, Set::add, AbstractCollection::addAll);
     }
 
     public Map<String, Set<ClassDTO>> groupedClasses(Set<ClassDTO> classes, Function<? super ClassDTO, String> classifier) {

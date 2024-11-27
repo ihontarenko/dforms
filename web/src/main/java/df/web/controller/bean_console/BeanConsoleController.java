@@ -70,7 +70,7 @@ public class BeanConsoleController {
         NodeBuilderContext builderContext = new NodeBuilderContext();
         builderContext.setStrategy(new ClassBuilderStrategy());
         Node root = builderContext.getStrategy().getBuilder(ClassListDTO.class)
-                .build(classes, builderContext);
+                .build((ClassListDTO) classes, builderContext);
 
         return new ModelAndView("bean_console/search", attributes);
     }

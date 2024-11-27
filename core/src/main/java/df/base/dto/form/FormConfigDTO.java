@@ -1,7 +1,7 @@
 package df.base.dto.form;
 
 import df.base.common.support.jpa.JpaCriteria;
-import df.base.dto.NestedKeyValue;
+import df.base.dto.KeyValuePair;
 import df.base.persistence.entity.form.Form;
 import df.base.persistence.entity.form.FormConfig;
 import df.base.common.validation.jakarta.Fields;
@@ -89,7 +89,7 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 predicate = "!#result.empty"
         ),
 })
-public class FormConfigDTO implements NestedKeyValue {
+public class FormConfigDTO implements KeyValuePair {
 
     private String id;
 
