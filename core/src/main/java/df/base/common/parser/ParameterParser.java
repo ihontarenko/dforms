@@ -1,7 +1,7 @@
 package df.base.common.parser;
 
-import df.base.common.parser.configurator.DefaultParserConfigurator;
-import df.base.common.parser.configurator.DefaultTokenizerConfigurator;
+import df.base.common.parser.configurator.ParserConfigurator;
+import df.base.common.parser.configurator.TokenizerConfigurator;
 import df.base.common.parser.parser.AnyExpressionParser;
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.node.Node;
@@ -26,8 +26,8 @@ public class ParameterParser {
     }
 
     private void initialize() {
-        new DefaultParserConfigurator().configure(context);
-        new DefaultTokenizerConfigurator().configure(tokenizer);
+        new ParserConfigurator().configure(context);
+        new TokenizerConfigurator().configure(tokenizer);
 
         this.parser = context.getParser(AnyExpressionParser.class);
     }

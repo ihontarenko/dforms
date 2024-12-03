@@ -1,7 +1,7 @@
 package df.base.common.parser.ast;
 
 import df.base.common.libs.ast.node.EntryNode;
-import df.base.common.libs.ast.node.EvaluationContext;
+import df.base.common.libs.ast.compiler.EvaluationContext;
 import df.base.common.libs.ast.token.Token;
 
 import static df.base.common.libs.ast.token.DefaultToken.*;

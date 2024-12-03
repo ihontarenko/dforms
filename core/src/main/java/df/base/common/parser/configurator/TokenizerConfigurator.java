@@ -3,11 +3,10 @@ package df.base.common.parser.configurator;
 import df.base.common.libs.ast.configurer.Configurator;
 import df.base.common.libs.ast.recognizer.PatternTokenRecognizer;
 import df.base.common.libs.ast.token.Tokenizer;
-import df.base.common.libs.ast.token.TokenizerConfigurator;
 import df.base.common.libs.ast.token.TokenizerPattern;
 import df.base.common.parser.ExtendedToken;
 
-public class DefaultTokenizerConfigurator implements Configurator<Tokenizer> {
+public class TokenizerConfigurator implements Configurator<Tokenizer> {
 
     public static final String ANNOTATION = "\\@\\w+";
     public static final String CLASS_NAME = "(\\w+(?:\\.\\w+)+)";
@@ -15,7 +14,7 @@ public class DefaultTokenizerConfigurator implements Configurator<Tokenizer> {
 
     @Override
     public void configure(Tokenizer tokenizer) {
-        new TokenizerConfigurator().configure(tokenizer);
+        new df.base.common.libs.ast.token.TokenizerConfigurator().configure(tokenizer);
 
         tokenizer.addPattern(new TokenizerPattern(ANNOTATION, 100));
         tokenizer.addPattern(new TokenizerPattern(CLASS_NAME, 200));

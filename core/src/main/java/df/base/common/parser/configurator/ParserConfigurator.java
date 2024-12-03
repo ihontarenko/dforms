@@ -4,7 +4,7 @@ import df.base.common.libs.ast.configurer.Configurator;
 import df.base.common.parser.parser.*;
 import df.base.common.libs.ast.parser.ParserContext;
 
-public class DefaultParserConfigurator implements Configurator<ParserContext> {
+public class ParserConfigurator implements Configurator<ParserContext> {
 
     @Override
     public void configure(ParserContext context) {

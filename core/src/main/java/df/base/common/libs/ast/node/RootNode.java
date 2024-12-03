@@ -1,5 +1,7 @@
 package df.base.common.libs.ast.node;
 
+import df.base.common.libs.ast.compiler.EvaluationContext;
+
 import java.util.stream.Collectors;
 
 public class RootNode extends EntryNode {
