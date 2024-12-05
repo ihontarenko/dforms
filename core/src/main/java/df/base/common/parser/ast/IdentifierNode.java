@@ -20,8 +20,4 @@ public class IdentifierNode extends EntryNode  {
         this.identifier = identifier;
     }
 
-    @Override
-    public Object evaluate(EvaluationContext ctx) {
-        return identifier;
-    }
 }

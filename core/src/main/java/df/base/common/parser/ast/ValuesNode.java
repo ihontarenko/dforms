@@ -19,9 +19,4 @@ public class ValuesNode extends EntryNode {
         this.elements.add(element);
     }
 
-    @Override
-    public Object evaluate(EvaluationContext ctx) {
-        return elements.stream().map(node -> node.evaluate(ctx)).toList();
-    }
-
 }

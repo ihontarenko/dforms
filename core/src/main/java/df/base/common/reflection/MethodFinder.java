@@ -1,15 +1,24 @@
 package df.base.common.reflection;
 
+import df.base.common.matcher.Matcher;
+
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import static df.base.common.matcher.reflection.MethodMatchers.*;
+import static df.base.common.matcher.reflection.MethodMatchers.hasSoftParameterTypes;
 
 /**
  * A class that finds methods in a given class. It supports scanning superclasses
  * and interfaces to retrieve inherited or implemented methods.
  */
 public class MethodFinder extends AbstractFinder<Method> {
+
+    public static final MethodFinder FINDER = new MethodFinder();
 
     /**
      * Retrieves all methods from the specified class.
@@ -56,6 +65,23 @@ public class MethodFinder extends AbstractFinder<Method> {
         }
 
         return methods;
+    }
+
+    /**
+     * Retrieves all methods from the specified class which satisfy the condition according to the parameters types
+     *
+     * @param clazz the class whose methods are to be retrieved
+     * @return a collection of methods from the class
+     */
+    public static List<Method> getMethods(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
+        Matcher<Executable> matcher = nameEquals(methodName);
+
+        if (parameterTypes != null && parameterTypes.length != 0) {
+            matcher = matcher.and(hasParameterCount(parameterTypes.length));
+            matcher = matcher.and(hasParameterTypes(parameterTypes).or(hasSoftParameterTypes(parameterTypes)));
+        }
+
+        return FINDER.find(clazz, matcher);
     }
 
 }

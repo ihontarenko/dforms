@@ -1,9 +1,10 @@
 package df.base.common.libs.ast.compiler;
 
 import df.base.common.context.AbstractContext;
-import df.base.common.libs.ast.node.EvaluationContextException;
+import df.base.common.libs.ast.node.Node;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 public class EvaluationContext extends AbstractContext {
 
@@ -43,6 +44,32 @@ public class EvaluationContext extends AbstractContext {
 
     public void setVariable(String name, Object value) {
         setProperty(name, value);
+    }
+
+    public void addCompiler(Class<? extends Node> nodeType, Compiler<?> compiler) {
+        setProperty(nodeType, compiler);
+    }
+
+    public void addCompiler(Compiler<?> compiler) {
+        addCompiler(Objects.requireNonNull(
+                compiler.nodeType(), "Compiler '%s' must return a valid node type class from the nodeType() method."
+                        .formatted(compiler.getClass().getName())), compiler);
+    }
+
+    public <N extends Node> Compiler<N> getCompiler(Class<? extends N> nodeType) {
+        Compiler<N> compiler = getProperty(nodeType);
+
+        if (compiler == null) {
+            throw new EvaluationContextException(
+                    "Evaluation context does not contain the required compiler for '%s' node."
+                            .formatted(nodeType.getName()));
+        }
+
+        return compiler;
+    }
+
+    public <N extends Node> Compiler<N> getCompiler(N nodeObject) {
+        return (Compiler<N>) getCompiler(nodeObject.getClass());
     }
 
 }

@@ -20,14 +20,4 @@ public class ParametersNode extends EntryNode {
         this.parameters.add(parameter);
     }
 
-    @Override
-    public Object evaluate(EvaluationContext ctx) {
-        Map<String, Object> parameters = new HashMap<>();
-
-        for (ParameterNode parameter : getParameters()) {
-            parameters.put((String) parameter.getKey().evaluate(ctx), parameter.getValue().evaluate(ctx));
-        }
-
-        return parameters;
-    }
 }

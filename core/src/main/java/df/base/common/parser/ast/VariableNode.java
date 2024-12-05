@@ -10,9 +10,4 @@ public class VariableNode extends EntryNode {
         super(entry);
     }
 
-    @Override
-    public Object evaluate(EvaluationContext evaluationContext) {
-        return evaluationContext.requireVariable(entry.value().substring(1));
-    }
-
 }

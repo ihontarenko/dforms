@@ -6,7 +6,6 @@ import df.base.common.reflection.FieldFinder;
 import df.base.common.reflection.Finder;
 import df.base.common.reflection.MethodFinder;
 
-import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -15,12 +14,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static df.base.common.libs.jbm.StringUtils.underscored;
-import static df.base.common.matcher.reflection.MethodMatchers.*;
 
 public class ReflectionClassTypeDescriptor implements ClassTypeDescriptor {
 
-    private final static Finder<Method> METHOD_FINDER = new MethodFinder();
-    private final        Class<?>       nativeClass;
+    private final Class<?> nativeClass;
 
     public ReflectionClassTypeDescriptor(Class<?> nativeClass) {
         this.nativeClass = nativeClass;
@@ -32,14 +29,7 @@ public class ReflectionClassTypeDescriptor implements ClassTypeDescriptor {
 
     @Override
     public MethodDescriptor getMethod(String name, Class<?>... parameterTypes) {
-        Matcher<Executable> matcher = nameEquals(name);
-
-        if (parameterTypes != null && parameterTypes.length != 0) {
-            matcher = matcher.and(hasParameterCount(parameterTypes.length));
-            matcher = matcher.and(hasParameterTypes(parameterTypes).or(hasSoftParameterTypes(parameterTypes)));
-        }
-
-        List<Method> methods = METHOD_FINDER.find(getNativeClass(), matcher);
+        List<Method> methods = MethodFinder.getMethods(getNativeClass(), name, parameterTypes);
 
         if (methods.size() > 1) {
             throw new AmbiguousDescriptorException(
@@ -61,7 +51,7 @@ public class ReflectionClassTypeDescriptor implements ClassTypeDescriptor {
         Finder<Field>  finder  = new FieldFinder();
 
         Optional<Field> optional = finder.findFirst(getNativeClass(), matcher);
-        Field           field    = optional.orElseThrow(() -> new NoSuchFieldDescriptorException(
+        Field field = optional.orElseThrow(() -> new NoSuchFieldDescriptorException(
                 "No such field exists '%s' in class '%s'. Please check the method name and try again."
                         .formatted(name, nativeClass.getCanonicalName())));
 

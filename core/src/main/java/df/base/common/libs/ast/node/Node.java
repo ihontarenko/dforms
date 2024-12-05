@@ -112,7 +112,9 @@ public interface Node {
         }
     }
 
-    Object evaluate(EvaluationContext ctx);
+    default Object evaluate(EvaluationContext ctx) {
+        return ctx.getCompiler(this).compile(this, ctx);
+    }
 
     enum Order {DESC, ASC}
 

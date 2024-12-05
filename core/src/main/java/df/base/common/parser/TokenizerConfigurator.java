@@ -1,4 +1,4 @@
-package df.base.common.parser.configurator;
+package df.base.common.parser;
 
 import df.base.common.libs.ast.configurer.Configurator;
 import df.base.common.libs.ast.recognizer.PatternTokenRecognizer;
@@ -19,6 +19,7 @@ public class TokenizerConfigurator implements Configurator<Tokenizer> {
         tokenizer.addPattern(new TokenizerPattern(ANNOTATION, 100));
         tokenizer.addPattern(new TokenizerPattern(CLASS_NAME, 200));
         tokenizer.addPattern(new TokenizerPattern(VARIABLE, 300));
+
         tokenizer.addRecognizer(new PatternTokenRecognizer(ANNOTATION, ExtendedToken.T_ANNOTATION, 7000));
         tokenizer.addRecognizer(new PatternTokenRecognizer(CLASS_NAME, ExtendedToken.T_CLASS_NAME, 7100));
         tokenizer.addRecognizer(new PatternTokenRecognizer(VARIABLE, ExtendedToken.T_VARIABLE, 7100));

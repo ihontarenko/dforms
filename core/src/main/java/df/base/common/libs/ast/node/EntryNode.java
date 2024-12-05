@@ -1,6 +1,5 @@
 package df.base.common.libs.ast.node;
 
-import df.base.common.libs.ast.compiler.EvaluationContext;
 import df.base.common.libs.ast.token.Token;
 
 import java.util.HashMap;
@@ -41,12 +40,6 @@ public class EntryNode extends AbstractNode {
     public String toString() {
         return String.format("%s ENTRY: [%s] PROPERTIES: %s", underscored(getClass().getSimpleName(), true),
                              entry, attributes);
-    }
-
-    @Override
-    public Object evaluate(EvaluationContext ctx) {
-        throw new UnsupportedOperationException(
-                "Evaluation is not implemented yet '%s'.".formatted(getClass()));
     }
 
 }

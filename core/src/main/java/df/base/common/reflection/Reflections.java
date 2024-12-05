@@ -5,15 +5,53 @@ import df.base.common.matcher.reflection.FieldMatchers;
 import df.base.common.matcher.reflection.MethodMatchers;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.*;
+
+import static java.util.Objects.requireNonNullElse;
+import static java.util.Objects.requireNonNullElseGet;
 
 abstract public class Reflections {
 
+    private static final Map<Class<?>, Object> PRIMITIVES_DEFAULT_TYPE_VALUES = Map.of(
+            boolean.class, false,
+            byte.class, (byte) 0,
+            short.class, (short) 0,
+            int.class, 0,
+            long.class, 0L,
+            float.class, 0F,
+            double.class, 0D,
+            char.class, '\0'
+    );
     public static final String PROXY_CLASS_NAME_SEPARATOR = "$$";
+
+    public static List<Method> extractStaticMethods(Class<?> clazz) {
+        Method[]     methods       = clazz.getMethods();
+        List<Method> staticMethods = new ArrayList<>(methods.length);
+
+        for (Method method : methods) {
+            if (Modifier.isStatic(method.getModifiers())) {
+                staticMethods.add(method);
+            }
+        }
+
+        return staticMethods;
+    }
+
+    /**
+     * Create class-type by it name with muffling ClassNotFoundException
+     *
+     * @param className the class name to retrieve class type
+     * @return a class-type
+     * @throws RuntimeException if creation of class type fails
+     */
+    public static Class<?> getClassFor(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Instantiates an object using the given constructor and arguments.
@@ -30,9 +68,32 @@ abstract public class Reflections {
      * }</pre>
      */
     public static <T> T instantiate(Constructor<T> constructor, Object... arguments) {
+        final int parametersCount = constructor.getParameterCount();
+        T         instance;
+
         try {
             constructor.setAccessible(true);
-            return constructor.newInstance(arguments);
+
+            if (parametersCount == 0) {
+                instance = constructor.newInstance();
+            } else {
+                Object[]   constructorArguments = new Object[arguments.length];
+                Class<?>[] parameterTypes       = constructor.getParameterTypes();
+
+                for (int i = 0; i < constructorArguments.length; i++) {
+                    if (arguments[i] == null) {
+                        Class<?> parameterType = parameterTypes[i];
+                        constructorArguments[i] = parameterType.isPrimitive()
+                                ? PRIMITIVES_DEFAULT_TYPE_VALUES.get(parameterType) : null;
+                    } else {
+                        constructorArguments[i] = arguments[i];
+                    }
+                }
+
+                instance = constructor.newInstance(constructorArguments);
+            }
+
+            return instance;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new ObjectCreationException("COULD NOT INSTANTIATE OBJECT USING CONSTRUCTOR: " + constructor, e);
         }

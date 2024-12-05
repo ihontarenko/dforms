@@ -28,30 +28,7 @@ public class LiteralNode extends EntryNode {
 
     @Override
     public Object evaluate(EvaluationContext ctx) {
-        Object  result = value;
-        Enum<?> token  = (Enum<?>) entry.token();
-
-        if (T_INT.equals(token)) {
-            result = parseInt((String) result);
-        } else if (T_FLOAT.equals(token)) {
-            String value = (String) result;
-            int decimalIndex = value.indexOf('.');
-            if (decimalIndex != -1) {
-                if ((value.length() - decimalIndex - 1) <= 7) {
-                    result = parseFloat(value);
-                } else {
-                    result = parseDouble(value);
-                }
-            } else {
-                result = parseDouble(value);
-            }
-        } else if (T_NULL.equals(token)) {
-            result = null;
-        } else if (T_FALSE.equals(token) || T_TRUE.equals(token)) {
-            result = parseBoolean((String) result);
-        }
-
-        return result;
+        return ctx.getCompiler(this).compile(this, ctx);
     }
 
 }

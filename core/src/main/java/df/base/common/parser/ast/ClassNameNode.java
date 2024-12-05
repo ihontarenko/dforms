@@ -1,9 +1,6 @@
 package df.base.common.parser.ast;
 
-import df.base.common.libs.ast.compiler.EvaluationContext;
 import df.base.common.libs.ast.token.Token;
-
-import static df.base.common.libs.jbm.ReflectionUtils.getClassFor;
 
 public class ClassNameNode extends LiteralNode {
 
@@ -19,11 +16,6 @@ public class ClassNameNode extends LiteralNode {
 
     public void setClassName(String className) {
         this.className = className;
-    }
-
-    @Override
-    public Object evaluate(EvaluationContext ctx) {
-        return getClassFor(className);
     }
 
 }

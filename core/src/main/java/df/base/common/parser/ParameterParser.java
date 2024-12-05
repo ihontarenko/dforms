@@ -1,7 +1,6 @@
 package df.base.common.parser;
 
-import df.base.common.parser.configurator.ParserConfigurator;
-import df.base.common.parser.configurator.TokenizerConfigurator;
+import df.base.common.parser.parser.ParserConfigurator;
 import df.base.common.parser.parser.AnyExpressionParser;
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.node.Node;
