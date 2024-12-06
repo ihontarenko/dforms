@@ -1,14 +1,14 @@
 package df.base.common.invocable;
 
 import df.base.common.matcher.Matcher;
+import df.base.common.reflection.Reflections;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static df.base.common.matcher.reflection.TypeMatchers.isSimilar;
-import static df.base.common.matcher.reflection.TypeMatchers.isSubtype;
+import static df.base.common.matcher.reflection.TypeMatchers.*;
 
 abstract public class AbstractInvocable implements Invocable {
 
@@ -64,11 +64,12 @@ abstract public class AbstractInvocable implements Invocable {
         // check on matching passed arguments with expected
         for (MethodParameter parameter : parameters) {
             Class<?>          expectedType = parametersTypes[parameter.getIndex()];
-            Matcher<Class<?>> softChecker  = isSimilar(expectedType).or(isSubtype(expectedType));
+            Class<?>          actualType   = parameter.getDescriptor().getNativeClass();
+            Matcher<Class<?>> softChecker  = isSimilar(expectedType).or(isSupertype(expectedType));
 
-            if (!softChecker.matches(parameter.getDescriptor().getNativeClass())) {
+            if (!softChecker.matches(actualType)) {
                 throw new ParameterTypeException("Expected type '%s' for argument %d in method '%s', but got '%s'."
-                        .formatted(parametersTypes[parameter.getIndex()], parameter.getIndex(), descriptor.getName(), parameter.getDescriptor().getNativeClass()));
+                        .formatted(expectedType, parameter.getIndex(), Reflections.getMethodName(descriptor.getNativeMethod()), actualType));
             }
         }
 

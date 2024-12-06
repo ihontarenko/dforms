@@ -30,6 +30,9 @@ public class AnyExpressionParser implements Parser {
             // resolve java-class name 'className=com.example.validator.NotNullValidator'
             shift(lexer, T_CLASS_NAME);
             valueNode = context.getParser(ClassNameParser.class).parse(lexer, context);
+        } else if (VARIABLE_DEFINITION.test(lexer)) {
+            // resolve string definition name '#handler:command_name'
+            valueNode = context.getParser(StringDefinitionParser.class).parse(lexer, context);
         } else if (lexer.check(VARIABLE)) {
             // either #variable, #staticMethod(#var, 123) or #instance.method(#sum(1, 2), 0)
 

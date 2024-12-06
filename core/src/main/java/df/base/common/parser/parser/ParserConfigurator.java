@@ -1,7 +1,6 @@
 package df.base.common.parser.parser;
 
 import df.base.common.libs.ast.configurer.Configurator;
-import df.base.common.parser.parser.*;
 import df.base.common.libs.ast.parser.ParserContext;
 
 public class ParserConfigurator implements Configurator<ParserContext> {
@@ -18,6 +17,7 @@ public class ParserConfigurator implements Configurator<ParserContext> {
         context.add(new ObjectMethodCallParser());
         context.add(new FunctionCallParser());
         context.add(new VariableParser());
+        context.add(new StringDefinitionParser());
         context.add(new CommaSeparatedParser());
     }
 

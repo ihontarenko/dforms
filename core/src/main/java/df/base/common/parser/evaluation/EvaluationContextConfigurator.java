@@ -16,6 +16,7 @@ public class EvaluationContextConfigurator implements Configurator<EvaluationCon
         ctx.addCompiler(new IdentifierCompiler());
         ctx.addCompiler(new ParametersCompiler());
         ctx.addCompiler(new ValuesCompiler());
+        ctx.addCompiler(new StringDefinitionCompiler());
     }
 
 }

@@ -437,4 +437,14 @@ abstract public class Reflections {
         return argumentTypes;
     }
 
+    /**
+     * Create method name with declared class name
+     *
+     * @param method to retrieve that name
+     * @return method name with class name
+     */
+    public static String getMethodName(Method method) {
+        return "%s#%s".formatted(method.getDeclaringClass().getSimpleName(), method.getName());
+    }
+
 }

@@ -5,6 +5,7 @@ import df.base.common.invocable.InvokeResult;
 import df.base.common.invocable.ObjectMethod;
 import df.base.common.libs.ast.compiler.Compiler;
 import df.base.common.libs.ast.compiler.EvaluationContext;
+import df.base.common.libs.ast.node.Node;
 import df.base.common.parser.EvaluationException;
 import df.base.common.parser.ast.ObjectMethodNode;
 import df.base.common.reflection.Reflections;
@@ -17,8 +18,9 @@ public class MethodCompiler implements Compiler<ObjectMethodNode> {
     @Override
     public Object compile(ObjectMethodNode node, EvaluationContext ctx) {
         List<?> parameterValues = new ArrayList<>();
+        Node    parametersNode  = node.getArguments();
 
-        if (node.getArguments().evaluate(ctx) instanceof List<?> rawList) {
+        if (parametersNode != null && parametersNode.evaluate(ctx) instanceof List<?> rawList) {
             parameterValues = rawList;
         }
 

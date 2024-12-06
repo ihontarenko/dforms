@@ -8,7 +8,7 @@ public class VariableCompiler implements Compiler<VariableNode> {
 
     @Override
     public Object compile(VariableNode node, EvaluationContext ctx) {
-        return ctx.requireVariable(node.entry().value().substring(1));
+        return ctx.requireVariable(node.getVariableName());
     }
 
     @Override

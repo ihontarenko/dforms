@@ -3,7 +3,7 @@ package df.base.common.operation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OperationHandlerFactory {
+public class OperationHandlerRegistry {
 
     private final Map<String, OperationHandler<?>> handlers = new HashMap<>();
 

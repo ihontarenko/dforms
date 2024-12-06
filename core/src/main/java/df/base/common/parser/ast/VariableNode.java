@@ -1,13 +1,21 @@
 package df.base.common.parser.ast;
 
 import df.base.common.libs.ast.node.EntryNode;
-import df.base.common.libs.ast.compiler.EvaluationContext;
-import df.base.common.libs.ast.token.Token;
 
 public class VariableNode extends EntryNode {
 
-    public VariableNode(Token.Entry entry) {
-        super(entry);
+    private String rawName;
+
+    public String getRawName() {
+        return rawName;
+    }
+
+    public String getVariableName() {
+        return rawName.substring(1);
+    }
+
+    public VariableNode(String rawName) {
+        this.rawName = rawName;
     }
 
 }

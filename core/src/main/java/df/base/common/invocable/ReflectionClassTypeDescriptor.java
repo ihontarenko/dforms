@@ -37,9 +37,15 @@ public class ReflectionClassTypeDescriptor implements ClassTypeDescriptor {
         }
 
         if (methods.size() == 0) {
+            String parametersString = parameterTypes.length == 0 ? "" : Arrays.toString(parameterTypes);
+
+            if (parametersString.length() > 0) {
+                parametersString = parametersString.substring(1).substring(0, parametersString.length() - 2);
+            }
+
             throw new NoSuchMethodDescriptorException(
                     "No such method exists %s#%s(%s). Please check the method name and try again."
-                            .formatted(nativeClass.getCanonicalName(), name, Arrays.toString(parameterTypes)));
+                            .formatted(nativeClass.getCanonicalName(), name, parametersString));
         }
 
         return new ReflectionMethodDescriptor(methods.get(0), nativeClass);

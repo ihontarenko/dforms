@@ -1,19 +1,14 @@
 package df.base.service.bc;
 
-import df.base.common.libs.jbm.scanner.ClassScanner;
 import df.base.common.matcher.Matcher;
+import df.base.common.reflection.ClassFinder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
-import static java.util.stream.Collectors.toSet;
+import java.util.Set;
 
 @Service
 public class ClassRepository {
-
-    private static final ClassScanner                SCANNER = ClassScanner.getDefaultScanner();
-    private static final Map<Integer, Set<Class<?>>> CLASSES = new HashMap<>();
 
     private final Class<?>[] baseClasses;
 
@@ -21,31 +16,17 @@ public class ClassRepository {
         this.baseClasses = baseClasses;
     }
 
+    @SuppressWarnings({"all"})
+    public static Set<Class<?>> findAll(Class<?>... baseClasses) {
+        return ClassFinder.findAll(baseClasses);
+    }
+
     public Set<Class<?>> findClasses(Matcher<Class<?>> matcher) {
-        return findAll(baseClasses).stream().filter(matcher::matches).collect(toSet());
+        return ClassFinder.findAll(matcher, baseClasses);
     }
 
     public Set<Class<?>> findAll() {
         return findAll(baseClasses);
-    }
-
-    @SuppressWarnings({"all"})
-    public static Set<Class<?>> findAll(Class<?>... baseClasses) {
-        int cacheKey = Objects.hash(baseClasses);
-
-        if (!CLASSES.containsKey(cacheKey)) {
-            Set<Class<?>> classes = new HashSet<>();
-
-            SCANNER.setMatcher(Matcher.constant(true));
-
-            for (Class<?> baseClass : baseClasses) {
-                classes.addAll(SCANNER.scan(baseClass.getPackageName(), baseClass.getClassLoader()));
-            }
-
-            CLASSES.put(cacheKey, classes);
-        }
-
-        return CLASSES.get(cacheKey);
     }
 
 }

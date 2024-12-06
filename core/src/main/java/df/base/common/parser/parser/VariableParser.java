@@ -12,7 +12,7 @@ public class VariableParser implements Parser {
     @Override
     public void parse(Lexer lexer, Node parent, ParserContext context) {
         shift(lexer, ExtendedToken.T_VARIABLE);
-        parent.add(new VariableNode(lexer.current()));
+        parent.add(new VariableNode(lexer.current().value()));
     }
 
 }

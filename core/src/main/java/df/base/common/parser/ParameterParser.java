@@ -1,7 +1,7 @@
 package df.base.common.parser;
 
-import df.base.common.parser.parser.ParserConfigurator;
-import df.base.common.parser.parser.AnyExpressionParser;
+import df.base.common.libs.ast.compiler.EvaluationContext;
+import df.base.common.libs.ast.compiler.EvaluationContextFactory;
 import df.base.common.libs.ast.lexer.Lexer;
 import df.base.common.libs.ast.node.Node;
 import df.base.common.libs.ast.node.RootNode;
@@ -9,6 +9,9 @@ import df.base.common.libs.ast.parser.Parser;
 import df.base.common.libs.ast.parser.ParserContext;
 import df.base.common.libs.ast.token.Token;
 import df.base.common.libs.ast.token.Tokenizer;
+import df.base.common.parser.evaluation.EvaluationContextConfigurator;
+import df.base.common.parser.parser.AnyExpressionParser;
+import df.base.common.parser.parser.ParserConfigurator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,19 +19,21 @@ import java.util.List;
 @Service
 public class ParameterParser {
 
-    private final ParserContext context   = new ParserContext.SimpleContext();
-    private final Tokenizer     tokenizer = new DefaultTokenizer();
-    private       Parser        parser;
+    private final ParserContext     parserContext     = new ParserContext.SimpleContext();
+    private final EvaluationContext evaluationContext = EvaluationContextFactory.defaultEvaluationContext();
+    private final Tokenizer         tokenizer         = new DefaultTokenizer();
+    private       Parser            parser;
 
     public ParameterParser() {
         initialize();
     }
 
     private void initialize() {
-        new ParserConfigurator().configure(context);
+        new EvaluationContextConfigurator().configure(evaluationContext);
+        new ParserConfigurator().configure(parserContext);
         new TokenizerConfigurator().configure(tokenizer);
 
-        this.parser = context.getParser(AnyExpressionParser.class);
+        this.parser = parserContext.getParser(AnyExpressionParser.class);
     }
 
     public Node parse(String inputString) {
@@ -36,9 +41,16 @@ public class ParameterParser {
         List<Token.Entry> entries = tokenizer.tokenize(inputString);
         Lexer             lexer   = new DefaultLexer(entries);
 
-        this.parser.parse(lexer, root, context);
+        this.parser.parse(lexer, root, parserContext);
 
-        return root;
+        return root.first();
     }
 
+    public <T> T compile(Node node, EvaluationContext context) {
+        return (T) node.evaluate(context);
+    }
+
+    public EvaluationContext getEvaluationContext() {
+        return evaluationContext;
+    }
 }
