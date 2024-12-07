@@ -1,5 +1,6 @@
 package df.base.common.pipeline;
 
+import df.base.common.context.ResultContext;
 import df.base.common.pipeline.context.PipelineContext;
 import org.slf4j.Logger;
 
@@ -66,18 +67,21 @@ public record PipelineProcessorChain(String initial,
     private void handleFallback(PipelineContext context, ProcessorProperties properties, Exception exception)
             throws Exception {
         PipelineProcessor fallback = FALLBACK_PROCESSOR;
+        ResultContext     result   = context.getResultContext();
 
         if (properties != null && properties.fallback() != null) {
             fallback = processors.get(properties.fallback());
         }
 
+        context.setProperty("EXCEPTION", exception);
+        result.addError("EXCEPTION", exception.getMessage());
+
         fallback.process(context);
 
-        context.getResultContext().addError("EXCEPTION", exception.getMessage());
         context.setProperty(Throwable.class, exception);
 
         LOGGER.error("[PIPELINE-CHAIN]: ERROR OCCURRED: '{}', FALLBACK PROCESSOR: '{}'",
-                     exception.getMessage(), fallback.getClass().getName());
+                exception.getMessage(), fallback.getClass().getName());
     }
 
 }
