@@ -17,14 +17,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ParameterParser {
+public class ParserService {
 
     private final ParserContext     parserContext     = new ParserContext.SimpleContext();
     private final EvaluationContext evaluationContext = EvaluationContextFactory.defaultEvaluationContext();
     private final Tokenizer         tokenizer         = new DefaultTokenizer();
     private       Parser            parser;
 
-    public ParameterParser() {
+    public ParserService() {
         initialize();
     }
 
@@ -36,14 +36,14 @@ public class ParameterParser {
         this.parser = parserContext.getParser(AnyExpressionParser.class);
     }
 
-    public Node parse(String inputString) {
+    public <N extends Node> N parse(String inputString) {
         Node              root    = new RootNode();
         List<Token.Entry> entries = tokenizer.tokenize(inputString);
         Lexer             lexer   = new DefaultLexer(entries);
 
         this.parser.parse(lexer, root, parserContext);
 
-        return root.first();
+        return (N) root.first();
     }
 
     public <T> T compile(Node node, EvaluationContext context) {

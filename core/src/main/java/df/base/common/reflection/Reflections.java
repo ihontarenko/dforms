@@ -1,15 +1,11 @@
 package df.base.common.reflection;
 
-import df.base.common.libs.jbm.bean.ObjectCreationException;
 import df.base.common.matcher.reflection.FieldMatchers;
 import df.base.common.matcher.reflection.MethodMatchers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
-
-import static java.util.Objects.requireNonNullElse;
-import static java.util.Objects.requireNonNullElseGet;
 
 abstract public class Reflections {
 
@@ -43,13 +39,13 @@ abstract public class Reflections {
      *
      * @param className the class name to retrieve class type
      * @return a class-type
-     * @throws RuntimeException if creation of class type fails
+     * @throws ReflectionException if creation of class type fails
      */
     public static Class<?> getClassFor(String className) {
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new ReflectionException(e);
         }
     }
 
@@ -60,7 +56,7 @@ abstract public class Reflections {
      * @param constructor the constructor to use for instantiation
      * @param arguments the arguments to pass to the constructor
      * @return an instance of the object
-     * @throws ObjectCreationException if instantiation fails
+     * @throws ReflectionException if instantiation fails
      * @example
      * <pre>{@code
      * Constructor<MyClass> constructor = MyClass.class.getConstructor(String.class);
@@ -95,7 +91,7 @@ abstract public class Reflections {
 
             return instance;
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new ObjectCreationException("COULD NOT INSTANTIATE OBJECT USING CONSTRUCTOR: " + constructor, e);
+            throw new ReflectionException("COULD NOT INSTANTIATE OBJECT USING CONSTRUCTOR: " + constructor, e);
         }
     }
 
@@ -105,7 +101,7 @@ abstract public class Reflections {
      * @param clazz the class to search for constructors
      * @param types the parameter types of the desired constructor
      * @return the first matching constructor
-     * @throws ObjectCreationException if no matching constructor is found
+     * @throws ReflectionException if no matching constructor is found
      * @see ConstructorFinder
      * @example
      * <pre>{@code
@@ -114,7 +110,7 @@ abstract public class Reflections {
      */
     public static Constructor<?> findFirstConstructor(Class<?> clazz, Class<?>... types) {
         return new ConstructorFinder().findFirst(clazz, MethodMatchers.hasParameterTypes(types))
-                .orElseThrow(() -> new ObjectCreationException("CONSTRUCTOR WITH (" + Arrays.toString(types) + ") PARAMETERS NOT FOUND"));
+                .orElseThrow(() -> new ReflectionException("CONSTRUCTOR WITH (" + Arrays.toString(types) + ") PARAMETERS NOT FOUND"));
     }
 
     /**
@@ -123,7 +119,7 @@ abstract public class Reflections {
      * @param clazz the class to search for constructors
      * @param annotation the annotation to look for
      * @return the first annotated constructor
-     * @throws ObjectCreationException if no annotated constructor is found
+     * @throws ReflectionException if no annotated constructor is found
      * @see ConstructorFinder
      * @example
      * <pre>{@code
@@ -132,7 +128,7 @@ abstract public class Reflections {
      */
     public static Constructor<?> findFirstAnnotatedConstructor(Class<?> clazz, Class<? extends Annotation> annotation) {
         return new ConstructorFinder().findFirst(clazz, MethodMatchers.isAnnotatedWith(annotation))
-                .orElseThrow(() -> new ObjectCreationException("ANNOTATED CONSTRUCTOR NOT FOUND"));
+                .orElseThrow(() -> new ReflectionException("ANNOTATED CONSTRUCTOR NOT FOUND"));
     }
 
     /**
@@ -283,8 +279,8 @@ abstract public class Reflections {
         try {
             method.setAccessible(true);
             return method.invoke(object, arguments);
-        } catch (IllegalAccessException | InvocationTargetException ignore) {
-            return null;
+        } catch (Throwable e) {
+            throw new ReflectionException(e);
         }
     }
 

@@ -1,9 +1,9 @@
 package df.base.common.proxy;
 
+import df.base.common.reflection.Reflections;
+
 import java.lang.reflect.Method;
 import java.util.List;
-
-import static df.base.common.libs.jbm.ReflectionUtils.invokeMethod;
 
 public class MethodInvocationChain implements MethodInvocation {
 
@@ -37,7 +37,7 @@ public class MethodInvocationChain implements MethodInvocation {
         }
 
         // invoke real method from target object in the end of chain
-        return invokeMethod(target, method, arguments);
+        return Reflections.invokeMethod(target, method, arguments);
     }
 
     @Override

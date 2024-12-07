@@ -3,7 +3,7 @@ package df.base.pipeline.form.performing;
 import df.base.common.context.ArgumentsContext;
 import df.base.common.libs.ast.compiler.EvaluationContext;
 import df.base.common.libs.ast.node.Node;
-import df.base.common.parser.ParameterParser;
+import df.base.common.parser.ParserService;
 import df.base.common.pipeline.PipelineProcessor;
 import df.base.common.pipeline.context.PipelineContext;
 import df.base.common.validation.custom.BasicValidators;
@@ -24,8 +24,7 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
     public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
         Map<String, List<FieldConfigDTO>> validationConfigs = arguments.requireArgument("VALIDATION_CONFIGS");
         Validation                        validation        = createValidation(context);
-        EvaluationContext                 evaluationContext = context.hasProperty(
-                EvaluationContext.class) ? context.getProperty(EvaluationContext.class) : new EvaluationContext();
+        ParserService parserService = context.getBean(ParserService.class);
 
         // todo: think about binding some useful variables to EvaluationContext
         validationConfigs.forEach((fieldName, configs) -> {
@@ -33,9 +32,9 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
                 String validatorParameters = configDTO.getValue();
                 String configName          = configDTO.getKey();
                 String validatorName       = configName.substring(configName.indexOf(':') + 1);
-                Node   root                = context.getBean(ParameterParser.class).parse(validatorParameters);
+                Node   root                = parserService.parse(validatorParameters);
 
-                Map<String, Object> parameters = normalizeParameters(root, evaluationContext);
+                Map<String, Object> parameters = normalizeParameters(root, new EvaluationContext());
 
                 validation.addValidator(fieldName, resolveValidator(validatorName, parameters));
             }
@@ -65,7 +64,7 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
     }
 
     private Map<String, Object> normalizeParameters(Node root, EvaluationContext evaluationContext) {
-        return (Map<String, Object>) root.first().evaluate(evaluationContext);
+        return (Map<String, Object>) root.evaluate(evaluationContext);
     }
 
 }

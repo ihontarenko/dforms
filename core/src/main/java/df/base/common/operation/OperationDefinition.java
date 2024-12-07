@@ -30,6 +30,6 @@ public class OperationDefinition {
 
     @Override
     public String toString() {
-        return "OPERATION_DEFINITION [HANDLER '%s':'%s' RAW PARAMETERS '%s']".formatted(operation, command, parameters);
+        return "DEFINITION [OPERATION '%s/%s'; RAW_PARAMETERS '%s']".formatted(operation, command, parameters);
     }
 }
