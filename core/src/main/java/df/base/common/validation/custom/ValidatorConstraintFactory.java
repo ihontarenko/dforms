@@ -5,6 +5,7 @@ import df.base.common.mapping.ObjectFieldMapper;
 import df.base.common.proxy.AnnotationProxyFactory;
 import df.base.common.validation.custom.constraint.NonEmptyValidator;
 import df.base.common.validation.custom.constraint.NotNullValidator;
+import df.base.common.validation.custom.constraint.NumberRangeValidator;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -20,13 +21,11 @@ public class ValidatorConstraintFactory {
     static {
         // add validator instances
         BASIC_FACTORY.addValidator(BasicValidators.NOT_NULL, new NotNullValidator());
-        BASIC_FACTORY.addValidator(BasicValidators.SIZE, new NotNullValidator());
 
         // add validator classes for dynamic creation
         BASIC_FACTORY.addValidator(BasicValidators.NOT_NULL, NotNullValidator.class);
-        BASIC_FACTORY.addValidator(BasicValidators.NON_EMPTY, NonEmptyValidator.class);
-        BASIC_FACTORY.addValidator(BasicValidators.SIZE, NotNullValidator.class);
-        BASIC_FACTORY.addValidator(BasicValidators.URL, NotNullValidator.class);
+        BASIC_FACTORY.addValidator(BasicValidators.EMPTY_STRING, NonEmptyValidator.class);
+        BASIC_FACTORY.addValidator(BasicValidators.RANGE, NumberRangeValidator.class);
     }
 
     private final Map<Enum<?>, Validator>                  validators       = new HashMap<>();

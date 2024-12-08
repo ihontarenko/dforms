@@ -32,13 +32,13 @@ public class MethodFinder extends AbstractFinder<Method> {
     }
 
     /**
-     * Retrieves all methods from the specified class, without scanning superclasses or interfaces.
+     * Retrieves all methods from the specified class, with scanning superclasses or interfaces.
      *
      * @param clazz the class whose methods are to be retrieved
      * @return a collection of methods from the class
      */
     public static Collection<Method> getAllMethods(Class<?> clazz) {
-        return getAllMethods(clazz, false);
+        return getAllMethods(clazz, true);
     }
 
     /**
@@ -80,6 +80,8 @@ public class MethodFinder extends AbstractFinder<Method> {
             matcher = matcher.and(hasParameterCount(parameterTypes.length));
             matcher = matcher.and(hasParameterTypes(parameterTypes).or(hasSoftParameterTypes(parameterTypes)));
         }
+
+        matcher = matcher.and(isAbstract().not());
 
         return FINDER.find(clazz, matcher);
     }

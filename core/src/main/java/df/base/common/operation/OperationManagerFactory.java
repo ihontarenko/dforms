@@ -9,6 +9,10 @@ import df.base.common.reflection.Reflections;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import static df.base.common.reflection.ClassFinder.findAnnotatedClasses;
+import static df.base.common.reflection.Reflections.findFirstConstructor;
+import static df.base.common.reflection.Reflections.instantiate;
+
 /**
  * Factory for creating instances of {@link OperationManager} with predefined configurations or custom setups.
  *
@@ -54,7 +58,7 @@ public class OperationManagerFactory {
         OperationManager operationManager = new OperationManager();
 
         // Scan for classes with the @OperationCommand annotation
-        Set<Class<?>> annotatedClasses = ClassFinder.findAnnotatedClasses(Operation.class, PackageCoreRoot.class);
+        Set<Class<?>> annotatedClasses = findAnnotatedClasses(Operation.class, PackageCoreRoot.class);
 
         for (Class<?> annotatedClass : annotatedClasses) {
             // Check if the class implements the Operator interface
@@ -63,12 +67,16 @@ public class OperationManagerFactory {
                 Operation annotation = annotatedClass.getAnnotation(Operation.class);
 
                 // Instantiate the operator class and register it in the OperationManager
-                Operator<?> operator = (Operator<?>) Reflections.instantiate(Reflections.findFirstConstructor(annotatedClass));
+                Operator<?> operator = (Operator<?>) instantiate(findFirstConstructor(annotatedClass));
 
                 for (Operation.Action action : annotation.actions()) {
                     // Register the operator with its corresponding operation and action
                     operationManager.register(annotation.operation(), action.value(), operator);
                 }
+            } else {
+                // throw exception if operation dont implement Operator interface
+                throw new BadOperationDefinitionException("Annotated class '%s' should implement '%s' interface."
+                        .formatted(annotatedClass, Operator.class));
             }
         }
 

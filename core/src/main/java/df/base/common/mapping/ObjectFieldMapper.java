@@ -1,6 +1,6 @@
 package df.base.common.mapping;
 
-import df.base.common.libs.jbm.ReflectionUtils;
+import df.base.common.reflection.Reflections;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -25,15 +25,15 @@ public class ObjectFieldMapper implements Mapper<Object, Map<String, Object>> {
 
     @Override
     public void map(Object source, Map<String, Object> destination) {
-        for (Field field : ReflectionUtils.getObjectFields(source, Modifier.PRIVATE)) {
-            destination.put(field.getName(), ReflectionUtils.getFieldValue(source, field));
+        for (Field field : Reflections.getClassFields(source.getClass(), Modifier.PRIVATE)) {
+            destination.put(field.getName(), Reflections.getFieldValue(source, field));
         }
     }
 
     @Override
     public void reverse(Map<String, Object> source, Object destination) {
         for (Map.Entry<String, Object> entry : source.entrySet()) {
-            ReflectionUtils.setFieldValue(destination, entry.getKey(), entry.getValue());
+            Reflections.setFieldValue(destination, entry.getKey(), entry.getValue());
         }
     }
 

@@ -46,7 +46,7 @@ public class FieldFinder extends AbstractFinder<Field> {
     }
 
     /**
-     * Retrieves all fields from the specified class, without scanning superclasses.
+     * Retrieves all fields from the specified class, with scanning superclasses.
      *
      * @param clazz the class whose fields are to be retrieved
      * @return a collection of fields from the class
@@ -58,7 +58,7 @@ public class FieldFinder extends AbstractFinder<Field> {
      * }</pre>
      */
     public static Collection<Field> getAllFields(Class<?> clazz) {
-        return getAllFields(clazz, false);
+        return getAllFields(clazz, true);
     }
 
     /**

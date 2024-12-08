@@ -97,6 +97,20 @@ public class MethodMatchers {
     }
 
     /**
+     * Creates a matcher that checks if a method is abstract.
+     *
+     * @return a matcher that checks if the method is abstract
+     * @see Modifier#ABSTRACT
+     * @example
+     * <pre>{@code
+     * Matcher<Executable> staticMatcher = MethodMatchers.isAbstract();
+     * }</pre>
+     */
+    public static Matcher<Executable> isAbstract() {
+        return withModifier(Modifier.ABSTRACT);
+    }
+
+    /**
      * Creates a matcher that checks if a method or constructor is final.
      *
      * @return a matcher that checks if the method or constructor is final

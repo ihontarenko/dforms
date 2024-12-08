@@ -30,13 +30,13 @@ public class ConstructorFinder extends AbstractFinder<Constructor<?>> {
     }
 
     /**
-     * Retrieves all constructors from the specified class without scanning superclasses.
+     * Retrieves all constructors from the specified class with scanning superclasses.
      *
      * @param clazz the class whose constructors are to be retrieved
      * @return a collection of constructors from the class
      */
     public static Collection<Constructor<?>> getAllConstructors(Class<?> clazz) {
-        return getAllConstructors(clazz, false);
+        return getAllConstructors(clazz, true);
     }
 
     /**
