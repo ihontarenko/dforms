@@ -33,7 +33,7 @@ public class FormManagementService implements FormManagement {
         try {
             pipelineManager.runPipeline(DYNAMIC_FORM_HANDLER_PIPELINE, ctx);
         } catch (Exception e) {
-            throw new ApplicationException(e.getMessage());
+            throw new ApplicationException(e, e.getMessage());
         }
 
     }

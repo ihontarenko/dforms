@@ -3,7 +3,7 @@ package df.base.common.context;
 import java.util.HashMap;
 import java.util.Map;
 
-abstract public class AbstractVariablesContext implements VariablesContext {
+abstract public class AbstractVariablesContext extends AbstractContext implements VariablesContext {
 
     private final Map<Object, Object> variables = new HashMap<>();
 

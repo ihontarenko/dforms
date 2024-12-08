@@ -38,7 +38,7 @@ public class JdkProxy implements InvocationHandler, Proxy {
 
             returnValue = invocation.proceed();
         } catch (Throwable throwable) {
-            throw new ProxyInvocationException(throwable);
+            throw new ProxyInvocationException(throwable.getMessage(), throwable);
         }
 
         if (returnValue != null && returnValue == target && returnClass != Object.class && returnClass.isInstance(

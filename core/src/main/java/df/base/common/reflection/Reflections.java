@@ -280,7 +280,13 @@ abstract public class Reflections {
             method.setAccessible(true);
             return method.invoke(object, arguments);
         } catch (Throwable e) {
-            throw new ReflectionException(e);
+            Throwable targetException = e;
+
+            if (e instanceof InvocationTargetException invocationTargetException) {
+                targetException = invocationTargetException.getTargetException();
+            }
+
+            throw new ReflectionException(targetException.getMessage(), targetException);
         }
     }
 

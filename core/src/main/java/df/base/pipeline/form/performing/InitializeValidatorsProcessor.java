@@ -34,7 +34,7 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
                 String validatorName       = configName.substring(configName.indexOf(':') + 1);
                 Node   root                = parserService.parse(validatorParameters);
 
-                Map<String, Object> parameters = normalizeParameters(root, new EvaluationContext());
+                Map<String, Object> parameters = normalizeParameters(root, parserService.getEvaluationContext());
 
                 validation.addValidator(fieldName, resolveValidator(validatorName, parameters));
             }

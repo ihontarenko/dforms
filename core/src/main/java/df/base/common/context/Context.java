@@ -11,6 +11,10 @@ public interface Context extends BeanProvider, BeanProviderAware {
         this.setProperty(key, context.getProperty(key));
     }
 
+    default void copy(Context context) {
+        context.getProperties().forEach(this::setProperty);
+    }
+
     void setProperty(Object key, Object value);
 
     void setProperty(Object value);

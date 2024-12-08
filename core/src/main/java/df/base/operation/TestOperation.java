@@ -1,15 +1,18 @@
 package df.base.operation;
 
-import df.base.common.operation.Operation;
-import df.base.common.operation.OperationContext;
-import df.base.common.operation.annotation.OperationCommand;
+import df.base.common.operation.OperationRequest;
+import df.base.common.operation.Operator;
+import df.base.common.operation.annotation.Operation;
 
-import java.util.Map;
+@Operation(operation = "validation", actions = {
+        @Operation.Action("test"), @Operation.Action("test2")
+})
+public class TestOperation implements Operator<Object> {
 
-@OperationCommand(operation = "validation", command = "not_null")
-public class TestOperation implements Operation {
     @Override
-    public Object execute(Map<String, Object> parameters, OperationContext context) {
-        return null;
+    public Object handle(OperationRequest request) {
+        System.out.println("REQUEST: " + request);
+        return request.parameter("value");
     }
+
 }

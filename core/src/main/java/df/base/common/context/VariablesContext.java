@@ -24,6 +24,8 @@ public interface VariablesContext {
         setVariable(ClassUtils.getUserClass(requireNonNull(variable).getClass()), variable);
     }
 
+
+
     default void setVariables(Object... variables) {
         for (Object variable : variables) {
             setVariable(variable);

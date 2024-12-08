@@ -7,7 +7,9 @@ public class DefaultFallbackProcessor implements PipelineProcessor{
 
     @Override
     public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
-        throw new PipelineRuntimeException("ERROR DURING PIPELINE EXECUTION", context.getProperty("EXCEPTION"));
+        Throwable throwable = context.getProperty("EXCEPTION");
+        throw new PipelineRuntimeException("ERROR DURING PIPELINE EXECUTION WITH CAUSE: [%s]"
+                .formatted(throwable.getMessage()), throwable);
     }
 
 }

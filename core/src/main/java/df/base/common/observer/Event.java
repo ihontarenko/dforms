@@ -1,0 +1,9 @@
+package df.base.common.observer;
+
+public interface Event<T> {
+
+    String name();
+
+    T payload();
+
+}

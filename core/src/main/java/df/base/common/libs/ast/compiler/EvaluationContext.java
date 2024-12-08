@@ -1,12 +1,12 @@
 package df.base.common.libs.ast.compiler;
 
-import df.base.common.context.AbstractContext;
+import df.base.common.context.AbstractVariablesContext;
 import df.base.common.libs.ast.node.Node;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-public class EvaluationContext extends AbstractContext {
+public class EvaluationContext extends AbstractVariablesContext {
 
     public Method getFunction(String name) {
         Method function = getProperty(name);
@@ -36,14 +36,6 @@ public class EvaluationContext extends AbstractContext {
         }
 
         return variable;
-    }
-
-    public Object getVariable(String name) {
-        return getProperty(name);
-    }
-
-    public void setVariable(String name, Object value) {
-        setProperty(name, value);
     }
 
     public void addCompiler(Class<? extends Node> nodeType, Compiler<?> compiler) {

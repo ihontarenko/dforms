@@ -1,7 +1,5 @@
 package df.base.common.pipeline;
 
-import df.base.common.exception.ApplicationException;
-
 public class PipelineRuntimeException extends RuntimeException  {
 
     public PipelineRuntimeException() {

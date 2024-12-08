@@ -11,6 +11,8 @@ public class Example {
 
     public static void main(String[] args) {
 
+        OperationManager manager = OperationManagerFactory.createWithAnnotatedOperator();
+
         ParserService     parser  = new ParserService();
         EvaluationContext context = parser.getEvaluationContext();
 
@@ -27,21 +29,14 @@ public class Example {
         context.addCompiler(new HandlerDefinitionCompiler());
         context.setVariable("item", "test");
 
-        for (String definition : definitions) {
-            String[] parts   = definition.split("//");
-            String   handler = parts[0];
-            String   params  = parts[1];
+        System.out.println(
+                manager.execute("#validation:test//(max=100, value=#root.startsWith('t'))", "test").toString()
+        );
 
-            OperationDefinition operationDefinition = (OperationDefinition) parser.parse(handler).evaluate(context);
+        manager.execute("#validation:non_empty", "(value=#root.startsWith('t'), min=10)", "test");
 
-            operationDefinition.setParameters(params);
+        manager.execute("validation", "test2", "(value=#root.startsWith('t'), min=10)", "test");
 
-            System.out.println(operationDefinition);
-            System.out.println(operationDefinition.getOperation());
-            System.out.println(operationDefinition.getCommand());
-
-
-        }
     }
 
 }
