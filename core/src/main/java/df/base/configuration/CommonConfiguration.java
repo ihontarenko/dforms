@@ -3,19 +3,17 @@ package df.base.configuration;
 import df.base.Constants;
 import df.base.common.elements.NodeContext;
 import df.base.common.elements.RendererFactory;
-import df.base.common.i18n.Translator;
 import df.base.common.extensions.persistence.entity_graph.support.EntityGraphRepositoryFactoryBean;
+import df.base.common.i18n.Translator;
 import df.base.common.libs.ast.parser.ParserContext;
 import df.base.common.libs.ast.token.Tokenizer;
+import df.base.common.parser.DefaultTokenizer;
+import df.base.common.parser.TokenizerConfigurator;
+import df.base.common.parser.parser.ParserConfigurator;
 import df.base.common.pipeline.PipelineManager;
 import df.base.common.validation.custom.ValidationContextArgumentResolver;
-import df.base.common.parser.DefaultTokenizer;
-import df.base.common.parser.parser.ParserConfigurator;
-import df.base.common.parser.TokenizerConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -23,9 +21,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -34,9 +30,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Configuration
 @EnableAutoConfiguration
@@ -81,35 +75,6 @@ public class CommonConfiguration implements WebMvcConfigurer {
         interceptor.setParamName("locale");
 
         return interceptor;
-    }
-
-    @Bean("locales")
-    @Scope(ConfigurableListableBeanFactory.SCOPE_SINGLETON)
-    public Set<Locale> availableLocales(@Value("classpath:locale/**.properties") Resource[] resources) {
-        Set<Locale> locales = Arrays.stream(resources).map(resource -> {
-            String fileName = null;
-            try {
-                fileName = resource.getFile().getName();
-            } catch (IOException ignore) { }
-
-            Objects.requireNonNull(fileName);
-
-            int    end      = fileName.lastIndexOf('.');
-            int    start    = fileName.lastIndexOf('_');
-
-            if (start == -1) {
-                return null;
-            }
-
-            return Locale.forLanguageTag(fileName.substring(start + 1, end));
-        }).collect(Collectors.toSet());
-
-        locales.removeIf(Objects::isNull);
-        locales.add(Locale.getDefault());
-
-        LOGGER.info("AVAILABLE LOCALES: {}", locales);
-
-        return locales;
     }
 
     @Bean

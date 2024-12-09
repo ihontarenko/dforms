@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import static org.springframework.boot.SpringApplication.run;
 
-@SpringBootApplication
 @EnableJpaRepositories
+@SpringBootApplication
 public class DFWebApplication {
 
     public static void main(String... arguments) {

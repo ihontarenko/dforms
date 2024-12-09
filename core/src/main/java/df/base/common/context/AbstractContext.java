@@ -62,6 +62,7 @@ abstract public class AbstractContext implements Context {
     }
 
     @Override
+    @SuppressWarnings({"unchecked"})
     public <R> R getProperty(Object key, Object defaultValue) {
         return (R) properties.getOrDefault(key, defaultValue);
     }

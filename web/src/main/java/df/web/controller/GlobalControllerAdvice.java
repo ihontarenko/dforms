@@ -37,14 +37,12 @@ import static df.web.common.flash.FlashMessage.error;
 public class GlobalControllerAdvice {
 
     private final ApplicationProperties properties;
-    private final Set<Locale>           locales;
     private final BreadcrumbService     breadcrumbs;
     private final FlashMessageService   flash;
 
-    public GlobalControllerAdvice(ApplicationProperties properties, Set<Locale> locales,
-                                  BreadcrumbService breadcrumbs, FlashMessageService flash) {
+    public GlobalControllerAdvice(ApplicationProperties properties, BreadcrumbService breadcrumbs,
+                                  FlashMessageService flash) {
         this.properties = properties;
-        this.locales = locales;
         this.breadcrumbs = breadcrumbs;
         this.flash = flash;
     }
@@ -115,7 +113,6 @@ public class GlobalControllerAdvice {
     @ModelAttribute
     public void modelMapHandler(HttpServletRequest request, ModelMap map, @AuthenticationPrincipal UserInfo principal) {
         map.addAttribute("breadcrumbs", breadcrumbs.getBreadcrumbsForRequest(request));
-        map.addAttribute("locales", locales);
         map.addAttribute("principal", principal);
     }
 
