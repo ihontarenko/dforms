@@ -1,0 +1,13 @@
+services:
+    df-app:
+        container_name: df-app
+        build:
+            dockerfile: Dockerfile
+        image: df-app:latest
+        ports:
+            - 8080:8099
+        networks:
+            - df-network
+networks:
+    df-network:
+        driver: bridge

@@ -1,6 +1,6 @@
 FROM adoptopenjdk:16_36-jre-hotspot as builder
 
-ARG JAR_FILE=target/*.jar
+ARG JAR_FILE=web/target/*.jar
 COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
