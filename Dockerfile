@@ -1,14 +1,9 @@
-FROM adoptopenjdk:16_36-jre-hotspot as builder
-
-ARG JAR_FILE=web/target/*.jar
-COPY ${JAR_FILE} application.jar
-RUN java -Djarmode=layertools -jar application.jar extract
-
-FROM adoptopenjdk:16_36-jre-hotspot
-
-COPY --from=builder dependencies/ ./
-COPY --from=builder snapshot-dependencies/ ./
-COPY --from=builder spring-boot-loader/ ./
-COPY --from=builder application/ ./
-
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+FROM maven:3.9.5-eclipse-temurin-17 as build
+WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/*.jar application.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/application.jar"]
