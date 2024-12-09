@@ -8,6 +8,6 @@ RUN pwd
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 RUN ls -la
-COPY --from=build /app/target/*.jar application.jar
+COPY --from=build /app/web/target/*.jar application.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/application.jar"]
