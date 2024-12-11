@@ -30,7 +30,8 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 },
                 entityClass = Field.class,
                 message = "[NEW]: field with this name already taken",
-                applier = "!#hasText(id)"
+                applier = "!#hasText(id)",
+                groups = Operations.Primary.class
         ),
         // validation for updating existing field
         @JpaResource(
@@ -46,7 +47,8 @@ import static df.base.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                 },
                 entityClass = Field.class,
                 message = "[UPD]: field with this name already taken",
-                applier = "#hasText(id)"
+                applier = "#hasText(id)",
+                groups = Operations.Primary.class
         )
 })
 public class FieldDTO implements DTO {
