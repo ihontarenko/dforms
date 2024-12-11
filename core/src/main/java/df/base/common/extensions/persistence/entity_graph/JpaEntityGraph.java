@@ -21,14 +21,14 @@ public interface JpaEntityGraph {
 
     EntityGraphType entityGraphType();
 
-    record Dynamic(EntityGraphType type, List<String> attributes,
-                   Class<?> entity) implements JpaEntityGraph {
+    record DynamicEntityGraph(EntityGraphType type, List<String> attributes,
+                              Class<?> entity) implements JpaEntityGraph {
 
         public static Builder load() {
             return builder(EntityGraphType.LOAD);
         }
 
-        public static Dynamic load(String... attributes) {
+        public static DynamicEntityGraph load(String... attributes) {
             return load().attribute(attributes).build();
         }
 
@@ -36,7 +36,7 @@ public interface JpaEntityGraph {
             return builder(entity, EntityGraphType.LOAD);
         }
 
-        public static Dynamic load(Class<?> entity, String... attributes) {
+        public static DynamicEntityGraph load(Class<?> entity, String... attributes) {
             return builder(entity, EntityGraphType.LOAD).attribute(attributes).build();
         }
 
@@ -48,11 +48,11 @@ public interface JpaEntityGraph {
             return builder(entity, EntityGraphType.FETCH);
         }
 
-        public static Dynamic fetch(Class<?> entity, String... attributes) {
+        public static DynamicEntityGraph fetch(Class<?> entity, String... attributes) {
             return builder(entity, EntityGraphType.FETCH).attribute(attributes).build();
         }
 
-        public static Dynamic fetch(String... attributes) {
+        public static DynamicEntityGraph fetch(String... attributes) {
             return fetch().attribute(attributes).build();
         }
 
@@ -105,39 +105,34 @@ public interface JpaEntityGraph {
                 return this;
             }
 
-            public Dynamic build() {
-                return new Dynamic(type, attributes, entity);
+            public DynamicEntityGraph build() {
+                return new DynamicEntityGraph(type, attributes, entity);
             }
 
         }
-
-        @Override
-        public String toString() {
-            return "Dynamic[type=%s, attributes=%s]".formatted(type, attributes);
-        }
     }
 
-    record Named(String name, EntityGraphType type) implements JpaEntityGraph {
+    record NamedEntityGraph(String name, EntityGraphType type) implements JpaEntityGraph {
 
-        public Named(String name, EntityGraphType type) {
+        public NamedEntityGraph(String name, EntityGraphType type) {
             this.name = name;
             this.type = type;
         }
 
-        public static Named fetch(String name) {
-            return new Named(name, EntityGraphType.FETCH);
+        public static NamedEntityGraph fetch(String name) {
+            return new NamedEntityGraph(name, EntityGraphType.FETCH);
         }
 
-        public static Named load(String name) {
-            return new Named(name, EntityGraphType.LOAD);
+        public static NamedEntityGraph load(String name) {
+            return new NamedEntityGraph(name, EntityGraphType.LOAD);
         }
 
-        public static Named name(String name, EntityGraphType type) {
-            return new Named(name, type);
+        public static NamedEntityGraph name(String name, EntityGraphType type) {
+            return new NamedEntityGraph(name, type);
         }
 
-        public static Named name(String name) {
-            return new Named(name, EntityGraphType.FETCH);
+        public static NamedEntityGraph name(String name) {
+            return new NamedEntityGraph(name, EntityGraphType.FETCH);
         }
 
         @Override

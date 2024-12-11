@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class SimpleJpaEntityGraphRepository<T, ID> extends SimpleJpaRepository<T, ID>
         implements JpaEntityGraphRepository<T, ID> {
@@ -17,6 +18,11 @@ public class SimpleJpaEntityGraphRepository<T, ID> extends SimpleJpaRepository<T
 
     public SimpleJpaEntityGraphRepository(Class<T> domainClass, EntityManager entityManager) {
         super(domainClass, entityManager);
+    }
+
+    @Override
+    public Optional<T> findById(ID id, JpaEntityGraph entityGraph) {
+        return findById(id);
     }
 
     @Override

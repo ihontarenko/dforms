@@ -5,9 +5,7 @@ import df.base.dto.form.FieldDTO;
 import df.base.mapping.form.FieldMapper;
 import df.base.persistence.entity.form.Field;
 import df.base.persistence.entity.support.FieldStatus;
-import df.base.persistence.entity.support.UsageType;
 import df.base.persistence.exception.IllegalReferenceException;
-import df.base.persistence.exception.JpaResourceIneligibleException;
 import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.base.persistence.repository.form.FieldRepository;
 import df.base.service.CommonService;
@@ -21,9 +19,9 @@ import java.util.Optional;
 
 import static df.base.Messages.FORM_FIELD_NOT_FOUND;
 import static df.base.Messages.REQUIRED_ID_CANNOT_BE_NULL;
-import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Dynamic.fetch;
-import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Dynamic.load;
-import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Named.name;
+import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.DynamicEntityGraph.fetch;
+import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.DynamicEntityGraph.load;
+import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.NamedEntityGraph.name;
 import static df.base.persistence.entity.support.FieldStatus.ACTIVE;
 import static df.base.persistence.entity.support.UsageType.*;
 import static df.base.persistence.support.EntityGraphConstants.FORM_FIELD_FULL;
@@ -63,7 +61,7 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
 
     @Transactional(readOnly = true)
     public Optional<Field> getById(String id) {
-        return id == null ? Optional.empty() : repository.findById(id, JPA_ENTITY_GRAPH);
+        return id == null || id.isBlank() ? Optional.empty() : repository.findById(id, JPA_ENTITY_GRAPH);
     }
 
     @Transactional(readOnly = true)

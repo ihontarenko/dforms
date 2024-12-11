@@ -22,7 +22,7 @@ import java.util.Optional;
 
 import static df.base.Messages.ERROR_FORM_NOT_FOUND;
 import static df.base.Messages.ERROR_SEQUENCE_ORDER_NOT_FOUND;
-import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.Dynamic.fetch;
+import static df.base.common.extensions.persistence.entity_graph.JpaEntityGraph.DynamicEntityGraph.fetch;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -52,7 +52,7 @@ public class FormService implements RedirectAware {
 
     @Transactional(readOnly = true)
     public Form loadFormWithFields(String formId) {
-        JpaEntityGraph entityGraph  = fetch("fields", "fields.configs", "fields.attributes", "fields.options",
+        JpaEntityGraph entityGraph = fetch("fields", "fields.configs", "fields.attributes", "fields.options",
                                             "fields.children", "fields.children.configs", "fields.children.attributes",
                                             "fields.children.options");
         Optional<Form> optionalForm = repository.findById(formId, entityGraph);

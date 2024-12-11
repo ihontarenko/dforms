@@ -41,7 +41,9 @@ public class EntityManagerProxy implements MethodInterceptor {
         Object result = decorator.proceed();
 
         // catch create methods ["createQuery", "createNamedQuery"]
-        if (CREATE_QUERY_METHODS.contains(methodName) && result instanceof Query query && ObjectsHolder.exists(EntityGraphQueryHint.class)) {
+        if (CREATE_QUERY_METHODS.contains(methodName)
+                && result instanceof Query query
+                && ObjectsHolder.exists(EntityGraphQueryHint.class)) {
             // if applicable method name and result is Query and EntityGraphQueryHint is present then we proxy it
             ProxyFactory factory = new AnnotationProxyFactory(query, PackageCoreRoot.class);
             factory.addInterceptor(new QueryProxy());
