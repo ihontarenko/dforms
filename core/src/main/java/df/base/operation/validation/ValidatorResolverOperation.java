@@ -11,12 +11,7 @@ import java.util.Map;
 
 import static df.base.common.libs.jbm.ReflectionUtils.getClassFor;
 
-@Operation(operation = "validation", actions = {
-        @Operation.Action("not_null"),
-        @Operation.Action("empty_string"),
-        @Operation.Action("range"),
-        @Operation.Action("custom"),
-})
+@Operation(operation = "validation", actions = {"not_null", "empty_string", "range", "custom",})
 public class ValidatorResolverOperation implements Operator<Validator> {
 
     @Override

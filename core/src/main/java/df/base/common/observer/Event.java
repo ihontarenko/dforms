@@ -6,4 +6,6 @@ public interface Event<T> {
 
     T payload();
 
+    Class<? extends T> payloadType();
+
 }

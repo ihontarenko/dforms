@@ -1,7 +1,7 @@
 package df.base.persistence.entity.user;
 
 import df.base.common.extensions.hibernate.generator.PrefixedId;
-import df.base.persistence.GlobalEntityListener;
+import df.base.common.persistence.observer.GlobalEntityListener;
 import df.base.persistence.entity.EntityNameAware;
 import df.base.persistence.generator.NamedEntityIdGenerator;
 import df.base.persistence.support.EntityGraphConstants;

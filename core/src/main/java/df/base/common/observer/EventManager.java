@@ -1,5 +1,9 @@
 package df.base.common.observer;
 
+import df.base.common.observer.annotation.Listener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,38 +58,29 @@ import java.util.Map;
 final public class EventManager {
 
     /**
+     * A logger instance
+     */
+    public static final Logger LOGGER = LoggerFactory.getLogger(EventManager.class);
+
+    /**
+     * A singleton instance of manager with scanned annotated listeners
+     */
+    public static final EventManager INSTANCE = EventManagerFactory.create(Listener.class);
+
+    /**
      * A map that associates event types with lists of subscribed listeners.
      */
     private final Map<String, List<EventListener<?>>> listeners = new HashMap<>();
-
-    /**
-     * Constructs an EventManager with predefined event types.
-     * Each event type will be initialized with an empty list of listeners.
-     *
-     * @param eventTypes the types of events that the manager will handle.
-     */
-    public EventManager(String... eventTypes) {
-        for (String eventType : eventTypes) {
-            listeners.put(eventType, new ArrayList<>());
-        }
-    }
 
     /**
      * Subscribes a listener to a specific event type.
      *
      * @param eventType the type of event to subscribe to.
      * @param listener  the listener to be notified when the event occurs.
-     * @throws EventManagerException if the specified event type is not recognized.
      */
     public void subscribe(String eventType, EventListener<?> listener) {
-        List<EventListener<?>> eventListeners = listeners.get(eventType);
-
-        if (eventListeners == null) {
-            throw new EventManagerException(
-                    "The event type '%s' is not registered in this EventManager.".formatted(eventType));
-        }
-
-        eventListeners.add(listener);
+        LOGGER.info("SUBSCRIBE NEW LISTENER '{}' FOR EVENT '{}'", listener.name(), eventType);
+        listeners.computeIfAbsent(eventType, key -> new ArrayList<>()).add(listener);
     }
 
     /**
@@ -124,8 +119,13 @@ final public class EventManager {
         List<EventListener<?>> eventListeners = listeners.get(event.name());
         if (eventListeners != null) {
             for (EventListener<?> listener : eventListeners) {
-                EventListener<T> typedListener = (EventListener<T>) listener;
-                typedListener.update(event);
+                if (listener.supports(event.payloadType())) {
+                    EventListener<T> typedListener = (EventListener<T>) listener;
+                    LOGGER.info("FIRE EVENT '{}' FOR '{}'", event.name(), listener.name());
+                    typedListener.update(event);
+                } else {
+                    LOGGER.info("SKIP EVENT '{}({})' FOR '{}'", event.name(), event.payloadType(), listener.name());
+                }
             }
         }
     }

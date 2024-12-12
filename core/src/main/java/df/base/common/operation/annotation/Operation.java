@@ -8,15 +8,6 @@ public @interface Operation {
 
     String operation();
 
-    Action[] actions();
-
-    @Target({ElementType.TYPE})
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @interface Action {
-
-        String value();
-
-    }
+    String[] actions();
 
 }
