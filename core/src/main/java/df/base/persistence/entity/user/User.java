@@ -1,6 +1,7 @@
 package df.base.persistence.entity.user;
 
 import df.base.common.extensions.hibernate.generator.PrefixedId;
+import df.base.persistence.GlobalEntityListener;
 import df.base.persistence.entity.EntityNameAware;
 import df.base.persistence.generator.NamedEntityIdGenerator;
 import df.base.persistence.support.EntityGraphConstants;
@@ -18,6 +19,7 @@ import java.util.Set;
         name = EntityGraphConstants.USER_WITH_ROLES,
         attributeNodes = @NamedAttributeNode("roles")
 )
+@EntityListeners(GlobalEntityListener.class)
 public class User implements EntityNameAware {
 
     @Id

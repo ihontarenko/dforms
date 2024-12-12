@@ -4,7 +4,6 @@ import df.base.common.validation.custom.*;
 import df.base.dto.form.FieldDTO;
 import df.base.persistence.entity.support.ElementType;
 import df.base.persistence.entity.support.UsageType;
-import df.base.validation.custom.FieldErrorCode;
 
 import static df.base.persistence.support.EntityConstants.FIELD_FIELD_USAGE_TYPE;
 import static df.base.validation.custom.FieldErrorCode.INCOMPATIBLE_USAGE_TYPE;

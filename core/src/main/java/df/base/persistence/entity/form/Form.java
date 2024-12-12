@@ -1,6 +1,7 @@
 package df.base.persistence.entity.form;
 
 import df.base.common.extensions.hibernate.generator.PrefixedId;
+import df.base.persistence.GlobalEntityListener;
 import df.base.persistence.entity.user.User;
 import df.base.persistence.entity.support.FormStatus;
 import df.base.persistence.support.EntityConstants;
@@ -22,6 +23,7 @@ import static java.util.Objects.requireNonNull;
         name = EntityGraphConstants.FORM_WITH_USER,
         attributeNodes = @NamedAttributeNode("user")
 )
+@EntityListeners(GlobalEntityListener.class)
 public class Form implements EntityNameAware {
 
     @Id
