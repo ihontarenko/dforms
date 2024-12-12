@@ -74,7 +74,11 @@ public class MethodFinder extends AbstractFinder<Method> {
      * @return a collection of methods from the class
      */
     public static List<Method> getMethods(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
-        Matcher<Executable> matcher = nameEquals(methodName);
+        Matcher<Executable> matcher = Matcher.constant(true);
+
+        if (methodName != null) {
+            matcher = matcher.and(nameEquals(methodName));
+        }
 
         if (parameterTypes != null && parameterTypes.length != 0) {
             matcher = matcher.and(hasParameterCount(parameterTypes.length));

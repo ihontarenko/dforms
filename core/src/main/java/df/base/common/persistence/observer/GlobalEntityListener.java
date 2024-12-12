@@ -1,29 +1,31 @@
 package df.base.common.persistence.observer;
 
+import df.base.common.commans.CommandsManager;
+import df.base.common.commans.CommandsManagerFactory;
 import df.base.common.observer.EventManager;
-import df.base.common.operation.OperationManager;
-import df.base.common.operation.OperationManagerFactory;
 import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 
+import static df.base.common.commans.CommandExecutionContext.create;
+
 @SuppressWarnings({"unused"})
 public class GlobalEntityListener {
 
-    private final static String           OPERATION_PRE_UPDATE  = "#persistence:pre_update";
-    private final static String           OPERATION_PRE_PERSIST = "#persistence:pre_persist";
-    private final static Logger           LOGGER                = LoggerFactory.getLogger(GlobalEntityListener.class);
-    private final static String           LOGGER_TEMPLATE       = "EVENT '{}' CALLED FOR '{}' ENTITY";
-    private final        OperationManager operationManager      = OperationManagerFactory.createWithAnnotatedOperator();
-    private final        EventManager     eventManager          = EventManager.INSTANCE;
+    private final static String          OPERATION_PRE_UPDATE  = "#persistence:pre_update";
+    private final static String          OPERATION_PRE_PERSIST = "#persistence:pre_persist";
+    private final static Logger          LOGGER                = LoggerFactory.getLogger(GlobalEntityListener.class);
+    private final static String          LOGGER_TEMPLATE       = "EVENT '{}' CALLED FOR '{}' ENTITY";
+    private final        CommandsManager operationManager      = CommandsManagerFactory.create();
+    private final        EventManager    eventManager          = EventManager.INSTANCE;
 
     @PrePersist
     public void onPrePersist(Object entity) {
         log(PrePersist.class, entity);
         eventManager.notify(new PersistenceEvent(PrePersist.class, entity));
-        operationManager.execute(OPERATION_PRE_PERSIST, "", entity);
+        operationManager.execute(OPERATION_PRE_PERSIST, "", create("entity", entity));
     }
 
     @PostPersist
@@ -36,7 +38,7 @@ public class GlobalEntityListener {
     public void onPreUpdate(Object entity) {
         log(PreUpdate.class, entity);
         eventManager.notify(new PersistenceEvent(PreUpdate.class, entity));
-        operationManager.execute(OPERATION_PRE_UPDATE, "", entity);
+        operationManager.execute(OPERATION_PRE_UPDATE, "", create("entity", entity));
     }
 
     @PostUpdate

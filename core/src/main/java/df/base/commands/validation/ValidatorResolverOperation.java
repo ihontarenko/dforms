@@ -1,8 +1,9 @@
-package df.base.operation.validation;
+package df.base.commands.validation;
 
-import df.base.common.operation.OperationRequest;
-import df.base.common.operation.Operator;
-import df.base.common.operation.annotation.Operation;
+import df.base.common.commans.ActionHandler;
+import df.base.common.commans.CommandRequest;
+import df.base.common.commans.annotation.Action;
+import df.base.common.commans.annotation.Command;
 import df.base.common.validation.custom.BasicValidators;
 import df.base.common.validation.custom.Validator;
 import df.base.common.validation.custom.ValidatorConstraintFactory;
@@ -11,12 +12,12 @@ import java.util.Map;
 
 import static df.base.common.libs.jbm.ReflectionUtils.getClassFor;
 
-@Operation(operation = "validation", actions = {"not_null", "empty_string", "range", "custom",})
-public class ValidatorResolverOperation implements Operator<Validator> {
+@Command("validation")
+public class ValidatorResolverOperation implements ActionHandler<Validator> {
 
     @Override
-    public Validator handle(OperationRequest request) {
-        return resolveValidator(request.action(), request.parameters());
+    public Validator handle(CommandRequest request) {
+        return resolveValidator(request.route().action(), request.queryParameters());
     }
 
     private Validator resolveValidator(String validatorName, Map<String, Object> parameters) {
@@ -31,6 +32,11 @@ public class ValidatorResolverOperation implements Operator<Validator> {
         }
 
         return factory.createNewValidator(validatorClass, parameters);
+    }
+
+    @Action({"not_null", "empty_string", "range", "custom",})
+    public Validator createValidator(CommandRequest request) {
+        return resolveValidator(request.route().action(), request.queryParameters());
     }
 
 }

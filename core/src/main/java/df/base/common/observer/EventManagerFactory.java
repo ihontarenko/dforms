@@ -50,13 +50,12 @@ public class EventManagerFactory {
      * <p>Annotated classes must implement the {@link EventListener} interface. If a class does not
      * implement the required interface, an {@link ObserverException} is thrown.</p>
      *
-     * @param annotationType the annotation type to scan for event listeners.
      * @return a configured {@link EventManager} with registered listeners.
      * @throws ObserverException if an annotated class does not implement {@link EventListener}.
      */
-    public static EventManager create(Class<? extends Annotation> annotationType) {
+    public static EventManager create() {
         return create(eventManager -> {
-            for (Class<?> annotatedClass : ClassFinder.findAnnotatedClasses(annotationType, PackageCoreRoot.class)) {
+            for (Class<?> annotatedClass : ClassFinder.findAnnotatedClasses(Listener.class, PackageCoreRoot.class)) {
                 if (TypeMatchers.isSupertype(EventListener.class).matches(annotatedClass)) {
                     EventListener<?> eventListener = (EventListener<?>) instantiate(findFirstConstructor(annotatedClass));
                     Listener annotation = annotatedClass.getAnnotation(Listener.class);

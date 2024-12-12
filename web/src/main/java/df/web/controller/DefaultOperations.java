@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public interface DefaultOperations<DTO> {
     
     UnsupportedRequestMethod UNSUPPORTED_REQUEST_METHOD = new UnsupportedRequestMethod(
-            "This is the default operation and is not supported or not implemented yet");
+            "This is the default controller and is not supported or not implemented yet");
 
     default ModelAndView index() {
         throw UNSUPPORTED_REQUEST_METHOD;

@@ -1,5 +1,5 @@
 package df.base.common.interceptor;
 
-public interface Interceptor<C extends ProcessingContext, T> {
-    void intercept(T target, C context);
+public interface Interceptor<T> {
+    void intercept(T target, ChainExecutor chain);
 }

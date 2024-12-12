@@ -5,7 +5,6 @@ import df.base.common.context.*;
 public class DefaultPipelineContext extends AbstractContext implements
         PipelineContext, ArgumentsContext, ResultContext {
 
-    private boolean          stopped = false;
     private ResultContext    result;
     private ArgumentsContext arguments;
 
@@ -107,16 +106,6 @@ public class DefaultPipelineContext extends AbstractContext implements
     @Override
     public void cleanup() {
         getResultContext().cleanup();
-    }
-
-    @Override
-    public boolean isStopped() {
-        return stopped;
-    }
-
-    @Override
-    public void stopProcessing() {
-        this.stopped = true;
     }
 
     public static class DefaultPipelineResult extends AbstractResultContext {

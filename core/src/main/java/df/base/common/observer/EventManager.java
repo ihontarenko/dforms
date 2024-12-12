@@ -65,7 +65,7 @@ final public class EventManager {
     /**
      * A singleton instance of manager with scanned annotated listeners
      */
-    public static final EventManager INSTANCE = EventManagerFactory.create(Listener.class);
+    public static final EventManager INSTANCE = EventManagerFactory.create();
 
     /**
      * A map that associates event types with lists of subscribed listeners.

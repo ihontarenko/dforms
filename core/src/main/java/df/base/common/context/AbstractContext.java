@@ -12,6 +12,7 @@ abstract public class AbstractContext implements Context {
 
     private final Map<Object, Object> properties = new HashMap<>();
     private       BeanProvider        beanProvider;
+    private       boolean             stopped    = false;
 
     public AbstractContext() {
         this(null);
@@ -24,6 +25,11 @@ abstract public class AbstractContext implements Context {
     @Override
     public void setBeanProvider(BeanProvider beanProvider) {
         this.beanProvider = beanProvider;
+    }
+
+    @Override
+    public BeanProvider getBeanProvider() {
+        return beanProvider;
     }
 
     @Override
@@ -74,12 +80,12 @@ abstract public class AbstractContext implements Context {
 
     @Override
     public boolean isStopped() {
-        return false;
+        return stopped;
     }
 
     @Override
     public void stopProcessing() {
-
+        stopped = true;
     }
 
 }
