@@ -2,6 +2,7 @@ package df.base.common.commans;
 
 import df.base.common.commans.compiler.HandlerDefinitionCompiler;
 import df.base.common.context.Context;
+import df.base.common.context.provider.bean.SpringBeanProvider;
 import df.base.common.libs.ast.compiler.EvaluationContext;
 import df.base.common.libs.ast.node.Node;
 import df.base.common.parser.ParserService;
@@ -52,7 +53,7 @@ public final class CommandRequestBuilder {
         EvaluationContext evaluationContext   = createNewEvaluationContext(context);
 
         if (queryParametersNode.evaluate(evaluationContext) instanceof Map<?, ?> parsedParameters) {
-            return CommandRequest.create(commandRoute, (Map<String, Object>) parsedParameters);
+            return CommandRequest.create(commandRoute, (Map<String, Object>) parsedParameters, evaluationContext);
         }
 
         throw new RouteNotFoundException(
@@ -72,6 +73,7 @@ public final class CommandRequestBuilder {
 
         evaluationContext.copyFrom(context);
         evaluationContext.copyFrom(parser.getEvaluationContext());
+        evaluationContext.setBeanProvider(new SpringBeanProvider());
 
         return evaluationContext;
     }

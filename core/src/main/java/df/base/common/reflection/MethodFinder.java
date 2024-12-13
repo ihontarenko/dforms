@@ -25,6 +25,18 @@ public class MethodFinder extends AbstractFinder<Method> {
     }
 
     /**
+     * Retrieves all methods from the specified class.
+     *
+     * @param clazz the class whose methods are to be retrieved
+     * @param deepScan whether to scan superclasses for methods
+     * @return a collection of methods from the class
+     */
+    @Override
+    protected Collection<Method> getMembers(Class<?> clazz, boolean deepScan) {
+        return getAllMethods(clazz);
+    }
+
+    /**
      * Retrieves all methods from the specified class, with scanning superclasses or interfaces.
      *
      * @param clazz the class whose methods are to be retrieved

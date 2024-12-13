@@ -7,6 +7,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
 
+import static df.base.common.matcher.reflection.MethodMatchers.hasParameterTypes;
+import static df.base.common.matcher.reflection.MethodMatchers.isAbstract;
+
 abstract public class Reflections {
 
     private static final Map<Class<?>, Object> PRIMITIVES_DEFAULT_TYPE_VALUES = Map.of(
@@ -109,7 +112,7 @@ abstract public class Reflections {
      * }</pre>
      */
     public static Constructor<?> findFirstConstructor(Class<?> clazz, Class<?>... types) {
-        return new ConstructorFinder().findFirst(clazz, MethodMatchers.hasParameterTypes(types))
+        return new ConstructorFinder().findFirst(clazz, hasParameterTypes(types).and(isAbstract().not()))
                 .orElseThrow(() -> new ReflectionException("CONSTRUCTOR WITH (" + Arrays.toString(types) + ") PARAMETERS NOT FOUND"));
     }
 
@@ -317,7 +320,8 @@ abstract public class Reflections {
      * }</pre>
      */
     public static Optional<Method> getMethod(Class<?> targetClass, String methodName, Class<?>... types) {
-        return new MethodFinder().findFirst(targetClass, MethodMatchers.nameEquals(methodName).and(MethodMatchers.hasParameterTypes(types)));
+        return new MethodFinder().findFirst(targetClass, MethodMatchers.nameEquals(methodName).and(
+                hasParameterTypes(types)));
     }
 
     /**

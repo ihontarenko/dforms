@@ -7,7 +7,8 @@ import df.base.persistence.entity.form.Form;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Listener(events = {"PreUpdate"})
+@SuppressWarnings({"unused"})
+@Listener(events = {"pre_update"})
 public class FormEntityListener extends AbstractEventListener<Form> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(FormEntityListener.class);
@@ -18,7 +19,7 @@ public class FormEntityListener extends AbstractEventListener<Form> {
 
         System.out.println(form);
 
-        LOGGER.info("EVENT '{}' FOR FORM-ENTITY TRIGGERED", event.name());
+        LOGGER.info("EVENT '{}' FOR FIELD", event.name());
     }
 
     @Override

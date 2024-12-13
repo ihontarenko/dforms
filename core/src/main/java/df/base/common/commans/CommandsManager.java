@@ -149,4 +149,8 @@ public class CommandsManager {
         return invocable.invoke();
     }
 
+    public static CommandsManager getInstance() {
+        return INSTANCE;
+    }
+
 }

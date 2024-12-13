@@ -98,6 +98,18 @@ public class FieldFinder extends AbstractFinder<Field> {
     }
 
     /**
+     * Retrieves all fields from the specified class, including its superclasses.
+     *
+     * @param clazz the class whose fields are to be retrieved
+     * @param deepScan whether to scan superclasses for fields
+     * @return a collection of fields from the class and its superclasses
+     */
+    @Override
+    protected Collection<Field> getMembers(Class<?> clazz, boolean deepScan) {
+        return getAllFields(clazz, deepScan);
+    }
+
+    /**
      * Returns a {@link FieldFilter} to apply additional filtering criteria to fields of the specified class.
      *
      * @param clazz the class to filter fields from

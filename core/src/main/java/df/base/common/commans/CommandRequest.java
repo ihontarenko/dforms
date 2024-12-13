@@ -1,5 +1,7 @@
 package df.base.common.commans;
 
+import df.base.common.context.Context;
+
 import java.util.Map;
 
 /**
@@ -30,8 +32,8 @@ public interface CommandRequest {
      * @param queryParameters a map of query parameters to include in the request
      * @return a new {@code CommandRequest} instance
      */
-    static CommandRequest create(CommandRoute route, Map<String, Object> queryParameters) {
-        return new CommandRequestDefaultImplementation(route, queryParameters);
+    static CommandRequest create(CommandRoute route, Map<String, Object> queryParameters, Context context) {
+        return new CommandRequestDefaultImplementation(route, queryParameters, context);
     }
 
     /**
@@ -67,6 +69,13 @@ public interface CommandRequest {
     Map<String, Object> queryParameters();
 
     /**
+     * Retrieves the {@link Context} associated with this request.
+     *
+     * @return a {@link Context} object
+     */
+    Context context();
+
+    /**
      * Retrieves the value of a specific query parameter by name.
      *
      * @param parameterName the name of the query parameter
@@ -83,7 +92,7 @@ public interface CommandRequest {
      * @param route           the {@link CommandRoute} for the command
      * @param queryParameters the query parameters for the command
      */
-    record CommandRequestDefaultImplementation(CommandRoute route, Map<String, Object> queryParameters) implements CommandRequest {
+    record CommandRequestDefaultImplementation(CommandRoute route, Map<String, Object> queryParameters, Context context) implements CommandRequest {
 
     }
 }

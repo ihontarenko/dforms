@@ -26,6 +26,17 @@ public abstract class AbstractFinder<T extends Member> implements Finder<T> {
     protected abstract Collection<T> getMembers(Class<?> clazz);
 
     /**
+     * Returns a collection of members from the specified class.
+     * This method should be implemented by subclasses to define which members are to be searched
+     * (e.g., methods, fields, constructors).
+     *
+     * @param clazz the class whose members should be retrieved
+     * @param deepScan whether to scan superclasses for members
+     * @return a collection of members from the class
+     */
+    protected abstract Collection<T> getMembers(Class<?> clazz, boolean deepScan);
+
+    /**
      * Finds all members of the given class that match the specified {@link Matcher}.
      * This method iterates over all the members retrieved by {@link #getMembers(Class)} and applies the matcher.
      *
@@ -37,10 +48,20 @@ public abstract class AbstractFinder<T extends Member> implements Finder<T> {
     public List<T> find(Class<?> clazz, Matcher<? super T> matcher) {
         List<T> matchedMembers = new ArrayList<>();
 
+        // todo: optimize duplicates of code
         // Iterates through all members of the class and applies the matcher
         for (T member : getMembers(clazz)) {
             if (matcher.matches(member)) {
                 matchedMembers.add(member);
+            }
+        }
+
+        // Iterates through all members of the class including superclass
+        if (matchedMembers.size() == 0) {
+            for (T member : getMembers(clazz, true)) {
+                if (matcher.matches(member)) {
+                    matchedMembers.add(member);
+                }
             }
         }
 

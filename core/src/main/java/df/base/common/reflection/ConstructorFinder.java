@@ -10,15 +10,20 @@ import java.util.Set;
 /**
  * A class that finds constructors in a given class. It supports scanning superclasses
  * to retrieve inherited constructors if required.
- *
- * @example
- * <pre>{@code
- * ConstructorFinder finder = new ConstructorFinder();
- * finder.find(SomeClass.class, constructor -> true, context)
- *      .forEach(constructor -> System.out.println(constructor));
- * }</pre>
  */
 public class ConstructorFinder extends AbstractFinder<Constructor<?>> {
+
+    /**
+     * Retrieves all constructors from the specified class.
+     *
+     * @param clazz the class whose constructors are to be retrieved
+     * @param deepScan whether to scan superclasses for members
+     * @return a collection of constructors from the class
+     */
+    @Override
+    protected Collection<Constructor<?>> getMembers(Class<?> clazz, boolean deepScan) {
+        return getAllConstructors(clazz, deepScan);
+    }
 
     /**
      * Retrieves all constructors from the specified class.
@@ -28,7 +33,7 @@ public class ConstructorFinder extends AbstractFinder<Constructor<?>> {
      */
     @Override
     protected Collection<Constructor<?>> getMembers(Class<?> clazz) {
-        return getAllConstructors(clazz);
+        return getMembers(clazz, false);
     }
 
     /**
@@ -46,14 +51,14 @@ public class ConstructorFinder extends AbstractFinder<Constructor<?>> {
      * it recursively scans all superclasses to retrieve inherited constructors.
      *
      * @param clazz            the class whose constructors are to be retrieved
-     * @param scanSuperclasses whether to scan superclasses for constructors
+     * @param deepScan         whether to scan superclasses for constructors
      * @return a collection of constructors from the class and optionally from its superclasses
      */
-    public static Collection<Constructor<?>> getAllConstructors(Class<?> clazz, boolean scanSuperclasses) {
+    public static Collection<Constructor<?>> getAllConstructors(Class<?> clazz, boolean deepScan) {
         Set<Constructor<?>> constructors = new HashSet<>(Set.of(clazz.getDeclaredConstructors()));
 
         // Optionally scan superclasses to include their constructors
-        if (scanSuperclasses && clazz.getSuperclass() != null && clazz.getSuperclass() != Object.class) {
+        if (deepScan && clazz.getSuperclass() != null && clazz.getSuperclass() != Object.class) {
             constructors.addAll(getAllConstructors(clazz.getSuperclass(), true));
         }
 

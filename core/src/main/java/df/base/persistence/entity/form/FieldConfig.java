@@ -1,6 +1,7 @@
 package df.base.persistence.entity.form;
 
 import df.base.common.extensions.hibernate.generator.PrefixedId;
+import df.base.common.persistence.observer.GlobalEntityListener;
 import df.base.persistence.support.EntityConstants;
 import df.base.persistence.support.EntityGraphConstants;
 import df.base.persistence.entity.EntityNameAware;
@@ -13,6 +14,7 @@ import jakarta.persistence.*;
         name = EntityGraphConstants.FORM_FIELD_CONFIG_WITH_FIELD,
         attributeNodes = @NamedAttributeNode("field")
 )
+@EntityListeners(GlobalEntityListener.class)
 public class FieldConfig implements EntityNameAware {
 
     @Id
