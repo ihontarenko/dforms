@@ -2,7 +2,7 @@ package df.base.common.parser.evaluation;
 
 import df.base.common.invocable.Invocable;
 import df.base.common.invocable.InvokeResult;
-import df.base.common.invocable.ObjectMethod;
+import df.base.common.invocable.ObjectMethodInvocable;
 import df.base.common.libs.ast.compiler.Compiler;
 import df.base.common.libs.ast.compiler.EvaluationContext;
 import df.base.common.libs.ast.node.Node;
@@ -26,7 +26,7 @@ public class MethodCompiler implements Compiler<ObjectMethodNode> {
 
         Class<?>[] parametersTypes = Reflections.getArgumentsTypes(parameterValues.toArray(Object[]::new));
         Object     object          = ctx.requireVariable(node.getObjectName());
-        Invocable  invocable       = new ObjectMethod(object, node.getMethodName(), parametersTypes);
+        Invocable  invocable       = new ObjectMethodInvocable(object, node.getMethodName(), parametersTypes);
 
         invocable.addParameters(parameterValues);
 

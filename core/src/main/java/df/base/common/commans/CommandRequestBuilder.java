@@ -17,8 +17,8 @@ import java.util.Map;
  */
 public final class CommandRequestBuilder {
 
-    private final String definition;
-    private final String parameters;
+    private final String        definition;
+    private final String        parameters;
     private final ParserService parser = new ParserService();
 
     /**
@@ -46,10 +46,10 @@ public final class CommandRequestBuilder {
      * @throws RouteNotFoundException if parsing or evaluation of the parameters fails
      */
     public CommandRequest build(Context context) {
-        Node routeNode = parser.parse(definition);
-        CommandRoute commandRoute = (CommandRoute) routeNode.evaluate(parser.getEvaluationContext());
-        Node queryParametersNode = parser.parse(parameters);
-        EvaluationContext evaluationContext = createNewEvaluationContext(context);
+        Node              routeNode           = parser.parse(definition);
+        CommandRoute      commandRoute        = (CommandRoute) routeNode.evaluate(parser.getEvaluationContext());
+        Node              queryParametersNode = parser.parse(parameters);
+        EvaluationContext evaluationContext   = createNewEvaluationContext(context);
 
         if (queryParametersNode.evaluate(evaluationContext) instanceof Map<?, ?> parsedParameters) {
             return CommandRequest.create(commandRoute, (Map<String, Object>) parsedParameters);

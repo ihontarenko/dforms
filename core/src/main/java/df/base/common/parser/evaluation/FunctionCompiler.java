@@ -2,7 +2,7 @@ package df.base.common.parser.evaluation;
 
 import df.base.common.invocable.Invocable;
 import df.base.common.invocable.InvokeResult;
-import df.base.common.invocable.StaticMethod;
+import df.base.common.invocable.StaticMethodInvocable;
 import df.base.common.libs.ast.compiler.Compiler;
 import df.base.common.libs.ast.compiler.EvaluationContext;
 import df.base.common.parser.EvaluationException;
@@ -18,7 +18,7 @@ public class FunctionCompiler implements Compiler<FunctionNode> {
     public Object compile(FunctionNode node, EvaluationContext ctx) {
         List<?>   arguments = new ArrayList<>();
         Method    method    = ctx.getFunction(node.getMethodName());
-        Invocable invocable = new StaticMethod(method);
+        Invocable invocable = new StaticMethodInvocable(method);
 
         if (node.getArguments().evaluate(ctx) instanceof List<?> rawList) {
             arguments = rawList;

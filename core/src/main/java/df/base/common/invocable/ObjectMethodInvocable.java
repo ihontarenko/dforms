@@ -2,16 +2,16 @@ package df.base.common.invocable;
 
 import java.lang.reflect.Method;
 
-public class ObjectMethod extends AbstractInvocable {
+public class ObjectMethodInvocable extends AbstractInvocable {
 
     private final Object targetObject;
 
-    public ObjectMethod(Object targetObject, String methodName, Class<?>... parameterTypes) {
+    public ObjectMethodInvocable(Object targetObject, String methodName, Class<?>... parameterTypes) {
         super(targetObject.getClass(), methodName, parameterTypes);
         this.targetObject = targetObject;
     }
 
-    public ObjectMethod(Object targetObject, Method method) {
+    public ObjectMethodInvocable(Object targetObject, Method method) {
         super(method);
         this.targetObject = targetObject;
     }

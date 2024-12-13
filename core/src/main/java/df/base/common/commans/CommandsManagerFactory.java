@@ -4,7 +4,7 @@ import df.base.PackageCoreRoot;
 import df.base.common.commans.annotation.Action;
 import df.base.common.commans.annotation.Command;
 import df.base.common.invocable.Invocable;
-import df.base.common.invocable.ObjectMethod;
+import df.base.common.reflection.MethodFilter;
 
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
@@ -40,15 +40,18 @@ public class CommandsManagerFactory {
     public static CommandsManager create() {
         return create(manager -> {
             for (Class<?> annotatedClass : findAnnotatedClasses(Command.class, PackageCoreRoot.class)) {
-                Command commandAnnotation = annotatedClass.getAnnotation(Command.class);
-                Object commandInstance = instantiate(findFirstConstructor(annotatedClass));
+                Command      commandAnnotation = annotatedClass.getAnnotation(Command.class);
+                MethodFilter filter            = FINDER.filter(annotatedClass);
+                Object       commandInstance   = instantiate(findFirstConstructor(annotatedClass));
 
-                FINDER.filter(String.class, CommandRequest.class).filter(Action.class);
+                // build filter to find applicable method by signature and specific annotation
+                filter.parameterTypes(String.class, CommandRequest.class).annotated(Action.class);
 
-                for (Method method : FINDER.find(annotatedClass)) {
-                    Action actionAnnotation = method.getAnnotation(Action.class);
-                    Invocable invocable = new ObjectMethod(commandInstance, method);
+                for (Method method : filter.find()) {
+                    Action    actionAnnotation = method.getAnnotation(Action.class);
+                    Invocable invocable        = new HandlerExecutor(commandInstance, method);
 
+                    // bind the same invocable object to each of registered action
                     for (String action : actionAnnotation.value()) {
                         manager.register(commandAnnotation.value(), action, invocable);
                     }
@@ -64,8 +67,8 @@ public class CommandsManagerFactory {
      * @return a customized {@link CommandsManager} instance
      */
     public static CommandsManager create(Consumer<CommandsManager> configurator) {
-        CommandsManager operationManager = createDefault();
-        configurator.accept(operationManager);
-        return operationManager;
+        CommandsManager commandsManager = createDefault();
+        configurator.accept(commandsManager);
+        return commandsManager;
     }
 }

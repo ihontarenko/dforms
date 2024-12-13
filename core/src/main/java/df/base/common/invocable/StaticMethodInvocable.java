@@ -3,13 +3,13 @@ package df.base.common.invocable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-public class StaticMethod extends AbstractInvocable {
+public class StaticMethodInvocable extends AbstractInvocable {
 
-    public StaticMethod(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
+    public StaticMethodInvocable(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
         super(clazz, methodName, parameterTypes);
     }
 
-    public StaticMethod(Method method) {
+    public StaticMethodInvocable(Method method) {
         super(method);
     }
 

@@ -9,10 +9,10 @@ public class Example {
         CommandsManager manager = CommandsManager.INSTANCE;
 
         String request = "#validation/not_null";
-        String parameters = "(message=#root)";
+        String parameters = "(message=#var)";
 
-        System.out.println(manager.execute(request, parameters, create("root", "message")).toString());
-        System.out.println(manager.execute(request, parameters, create("root", "another message")).toString());
+        System.out.println(manager.execute(request, parameters, create("var", "message")).toString());
+        System.out.println(manager.execute(request, parameters, create("var", "another message")).toString());
 
     }
 
