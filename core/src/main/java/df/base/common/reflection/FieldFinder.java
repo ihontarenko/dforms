@@ -97,4 +97,14 @@ public class FieldFinder extends AbstractFinder<Field> {
         return getAllFields(clazz);
     }
 
+    /**
+     * Returns a {@link FieldFilter} to apply additional filtering criteria to fields of the specified class.
+     *
+     * @param clazz the class to filter fields from
+     * @return a {@link FieldFilter} instance for filtering fields
+     */
+    @Override
+    public FieldFilter filter(Class<?> clazz) {
+        return new FieldFilter(this, Matcher.constant(true), clazz);
+    }
 }

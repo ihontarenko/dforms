@@ -2,15 +2,8 @@ package df.base.common.reflection;
 
 import df.base.common.matcher.Matcher;
 
-import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static df.base.common.matcher.reflection.MethodMatchers.*;
-import static df.base.common.matcher.reflection.MethodMatchers.hasSoftParameterTypes;
+import java.util.*;
 
 /**
  * A class that finds methods in a given class. It supports scanning superclasses
@@ -74,20 +67,18 @@ public class MethodFinder extends AbstractFinder<Method> {
      * @return a collection of methods from the class
      */
     public static List<Method> getMethods(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
-        Matcher<Executable> matcher = Matcher.constant(true);
+        return FINDER.filter(clazz).parameterTypes(parameterTypes).methodName(methodName).find();
+    }
 
-        if (methodName != null) {
-            matcher = matcher.and(nameEquals(methodName));
-        }
-
-        if (parameterTypes != null && parameterTypes.length != 0) {
-            matcher = matcher.and(hasParameterCount(parameterTypes.length));
-            matcher = matcher.and(hasParameterTypes(parameterTypes).or(hasSoftParameterTypes(parameterTypes)));
-        }
-
-        matcher = matcher.and(isAbstract().not());
-
-        return FINDER.find(clazz, matcher);
+    /**
+     * Returns a {@link MethodFilter} to apply additional filtering criteria to methods of the specified class.
+     *
+     * @param clazz the class to filter members from
+     * @return a {@link Filter} instance for filtering members
+     */
+    @Override
+    public MethodFilter filter(Class<?> clazz) {
+        return new MethodFilter(this, Matcher.constant(true), clazz);
     }
 
 }

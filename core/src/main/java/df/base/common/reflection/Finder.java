@@ -7,47 +7,43 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface for finding class members (fields, methods, constructors)
- * that match specific conditions, represented by {@link Matcher}.
+ * Interface for finding and filtering reflection members in a class.
  *
- * @param <T> the type of member being searched (e.g., Field, Method, Constructor)
+ * The {@code Finder} interface provides methods for searching reflection members (e.g., methods, fields, constructors)
+ * based on a specified {@link Matcher}. It supports finding all matching members or just the first match.
+ * Additionally, it allows filtering members based on certain criteria.
+ *
+ * @param <T> the type of {@link Member} (e.g., {@link java.lang.reflect.Method}, {@link java.lang.reflect.Field})
  */
 public interface Finder<T extends Member> {
 
     /**
-     * Finds all members of the given class that match the specified {@link Matcher}.
+     * Finds all members of the specified class that match the given {@link Matcher}.
      *
-     * @param clazz   the class whose members are to be searched
-     * @param matcher the matcher to apply for filtering members
-     * @return a list of members that match the given conditions
-     * @example
-     * <pre>{@code
-     * Finder<Method> finder = new MethodFinder();
-     * Matcher<Method> matcher = MethodMatchers.isPublic();
-     * // iteration over all public methods
-     * finder.find(SomeClass.class, matcher, context)
-     *      .forEach(method -> System.out.println(method.getName()));
-     * }</pre>
+     * @param clazz the class to search for members in
+     * @param matcher the matcher used to filter the members
+     * @return a list of members matching the criteria
      */
     List<T> find(Class<?> clazz, Matcher<? super T> matcher);
 
     /**
-     * Finds the first member of the given class that matches the specified {@link Matcher}.
-     * This method returns an {@link Optional}, which will be empty if no match is found.
+     * Finds the first member of the specified class that matches the given {@link Matcher}.
+     * This method calls {@link #find(Class, Matcher)} and returns the first element in the list,
+     * if any match is found.
      *
-     * @param clazz   the class whose members are to be searched
-     * @param matcher the matcher to apply for filtering members
-     * @return an {@link Optional} containing the first matching member, or {@link Optional#empty()} if no match is found
-     * @example
-     * <pre>{@code
-     * // Example: Finding the first public method in a class
-     * Finder<Method> methodFinder = new MethodFinder();
-     * Optional<Method> firstPublicMethod = methodFinder.findFirst(SomeClass.class, MethodMatchers.isPublic(), context);
-     * firstPublicMethod.ifPresent(method -> System.out.println("Found method: " + method.getName()));
-     * }</pre>
+     * @param clazz the class to search for members in
+     * @param matcher the matcher used to filter the members
+     * @return an {@link Optional} containing the first matching member, or empty if no match is found
      */
     default Optional<T> findFirst(Class<?> clazz, Matcher<? super T> matcher) {
         return find(clazz, matcher).stream().findFirst();
     }
 
+    /**
+     * Returns a {@link Filter} to apply additional filtering criteria to members of the specified class.
+     *
+     * @param clazz the class to filter members from
+     * @return a {@link Filter} instance for filtering members
+     */
+    Filter<T> filter(Class<?> clazz);
 }

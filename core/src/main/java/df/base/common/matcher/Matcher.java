@@ -1,5 +1,8 @@
 package df.base.common.matcher;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 /**
  * A generic interface for matching items of type {@code T} against certain conditions.
  * This interface supports chaining of matchers using logical operators such as AND, OR, XOR, and NOT.
@@ -112,6 +115,26 @@ public interface Matcher<T> {
      */
     static <T> Matcher<T> and(Matcher<? super T> first, Matcher<? super T> second) {
         return new AndMatcher<>(first, second);
+    }
+
+    /**
+     * Combines two or more matchers using the logical AND operator.
+     * All matchers must return true for the final result to be true.
+     *
+     * @param matchers the array of matchers
+     * @return a new matcher that represents the logical AND of the two matchers
+     * @example
+     * <pre>{@code
+     * Matcher<String> startsWithA = item -> item.startsWith("A");
+     * Matcher<String> endsWithA = item -> item.endsWith("A");
+     * Matcher<String> endsWithZ = item -> item.endsWith("Z");
+     * Matcher<String> combinedMatcher = Matcher.and(startsWithA, endsWithA, endsWithZ);
+     * combinedMatcher.matches("AZ"); // returns false
+     * }</pre>
+     */
+    @SafeVarargs
+    static <T> Matcher<T> and(Matcher<? super T>... matchers) {
+        return (Matcher<T>) Arrays.stream(matchers).reduce(Matcher.constant(true), Matcher::and);
     }
 
     /**

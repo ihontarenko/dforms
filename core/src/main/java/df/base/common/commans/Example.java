@@ -8,12 +8,11 @@ public class Example {
 
         CommandsManager manager = CommandsManager.INSTANCE;
 
-        String request = "#validation/non_null";
+        String request = "#validation/not_null";
         String parameters = "(message=#root)";
 
-        System.out.println(
-                manager.execute(request, parameters, create("root", "test")).toString()
-        );
+        System.out.println(manager.execute(request, parameters, create("root", "message")).toString());
+        System.out.println(manager.execute(request, parameters, create("root", "another message")).toString());
 
     }
 

@@ -1,69 +1,71 @@
 package df.base.common.commans;
 
 import df.base.PackageCoreRoot;
-import df.base.common.matcher.reflection.TypeMatchers;
+import df.base.common.commans.annotation.Action;
 import df.base.common.commans.annotation.Command;
-import df.base.common.reflection.ClassFinder;
+import df.base.common.invocable.Invocable;
+import df.base.common.invocable.ObjectMethod;
 
+import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
 import static df.base.common.reflection.ClassFinder.findAnnotatedClasses;
+import static df.base.common.reflection.MethodFinder.FINDER;
 import static df.base.common.reflection.Reflections.findFirstConstructor;
 import static df.base.common.reflection.Reflections.instantiate;
 
+/**
+ * {@code CommandsManagerFactory} provides factory methods for creating and configuring {@link CommandsManager} instances.
+ * This class facilitates the registration of commands and actions based on annotated classes and methods.
+ */
 public class CommandsManagerFactory {
 
     /**
-     * Creates a default {@link CommandsManager} instance without any predefined operators.
+     * Creates a new {@link CommandsManager} with no pre-configured commands or actions.
      *
-     * @return a new, empty {@link CommandsManager} instance.
+     * @return a new {@link CommandsManager} instance
      */
     public static CommandsManager createDefault() {
         return new CommandsManager();
     }
 
     /**
-     * Creates an {@link CommandsManager} instance with operators registered via annotations.
+     * Creates a fully configured {@link CommandsManager} by scanning annotated classes and methods.
      *
-     * <p>This method scans classes for a specific annotation (@OperationCommand) and registers operators in the {@link CommandsManager}.
-     * It ensures that only classes that implement the {@link ActionHandler} interface are registered.</p>
+     * <p>Classes annotated with {@link Command} are scanned within the {@link PackageCoreRoot} package. Methods
+     * annotated with {@link Action} are then registered as actions for the respective command.</p>
      *
-     * <p>The classes are found using {@link ClassFinder} and are checked to match the {@link ActionHandler} type using {@link TypeMatchers}.</p>
-     *
-     * @return a new {@link CommandsManager} instance with annotated operators.
+     * @return a configured {@link CommandsManager} instance
      */
     public static CommandsManager create() {
         return create(manager -> {
             for (Class<?> annotatedClass : findAnnotatedClasses(Command.class, PackageCoreRoot.class)) {
-                if (TypeMatchers.isSupertype(ActionHandler.class).matches(annotatedClass)) {
-                    Command          annotation = annotatedClass.getAnnotation(Command.class);
-                    ActionHandler<?> operator   = (ActionHandler<?>) instantiate(findFirstConstructor(annotatedClass));
-//                    for (String action : annotation.actions()) {
-//                        manager.register(annotation.operation(), action, operator);
-//                    }
-                } else {
-                    throw new IllegalCommandClassImplementationException(
-                            "Annotated class-operator '%s' is required to implement the interface '%s'"
-                                    .formatted(annotatedClass, ActionHandler.class));
+                Command commandAnnotation = annotatedClass.getAnnotation(Command.class);
+                Object commandInstance = instantiate(findFirstConstructor(annotatedClass));
+
+                FINDER.filter(String.class, CommandRequest.class).filter(Action.class);
+
+                for (Method method : FINDER.find(annotatedClass)) {
+                    Action actionAnnotation = method.getAnnotation(Action.class);
+                    Invocable invocable = new ObjectMethod(commandInstance, method);
+
+                    for (String action : actionAnnotation.value()) {
+                        manager.register(commandAnnotation.value(), action, invocable);
+                    }
                 }
             }
         });
     }
 
     /**
-     * Creates a custom-configured {@link CommandsManager} instance using a provided configurator function.
+     * Creates a {@link CommandsManager} with custom configuration using the provided {@link Consumer}.
      *
-     * <p>The configurator function takes a default {@link CommandsManager} instance as input,
-     * applies custom configurations</p>
-     *
-     * @param configurator a function that configures an {@link CommandsManager} instance.
-     * @return a configured {@link CommandsManager} instance.
+     * @param configurator a {@link Consumer} that accepts a {@link CommandsManager} and performs custom configuration
+     * @return a customized {@link CommandsManager} instance
      */
     public static CommandsManager create(Consumer<CommandsManager> configurator) {
         CommandsManager operationManager = createDefault();
-
         configurator.accept(operationManager);
-
         return operationManager;
     }
 }

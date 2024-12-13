@@ -17,6 +17,12 @@ public interface Invocable {
 
     Collection<? extends MethodParameter> getParameters();
 
+    default void cleanupParameters() {
+        if (getParameters() != null) {
+            getParameters().clear();
+        }
+    }
+
     Object[] getPreparedParameters();
 
     MethodDescriptor getDescriptor();

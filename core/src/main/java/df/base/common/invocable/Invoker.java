@@ -7,6 +7,8 @@ import java.lang.reflect.Method;
 
 final public class Invoker {
 
+    public static final String ERROR_CODE = "INVOCATION_ERROR";
+
     public static InvokeResult invoke(Invocable invocable) {
         InvokeResult result = new InvokeResult();
 
@@ -14,13 +16,13 @@ final public class Invoker {
             Method method = invocable.getDescriptor().getNativeMethod();
             result.setReturnValue(method.invoke(invocable.getTarget(), invocable.getPreparedParameters()));
         } catch (IllegalAccessException | InvocationTargetException e) {
-            String exceptionMessage = e.getMessage();
+            Throwable exception = e;
 
-            if (exceptionMessage == null) {
-                exceptionMessage = e.getCause().getMessage();
+            if (exception.getMessage() == null) {
+                exception = e.getCause();
             }
 
-            result.addError(new ErrorDetails(null, exceptionMessage));
+            result.addError(new ErrorDetails(ERROR_CODE, exception.getMessage(), exception));
         }
 
         return result;

@@ -1,5 +1,7 @@
 package df.base.common.reflection;
 
+import df.base.common.matcher.Matcher;
+
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashSet;
@@ -51,11 +53,22 @@ public class ConstructorFinder extends AbstractFinder<Constructor<?>> {
         Set<Constructor<?>> constructors = new HashSet<>(Set.of(clazz.getDeclaredConstructors()));
 
         // Optionally scan superclasses to include their constructors
-        if (scanSuperclasses && clazz.getSuperclass() != null) {
+        if (scanSuperclasses && clazz.getSuperclass() != null && clazz.getSuperclass() != Object.class) {
             constructors.addAll(getAllConstructors(clazz.getSuperclass(), true));
         }
 
         return constructors;
+    }
+
+    /**
+     * Returns a {@link ConstructorFilter} to apply additional filtering criteria to constructors of the specified class.
+     *
+     * @param clazz the class to filter constructors from
+     * @return a {@link ConstructorFilter} instance for filtering constructors
+     */
+    @Override
+    public ConstructorFilter filter(Class<?> clazz) {
+        return new ConstructorFilter(this, Matcher.constant(true), clazz);
     }
 
 }

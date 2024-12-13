@@ -1,6 +1,5 @@
 package df.base.commands.validation;
 
-import df.base.common.commans.ActionHandler;
 import df.base.common.commans.CommandRequest;
 import df.base.common.commans.annotation.Action;
 import df.base.common.commans.annotation.Command;
@@ -13,12 +12,7 @@ import java.util.Map;
 import static df.base.common.libs.jbm.ReflectionUtils.getClassFor;
 
 @Command("validation")
-public class ValidatorResolverOperation implements ActionHandler<Validator> {
-
-    @Override
-    public Validator handle(CommandRequest request) {
-        return resolveValidator(request.route().action(), request.queryParameters());
-    }
+public class ValidatorResolverOperation {
 
     private Validator resolveValidator(String validatorName, Map<String, Object> parameters) {
         ValidatorConstraintFactory factory = ValidatorConstraintFactory.BASIC_FACTORY;
@@ -35,8 +29,8 @@ public class ValidatorResolverOperation implements ActionHandler<Validator> {
     }
 
     @Action({"not_null", "empty_string", "range", "custom",})
-    public Validator createValidator(CommandRequest request) {
-        return resolveValidator(request.route().action(), request.queryParameters());
+    public Validator createValidator(String action, CommandRequest request) {
+        return resolveValidator(action, request.queryParameters());
     }
 
 }

@@ -32,13 +32,6 @@ public abstract class AbstractFinder<T extends Member> implements Finder<T> {
      * @param clazz   the class whose members are to be searched
      * @param matcher the matcher to apply for filtering members
      * @return a list of members that match the given conditions
-     * @example
-     * <pre>{@code
-     * // Example: Finding all public methods in a class
-     * Finder<Method> methodFinder = new MethodFinder();
-     * List<Method> publicMethods = methodFinder.find(SomeClass.class, MethodMatchers.isPublic(), context);
-     * publicMethods.forEach(method -> System.out.println(method.getName()));
-     * }</pre>
      */
     @Override
     public List<T> find(Class<?> clazz, Matcher<? super T> matcher) {
