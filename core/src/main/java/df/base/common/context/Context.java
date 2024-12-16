@@ -19,6 +19,10 @@ public interface Context extends BeanProvider, BeanProviderAware {
 
     void setProperty(Object key, Object value);
 
+    default void setProperties(Map<Object, Object> properties) {
+        properties.forEach(this::setProperty);
+    }
+
     void setProperty(Object value);
 
     <R> R getProperty(Object key);

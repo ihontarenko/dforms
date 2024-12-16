@@ -69,6 +69,13 @@ public interface CommandRequest {
     Map<String, Object> queryParameters();
 
     /**
+     * Add the extra query parameters associated with this request.
+     */
+    default void queryParameters(Map<String, Object> parameters) {
+        queryParameters().putAll(parameters);
+    }
+
+    /**
      * Retrieves the {@link Context} associated with this request.
      *
      * @return a {@link Context} object
@@ -81,8 +88,8 @@ public interface CommandRequest {
      * @param parameterName the name of the query parameter
      * @return the value of the specified query parameter, or {@code null} if not present
      */
-    default Object parameter(String parameterName) {
-        return queryParameters().get(parameterName);
+    default <T> T queryParameter(String parameterName) {
+        return (T) queryParameters().get(parameterName);
     }
 
     /**

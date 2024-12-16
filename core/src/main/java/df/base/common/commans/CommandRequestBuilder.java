@@ -53,6 +53,7 @@ public final class CommandRequestBuilder {
         EvaluationContext evaluationContext   = createNewEvaluationContext(context);
 
         if (queryParametersNode.evaluate(evaluationContext) instanceof Map<?, ?> parsedParameters) {
+            evaluationContext.setProperties((Map<Object, Object>) parsedParameters);
             return CommandRequest.create(commandRoute, (Map<String, Object>) parsedParameters, evaluationContext);
         }
 

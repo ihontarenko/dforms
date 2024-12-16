@@ -14,7 +14,7 @@ import java.util.Map;
 import static df.base.common.commans.CommandExecutionContext.create;
 
 @SuppressWarnings({"unused"})
-@Listener(events = {"pre_update"})
+@Listener(events = {"pre_update", "pre_persist"})
 public class FieldConfigEntityListener extends AbstractEventListener<FieldConfig> {
 
     private final static Logger          LOGGER          = LoggerFactory.getLogger(FieldConfigEntityListener.class);
@@ -22,8 +22,8 @@ public class FieldConfigEntityListener extends AbstractEventListener<FieldConfig
 
     @Override
     public void update(Event<FieldConfig> event) {
-        Context context = create(Map.of("c", event.payload(), "manager", commandsManager));
-        commandsManager.execute("#config/process", "(config=#c, manager=#manager)", context);
+        Context context = create(Map.of("entity", event.payload(), "manager", commandsManager));
+        commandsManager.execute("#config/process", "(entity=#entity, manager=#manager)", context);
     }
 
     @Override
