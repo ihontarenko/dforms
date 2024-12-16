@@ -5,6 +5,7 @@ import df.base.common.commans.annotation.Action;
 import df.base.common.commans.annotation.Command;
 
 @Command("config")
+@SuppressWarnings({"unused"})
 public class FieldConfigurationProcess {
 
     @Action({"process"})
