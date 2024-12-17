@@ -1,7 +1,7 @@
 package df.base.common.extensions.hibernate.generator;
 
-import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.engine.jdbc.internal.FormatStyle;
+import org.hibernate.engine.jdbc.spi.JdbcCoordinator;
 import org.hibernate.engine.jdbc.spi.SqlStatementLogger;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerationException;
@@ -23,7 +23,6 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
     private final IdPrefixGenerator                  generator;
     private final Class<? extends IdPrefixGenerator> prefixGenerator;
     private       SqlStatementLogger                 logger;
-    private       ConnectionProvider                 connectionProvider;
 
     public PrefixedTableSequenceGenerator(PrefixedId annotation) {
         this.annotation = annotation;
@@ -33,29 +32,28 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
 
     public void configure(Type type, Properties parameters, ServiceRegistry serviceRegistry) {
         logger = serviceRegistry.getService(SqlStatementLogger.class);
-        connectionProvider = serviceRegistry.getService(ConnectionProvider.class);
     }
 
     @Override
     public Object generate(SharedSessionContractImplementor session, Object object) {
         try {
-            Connection       connection = connectionProvider.getConnection();
-            GeneratorContext context    = GeneratorContext.create(annotation);
+            GeneratorContext context = GeneratorContext.create(annotation);
 
             generator.configure(context, object);
 
-            ensureSequenceTableExists(context);
+//            ensureSequenceTableExists(context);
 
             LOGGER.info("Fetching next value from sequence table: {}", context.tableName());
 
-            String            select    = getSelectQuery(context);
-            PreparedStatement statement = connection.prepareStatement(select);
+            JdbcCoordinator   jdbcCoordinator = session.getJdbcCoordinator();
+            String            select          = getSelectQuery(context);
+            PreparedStatement statement       = jdbcCoordinator.getStatementPreparer().prepareStatement(select);
             long              id;
 
             statement.setString(1, context.sequenceName);
             logger.logStatement(select, FormatStyle.BASIC.getFormatter());
 
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = jdbcCoordinator.getResultSetReturn().extract( statement, select );
 
             if (resultSet.next()) {
                 id = resultSet.getLong(1);
@@ -64,7 +62,7 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
                 String update = getUpdateQuery(context);
                 logger.logStatement(update, FormatStyle.BASIC.getFormatter());
 
-                statement = connection.prepareStatement(update);
+                statement = jdbcCoordinator.getStatementPreparer().prepareStatement(update);
                 statement.setLong(1, id + context.incrementBy);
                 statement.setLong(2, id);
                 statement.setString(3, context.sequenceName);
@@ -78,7 +76,7 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
                 String insert = getInsertQuery(context);
                 logger.logStatement(insert, FormatStyle.BASIC.getFormatter());
 
-                statement = connection.prepareStatement(insert);
+                statement = jdbcCoordinator.getStatementPreparer().prepareStatement(insert);
                 statement.setString(1, context.sequenceName);
                 statement.setLong(2, context.initialValue + context.incrementBy);
                 statement.executeUpdate();
@@ -107,8 +105,8 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
         }
     }
 
-    private void ensureSequenceTableExists(GeneratorContext context) throws SQLException {
-        Connection       connection = connectionProvider.getConnection();
+    /*private void ensureSequenceTableExists(GeneratorContext context) throws SQLException {
+        JdbcCoordinator   jdbcCoordinator = session.getJdbcCoordinator();
         DatabaseMetaData meta       = connection.getMetaData();
         ResultSet        tables     = meta.getTables(null, null, context.tableName(), new String[]{"TABLE"});
 
@@ -121,7 +119,7 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
                 LOGGER.info("Created table {}.", context.tableName);
             }
         }
-    }
+    }*/
 
     protected String getSelectQuery(GeneratorContext context) {
         return "SELECT %s FROM %s WHERE %s=?"

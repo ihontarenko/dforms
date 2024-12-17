@@ -26,7 +26,7 @@ endpoints:
 # Spring
 spring:
   profiles:
-    active: local
+    active: public
   application:
     admin:
       enabled: false
