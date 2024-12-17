@@ -6,7 +6,7 @@ import java.lang.reflect.Constructor;
 
 public class ConstructorFilter extends AbstractFilter<Constructor<?>> {
 
-    public ConstructorFilter(Finder<Constructor<?>> finder, Matcher<Constructor<?>> matcher, Class<?> type) {
+    public ConstructorFilter(MemberFinder<Constructor<?>> finder, Matcher<Constructor<?>> matcher, Class<?> type) {
         super(finder, matcher, type);
     }
 

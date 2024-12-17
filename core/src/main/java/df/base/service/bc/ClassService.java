@@ -2,9 +2,11 @@ package df.base.service.bc;
 
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.reflection.ClassMatchers;
+import df.base.common.reflection.Reflections;
 import df.base.dto.reflection.ClassDTO;
-import df.base.dto.reflection.ClassListDTO;
+import df.base.dto.reflection.ClassSetDTO;
 import df.base.dto.reflection.MethodDTO;
+import df.base.dto.reflection.MethodSetDTO;
 import df.base.mapping.reflection.ClassMapper;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toSet;
 
 @Service
 public class ClassService {
@@ -28,47 +28,43 @@ public class ClassService {
     }
 
     public ClassDTO getClass(String className) {
-        try {
-            return classMapper.map(Class.forName(className));
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return classMapper.map(Reflections.getClassFor(className));
     }
 
-    public Set<ClassDTO> findAnnotatedClasses(Class<? extends Annotation> annotation) {
+    public ClassSetDTO findAnnotatedClasses(Class<? extends Annotation> annotation) {
         return mapClasses(repository.findClasses(ClassMatchers.isAnnotatedWith(annotation)));
     }
 
-    public Set<ClassDTO> findClassesByName(String name) {
+    public ClassSetDTO findClassesByName(String name) {
         return mapClasses(repository.findClasses(name == null ? Matcher.constant(false) : ClassMatchers.nameContains(name)));
     }
 
-    public Set<ClassDTO> findAnnotations() {
+    public ClassSetDTO findAnnotations() {
         return mapClasses(repository.findClasses(ClassMatchers.isAnnotation()));
     }
 
-    public Set<ClassDTO> findPublicClasses() {
+    public ClassSetDTO findPublicClasses() {
         return mapClasses(repository.findClasses(ClassMatchers.isPublic()));
     }
 
-    public Set<ClassDTO> findEnums() {
+    public ClassSetDTO findEnums() {
         return mapClasses(repository.findClasses(ClassMatchers.isEnum()));
     }
 
-    public Set<ClassDTO> findImplementations(Class<?> interfaceClass) {
+    public ClassSetDTO findImplementations(Class<?> interfaceClass) {
         return mapClasses(repository.findClasses(ClassMatchers.implementsInterface(interfaceClass).and(ClassMatchers.isAbstract().not())));
     }
 
-    public ClassListDTO mapClasses(Set<Class<?>> classes) {
-        return classes.stream().map(classMapper::map).collect(ClassListDTO::new, Set::add, AbstractCollection::addAll);
+    public ClassSetDTO mapClasses(Set<Class<?>> classes) {
+        return classes.stream().map(classMapper::map).collect(ClassSetDTO::new, Set::add, AbstractCollection::addAll);
     }
 
-    public Map<String, Set<ClassDTO>> groupedClasses(Set<ClassDTO> classes, Function<? super ClassDTO, String> classifier) {
-        return classes.stream().collect(Collectors.groupingBy(classifier, Collectors.toSet()));
+    public Map<String, ClassSetDTO> groupedClasses(ClassSetDTO classes, Function<? super ClassDTO, String> classifier) {
+        return classes.stream().collect(Collectors.groupingBy(classifier, Collectors.toCollection(ClassSetDTO::new)));
     }
 
-    public Map<String, Set<MethodDTO>> groupedMethods(Set<MethodDTO> methods, Function<? super MethodDTO, String> classifier) {
-        return methods.stream().collect(Collectors.groupingBy(classifier, Collectors.toSet()));
+    public Map<String, MethodSetDTO> groupedMethods(MethodSetDTO methods, Function<? super MethodDTO, String> classifier) {
+        return methods.stream().collect(Collectors.groupingBy(classifier, Collectors.toCollection(MethodSetDTO::new)));
     }
 
 }

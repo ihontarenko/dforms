@@ -8,18 +8,18 @@ import java.util.stream.Stream;
 
 public class MethodMapper implements Mapper<Method, MethodDTO> {
 
-    private final ClassMapper classMapper = new ClassMapper();
+    private static final ClassMapper CLASS_MAPPER = new ClassMapper();
 
     @Override
     public MethodDTO map(Method source) {
         MethodDTO methodDTO = new MethodDTO();
 
-        methodDTO.setDeclaringClass(classMapper.map(source.getDeclaringClass()));
+        methodDTO.setDeclaringClass(CLASS_MAPPER.map(source.getDeclaringClass()));
         methodDTO.setName(source.getName());
         methodDTO.setNativeMethod(source);
         methodDTO.setNativeClass(source.getDeclaringClass());
 
-        Stream.of(source.getParameterTypes()).map(classMapper::map)
+        Stream.of(source.getParameterTypes()).map(CLASS_MAPPER::map)
                 .forEach(methodDTO::addParameterType);
 
         return methodDTO;

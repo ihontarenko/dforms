@@ -15,7 +15,7 @@ import java.util.Optional;
  *
  * @param <T> the type of {@link Member} (e.g., {@link java.lang.reflect.Method}, {@link java.lang.reflect.Field})
  */
-public interface Finder<T extends Member> {
+public interface MemberFinder<T extends Member> {
 
     /**
      * Finds all members of the specified class that match the given {@link Matcher}.

@@ -33,8 +33,8 @@ public class FieldFinder extends AbstractFinder<Field> {
      */
     @SafeVarargs
     public static Field[] getAnnotatedWith(Class<?> clazz, Class<? extends Annotation>... annotations) {
-        Finder<Field> finder = new FieldFinder();
-        Matcher<Field> matcher = Matcher.constant(false);
+        MemberFinder<Field> finder  = new FieldFinder();
+        Matcher<Field>      matcher = Matcher.constant(false);
 
         // Combine matchers for each annotation
         for (Class<? extends Annotation> annotation : annotations) {

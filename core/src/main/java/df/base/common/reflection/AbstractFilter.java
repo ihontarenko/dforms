@@ -23,7 +23,7 @@ import java.util.List;
 abstract public class AbstractFilter<T extends Member> implements Filter<T> {
 
     /** The finder used to locate members. */
-    protected final Finder<T> finder;
+    protected final MemberFinder<T> finder;
 
     /** The matcher used to apply filtering criteria. */
     protected Matcher<T> matcher;
@@ -34,11 +34,11 @@ abstract public class AbstractFilter<T extends Member> implements Filter<T> {
     /**
      * Constructs a new {@code AbstractFilter} with the given parameters.
      *
-     * @param finder the {@link Finder} to be used for finding members
+     * @param finder the {@link MemberFinder} to be used for finding members
      * @param matcher the {@link Matcher} to be applied to the members
      * @param type the class type to filter members from
      */
-    public AbstractFilter(Finder<T> finder, Matcher<T> matcher, Class<?> type) {
+    public AbstractFilter(MemberFinder<T> finder, Matcher<T> matcher, Class<?> type) {
         this.finder = finder;
         this.matcher = matcher;
         this.type = type;
@@ -47,7 +47,7 @@ abstract public class AbstractFilter<T extends Member> implements Filter<T> {
     /**
      * Finds all members of the specified type that match the given matcher.
      *
-     * This method uses the provided {@link Finder} to search for members in the specified class type and filters
+     * This method uses the provided {@link MemberFinder} to search for members in the specified class type and filters
      * them using the current {@link Matcher}.
      *
      * @return a list of matching members

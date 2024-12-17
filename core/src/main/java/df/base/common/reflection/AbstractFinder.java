@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @param <T> the type of member being searched (e.g., Field, Method, Constructor)
  */
-public abstract class AbstractFinder<T extends Member> implements Finder<T> {
+public abstract class AbstractFinder<T extends Member> implements MemberFinder<T> {
 
     /**
      * Returns a collection of members from the specified class.

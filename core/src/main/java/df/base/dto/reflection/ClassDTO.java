@@ -6,6 +6,7 @@ import java.util.List;
 public class ClassDTO {
 
     private boolean         undefinedDependencies = false;
+    private PackageDTO      packageDTO;
     private String          shortName;
     private String          fullName;
     private Class<?>        nativeClass;
@@ -66,5 +67,13 @@ public class ClassDTO {
 
     public void setUndefinedDependencies(boolean undefinedDependencies) {
         this.undefinedDependencies = undefinedDependencies;
+    }
+
+    public PackageDTO getPackage() {
+        return packageDTO;
+    }
+
+    public void setPackage(PackageDTO packageDTO) {
+        this.packageDTO = packageDTO;
     }
 }

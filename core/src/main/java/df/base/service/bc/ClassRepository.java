@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class ClassRepository {
-
-    private final Class<?>[] baseClasses;
+public record ClassRepository(Class<?>... baseClasses) {
 
     public ClassRepository(@Qualifier("baseClasses") Class<?>... baseClasses) {
         this.baseClasses = baseClasses;

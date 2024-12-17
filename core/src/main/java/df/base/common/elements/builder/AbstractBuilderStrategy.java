@@ -10,7 +10,7 @@ abstract public class AbstractBuilderStrategy implements NodeBuilderStrategy {
     abstract protected void initialize();
 
     @Override
-    public void setBuilder(Class<?> classType, NodeBuilder<?> builder) {
+    public <T> void setBuilder(Class<T> classType, NodeBuilder<? extends T> builder) {
         this.builders.put(classType, builder);
     }
 

@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 
 public class FieldFilter extends AbstractFilter<Field> {
 
-    public FieldFilter(Finder<Field> finder, Matcher<Field> matcher, Class<?> type) {
+    public FieldFilter(MemberFinder<Field> finder, Matcher<Field> matcher, Class<?> type) {
         super(finder, matcher, type);
     }
 

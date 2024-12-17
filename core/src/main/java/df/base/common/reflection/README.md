@@ -96,12 +96,10 @@ public class MyMemberFinder extends AbstractFinder<Member> {
 The `Finder<T extends Member>` interface allows for searching different types of class members.
 
 ```java
-import df.base.common.reflection.Finder;
-import java.lang.reflect.Method;
-import java.util.Optional;
 
-Finder<Method> methodFinder = new MethodFinder();
-Optional<Method> method = methodFinder.findFirst(MyClass.class, MethodMatchers.isPublic(), MatchContext.createDefault());
+
+Finder<Method> methodFinder=new MethodFinder();
+        Optional<Method> method=methodFinder.findFirst(MyClass.class,MethodMatchers.isPublic(),MatchContext.createDefault());
 ```
 
 ### 6. Working with `JavaTypes`

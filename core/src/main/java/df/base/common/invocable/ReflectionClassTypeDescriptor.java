@@ -3,7 +3,7 @@ package df.base.common.invocable;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.reflection.FieldMatchers;
 import df.base.common.reflection.FieldFinder;
-import df.base.common.reflection.Finder;
+import df.base.common.reflection.MemberFinder;
 import df.base.common.reflection.MethodFinder;
 
 import java.lang.reflect.Field;
@@ -53,8 +53,8 @@ public class ReflectionClassTypeDescriptor implements ClassTypeDescriptor {
 
     @Override
     public FieldDescriptor getField(String name) {
-        Matcher<Field> matcher = FieldMatchers.nameEquals(name);
-        Finder<Field>  finder  = new FieldFinder();
+        Matcher<Field>      matcher = FieldMatchers.nameEquals(name);
+        MemberFinder<Field> finder  = new FieldFinder();
 
         Optional<Field> optional = finder.findFirst(getNativeClass(), matcher);
         Field field = optional.orElseThrow(() -> new NoSuchFieldDescriptorException(

@@ -1,8 +1,7 @@
 package df.base.html.bean_console;
 
 import df.base.common.elements.builder.AbstractBuilderStrategy;
-import df.base.dto.reflection.ClassDTO;
-import df.base.dto.reflection.ClassListDTO;
+import df.base.dto.reflection.*;
 
 public class ClassBuilderStrategy extends AbstractBuilderStrategy {
 
@@ -12,8 +11,12 @@ public class ClassBuilderStrategy extends AbstractBuilderStrategy {
 
     @Override
     protected void initialize() {
-        setBuilder(ClassListDTO.class, new ClassListBuilder());
         setBuilder(ClassDTO.class, new ClassTypeBuilder());
+        setBuilder(ClassSetDTO.class, new ClassListBuilder());
+        setBuilder(MethodDTO.class, new MethodItemBuilder());
+        setBuilder(MethodSetDTO.class, new MethodSetBuilder());
+        setBuilder(FieldDTO.class, new FieldItemBuilder());
+        setBuilder(FieldSetDTO.class, new FieldSetBuilder());
     }
 
 }

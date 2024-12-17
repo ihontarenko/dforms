@@ -28,11 +28,11 @@ public class MethodFilter extends AbstractFilter<Method> {
     /**
      * Constructs a new {@code MethodFilter} with the given parameters.
      *
-     * @param finder the {@link Finder} to be used for finding methods
+     * @param finder the {@link MemberFinder} to be used for finding methods
      * @param matcher the {@link Matcher} to be applied to the methods
      * @param type the class type to filter methods from
      */
-    public MethodFilter(Finder<Method> finder, Matcher<Method> matcher, Class<?> type) {
+    public MethodFilter(MemberFinder<Method> finder, Matcher<Method> matcher, Class<?> type) {
         super(finder, matcher, type);
     }
 
