@@ -6,12 +6,8 @@ import java.lang.annotation.Annotation;
 
 public class PersistenceEvent extends AbstractEvent<Object> {
 
-    public PersistenceEvent(Class<? extends Annotation> eventType, Object payload) {
-        super(eventType.getSimpleName(), payload);
-    }
-
-    public PersistenceEvent(String name, Object payload) {
-        super(name, payload);
+    public PersistenceEvent(String name, Object payload, Object caller) {
+        super(name, payload, caller);
     }
 
 }

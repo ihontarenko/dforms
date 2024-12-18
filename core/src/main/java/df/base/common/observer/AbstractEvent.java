@@ -6,10 +6,16 @@ abstract public class AbstractEvent<T> implements Event<T> {
 
     protected final String name;
     protected final T      payload;
+    protected final Object caller;
 
-    public AbstractEvent(String name, T payload) {
+    public AbstractEvent(String name, T payload, Object caller) {
         this.name = name;
         this.payload = payload;
+        this.caller = caller;
+    }
+
+    public AbstractEvent(String name, T payload) {
+        this(name, payload, null);
     }
 
     @Override
@@ -25,5 +31,10 @@ abstract public class AbstractEvent<T> implements Event<T> {
     @Override
     public Class<? extends T> payloadType() {
         return (Class<? extends T>) Objects.requireNonNull(payload()).getClass();
+    }
+
+    @Override
+    public Object caller() {
+        return caller;
     }
 }

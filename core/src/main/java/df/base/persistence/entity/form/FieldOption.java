@@ -12,12 +12,12 @@ public class FieldOption implements EntityNameAware {
 
     @Id
     @PrefixedId(
-            prefixValue = "o",
+            prefixValue = "FLO",
             sequenceName = "FIELD_OPTION",
             prefixGenerator = NamedEntityIdGenerator.class,
-            numberFormat = "%04d",
+            numberFormat = "%06d",
             initialValue = 1000,
-            incrementBy = 1,
+            incrementBy = 10,
             prefixSeparator = "_"
     )
     @Column(name = "ID")

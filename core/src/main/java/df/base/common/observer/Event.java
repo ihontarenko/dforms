@@ -8,4 +8,6 @@ public interface Event<T> {
 
     Class<? extends T> payloadType();
 
+    Object caller();
+
 }

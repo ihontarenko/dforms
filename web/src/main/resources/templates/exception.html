@@ -1,6 +1,17 @@
 {% extends "common/body" %}
+{% block css %}
+<style>
+    .stack-trace-pre {
+        border-radius: 6px;
+        background-color: black;
+        font-size: 10px;
+        color: #fff;
+    }
+</style>
+{% endblock %}
 {% block layout %}
 <div class="container text-left">
+
     <div class="row pb-4">
         <div class="col">
             <h1>{{ class }}</h1>
@@ -11,11 +22,23 @@
             <h3>{{ message }}</h3>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <h4>{{ t.getMessage('common.stack_trace.title') }}</h4>
-            <pre style="border: 1px solid #bfbfbf;background-color: black;color: #94ff94;" class="p-2">{{ stackTrace }}</pre>
+
+    <div class="accordion">
+        {% for entry in stack %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="h-{{ entry.key | sha256 }}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c-{{ entry.key | sha256 }}" aria-expanded="false" aria-controls="collapseThree">
+                    {{ entry.key }}
+                </button>
+            </h2>
+            <div id="c-{{ entry.key | sha256 }}" class="accordion-collapse collapse" aria-labelledby="h-{{ entry.key | sha256 }}">
+                <div class="accordion-body">
+                    <pre class="p-2 stack-trace-pre">{{ entry.value }}</pre>
+                </div>
+            </div>
         </div>
+        {% endfor %}
     </div>
+
 </div>
 {% endblock %}

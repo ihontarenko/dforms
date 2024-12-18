@@ -2,10 +2,10 @@ package df.web.controller;
 
 import df.base.common.breadcrumb.BreadcrumbService;
 import df.base.common.exception.ApplicationException;
+import df.base.common.proxy.ProxyInvocationException;
 import df.base.property.ApplicationProperties;
 import df.base.security.UserInfo;
 import df.base.service.RedirectAware;
-import df.base.persistence.exception.JpaResourceNotFoundException;
 import df.web.common.flash.FlashMessageService;
 import io.pebbletemplates.pebble.error.PebbleException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,8 +27,8 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Locale;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import static df.web.common.flash.FlashMessage.error;
 
@@ -52,7 +52,8 @@ public class GlobalControllerAdvice {
             HttpRequestMethodNotSupportedException.class,
             AccessDeniedException.class,
             NoResourceFoundException.class,
-            ApplicationException.class
+            ApplicationException.class,
+            ProxyInvocationException.class
     })
     @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
     public void httpRequestMethodNotSupportedException(HttpServletRequest request, HttpServletResponse response,
@@ -84,20 +85,20 @@ public class GlobalControllerAdvice {
     }
 
     private ModelAndView buildMAV(final Throwable throwable) {
-        ModelAndView  mav       = new ModelAndView("exception");
-        StringBuilder builder   = new StringBuilder(getStackTrace(throwable));
-        Throwable     exception = throwable.getCause();
+        ModelAndView        mav       = new ModelAndView("exception");
+        Map<String, String> stack     = new HashMap<>();
+        Throwable           exception = throwable.getCause();
+
+        stack.put(getDetailedMessage(throwable), getStackTrace(throwable));
 
         while (exception != null) {
-            builder.append("\n\n").append(getStackTrace(exception));
+            stack.put(getDetailedMessage(exception), getStackTrace(exception));
             exception = exception.getCause();
         }
 
-        mav.addObject("stackTrace", builder.toString());
         mav.addObject("class", throwable.getClass().getName());
         mav.addObject("message", throwable.getMessage());
-
-        builder.append(getStackTrace(throwable));
+        mav.addObject("stack", stack);
 
         return mav;
     }
@@ -108,6 +109,10 @@ public class GlobalControllerAdvice {
         throwable.printStackTrace(new PrintWriter(writer));
 
         return writer.toString();
+    }
+
+    private String getDetailedMessage(Throwable throwable) {
+        return "%s :[%s]".formatted(throwable.getClass().getSimpleName(), throwable.getMessage());
     }
 
     @ModelAttribute

@@ -9,5 +9,7 @@ public interface Specification<T> {
         }
     }
 
-    RuntimeException getExceptionForViolation(T t, SpecificationContext context);
+    default RuntimeException getExceptionForViolation(T t, SpecificationContext context) {
+        return new RuntimeException("Object '%s' is unsatisfied for '%s'".formatted(t.getClass(), getClass()));
+    }
 }

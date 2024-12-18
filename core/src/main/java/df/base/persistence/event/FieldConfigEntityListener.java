@@ -22,7 +22,7 @@ public class FieldConfigEntityListener extends AbstractEventListener<FieldConfig
 
     @Override
     public void update(Event<FieldConfig> event) {
-        Context context = create(Map.of("entity", event.payload(), "manager", commandsManager));
+        Context context = create(Map.of("entity", event.payload(), "manager", commandsManager, "event", event));
         commandsManager.execute("#config/process", "(entity=#entity, manager=#manager)", context);
     }
 

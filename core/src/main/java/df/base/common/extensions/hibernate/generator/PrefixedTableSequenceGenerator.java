@@ -2,8 +2,11 @@ package df.base.common.extensions.hibernate.generator;
 
 import org.hibernate.engine.jdbc.internal.FormatStyle;
 import org.hibernate.engine.jdbc.spi.JdbcCoordinator;
+import org.hibernate.engine.jdbc.spi.ResultSetReturn;
 import org.hibernate.engine.jdbc.spi.SqlStatementLogger;
+import org.hibernate.engine.jdbc.spi.StatementPreparer;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.exception.SQLGrammarException;
 import org.hibernate.id.IdentifierGenerationException;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.service.ServiceRegistry;
@@ -12,9 +15,50 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * PrefixedTableSequenceGenerator is an implementation of the Hibernate {@link IdentifierGenerator} interface.
+ * It generates unique identifiers with a customizable prefix using a sequence table.
+ *
+ * <p>This generator can be configured via a {@link PrefixedId} annotation, which specifies table name, sequence name,
+ * column names, initial value, and increment size for the sequence.</p>
+ *
+ * <p>The class supports table creation for sequences, fetching the next value, and updating the sequence value
+ * in the database. Additionally, it allows prefix customization through a user-defined {@link IdPrefixGenerator} implementation.</p>
+ *
+ * <h3>Key Features:</h3>
+ * <ul>
+ *   <li>Automatic sequence table creation if it does not exist.</li>
+ *   <li>Support for prefix generation using a custom {@link IdPrefixGenerator} implementation.</li>
+ *   <li>Configurable sequence properties such as initial value and increment size.</li>
+ * </ul>
+ *
+ * <p><b>Usage Example:</b></p>
+ * <pre>{@code
+ * public class MyEntity {
+ *     @Id
+ *     @PrefixedId(
+ *          tableName = "SEQUENCE_TABLE",
+ *          sequenceName = "ENTITY_SEQUENCE",
+ *          keyColumnName = "SEQUENCE_NAME",
+ *          valueColumnName = "NEXT_VAL",
+ *          initialValue = 1,
+ *          incrementBy = 1,
+ *          prefixGenerator = CustomPrefixGenerator.class
+ *      )
+ *     @Column(name = "ID")
+ *     private String id;
+ * }
+ * }</pre>
+ *
+ * @see IdentifierGenerator
+ * @see PrefixedId
+ * @see IdPrefixGenerator
+ */
 public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PrefixedTableSequenceGenerator.class);
@@ -37,38 +81,46 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
     @Override
     public Object generate(SharedSessionContractImplementor session, Object object) {
         try {
-            GeneratorContext context = GeneratorContext.create(annotation);
+            long              incrementedID;
+            GeneratorContext  context         = GeneratorContext.create(annotation);
+            JdbcCoordinator   jdbcCoordinator = session.getJdbcCoordinator();
+            StatementPreparer preparer        = jdbcCoordinator.getStatementPreparer();
+            ResultSetReturn   resultSetReturn = jdbcCoordinator.getResultSetReturn();
 
             generator.configure(context, object);
 
-//            ensureSequenceTableExists(context);
+            String            select    = getSelectQuery(context);
+            ResultSet         resultSet = null;
+            PreparedStatement statement;
 
-            LOGGER.info("Fetching next value from sequence table: {}", context.tableName());
+            try {
+                statement = preparer.prepareStatement(select);
 
-            JdbcCoordinator   jdbcCoordinator = session.getJdbcCoordinator();
-            String            select          = getSelectQuery(context);
-            PreparedStatement statement       = jdbcCoordinator.getStatementPreparer().prepareStatement(select);
-            long              id;
+                statement.setString(1, context.sequenceName);
+                logger.logStatement(select, FormatStyle.BASIC.getFormatter());
 
-            statement.setString(1, context.sequenceName);
-            logger.logStatement(select, FormatStyle.BASIC.getFormatter());
+                resultSet = resultSetReturn.extract(statement, select);
 
-            ResultSet resultSet = jdbcCoordinator.getResultSetReturn().extract( statement, select );
+                LOGGER.info("Fetching next value from sequence table: '{}'", context.tableName());
+            } catch (SQLGrammarException sqlGrammarException) {
+                LOGGER.warn("Create sequence table '{}'", context.tableName());
+                createSequenceTableExists(session, context);
+            }
 
-            if (resultSet.next()) {
-                id = resultSet.getLong(1);
-                LOGGER.info("Current value for sequence name {}: {}", context.sequenceName, id);
+            if (resultSet!= null && resultSet.next()) {
+                incrementedID = resultSet.getLong(1);
+                LOGGER.info("Current value for sequence name {}: {}", context.sequenceName, incrementedID);
 
                 String update = getUpdateQuery(context);
                 logger.logStatement(update, FormatStyle.BASIC.getFormatter());
 
-                statement = jdbcCoordinator.getStatementPreparer().prepareStatement(update);
-                statement.setLong(1, id + context.incrementBy);
-                statement.setLong(2, id);
+                statement = preparer.prepareStatement(update);
+                statement.setLong(1, incrementedID + context.incrementBy);
+                statement.setLong(2, incrementedID);
                 statement.setString(3, context.sequenceName);
                 statement.executeUpdate();
 
-                LOGGER.debug("Updated next value for sequence {} to {}", context.sequenceName, id + context.incrementBy);
+                LOGGER.debug("Updated next value for sequence {} to {}", context.sequenceName, incrementedID + context.incrementBy);
 
             } else {
                 LOGGER.info("Initializing sequence {} with value {}", context.sequenceName, context.initialValue);
@@ -76,22 +128,22 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
                 String insert = getInsertQuery(context);
                 logger.logStatement(insert, FormatStyle.BASIC.getFormatter());
 
-                statement = jdbcCoordinator.getStatementPreparer().prepareStatement(insert);
+                statement = preparer.prepareStatement(insert);
                 statement.setString(1, context.sequenceName);
                 statement.setLong(2, context.initialValue + context.incrementBy);
                 statement.executeUpdate();
 
-                id = context.initialValue;
+                incrementedID = context.initialValue;
             }
 
-            String prefixedId = generator.generate(id, annotation, object);
+            String generatedId = generator.generate(incrementedID, annotation, object);
 
-            LOGGER.info("New ID generated {} using {} generator", prefixedId, prefixGenerator.getName());
+            LOGGER.info("NEW ID GENERATED '{}'", generatedId);
 
-            return prefixedId;
+            return generatedId;
 
-        } catch (SQLException e) {
-            throw new IdentifierGenerationException("Unable to generate ID", e);
+        } catch (Exception e) {
+            throw new IdentifierGenerationException("ID generator failed by cause: [%s]".formatted(e.getMessage()), e);
         }
     }
 
@@ -104,22 +156,6 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
                     .formatted(prefixGenerator.getName()), e);
         }
     }
-
-    /*private void ensureSequenceTableExists(GeneratorContext context) throws SQLException {
-        JdbcCoordinator   jdbcCoordinator = session.getJdbcCoordinator();
-        DatabaseMetaData meta       = connection.getMetaData();
-        ResultSet        tables     = meta.getTables(null, null, context.tableName(), new String[]{"TABLE"});
-
-        if (!tables.next()) {
-            String sql = "CREATE TABLE %s (%s VARCHAR(50) NOT NULL, %s BIGINT NOT NULL, PRIMARY KEY (%s))"
-                    .formatted(context.tableName, context.keyColumnName, context.valueColumnName, context.keyColumnName);
-            try (Statement statement = connection.createStatement()) {
-                statement.execute(sql);
-                logger.logStatement(sql, FormatStyle.DDL.getFormatter());
-                LOGGER.info("Created table {}.", context.tableName);
-            }
-        }
-    }*/
 
     protected String getSelectQuery(GeneratorContext context) {
         return "SELECT %s FROM %s WHERE %s=?"
@@ -134,6 +170,23 @@ public class PrefixedTableSequenceGenerator implements IdentifierGenerator {
     protected String getInsertQuery(GeneratorContext context) {
         return "INSERT INTO %s (%s, %s) VALUES (?, ?)"
                 .formatted(context.tableName, context.keyColumnName, context.valueColumnName);
+    }
+
+    protected String getCreateTableQuery(GeneratorContext context) {
+        return "CREATE TABLE %s (%s VARCHAR(50) NOT NULL, %s BIGINT NOT NULL, PRIMARY KEY (%s))"
+                .formatted(context.tableName, context.keyColumnName, context.valueColumnName, context.keyColumnName);
+    }
+
+    protected void createSequenceTableExists(
+            SharedSessionContractImplementor session, GeneratorContext context) throws SQLException {
+        String            createTableSql    = getCreateTableQuery(context);
+        JdbcCoordinator   jdbcCoordinator   = session.getJdbcCoordinator();
+        PreparedStatement preparedStatement = jdbcCoordinator.getStatementPreparer().prepareStatement(createTableSql);
+
+        preparedStatement.execute();
+
+        logger.logStatement(createTableSql, FormatStyle.DDL.getFormatter());
+        LOGGER.info("Sequence table '{}' created.", context.tableName);
     }
 
     @SuppressWarnings({"unused"})
