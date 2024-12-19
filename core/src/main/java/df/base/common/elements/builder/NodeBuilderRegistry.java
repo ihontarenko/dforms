@@ -1,6 +1,6 @@
 package df.base.common.elements.builder;
 
-public interface NodeBuilderStrategy {
+public interface NodeBuilderRegistry {
 
     <T> void setBuilder(Class<T> classType, NodeBuilder<? extends T> builder);
 

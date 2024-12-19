@@ -29,6 +29,16 @@ public class TypeMatchers {
     }
 
     /**
+     * Returns a matcher that checks if the given type is the same to the expected type.
+     *
+     * @param expectedType the expected type
+     * @return a matcher that returns true if the given type is the same to the expected type
+     */
+    public static Matcher<Class<?>> isSame(Class<?> expectedType) {
+        return expectedType::equals;
+    }
+
+    /**
      * Returns a matcher that checks if the given type is a subtype of the expected type.
      * This matcher uses {@linkplain Class#isAssignableFrom} to determine if one type is a subtype of another.
      *

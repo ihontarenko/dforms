@@ -22,7 +22,7 @@ public class FormBuilder implements NodeBuilder<FormDTO> {
         root.addAttribute("action", "/submitForm");
 
         for (FieldDTO field : fields) {
-            NodeBuilder<FieldDTO> builder = ctx.getStrategy().getBuilder(FieldDTO.class);
+            NodeBuilder<FieldDTO> builder = ctx.getRegistry().getBuilder(FieldDTO.class);
             root.append(builder.build(field, ctx));
         }
 

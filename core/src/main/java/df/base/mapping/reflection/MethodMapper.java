@@ -18,6 +18,7 @@ public class MethodMapper implements Mapper<Method, MethodDTO> {
         methodDTO.setName(source.getName());
         methodDTO.setNativeMethod(source);
         methodDTO.setNativeClass(source.getDeclaringClass());
+        methodDTO.setReturnType(CLASS_MAPPER.map(source.getReturnType()));
 
         Stream.of(source.getParameterTypes()).map(CLASS_MAPPER::map)
                 .forEach(methodDTO::addParameterType);

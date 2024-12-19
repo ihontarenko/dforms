@@ -1,17 +1,14 @@
 package df.base.dto.reflection;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ClassDTO {
 
-    private boolean         undefinedDependencies = false;
-    private PackageDTO      packageDTO;
-    private String          shortName;
-    private String          fullName;
-    private Class<?>        nativeClass;
-    private List<MethodDTO> methods               = new ArrayList<>();
-    private List<FieldDTO>  fields                = new ArrayList<>();
+    private boolean      isArray = false;
+    private PackageDTO   packageDTO;
+    private String       shortName;
+    private String       fullName;
+    private Class<?>     nativeClass;
+    private MethodSetDTO methods = new MethodSetDTO();
+    private FieldSetDTO  fields  = new FieldSetDTO();
 
     public String getFullName() {
         return fullName;
@@ -37,11 +34,11 @@ public class ClassDTO {
         this.nativeClass = nativeClass;
     }
 
-    public List<FieldDTO> getFields() {
+    public FieldSetDTO getFields() {
         return fields;
     }
 
-    public void setFields(List<FieldDTO> fields) {
+    public void setFields(FieldSetDTO fields) {
         this.fields = fields;
     }
 
@@ -49,11 +46,11 @@ public class ClassDTO {
         this.fields.add(field);
     }
 
-    public List<MethodDTO> getMethods() {
+    public MethodSetDTO getMethods() {
         return methods;
     }
 
-    public void setMethods(List<MethodDTO> methods) {
+    public void setMethods(MethodSetDTO methods) {
         this.methods = methods;
     }
 
@@ -61,12 +58,12 @@ public class ClassDTO {
         this.methods.add(method);
     }
 
-    public boolean isUndefinedDependencies() {
-        return undefinedDependencies;
+    public boolean isArray() {
+        return isArray;
     }
 
-    public void setUndefinedDependencies(boolean undefinedDependencies) {
-        this.undefinedDependencies = undefinedDependencies;
+    public void setArray(boolean array) {
+        this.isArray = array;
     }
 
     public PackageDTO getPackage() {

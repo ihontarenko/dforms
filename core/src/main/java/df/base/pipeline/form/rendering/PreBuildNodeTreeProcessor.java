@@ -13,8 +13,8 @@ import df.base.common.elements.builder.NodeBuilderContext;
 import df.base.common.pipeline.PipelineProcessor;
 import df.base.common.pipeline.context.PipelineContext;
 import df.base.dto.form.FormDTO;
-import df.base.common.elements.builder.AbstractBuilderStrategy;
-import df.base.html.forms.bootstrap.BootstrapBuilderStrategy;
+import df.base.common.elements.builder.AbstractBuilderRegistry;
+import df.base.html.forms.bootstrap.BootstrapBuilderRegistry;
 import org.springframework.validation.BindingResult;
 
 import java.util.Collections;
@@ -28,9 +28,9 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
 
         builderContext.setDataProvider(createPostDataProvider(arguments));
 
-        builderContext.setStrategy(new BootstrapBuilderStrategy());
+        builderContext.setRegistry(new BootstrapBuilderRegistry());
 
-        AbstractBuilderStrategy strategy = (AbstractBuilderStrategy) builderContext.getStrategy();
+        AbstractBuilderRegistry strategy = (AbstractBuilderRegistry) builderContext.getRegistry();
         NodeBuilder<FormDTO>    builder  = strategy.getBuilder(FormDTO.class);
 
         arguments.setArgument(Node.class, builder.build(arguments.requireArgument(FormDTO.class), builderContext));

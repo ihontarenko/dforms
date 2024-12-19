@@ -1,12 +1,12 @@
-package df.base.html.forms.bootstrap;
+package df.base.html.forms.html5;
 
 import df.base.dto.form.FieldDTO;
 import df.base.dto.form.FormDTO;
-import df.base.common.elements.builder.AbstractBuilderStrategy;
+import df.base.common.elements.builder.AbstractBuilderRegistry;
 
-public class BootstrapBuilderStrategy extends AbstractBuilderStrategy {
+public class Html5BuilderRegistry extends AbstractBuilderRegistry {
 
-    public BootstrapBuilderStrategy() {
+    public Html5BuilderRegistry() {
         initialize();
     }
 

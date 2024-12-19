@@ -13,12 +13,12 @@ public class NodeBuilderContext extends AbstractAttributesContext {
         setAttribute(PostDataProvider.class, dataProvider);
     }
 
-    public NodeBuilderStrategy getStrategy() {
-        return this.requireAttribute(NodeBuilderStrategy.class);
+    public NodeBuilderRegistry getRegistry() {
+        return this.requireAttribute(NodeBuilderRegistry.class);
     }
 
-    public void setStrategy(NodeBuilderStrategy strategy) {
-        this.setAttribute(NodeBuilderStrategy.class, strategy);
+    public void setRegistry(NodeBuilderRegistry registry) {
+        this.setAttribute(NodeBuilderRegistry.class, registry);
     }
 
 }

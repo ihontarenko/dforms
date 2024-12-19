@@ -5,11 +5,18 @@ import df.base.dto.reflection.PackageDTO;
 
 public class PackageMapper implements Mapper<Package, PackageDTO> {
 
-    @Override
-    public PackageDTO map(Package source) {
+    public PackageDTO map(String packageName) {
         PackageDTO packageDTO = new PackageDTO();
 
-        packageDTO.setName(source.getName());
+        packageDTO.setName(packageName);
+
+        return packageDTO;
+    }
+
+    @Override
+    public PackageDTO map(Package source) {
+        PackageDTO packageDTO = map(source.getName());
+
         packageDTO.setNativePackage(source);
 
         return packageDTO;

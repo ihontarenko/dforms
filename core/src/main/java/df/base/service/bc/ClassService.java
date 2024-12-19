@@ -59,12 +59,4 @@ public class ClassService {
         return classes.stream().map(classMapper::map).collect(ClassSetDTO::new, Set::add, AbstractCollection::addAll);
     }
 
-    public Map<String, ClassSetDTO> groupedClasses(ClassSetDTO classes, Function<? super ClassDTO, String> classifier) {
-        return classes.stream().collect(Collectors.groupingBy(classifier, Collectors.toCollection(ClassSetDTO::new)));
-    }
-
-    public Map<String, MethodSetDTO> groupedMethods(MethodSetDTO methods, Function<? super MethodDTO, String> classifier) {
-        return methods.stream().collect(Collectors.groupingBy(classifier, Collectors.toCollection(MethodSetDTO::new)));
-    }
-
 }

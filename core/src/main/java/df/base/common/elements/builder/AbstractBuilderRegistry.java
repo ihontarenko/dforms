@@ -3,7 +3,7 @@ package df.base.common.elements.builder;
 import java.util.HashMap;
 import java.util.Map;
 
-abstract public class AbstractBuilderStrategy implements NodeBuilderStrategy {
+abstract public class AbstractBuilderRegistry implements NodeBuilderRegistry {
 
     private final Map<Class<?>, NodeBuilder<?>> builders = new HashMap<>();
 

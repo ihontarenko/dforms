@@ -135,7 +135,7 @@ public class MethodMatchers {
      * }</pre>
      */
     public static Matcher<Method> isDefault() {
-        return new IsDefaultMethodMatcher();
+        return Method::isDefault;
     }
 
     /**
@@ -383,13 +383,6 @@ public class MethodMatchers {
             }
 
             return true;
-        }
-    }
-
-    private record IsDefaultMethodMatcher() implements Matcher<Method> {
-        @Override
-        public boolean matches(Method method) {
-            return method.isDefault();
         }
     }
 

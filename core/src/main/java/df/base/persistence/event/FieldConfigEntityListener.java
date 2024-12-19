@@ -14,7 +14,7 @@ import java.util.Map;
 import static df.base.common.commans.CommandExecutionContext.create;
 
 @SuppressWarnings({"unused"})
-@Listener(events = {"pre_update", "pre_persist"})
+@Listener(events = {"preUpdate", "prePersist"})
 public class FieldConfigEntityListener extends AbstractEventListener<FieldConfig> {
 
     private final static Logger          LOGGER          = LoggerFactory.getLogger(FieldConfigEntityListener.class);

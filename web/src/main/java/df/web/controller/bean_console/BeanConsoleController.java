@@ -77,29 +77,9 @@ public class BeanConsoleController {
         Map<String, Object> attributes = new HashMap<>();
         ClassDTO            classDTO   = classService.getClass(className);
 
-        attributes.put("class", classDTO);
-        attributes.put("methods", classService.groupedMethods(new MethodSetDTO(classDTO.getMethods()), methodDTO
-                -> methodDTO.getDeclaringClass().getShortName()));
+        attributes.put("html", classManagement.renderHtml(classDTO));
 
-        return new ModelAndView("bean_console/class_item", attributes);
-    }
-
-    @Breadcrumbs({
-            @Breadcrumbs.Item(label = "Home", url = "/"),
-            @Breadcrumbs.Item(label = "Bean Console", url = "/bean-console/index"),
-            @Breadcrumbs.Item(label = "{class}", url = "/bean-console/_/{class}"),
-            @Breadcrumbs.Item(label = "{method}")
-    })
-    @GetMapping("/_/{class}/{method}")
-    public ModelAndView methodDetails(@PathVariable("class") String className) {
-        Map<String, Object> attributes = new HashMap<>();
-        ClassDTO            classDTO   = classService.getClass(className);
-        PipelineContext     context    = PipelineContextFactoty.createByDefault();
-
-        attributes.put("class", classDTO);
-        attributes.put("methods", classService.groupedMethods(new MethodSetDTO(classDTO.getMethods()), MethodDTO::getAccessLevel));
-
-        return new ModelAndView("bean_console/class_item", attributes);
+        return new ModelAndView("bean_console/item", attributes);
     }
 
 }

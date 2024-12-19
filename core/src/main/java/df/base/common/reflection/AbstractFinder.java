@@ -1,9 +1,9 @@
 package df.base.common.reflection;
 
 import df.base.common.matcher.Matcher;
+import df.base.common.matcher.reflection.MemberMatcher;
 
 import java.lang.reflect.Member;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -46,26 +46,16 @@ public abstract class AbstractFinder<T extends Member> implements MemberFinder<T
      */
     @Override
     public List<T> find(Class<?> clazz, Matcher<? super T> matcher) {
-        List<T> matchedMembers = new ArrayList<>();
+        Matcher<Member> declaringClass = MemberMatcher.isDeclaredClass(clazz);
+        Collection<T>   members        = getMembers(clazz, true);
+        List<T>         matched        = members.stream()
+                .filter(declaringClass::matches).filter(matcher::matches).toList();
 
-        // todo: optimize duplicates of code
-        // Iterates through all members of the class and applies the matcher
-        for (T member : getMembers(clazz)) {
-            if (matcher.matches(member)) {
-                matchedMembers.add(member);
-            }
+        if (matched.size() == 0) {
+            matched = members.stream().filter(matcher::matches).toList();
         }
 
-        // Iterates through all members of the class including superclass
-        if (matchedMembers.size() == 0) {
-            for (T member : getMembers(clazz, true)) {
-                if (matcher.matches(member)) {
-                    matchedMembers.add(member);
-                }
-            }
-        }
-
-        return matchedMembers;
+        return matched;
     }
 
 }

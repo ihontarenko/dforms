@@ -116,7 +116,7 @@ public class ClassMatchers {
      * }</pre>
      */
     public static Matcher<Class<?>> isAnnotation() {
-        return (item) -> item.isAnnotation();
+        return Class::isAnnotation;
     }
 
     /**
@@ -130,7 +130,7 @@ public class ClassMatchers {
      * }</pre>
      */
     public static Matcher<Class<?>> isEnum() {
-        return (item) -> item.isEnum();
+        return Class::isEnum;
     }
 
     /**
@@ -326,7 +326,7 @@ public class ClassMatchers {
      * }</pre>
      */
     public static Matcher<Class<?>> isSimilar(Class<?> expectedType) {
-        return new SimilarTypeMatcher(expectedType);
+        return TypeMatchers.isSimilar(expectedType);
     }
 
     /**
@@ -340,7 +340,35 @@ public class ClassMatchers {
      * }</pre>
      */
     public static Matcher<Class<?>> isSubtype(Class<?> expectedType) {
-        return new SubtypeTypeMatcher(expectedType);
+        return TypeMatchers.isSubtype(expectedType);
+    }
+
+    /**
+     * Creates a matcher that checks if a class is a supertype of the specified type.
+     *
+     * @param expectedType the expected type to check for
+     * @return a matcher that checks if the class is a supertype of the expected type
+     * @example
+     * <pre>{@code
+     * Matcher<Class<?>> supertypeMatcher = ClassMatchers.isSupertype(Number.class);
+     * }</pre>
+     */
+    public static Matcher<Class<?>> isSupertype(Class<?> expectedType) {
+        return TypeMatchers.isSupertype(expectedType);
+    }
+
+    /**
+     * Creates a matcher that checks if a class is equals of the specified type.
+     *
+     * @param expectedType the expected type to check for
+     * @return a matcher that checks if the class is equals of the expected type
+     * @example
+     * <pre>{@code
+     * Matcher<Class<?>> sameMatcher = ClassMatchers.isSame(Number.class);
+     * }</pre>
+     */
+    public static Matcher<Class<?>> isSame(Class<?> expectedType) {
+        return TypeMatchers.isSame(expectedType);
     }
 
     private record ClassNameWithMatcher(Matcher<? super String> textMatcher) implements Matcher<Class<?>> {
@@ -397,20 +425,6 @@ public class ClassMatchers {
                 }
             }
             return false;
-        }
-    }
-
-    private record SimilarTypeMatcher(Class<?> expectedType) implements Matcher<Class<?>> {
-        @Override
-        public boolean matches(Class<?> actualType) {
-            return TypeMatchers.isSimilar(expectedType).matches(actualType);
-        }
-    }
-
-    private record SubtypeTypeMatcher(Class<?> expectedType) implements Matcher<Class<?>> {
-        @Override
-        public boolean matches(Class<?> actualType) {
-            return TypeMatchers.isSubtype(expectedType).matches(actualType);
         }
     }
 

@@ -1,0 +1,13 @@
+{% extends "common/layout" %}
+{% block title %}{{ class.fullName }}{% endblock %}
+{% block headerButtons %}
+<div class="btn-group pt-2" role="group">
+    <button onclick="window.location = '/bean-console/index'" type="button" class="btn btn-sm btn-light">MAIN</button>
+    <button onclick="window.location = '/bean-console/search'" type="button" class="btn btn-sm btn-light">SEARCH</button>
+</div>
+{% endblock %}
+{% block content %}
+    <!-- START:GeneratedBlock -->
+    {{ html | raw }}
+    <!-- END:GeneratedBlock -->
+{% endblock %}

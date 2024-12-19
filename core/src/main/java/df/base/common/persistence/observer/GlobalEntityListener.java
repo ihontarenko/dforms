@@ -20,37 +20,37 @@ public class GlobalEntityListener {
     @PrePersist
     public void onPrePersist(Object entity) {
         log(PrePersist.class, entity);
-        eventManager.notify(new PersistenceEvent("pre_persist", entity, this));
+        eventManager.notify(new PersistenceEvent("prePersist", entity, this));
     }
 
     @PostPersist
     public void onPostPersist(Object entity) {
         log(PostPersist.class, entity);
-        eventManager.notify(new PersistenceEvent("post_persist", entity, this));
+        eventManager.notify(new PersistenceEvent("postPersist", entity, this));
     }
 
     @PreUpdate
     public void onPreUpdate(Object entity) {
         log(PreUpdate.class, entity);
-        eventManager.notify(new PersistenceEvent("pre_update", entity, this));
+        eventManager.notify(new PersistenceEvent("preUpdate", entity, this));
     }
 
     @PostUpdate
     public void onPostUpdate(Object entity) {
         log(PostUpdate.class, entity);
-        eventManager.notify(new PersistenceEvent("post_update", entity, this));
+        eventManager.notify(new PersistenceEvent("postUpdate", entity, this));
     }
 
     @PreRemove
     public void onPreRemove(Object entity) {
         log(PreRemove.class, entity);
-        eventManager.notify(new PersistenceEvent("pre_remove", entity, this));
+        eventManager.notify(new PersistenceEvent("preRemove", entity, this));
     }
 
     @PostRemove
     public void onPostRemove(Object entity) {
         log(PostRemove.class, entity);
-        eventManager.notify(new PersistenceEvent("post_remove", entity, this));
+        eventManager.notify(new PersistenceEvent("postRemove", entity, this));
     }
 
     private void log(Class<? extends Annotation> eventType, Object entity) {

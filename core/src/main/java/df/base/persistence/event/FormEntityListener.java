@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @SuppressWarnings({"unused"})
-@Listener(events = {"pre_update"})
+@Listener(events = {"preUpdate"})
 public class FormEntityListener extends AbstractEventListener<Form> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(FormEntityListener.class);

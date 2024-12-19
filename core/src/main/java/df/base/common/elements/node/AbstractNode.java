@@ -4,9 +4,12 @@ import df.base.common.elements.*;
 
 import java.util.*;
 
+// todo: need to refactor this code
 abstract public class AbstractNode implements Node {
 
-    protected TagName             tagName;
+    public static final String CHILD_NODE_MUST_BE_NON_NULL = "Child node must be non-null";
+
+    protected TagName tagName;
     protected NodeType            nodeType;
     protected List<Node>          children   = new ArrayList<>();
     protected Map<String, String> attributes = new HashMap<>();
@@ -31,6 +34,7 @@ abstract public class AbstractNode implements Node {
 
     @Override
     public void prepend(Node child) {
+        Objects.requireNonNull(child, CHILD_NODE_MUST_BE_NON_NULL);
         child.setDepth(this.depth + 1);
         child.setParent(this);
         children.add(0, child);
@@ -38,6 +42,7 @@ abstract public class AbstractNode implements Node {
 
     @Override
     public void append(Node child) {
+        Objects.requireNonNull(child, CHILD_NODE_MUST_BE_NON_NULL);
         child.setDepth(this.depth + 1);
         child.setParent(this);
         children.add(child);
@@ -45,6 +50,7 @@ abstract public class AbstractNode implements Node {
 
     @Override
     public void removeChild(Node child) {
+        Objects.requireNonNull(child, CHILD_NODE_MUST_BE_NON_NULL);
         children.remove(child);
     }
 

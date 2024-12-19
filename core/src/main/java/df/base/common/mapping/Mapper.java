@@ -14,4 +14,8 @@ public interface Mapper<S, D> {
         throw new UnsupportedOperationException();
     }
 
+    default boolean applicable(S source) {
+        return true;
+    }
+
 }

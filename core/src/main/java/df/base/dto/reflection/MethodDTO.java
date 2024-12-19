@@ -2,16 +2,15 @@ package df.base.dto.reflection;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MethodDTO {
 
-    private final List<ClassDTO> parametersTypes = new ArrayList<>();
-    private       String         name;
-    private       ClassDTO       declaringClass;
-    private       Method         nativeMethod;
-    private       Class<?>       nativeClass;
+    private final ClassSetDTO parametersTypes = new ClassSetDTO();
+    private       String      name;
+    private       ClassDTO    declaringClass;
+    private       ClassDTO    returnType;
+    private       Method      nativeMethod;
+    private       Class<?>    nativeClass;
 
     public ClassDTO getDeclaringClass() {
         return declaringClass;
@@ -49,8 +48,16 @@ public class MethodDTO {
         this.parametersTypes.add(type);
     }
 
-    public List<ClassDTO> getParametersTypes() {
+    public ClassSetDTO getParametersTypes() {
         return parametersTypes;
+    }
+
+    public ClassDTO getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(ClassDTO returnType) {
+        this.returnType = returnType;
     }
 
     public String getAccessLevel() {
