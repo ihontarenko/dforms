@@ -1,6 +1,8 @@
 package df.base.mapping.reflection;
 
 import df.base.common.mapping.Mapper;
+import df.base.common.matcher.Matcher;
+import df.base.common.matcher.reflection.ClassMatchers;
 import df.base.dto.reflection.ClassDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +15,12 @@ import static df.base.common.reflection.MethodFinder.getAllMethods;
 
 public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
 
-    private static final Logger                  LOGGER        = LoggerFactory.getLogger(ClassMapper.class);
-    private static final Map<Class<?>, ClassDTO> CACHE         = new HashMap<>();
-    private static final MethodMapper            METHOD_MAPPER = new MethodMapper();
+    private static final Logger                  LOGGER         = LoggerFactory.getLogger(ClassMapper.class);
+    private static final Map<Class<?>, ClassDTO> CACHE          = new HashMap<>();
+    private static final MethodMapper            METHOD_MAPPER  = new MethodMapper();
     private static final FieldMapper             FIELD_MAPPER   = new FieldMapper();
     private static final PackageMapper           PACKAGE_MAPPER = new PackageMapper();
+    private static final Matcher<Class<?>>       CLASS_MATCHER  = ClassMatchers.nameStarts("df.");
 
     @Override
     public ClassDTO map(Class<?> source) {
@@ -37,6 +40,10 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
             classDTO.setPackage(PACKAGE_MAPPER.map(source.getName()));
         } else {
             classDTO.setPackage(PACKAGE_MAPPER.map(source.getPackage()));
+        }
+
+        if (!CLASS_MATCHER.matches(source)) {
+            System.out.println(source.getName());
         }
 
         CACHE.put(source, classDTO);

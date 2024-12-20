@@ -1,15 +1,8 @@
 package df.web.controller.bean_console;
 
 import df.base.common.breadcrumb.Breadcrumbs;
-import df.base.common.elements.Node;
-import df.base.common.elements.NodeContext;
-import df.base.common.pipeline.PipelineContextFactoty;
-import df.base.common.pipeline.context.PipelineContext;
-import df.base.common.proxy.MethodInterceptor;
 import df.base.dto.reflection.ClassDTO;
 import df.base.dto.reflection.ClassSetDTO;
-import df.base.dto.reflection.MethodDTO;
-import df.base.dto.reflection.MethodSetDTO;
 import df.base.service.bc.ClassManagementService;
 import df.base.service.bc.ClassService;
 import df.web.common.flash.FlashMessageService;
@@ -73,7 +66,7 @@ public class BeanConsoleController {
             @Breadcrumbs.Item(label = "{class}")
     })
     @GetMapping("/_class/{class}")
-    public ModelAndView classDetails(@PathVariable("class") String className) {
+    public ModelAndView classItem(@PathVariable("class") String className) {
         Map<String, Object> attributes = new HashMap<>();
         ClassDTO            classDTO   = classService.getClass(className);
 

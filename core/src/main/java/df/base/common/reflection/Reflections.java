@@ -1,5 +1,6 @@
 package df.base.common.reflection;
 
+import df.base.common.libs.jbm.ClassUtils;
 import df.base.common.matcher.reflection.FieldMatchers;
 import df.base.common.matcher.reflection.MethodMatchers;
 
@@ -113,7 +114,9 @@ abstract public class Reflections {
      */
     public static Constructor<?> findFirstConstructor(Class<?> clazz, Class<?>... types) {
         return new ConstructorFinder().findFirst(clazz, hasParameterTypes(types).and(isAbstract().not()))
-                .orElseThrow(() -> new ReflectionException("CONSTRUCTOR WITH (" + Arrays.toString(types) + ") PARAMETERS NOT FOUND"));
+                .orElseThrow(() -> new ReflectionException(
+                        "CONSTRUCTOR %s(%s) NOT FOUND"
+                                .formatted(ClassUtils.getShortName(clazz), Arrays.toString(types))));
     }
 
     /**
@@ -428,6 +431,23 @@ abstract public class Reflections {
     }
 
     /**
+     * Retrieves all parent classes by the given class and its superclasses.
+     *
+     * @param baseClass the class to retrieve super-classes for
+     * @return an array of parent classes
+     */
+    public static Class<?>[] getSuperClasses(Class<?> baseClass) {
+        Set<Class<?>> classes = new HashSet<>();
+
+        while (baseClass != null && baseClass != Object.class) {
+            classes.add(baseClass);
+            baseClass = baseClass.getSuperclass();
+        }
+
+        return classes.toArray(Class[]::new);
+    }
+
+    /**
      * Convert object array to corresponding types
      *
      * @param arguments that be converted
@@ -451,6 +471,156 @@ abstract public class Reflections {
      */
     public static String getMethodName(Method method) {
         return "%s#%s".formatted(method.getDeclaringClass().getSimpleName(), method.getName());
+    }
+
+    /**
+     * Extracts parameterized types from the interfaces implemented by the specified class.
+     *
+     * @param type the class to analyze
+     * @return a map where keys are the raw types of implemented interfaces and values are lists of parameterized types
+     *         used in those interfaces
+     * @throws NullPointerException if {@code type} is null
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
+     * class MyClass implements Comparable<MyClass> {}
+     * Map<Class<?>, List<Class<?>>> result = Reflections.getInterfacesParameterizedTypes(MyClass.class);
+     * System.out.println(result); // Output: {interface java.lang.Comparable=[class MyClass]}
+     * }</pre>
+     */
+    public static Map<Class<?>, List<Class<?>>> getInterfacesParameterizedTypes(Class<?> type) {
+        Map<Class<?>, List<Class<?>>> parameterizedTypes = new HashMap<>();
+
+        for (Type genericInterface : type.getGenericInterfaces()) {
+            if (genericInterface instanceof ParameterizedType parameterizedType) {
+                parameterizedTypes.computeIfAbsent(
+                        (Class<?>) parameterizedType.getRawType(), key -> Reflections.getParameterizedTypes(parameterizedType));
+            }
+        }
+
+        return parameterizedTypes;
+    }
+
+    /**
+     * Extracts parameterized types from the superclass extended by the specified class.
+     *
+     * @param type the class to analyze
+     * @return values are lists of parameterized types used in those interfaces
+     * @throws NullPointerException if {@code type} is null
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
+     * class MyClass extends HashMap<String, Integer> {}
+     * Map<Class<?>, List<Class<?>>> result = Reflections.getSuperclassParameterizedTypes(MyClass.class);
+     * System.out.println(result); // Output: [class String, class Integer]
+     * }</pre>
+     */
+    public static List<Class<?>> getSuperclassParameterizedTypes(Class<?> type) {
+        return getParameterizedTypes(type.getGenericSuperclass());
+    }
+
+    /**
+     * Extracts parameterized types from the superclass extended by the specified class.
+     *
+     * @param type the class to analyze
+     * @return values are lists of parameterized types used in those interfaces
+     * @throws NullPointerException if {@code type} is null
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
+     * class MyClass extends HashMap<String, Integer> {}
+     * Map<Class<?>, List<Class<?>>> result = Reflections.getSuperclassParameterizedTypes(MyClass.class.getGenericSuperclass());
+     * System.out.println(result); // Output: [class String, class Integer]
+     * }</pre>
+     */
+    public static List<Class<?>> getParameterizedTypes(Type type) {
+        List<Class<?>> parameterizedTypes = new ArrayList<>();
+
+        if (type instanceof ParameterizedType parameterizedType) {
+            for (Type actualTypeArgument : parameterizedType.getActualTypeArguments()) {
+                parameterizedTypes.add(toClass(actualTypeArgument));
+            }
+        }
+
+        return parameterizedTypes;
+    }
+
+    /**
+     * Retrieves the list of parameterized types used in a specific interface implemented by the specified class.
+     *
+     * @param type the class to analyze
+     * @param iface the interface whose parameterized types are to be retrieved
+     * @return a list of parameterized types if present; otherwise, an empty {@code List}
+     * @throws NullPointerException if {@code type} or {@code iface} is null
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
+     * class MyClass implements Comparable<MyClass> {}
+     * Optional<List<Class<?>>> result = Reflections.getParameterizedTypes(MyClass.class, Comparable.class);
+     * System.out.println(result); // Output: Optional[[class MyClass]]
+     * }</pre>
+     */
+    public static List<Class<?>> getInterfacesParameterizedTypes(Class<?> type, Class<?> iface) {
+        return getInterfacesParameterizedTypes(type).getOrDefault(iface, Collections.emptyList());
+    }
+
+    /**
+     * Retrieves a specific parameterized type used in a specific interface implemented by the specified class.
+     *
+     * @param type the class to analyze
+     * @param iface the interface whose parameterized type is to be retrieved
+     * @param index the index of the parameterized type to retrieve (zero-based)
+     * @return an {@code Optional} containing the parameterized type if present; otherwise, an empty {@code Optional}
+     * @throws NullPointerException if {@code type} or {@code iface} is null
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
+     * class MyClass implements Comparable<MyClass> {}
+     * Optional<Class<?>> result = Reflections.getInterfacesParameterizedType(MyClass.class, Comparable.class, 0);
+     * System.out.println(result); // Output: Optional[class MyClass]
+     * }</pre>
+     */
+    public static Optional<Class<?>> getInterfacesParameterizedType(Class<?> type, Class<?> iface, int index) {
+        List<Class<?>> classes = getInterfacesParameterizedTypes(type, iface);
+        int            counter = 0;
+
+        for (Class<?> parameterizedType : classes) {
+            if (counter++ == index) {
+                return Optional.ofNullable(parameterizedType);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    /**
+     * Converts a {@link Type} to its corresponding {@link Class} representation.
+     *
+     * @param type the type to convert
+     * @return the corresponding class representation
+     * @throws NullPointerException if {@code type} is null
+     * @throws ClassCastException if the type cannot be converted to a class
+     *
+     * <p>Example usage:</p>
+     * <pre>{@code
+     * ParameterizedType parameterizedType = (ParameterizedType) SomeClass.class.getGenericSuperclass();
+     * Class<?> result = Reflections.toClass(parameterizedType.getActualTypeArguments()[0]);
+     * System.out.println(result); // Output: class MyClass
+     * }</pre>
+     */
+    public static Class<?> toClass(Type type) {
+        Class<?> clazz;
+
+        if (type instanceof GenericArrayType arrayType) {
+            Class<?> arrayClass = toClass(arrayType.getGenericComponentType());
+            clazz = Array.newInstance(arrayClass, 0).getClass();
+        } else if (type instanceof ParameterizedType parameterizedType) {
+            clazz = (Class<?>) parameterizedType.getRawType();
+        } else {
+            clazz = (Class<?>) type;
+        }
+
+        return clazz;
     }
 
 }

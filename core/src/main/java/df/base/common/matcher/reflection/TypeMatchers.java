@@ -1,6 +1,10 @@
 package df.base.common.matcher.reflection;
 
 import df.base.common.matcher.Matcher;
+import df.base.common.reflection.Reflections;
+
+import java.util.List;
+import java.util.Optional;
 
 import static df.base.common.reflection.JavaTypes.PRIMITIVES;
 import static df.base.common.reflection.JavaTypes.WRAPPERS;
@@ -54,14 +58,14 @@ public class TypeMatchers {
         return new SubtypeTypeMatcher(expectedType);
     }
 
-
     /**
      * Returns a matcher that checks if the given type is a supertype of the expected type.
      * This matcher uses {@linkplain Class#isAssignableFrom} to determine if one type is a supertype of another.
      *
      * @param expectedType the expected type
      * @return a matcher that returns true if the given type is a supertype of the expected type
-     * @example
+     *
+     * <P>Example Usage:</P>
      * <pre>{@code
      * Matcher<Class<?>> matcher = TypeMatchers.isSupertype(Integer.class);
      * boolean result = matcher.matches(Number.class); // returns true
@@ -69,6 +73,36 @@ public class TypeMatchers {
      */
     public static Matcher<Class<?>> isSupertype(Class<?> expectedType) {
         return new SupertypeTypeMatcher(expectedType);
+    }
+
+    /**
+     * Matcher that checks if a list of types that are compatible with the specified types, allowing for autoboxing.
+     *
+     * @param expectedTypes the expected types
+     * @return a matcher that returns true if the given type is a supertype of the expected type
+     *
+     * <P>Example Usage:</P>
+     * <pre>{@code
+     * Matcher<Class<?>[]> matcher = TypeMatchers.isSoftTypes(Integer.class, String.class);
+     * boolean result = matcher.matches(Number.class, String.class); // returns true
+     * }</pre>
+     */
+    public static Matcher<Class<?>[]> isSoftTypes(Class<?>... expectedTypes) {
+        return new SoftTypesMatcher(expectedTypes);
+    }
+
+    public static Matcher<Class<?>> implementsGenericInterface(Class<?> iface, Class<?>... parameterizedTypes) {
+        return clazz -> {
+            List<Class<?>> actualTypes = Reflections.getInterfacesParameterizedTypes(clazz, iface);
+            return isSoftTypes(parameterizedTypes).matches(actualTypes.toArray(Class[]::new));
+        };
+    }
+
+    public static Matcher<Class<?>> extendsGenericSuperclass(Class<?>... parameterizedTypes) {
+        return clazz -> {
+            List<Class<?>> actualTypes = Reflections.getSuperclassParameterizedTypes(clazz);
+            return isSoftTypes(parameterizedTypes).matches(actualTypes.toArray(Class[]::new));
+        };
     }
 
     /**
@@ -107,5 +141,28 @@ public class TypeMatchers {
         public boolean matches(Class<?> actualType) {
             return expectedType.isAssignableFrom(actualType);
         }
+    }
+
+    /**
+     * Matcher that checks if a list of types that are compatible with the specified types, allowing for autoboxing.
+     */
+    public record SoftTypesMatcher(Class<?>[] expectedTypes) implements Matcher<Class<?>[]> {
+
+        @Override
+        public boolean matches(Class<?>... actualTypes) {
+            if (actualTypes.length != expectedTypes.length) {
+                return false;
+            }
+
+            for (int i = 0; i < actualTypes.length; i++) {
+                Matcher<Class<?>> matcher = isSubtype(expectedTypes[i]).or(isSimilar(expectedTypes[i]));
+                if (!matcher.matches(actualTypes[i])) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
     }
 }

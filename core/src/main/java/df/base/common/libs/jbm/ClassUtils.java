@@ -4,6 +4,16 @@ abstract public class ClassUtils {
 
     public static final char PACKAGE_SEPARATOR = '.';
 
+    public static String getShortName(Object clazz) {
+        Class<?> classType = clazz.getClass();
+
+        if (clazz instanceof Class<?> type) {
+            classType = type;
+        }
+
+        return getShortName(classType);
+    }
+
     public static String getShortName(Class<?> clazz) {
         String className = clazz.getName();
 

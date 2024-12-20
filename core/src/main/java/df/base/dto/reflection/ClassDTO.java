@@ -73,4 +73,10 @@ public class ClassDTO {
     public void setPackage(PackageDTO packageDTO) {
         this.packageDTO = packageDTO;
     }
+
+    @Override
+    public String toString() {
+        return "ClassDTO: [isArray=%s, package=%s, name='%s', methods=%d, fields=%d]"
+                .formatted(isArray, packageDTO.getName(), fullName, methods.size(), fields.size());
+    }
 }

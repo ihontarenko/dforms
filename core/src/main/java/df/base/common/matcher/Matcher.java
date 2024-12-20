@@ -1,6 +1,5 @@
 package df.base.common.matcher;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -46,7 +45,7 @@ public interface Matcher<T> {
      *
      * @param other the other matcher to combine with
      * @return a new matcher that represents the logical OR of the two matchers
-     * @see #or(Matcher, Matcher)
+     * @see #or(Matcher...)
      * @example
      * <pre>{@code
      * Matcher<String> startsWithA = item -> item.startsWith("A");
@@ -118,19 +117,11 @@ public interface Matcher<T> {
     }
 
     /**
-     * Combines two or more matchers using the logical AND operator.
+     * Combines set of matchers using the logical AND operator.
      * All matchers must return true for the final result to be true.
      *
      * @param matchers the array of matchers
-     * @return a new matcher that represents the logical AND of the two matchers
-     * @example
-     * <pre>{@code
-     * Matcher<String> startsWithA = item -> item.startsWith("A");
-     * Matcher<String> endsWithA = item -> item.endsWith("A");
-     * Matcher<String> endsWithZ = item -> item.endsWith("Z");
-     * Matcher<String> combinedMatcher = Matcher.and(startsWithA, endsWithA, endsWithZ);
-     * combinedMatcher.matches("AZ"); // returns false
-     * }</pre>
+     * @return a new matcher that represents the logical AND of the set of matchers
      */
     @SafeVarargs
     static <T> Matcher<T> and(Matcher<? super T>... matchers) {
@@ -147,6 +138,18 @@ public interface Matcher<T> {
      */
     static <T> Matcher<T> or(Matcher<? super T> first, Matcher<? super T> second) {
         return new OrMatcher<>(first, second);
+    }
+
+    /**
+     * Combines set of matchers using the logical OR operator.
+     * All matchers must return true for the final result to be true.
+     *
+     * @param matchers the array of matchers
+     * @return a new matcher that represents the logical OR of the set of matchers
+     */
+    @SafeVarargs
+    static <T> Matcher<T> or(Matcher<? super T>... matchers) {
+        return (Matcher<T>) Arrays.stream(matchers).reduce(Matcher.constant(false), Matcher::or);
     }
 
     /**

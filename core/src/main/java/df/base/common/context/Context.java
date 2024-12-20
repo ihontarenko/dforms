@@ -29,6 +29,17 @@ public interface Context extends BeanProvider, BeanProviderAware {
 
     <R> R getProperty(Object key, Object defaultValue);
 
+    default Object requireProperty(Object key) {
+        Object property = getProperty(key);
+
+        if (property == null) {
+            throw new DefaultContextException(
+                    "Context does not contain the required property '%s'.".formatted(key));
+        }
+
+        return property;
+    }
+
     boolean hasProperty(Object key);
 
     boolean isStopped();

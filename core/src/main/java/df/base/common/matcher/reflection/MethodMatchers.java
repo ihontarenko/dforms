@@ -369,20 +369,7 @@ public class MethodMatchers {
     private record SoftParameterTypesMatcher(Class<?>... expectedTypes) implements Matcher<Executable> {
         @Override
         public boolean matches(Executable method) {
-            Class<?>[] actualTypes = method.getParameterTypes();
-
-            if (actualTypes.length != expectedTypes.length) {
-                return false;
-            }
-
-            for (int i = 0; i < actualTypes.length; i++) {
-                Matcher<Class<?>> matcher = isSubtype(expectedTypes[i]).or(isSimilar(expectedTypes[i]));
-                if (!matcher.matches(actualTypes[i])) {
-                    return false;
-                }
-            }
-
-            return true;
+            return TypeMatchers.isSoftTypes(expectedTypes).matches(method.getParameterTypes());
         }
     }
 

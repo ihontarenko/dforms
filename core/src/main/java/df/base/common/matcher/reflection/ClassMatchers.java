@@ -8,6 +8,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.stream.Stream;
 
 /**
  * Utility class for creating matchers that work with {@link Class} objects.
@@ -20,6 +21,8 @@ import java.lang.reflect.Modifier;
  */
 @SuppressWarnings({"unused"})
 public class ClassMatchers {
+
+    public static final String[] JDK_PACKAGES = {"java.", "jdk.", "sun."};
 
     /**
      * Creates a matcher that checks if a class has the specified modifier.
@@ -369,6 +372,20 @@ public class ClassMatchers {
      */
     public static Matcher<Class<?>> isSame(Class<?> expectedType) {
         return TypeMatchers.isSame(expectedType);
+    }
+
+    /**
+     * Creates a matcher that checks if a class name starts with 'java.'
+     *
+     * @return a matcher that checks if the class name starts with 'java.'
+     * @example
+     * <pre>{@code
+     * Matcher<Class<?>> javaPackageMatcher = ClassMatchers.isJavaPackage();
+     * javaPackageMatcher.matches(String.class); // true
+     * }</pre>
+     */
+    public static Matcher<Class<?>> isJavaPackage() {
+        return Matcher.or(Stream.of(JDK_PACKAGES).map(ClassMatchers::nameStarts).toArray(Matcher[]::new));
     }
 
     private record ClassNameWithMatcher(Matcher<? super String> textMatcher) implements Matcher<Class<?>> {
