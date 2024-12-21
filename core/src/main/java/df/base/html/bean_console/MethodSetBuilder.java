@@ -95,10 +95,6 @@ public class MethodSetBuilder implements NodeBuilder<MethodSetDTO> {
         return text;
     }
 
-    public void test(Long[] longs, MethodDTO[] methodDTOs) {
-
-    }
-
     public Node createParametersNode(MethodDTO methodDTO, ClassSetBuilder builder) {
         Node        text            = new ElementNode(TagName.SPAN);
         ClassSetDTO parametersTypes = methodDTO.getParametersTypes();

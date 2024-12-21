@@ -123,7 +123,7 @@ public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
         item.append(new TextNode(classDTO.getShortName()));
 
         if (classDTO.isArray()) {
-            item.append(new TextNode("[] <- array"));
+            item.append(new TextNode("[]"));
         }
 
         return item;

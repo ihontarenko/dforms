@@ -583,7 +583,7 @@ abstract public class Reflections {
     public static Class<?> getInterfacesParameterizedType(Class<?> type, Class<?> iface, int index) {
         List<Class<?>> classes = getInterfacesParameterizedTypes(type, iface);
 
-        if (index <= classes.size()) {
+        if (index < classes.size()) {
             return classes.get(index);
         }
 

@@ -22,13 +22,16 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
     private static final FieldMapper             FIELD_MAPPER   = new FieldMapper();
     private static final Matcher<Class<?>>       IS_NATIVE      = ClassMatchers.nameStarts("df.");
     private static final Matcher<Class<?>>       IS_JDK         = ClassMatchers.isJavaPackage();
+    private static int cached = 0;
+    private static int real = 0;
 
     @Override
     public ClassDTO map(Class<?> rawClass) {
         Class<?> classType = unwrap(rawClass);
-        ClassDTO classDTO  = CACHE.get(classType);
+        ClassDTO classDTO  = CACHE.get(rawClass);
 
         if (classDTO == null) {
+            real++;
             // mark DTO as array and unwrap it if it is one
             classDTO = new ClassDTO();
             classDTO.setArray(rawClass.isArray());
@@ -38,7 +41,7 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
 
             // IMPORTANT! need to add class dto to cache
             // before mapping additional member to avoid StackOverflowError
-            CACHE.put(classType, classDTO);
+            CACHE.put(rawClass, classDTO);
 
             mapClassPackage(classType, classDTO);
 
@@ -46,6 +49,8 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
             if (!classDTO.isForeign()) {
                 mapClassMembers(classType, classDTO);
             }
+        } else {
+            cached++;
         }
 
         return classDTO;
