@@ -2,13 +2,16 @@ package df.base.dto.reflection;
 
 public class ClassDTO {
 
-    private boolean      isArray = false;
-    private PackageDTO   packageDTO;
+    private boolean      isArray     = false;
+    private boolean      isPrimitive = false;
+    private boolean      isForeign   = false;
+    private boolean      isJdk       = false;
     private String       shortName;
     private String       fullName;
+    private PackageDTO   packageDTO;
     private Class<?>     nativeClass;
-    private MethodSetDTO methods = new MethodSetDTO();
-    private FieldSetDTO  fields  = new FieldSetDTO();
+    private MethodSetDTO methods     = new MethodSetDTO();
+    private FieldSetDTO  fields      = new FieldSetDTO();
 
     public String getFullName() {
         return fullName;
@@ -74,9 +77,33 @@ public class ClassDTO {
         this.packageDTO = packageDTO;
     }
 
+    public boolean isForeign() {
+        return isForeign;
+    }
+
+    public void setForeign(boolean foreign) {
+        isForeign = foreign;
+    }
+
+    public boolean isJdk() {
+        return isJdk;
+    }
+
+    public void setJdk(boolean jdk) {
+        isJdk = jdk;
+    }
+
+    public boolean isPrimitive() {
+        return isPrimitive;
+    }
+
+    public void setPrimitive(boolean primitive) {
+        isPrimitive = primitive;
+    }
+
     @Override
     public String toString() {
-        return "ClassDTO: [isArray=%s, package=%s, name='%s', methods=%d, fields=%d]"
-                .formatted(isArray, packageDTO.getName(), fullName, methods.size(), fields.size());
+        return "ClassDTO[name='%s', isArray=%s, isPrimitive=%s, isForeign=%s, isJdk=%s]"
+                .formatted(fullName, isArray, isPrimitive, isForeign, isJdk);
     }
 }

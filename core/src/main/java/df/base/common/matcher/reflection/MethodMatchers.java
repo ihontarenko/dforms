@@ -10,9 +10,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
-import static df.base.common.matcher.reflection.TypeMatchers.isSimilar;
-import static df.base.common.matcher.reflection.TypeMatchers.isSubtype;
-
 /**
  * Utility class for creating matchers that work with {@link Method} and {@link Constructor} objects.
  *
@@ -322,7 +319,7 @@ public class MethodMatchers {
     private record CopyConstructorMatcher() implements Matcher<Constructor<?>> {
         @Override
         public boolean matches(Constructor<?> constructor) {
-            return Matcher.and(hasParameterCount(1), hasParameterTypes(constructor.getDeclaringClass())).matches(constructor);
+            return Matcher.logicalAnd(hasParameterCount(1), hasParameterTypes(constructor.getDeclaringClass())).matches(constructor);
         }
     }
 

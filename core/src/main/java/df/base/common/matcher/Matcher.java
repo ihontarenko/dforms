@@ -25,7 +25,7 @@ public interface Matcher<T> {
      *
      * @param other the other matcher to combine with
      * @return a new matcher that represents the logical AND of the two matchers
-     * @see #and(Matcher, Matcher)
+     * @see #logicalAnd(Matcher, Matcher)
      * @example
      * <pre>{@code
      * Matcher<String> startsWithA = item -> item.startsWith("A");
@@ -36,7 +36,7 @@ public interface Matcher<T> {
      * }</pre>
      */
     default Matcher<T> and(Matcher<? super T> other) {
-        return and(this, other);
+        return logicalAnd(this, other);
     }
 
     /**
@@ -45,7 +45,7 @@ public interface Matcher<T> {
      *
      * @param other the other matcher to combine with
      * @return a new matcher that represents the logical OR of the two matchers
-     * @see #or(Matcher...)
+     * @see #logicalOr(Matcher...)
      * @example
      * <pre>{@code
      * Matcher<String> startsWithA = item -> item.startsWith("A");
@@ -57,7 +57,7 @@ public interface Matcher<T> {
      * }</pre>
      */
     default Matcher<T> or(Matcher<? super T> other) {
-        return or(this, other);
+        return logicalOr(this, other);
     }
 
     /**
@@ -66,7 +66,7 @@ public interface Matcher<T> {
      *
      * @param other the other matcher to combine with
      * @return a new matcher that represents the logical XOR of the two matchers
-     * @see #xor(Matcher, Matcher)
+     * @see #logicalXor(Matcher, Matcher)
      * @example
      * <pre>{@code
      * Matcher<String> startsWithA = item -> item.startsWith("A");
@@ -78,7 +78,7 @@ public interface Matcher<T> {
      * }</pre>
      */
     default Matcher<T> xor(Matcher<? super T> other) {
-        return xor(this, other);
+        return logicalXor(this, other);
     }
 
     /**
@@ -112,7 +112,7 @@ public interface Matcher<T> {
      * combinedMatcher.matches("AZ"); // returns true
      * }</pre>
      */
-    static <T> Matcher<T> and(Matcher<? super T> first, Matcher<? super T> second) {
+    static <T> Matcher<T> logicalAnd(Matcher<? super T> first, Matcher<? super T> second) {
         return new AndMatcher<>(first, second);
     }
 
@@ -124,8 +124,8 @@ public interface Matcher<T> {
      * @return a new matcher that represents the logical AND of the set of matchers
      */
     @SafeVarargs
-    static <T> Matcher<T> and(Matcher<? super T>... matchers) {
-        return (Matcher<T>) Arrays.stream(matchers).reduce(Matcher.constant(true), Matcher::and);
+    static <T> Matcher<T> logicalAnd(Matcher<? super T>... matchers) {
+        return (Matcher<T>) Arrays.stream(matchers).reduce(Matcher.constant(true), Matcher::logicalAnd);
     }
 
     /**
@@ -136,7 +136,7 @@ public interface Matcher<T> {
      * @param second the second matcher
      * @return a new matcher that represents the logical OR of the two matchers
      */
-    static <T> Matcher<T> or(Matcher<? super T> first, Matcher<? super T> second) {
+    static <T> Matcher<T> logicalOr(Matcher<? super T> first, Matcher<? super T> second) {
         return new OrMatcher<>(first, second);
     }
 
@@ -148,8 +148,8 @@ public interface Matcher<T> {
      * @return a new matcher that represents the logical OR of the set of matchers
      */
     @SafeVarargs
-    static <T> Matcher<T> or(Matcher<? super T>... matchers) {
-        return (Matcher<T>) Arrays.stream(matchers).reduce(Matcher.constant(false), Matcher::or);
+    static <T> Matcher<T> logicalOr(Matcher<? super T>... matchers) {
+        return (Matcher<T>) Arrays.stream(matchers).reduce(Matcher.constant(false), Matcher::logicalOr);
     }
 
     /**
@@ -160,7 +160,7 @@ public interface Matcher<T> {
      * @param second the second matcher
      * @return a new matcher that represents the logical XOR of the two matchers
      */
-    static <T> Matcher<T> xor(Matcher<? super T> first, Matcher<? super T> second) {
+    static <T> Matcher<T> logicalXor(Matcher<? super T> first, Matcher<? super T> second) {
         return new XorMatcher<>(first, second);
     }
 

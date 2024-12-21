@@ -570,27 +570,24 @@ abstract public class Reflections {
      * @param type the class to analyze
      * @param iface the interface whose parameterized type is to be retrieved
      * @param index the index of the parameterized type to retrieve (zero-based)
-     * @return an {@code Optional} containing the parameterized type if present; otherwise, an empty {@code Optional}
+     * @return the parameterized type if present; otherwise null
      * @throws NullPointerException if {@code type} or {@code iface} is null
      *
      * <p>Example usage:</p>
      * <pre>{@code
      * class MyClass implements Comparable<MyClass> {}
      * Optional<Class<?>> result = Reflections.getInterfacesParameterizedType(MyClass.class, Comparable.class, 0);
-     * System.out.println(result); // Output: Optional[class MyClass]
+     * System.out.println(result); // Output: class MyClass
      * }</pre>
      */
-    public static Optional<Class<?>> getInterfacesParameterizedType(Class<?> type, Class<?> iface, int index) {
+    public static Class<?> getInterfacesParameterizedType(Class<?> type, Class<?> iface, int index) {
         List<Class<?>> classes = getInterfacesParameterizedTypes(type, iface);
-        int            counter = 0;
 
-        for (Class<?> parameterizedType : classes) {
-            if (counter++ == index) {
-                return Optional.ofNullable(parameterizedType);
-            }
+        if (index <= classes.size()) {
+            return classes.get(index);
         }
 
-        return Optional.empty();
+        return null;
     }
 
     /**

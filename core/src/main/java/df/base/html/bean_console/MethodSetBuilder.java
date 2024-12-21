@@ -25,13 +25,8 @@ public class MethodSetBuilder implements NodeBuilder<MethodSetDTO> {
 
         for (Map.Entry<String, List<MethodDTO>> entry : Flow.of(methodDTOs).groupBy(MethodDTO::getAccessLevel).entrySet()) {
             Node container  = new ElementNode(TagName.OL);
-            Node header     = new ElementNode(TagName.H5);
-            Node headerText = new ElementNode(TagName.SPAN);
 
-            headerText.addAttribute("class", "badge bg-info");
-            headerText.append(new TextNode(entry.getKey()));
-            header.append(headerText);
-            container.append(header);
+            container.append(createHeader(entry.getKey()));
             container.addAttribute("class", "list-group list-group-numbered mt-3");
 
             for (MethodDTO methodDTO : entry.getValue()) {
@@ -42,6 +37,17 @@ public class MethodSetBuilder implements NodeBuilder<MethodSetDTO> {
         }
 
         return wrapper;
+    }
+
+    public Node createHeader(String text) {
+        Node header     = new ElementNode(TagName.H5);
+        Node headerText = new ElementNode(TagName.SPAN);
+
+        headerText.addAttribute("class", "badge bg-info");
+        headerText.append(new TextNode(text));
+        header.append(headerText);
+
+        return header;
     }
 
     public Node createItem(MethodDTO methodDTO, ClassSetBuilder builder) {
@@ -98,7 +104,7 @@ public class MethodSetBuilder implements NodeBuilder<MethodSetDTO> {
         ClassSetDTO parametersTypes = methodDTO.getParametersTypes();
         int         parametersCount = parametersTypes.size();
 
-        text.addAttribute("class", "text-primary fw-bold");
+        text.addAttribute("class", "fw-bold");
         text.append(new TextNode("("));
 
         if (parametersCount > 0) {

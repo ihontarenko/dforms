@@ -10,6 +10,10 @@ public class MethodMapper implements Mapper<Method, MethodDTO> {
 
     private static final ClassMapper CLASS_MAPPER = new ClassMapper();
 
+    public void test(String s, Method method, Integer... integers) {
+
+    }
+
     @Override
     public MethodDTO map(Method source) {
         MethodDTO methodDTO = new MethodDTO();

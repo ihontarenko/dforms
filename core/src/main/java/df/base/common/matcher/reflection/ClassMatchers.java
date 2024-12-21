@@ -385,7 +385,8 @@ public class ClassMatchers {
      * }</pre>
      */
     public static Matcher<Class<?>> isJavaPackage() {
-        return Matcher.or(Stream.of(JDK_PACKAGES).map(ClassMatchers::nameStarts).toArray(Matcher[]::new));
+        return Stream.of(JDK_PACKAGES).map(ClassMatchers::nameStarts)
+                .reduce(Matcher.constant(false), Matcher::logicalOr);
     }
 
     private record ClassNameWithMatcher(Matcher<? super String> textMatcher) implements Matcher<Class<?>> {

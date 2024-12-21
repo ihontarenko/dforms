@@ -111,11 +111,13 @@ public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
      * @return a {@link Node} representing the link.
      */
     public Node createLinkNode(ClassDTO classDTO) {
-        Node item = new ElementNode(TagName.SPAN);
+        Node    item     = new ElementNode(TagName.SPAN);
+        boolean linkless = classDTO.isPrimitive() || classDTO.isForeign();
 
-        if (!classDTO.getNativeClass().isPrimitive()) {
+        if (!linkless) {
             item = new ElementNode(TagName.A);
             item.addAttribute("href", "/bean-console/_class/" + classDTO.getFullName());
+            item.addAttribute("class", "text-primary");
         }
 
         item.append(new TextNode(classDTO.getShortName()));

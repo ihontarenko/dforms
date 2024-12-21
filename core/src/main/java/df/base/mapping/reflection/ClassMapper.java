@@ -4,6 +4,7 @@ import df.base.common.mapping.Mapper;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.reflection.ClassMatchers;
 import df.base.dto.reflection.ClassDTO;
+import df.base.dto.reflection.PackageDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,37 +20,62 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
     private static final Map<Class<?>, ClassDTO> CACHE          = new HashMap<>();
     private static final MethodMapper            METHOD_MAPPER  = new MethodMapper();
     private static final FieldMapper             FIELD_MAPPER   = new FieldMapper();
-    private static final PackageMapper           PACKAGE_MAPPER = new PackageMapper();
-    private static final Matcher<Class<?>>       CLASS_MATCHER  = ClassMatchers.nameStarts("df.");
+    private static final Matcher<Class<?>>       IS_NATIVE      = ClassMatchers.nameStarts("df.");
+    private static final Matcher<Class<?>>       IS_JDK         = ClassMatchers.isJavaPackage();
 
     @Override
-    public ClassDTO map(Class<?> source) {
+    public ClassDTO map(Class<?> rawClass) {
+        Class<?> classType = unwrap(rawClass);
+        ClassDTO classDTO  = CACHE.get(classType);
 
-        if (CACHE.containsKey(source)) {
-            return CACHE.get(source);
+        if (classDTO == null) {
+            // mark DTO as array and unwrap it if it is one
+            classDTO = new ClassDTO();
+            classDTO.setArray(rawClass.isArray());
+
+            // map base values Class<?> only
+            mapClass(classType, classDTO);
+
+            // IMPORTANT! need to add class dto to cache
+            // before mapping additional member to avoid StackOverflowError
+            CACHE.put(classType, classDTO);
+
+            mapClassPackage(classType, classDTO);
+
+            // map class' members if class is from native package
+            if (!classDTO.isForeign()) {
+                mapClassMembers(classType, classDTO);
+            }
         }
 
-        ClassDTO classDTO = new ClassDTO();
+        return classDTO;
+    }
 
+    private void mapClass(Class<?> source, ClassDTO classDTO) {
         classDTO.setShortName(source.getSimpleName());
         classDTO.setFullName(source.getName());
         classDTO.setNativeClass(source);
-        classDTO.setArray(source.isArray());
 
-        if (source.isPrimitive() || source.isArray()) {
-            classDTO.setPackage(PACKAGE_MAPPER.map(source.getName()));
+        classDTO.setJdk(IS_JDK.matches(source));
+        classDTO.setForeign(!IS_NATIVE.matches(source));
+        classDTO.setPrimitive(source.isPrimitive());
+    }
+
+    private void mapClassPackage(Class<?> source, ClassDTO classDTO) {
+        PackageDTO packageDTO = new PackageDTO();
+
+        if (!(source.isPrimitive() || source.isArray())) {
+            packageDTO.setNativePackage(source.getPackage());
+            packageDTO.setName(source.getPackage().getName());
         } else {
-            classDTO.setPackage(PACKAGE_MAPPER.map(source.getPackage()));
+            packageDTO.setName(source.getName());
         }
 
-        if (!CLASS_MATCHER.matches(source)) {
-            System.out.println(source.getName());
-        }
+        classDTO.setPackage(packageDTO);
+    }
 
-        CACHE.put(source, classDTO);
-
+    private void mapClassMembers(Class<?> source, ClassDTO classDTO) {
         try {
-            // todo: consider to create isJavaPackage matcher
             getAllFields(source, true).stream()
                     .map(FIELD_MAPPER::map).forEach(classDTO::addField);
             getAllMethods(source, true).stream()
@@ -57,8 +83,16 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
         } catch (NoClassDefFoundError noClassDefFoundError) {
             LOGGER.error("Mapping class %s failed!".formatted(source.getName()), noClassDefFoundError);
         }
+    }
 
-        return classDTO;
+    public Class<?> unwrap(Class<?> clazz) {
+        Class<?> unwrapped = clazz;
+
+        if (clazz.isArray()) {
+            unwrapped = clazz.getComponentType();
+        }
+
+        return unwrapped;
     }
 
     @Override
