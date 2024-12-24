@@ -1,7 +1,7 @@
 package df.base.common.matcher;
 
 import df.base.common.invocable.ReflectionMethodDescriptor;
-import df.base.common.mapping.ObjectFieldMapper;
+import df.base.common.mapping.mapper.ObjectFieldMapper;
 import df.base.common.matcher.reflection.MethodMatchers;
 import df.base.common.reflection.MethodFinder;
 import df.base.common.reflection.Reflections;

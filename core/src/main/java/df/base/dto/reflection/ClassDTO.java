@@ -2,14 +2,15 @@ package df.base.dto.reflection;
 
 public class ClassDTO {
 
+    private Class<?>     nativeClass;
+    private String       name;
+    private String       fullName;
     private boolean      isArray     = false;
     private boolean      isPrimitive = false;
     private boolean      isForeign   = false;
     private boolean      isJdk       = false;
-    private String       shortName;
-    private String       fullName;
-    private PackageDTO   packageDTO;
-    private Class<?>     nativeClass;
+    private ClassSetDTO  baseClasses = new ClassSetDTO();
+    private ClassSetDTO  interfaces  = new ClassSetDTO();
     private MethodSetDTO methods     = new MethodSetDTO();
     private FieldSetDTO  fields      = new FieldSetDTO();
 
@@ -21,12 +22,12 @@ public class ClassDTO {
         this.fullName = fullName;
     }
 
-    public String getShortName() {
-        return shortName;
+    public String getName() {
+        return name;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Class<?> getNativeClass() {
@@ -69,14 +70,6 @@ public class ClassDTO {
         this.isArray = array;
     }
 
-    public PackageDTO getPackage() {
-        return packageDTO;
-    }
-
-    public void setPackage(PackageDTO packageDTO) {
-        this.packageDTO = packageDTO;
-    }
-
     public boolean isForeign() {
         return isForeign;
     }
@@ -99,6 +92,30 @@ public class ClassDTO {
 
     public void setPrimitive(boolean primitive) {
         isPrimitive = primitive;
+    }
+
+    public ClassSetDTO getInterfaces() {
+        return interfaces;
+    }
+
+    public void setInterfaces(ClassSetDTO interfaces) {
+        this.interfaces = interfaces;
+    }
+
+    public void addInterface(ClassDTO iface) {
+        getInterfaces().add(iface);
+    }
+
+    public ClassSetDTO getBaseClasses() {
+        return baseClasses;
+    }
+
+    public void setBaseClasses(ClassSetDTO baseClasses) {
+        this.baseClasses = baseClasses;
+    }
+
+    public void addBaseClass(ClassDTO clazz) {
+        getBaseClasses().add(clazz);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package df.base.mapping.reflection;
 
 import df.base.common.mapping.Mapper;
+import df.base.common.mapping.Mapping;
+import df.base.dto.reflection.ClassDTO;
 import df.base.dto.reflection.MethodDTO;
 
 import java.lang.reflect.Method;
@@ -8,23 +10,18 @@ import java.util.stream.Stream;
 
 public class MethodMapper implements Mapper<Method, MethodDTO> {
 
-    private static final ClassMapper CLASS_MAPPER = new ClassMapper();
-
-    public void test(String s, Method method, Integer... integers) {
-
-    }
-
     @Override
     public MethodDTO map(Method source) {
         MethodDTO methodDTO = new MethodDTO();
 
-        methodDTO.setDeclaringClass(CLASS_MAPPER.map(source.getDeclaringClass()));
+        methodDTO.setDeclaringClass(Mapping.INSTANCE.map(source.getDeclaringClass()));
         methodDTO.setName(source.getName());
         methodDTO.setNativeMethod(source);
         methodDTO.setNativeClass(source.getDeclaringClass());
-        methodDTO.setReturnType(CLASS_MAPPER.map(source.getReturnType()));
+        methodDTO.setReturnType(Mapping.INSTANCE.map(source.getReturnType()));
 
-        Stream.of(source.getParameterTypes()).map(CLASS_MAPPER::map)
+        Stream.of(source.getParameterTypes())
+                .map(Mapping.INSTANCE::map).map(ClassDTO.class::cast)
                 .forEach(methodDTO::addParameterType);
 
         return methodDTO;

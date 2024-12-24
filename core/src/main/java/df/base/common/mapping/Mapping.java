@@ -1,6 +1,5 @@
 package df.base.common.mapping;
 
-import df.base.common.libs.jbm.ClassUtils;
 import df.base.common.reflection.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,8 @@ import static df.base.common.reflection.Reflections.getInterfacesParameterizedTy
  */
 public interface Mapping {
 
-    Logger LOGGER = LoggerFactory.getLogger(Mapping.class);
+    Logger  LOGGER   = LoggerFactory.getLogger(Mapping.class);
+    Mapping INSTANCE = MappingFactory.create();
 
     /**
      * Maps an object to a target type.
@@ -30,13 +30,22 @@ public interface Mapping {
     /**
      * Retrieves a mapper for the specified source object.
      *
-     * @param source the source object
+     * @param preferredType the source object
+     * @return the appropriate Mapper instance
+     * @throws MappingException if no suitable mapper is found
+     */
+    Set<Mapper<Object, Object>> mappers(Class<?> preferredType);
+
+    /**
+     * Retrieves a mapper for the specified source object.
+     *
+     * @param object the source object
      * @param <S> the source type
      * @param <R> the target type
      * @return the appropriate Mapper instance
      * @throws MappingException if no suitable mapper is found
      */
-    <S, R> Mapper<S, R> mapper(S source);
+    <S, R> Mapper<S, R> mapper(S object);
 
     /**
      * Registers a new mapper to handle specific object mappings.
@@ -57,8 +66,6 @@ public interface Mapping {
          * Retrieves a mapper for the specified source object.
          *
          * @param source the source object
-         * @param <S> the source type
-         * @param <R> the target type
          * @return the appropriate Mapper instance
          * @throws MappingException if no suitable mapper is found
          */
@@ -66,23 +73,37 @@ public interface Mapping {
         public <S, R> Mapper<S, R> mapper(S source) {
             Class<?> expectedType = resolveExpectedType(source);
 
-            if (!mappers.containsKey(expectedType)) {
-                throw new MappingException(
-                        "No mapper candidates was found passed source '%s'".formatted(getShortName(source)));
-            }
-
-            for (Mapper<Object, Object> mapper : mappers.get(expectedType)) {
+            for (Mapper<Object, Object> mapper : mappers(expectedType)) {
                 if (mapper.supports(source)) {
 
                     LOGGER.info("Acceptable mapper '{}' for type '{}'.",
-                                getShortName(mapper), getShortName(expectedType));
+                            getShortName(mapper), expectedType.getName());
 
                     return (Mapper<S, R>) mapper;
                 }
             }
 
             throw new MappingException(
-                    "No applicable mapper was found for passed source '%s'".formatted(getShortName(source)));
+                    "No applicable mapper was found for type '%s'".formatted(expectedType.getCanonicalName()));
+        }
+
+        /**
+         * Retrieves a mapper for the specified source object.
+         *
+         * @param preferredType the source object
+         * @return the appropriate Mapper instance
+         * @throws MappingException if no suitable mapper is found
+         */
+        @Override
+        public Set<Mapper<Object, Object>> mappers(Class<?> preferredType) {
+            Set<Mapper<Object, Object>> candidates = mappers.get(preferredType);
+
+            if (candidates == null) {
+                throw new MappingException(
+                        "No mapper candidates was found passed source '%s'".formatted(getShortName(preferredType)));
+            }
+
+            return candidates;
         }
 
         /**
@@ -109,12 +130,10 @@ public interface Mapping {
 
             if (preferredType == null) {
                 throw new MappingException(
-                        "Please generalize mapper '%s' to resolve acceptable type"
-                                .formatted(getShortName(mapper)));
+                        "Please generalize mapper '%s' to resolve acceptable type".formatted(getShortName(mapper)));
             }
 
-            LOGGER.info("Register new mapper '{}' for preferred type '{}'.",
-                        getShortName(mapper), getShortName(preferredType));
+            LOGGER.info("Mapper '{}' assigned for type '{}'.", getShortName(mapper), getShortName(preferredType));
 
             mappers.computeIfAbsent(preferredType, type -> new HashSet<>())
                     .add((Mapper<Object, Object>) mapper);

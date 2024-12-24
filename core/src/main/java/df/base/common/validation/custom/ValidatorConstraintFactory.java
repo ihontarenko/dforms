@@ -1,7 +1,7 @@
 package df.base.common.validation.custom;
 
 import df.base.PackageCoreRoot;
-import df.base.common.mapping.ObjectFieldMapper;
+import df.base.common.mapping.mapper.ObjectFieldMapper;
 import df.base.common.proxy.AnnotationProxyFactory;
 import df.base.common.validation.custom.constraint.NonEmptyValidator;
 import df.base.common.validation.custom.constraint.NotNullValidator;

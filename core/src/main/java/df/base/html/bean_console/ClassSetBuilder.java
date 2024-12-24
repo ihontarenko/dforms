@@ -45,7 +45,7 @@ public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
     @Override
     public Node build(ClassSetDTO classDTOs, NodeBuilderContext ctx) {
         Node                        wrapper        = new ElementNode(TagName.DIV);
-        Map<String, List<ClassDTO>> groupedClasses = Flow.of(classDTOs).groupBy(dto -> dto.getPackage().getName());
+        Map<String, List<ClassDTO>> groupedClasses = Flow.of(classDTOs).groupBy(dto -> dto.getName());
 
         for (var entry : groupedClasses.entrySet()) {
             Node container = new ElementNode(TagName.OL);
@@ -120,7 +120,7 @@ public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
             item.addAttribute("class", "text-primary");
         }
 
-        item.append(new TextNode(classDTO.getShortName()));
+        item.append(new TextNode(classDTO.getName()));
 
         if (classDTO.isArray()) {
             item.append(new TextNode("[]"));
@@ -150,7 +150,7 @@ public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
      */
     public Node createSmallNode(ClassDTO classDTO) {
         Node small = new ElementNode(TagName.SMALL);
-        small.append(new TextNode(classDTO.getPackage().getName()));
+        small.append(new TextNode(classDTO.getName()));
         return small;
     }
 

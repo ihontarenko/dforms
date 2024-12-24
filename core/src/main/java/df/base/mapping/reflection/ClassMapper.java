@@ -1,13 +1,18 @@
 package df.base.mapping.reflection;
 
 import df.base.common.mapping.Mapper;
+import df.base.common.mapping.Mapping;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.reflection.ClassMatchers;
+import df.base.common.reflection.Reflections;
 import df.base.dto.reflection.ClassDTO;
-import df.base.dto.reflection.PackageDTO;
+import df.base.dto.reflection.FieldDTO;
+import df.base.dto.reflection.MethodDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,14 +21,11 @@ import static df.base.common.reflection.MethodFinder.getAllMethods;
 
 public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
 
-    private static final Logger                  LOGGER         = LoggerFactory.getLogger(ClassMapper.class);
-    private static final Map<Class<?>, ClassDTO> CACHE          = new HashMap<>();
-    private static final MethodMapper            METHOD_MAPPER  = new MethodMapper();
-    private static final FieldMapper             FIELD_MAPPER   = new FieldMapper();
-    private static final Matcher<Class<?>>       IS_NATIVE      = ClassMatchers.nameStarts("df.");
-    private static final Matcher<Class<?>>       IS_JDK         = ClassMatchers.isJavaPackage();
-    private static int cached = 0;
-    private static int real = 0;
+    private static final Logger                  LOGGER    = LoggerFactory.getLogger(ClassMapper.class);
+    private static final Map<Class<?>, ClassDTO> CACHE     = new HashMap<>();
+    private static final Matcher<Class<?>>       IS_NATIVE = ClassMatchers.nameStarts("df.");
+    private static final Matcher<Class<?>>       IS_JDK    = ClassMatchers.isJavaPackage();
+    private static final Mapping                 MAPPING   = Mapping.INSTANCE;
 
     @Override
     public ClassDTO map(Class<?> rawClass) {
@@ -31,7 +33,6 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
         ClassDTO classDTO  = CACHE.get(rawClass);
 
         if (classDTO == null) {
-            real++;
             // mark DTO as array and unwrap it if it is one
             classDTO = new ClassDTO();
             classDTO.setArray(rawClass.isArray());
@@ -43,50 +44,54 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
             // before mapping additional member to avoid StackOverflowError
             CACHE.put(rawClass, classDTO);
 
-            mapClassPackage(classType, classDTO);
-
             // map class' members if class is from native package
             if (!classDTO.isForeign()) {
+                mapSuperClasses(classType, classDTO);
+                mapInterfaces(classType, classDTO);
                 mapClassMembers(classType, classDTO);
             }
-        } else {
-            cached++;
         }
 
         return classDTO;
     }
 
-    private void mapClass(Class<?> source, ClassDTO classDTO) {
-        classDTO.setShortName(source.getSimpleName());
-        classDTO.setFullName(source.getName());
-        classDTO.setNativeClass(source);
+    private void mapClass(Class<?> klass, ClassDTO classDTO) {
+        classDTO.setName(klass.getSimpleName());
+        classDTO.setFullName(klass.getName());
+        classDTO.setNativeClass(klass);
 
-        classDTO.setJdk(IS_JDK.matches(source));
-        classDTO.setForeign(!IS_NATIVE.matches(source));
-        classDTO.setPrimitive(source.isPrimitive());
+        classDTO.setJdk(IS_JDK.matches(klass));
+        classDTO.setForeign(!IS_NATIVE.matches(klass));
+        classDTO.setPrimitive(klass.isPrimitive());
     }
 
-    private void mapClassPackage(Class<?> source, ClassDTO classDTO) {
-        PackageDTO packageDTO = new PackageDTO();
-
-        if (!(source.isPrimitive() || source.isArray())) {
-            packageDTO.setNativePackage(source.getPackage());
-            packageDTO.setName(source.getPackage().getName());
-        } else {
-            packageDTO.setName(source.getName());
+    private void mapSuperClasses(Class<?> klass, ClassDTO classDTO) {
+        for (Class<?> superClass : Reflections.getSuperClasses(klass)) {
+            if (superClass != klass) {
+                classDTO.addBaseClass(map(superClass));
+            }
         }
-
-        classDTO.setPackage(packageDTO);
     }
 
-    private void mapClassMembers(Class<?> source, ClassDTO classDTO) {
+    private void mapInterfaces(Class<?> klass, ClassDTO classDTO) {
+        for (Class<?> iface : Reflections.getClassInterfaces(klass)) {
+            if (iface != klass) {
+                classDTO.addInterface(map(iface));
+            }
+        }
+    }
+
+    private void mapClassMembers(Class<?> klass, ClassDTO classDTO) {
         try {
-            getAllFields(source, true).stream()
-                    .map(FIELD_MAPPER::map).forEach(classDTO::addField);
-            getAllMethods(source, true).stream()
-                    .map(METHOD_MAPPER::map).forEach(classDTO::addMethod);
-        } catch (NoClassDefFoundError noClassDefFoundError) {
-            LOGGER.error("Mapping class %s failed!".formatted(source.getName()), noClassDefFoundError);
+            for (Field field : getAllFields(klass, false)) {
+                classDTO.addField((FieldDTO) MAPPING.mapper(field).map(field));
+            }
+
+            for (Method method : getAllMethods(klass, false)) {
+                classDTO.addMethod((MethodDTO) MAPPING.mapper(method).map(method));
+            }
+        } catch (Exception exception) {
+            LOGGER.error("Mapping class %s failed!".formatted(klass.getName()), exception);
         }
     }
 
@@ -101,7 +106,7 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
     }
 
     @Override
-    public Class<?> reverse(ClassDTO source) {
+    public Class<?> reverse(ClassDTO klass) {
         throw new UnsupportedOperationException();
     }
 
