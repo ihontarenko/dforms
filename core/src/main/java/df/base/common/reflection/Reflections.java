@@ -454,13 +454,13 @@ abstract public class Reflections {
      * @return an array of object types
      */
     public static Class<?>[] getArgumentsTypes(Object... arguments) {
-        Class<?>[] argumentTypes = new Class<?>[arguments.length];
+        Class<?>[] classes = new Class<?>[arguments.length];
 
         for (int i = 0; i < arguments.length; i++) {
-            argumentTypes[i] = arguments[i] != null ? arguments[i].getClass() : Object.class;
+            classes[i] = arguments[i] != null ? arguments[i].getClass() : Object.class;
         }
 
-        return argumentTypes;
+        return classes;
     }
 
     /**

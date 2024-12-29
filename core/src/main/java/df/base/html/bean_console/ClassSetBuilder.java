@@ -45,7 +45,7 @@ public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
     @Override
     public Node build(ClassSetDTO classDTOs, NodeBuilderContext ctx) {
         Node                        wrapper        = new ElementNode(TagName.DIV);
-        Map<String, List<ClassDTO>> groupedClasses = Flow.of(classDTOs).groupBy(dto -> dto.getName());
+        Map<String, List<ClassDTO>> groupedClasses = Flow.of(classDTOs).groupBy(ClassDTO::getName);
 
         for (var entry : groupedClasses.entrySet()) {
             Node container = new ElementNode(TagName.OL);

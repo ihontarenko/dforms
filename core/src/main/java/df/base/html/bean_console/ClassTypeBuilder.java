@@ -10,10 +10,11 @@ import df.base.common.elements.node.HTMLElementNode;
 import df.base.common.elements.node.TextNode;
 import df.base.dto.reflection.ClassDTO;
 import df.base.dto.reflection.ClassSetDTO;
-import df.base.dto.reflection.MethodDTO;
 import df.base.dto.reflection.MethodSetDTO;
 
 public class ClassTypeBuilder implements NodeBuilder<ClassDTO> {
+
+    public static final String TEXT_COMMA = ", ";
 
     @Override
     public Node build(ClassDTO classDTO, NodeBuilderContext ctx) {
@@ -23,7 +24,8 @@ public class ClassTypeBuilder implements NodeBuilder<ClassDTO> {
         Node                      wrapper       = new ElementNode(TagName.DIV);
 
         wrapper.append(createHeader(classDTO));
-        wrapper.append(createSuperClasses(classDTO, (ClassSetBuilder) classBuilder));
+        wrapper.append(createClasses(classDTO.getBaseClasses(), (ClassSetBuilder) classBuilder, "Base Classes: "));
+        wrapper.append(createClasses(classDTO.getInterfaces(), (ClassSetBuilder) classBuilder, "Interfaces: "));
         wrapper.append(methodBuilder.build(classDTO.getMethods(), ctx));
 
         return wrapper;
@@ -38,14 +40,27 @@ public class ClassTypeBuilder implements NodeBuilder<ClassDTO> {
         return header;
     }
 
-    private Node createSuperClasses(ClassDTO classDTO, ClassSetBuilder builder) {
-        HTMLElementNode header  = new HTMLElementNode(TagName.H5);
+    private Node createClasses(ClassSetDTO classes, ClassSetBuilder builder, String label) {
+        HTMLElementNode header          = new HTMLElementNode(TagName.H6);
+        int             currentPosition = 0;
 
-        header.setClass("text-primary fw-bold");
+        header.setClass("fw-bold");
 
-        for (ClassDTO baseClass : classDTO.getBaseClasses()) {
+        if (classes.size() > 0) {
+            header.append(new TextNode(label));
+        }
+
+        for (ClassDTO baseClass : classes) {
             header.append(builder.createLinkNode(baseClass));
-            header.append(new TextNode(", "));
+            if (classes.size() > ++currentPosition) {
+                header.append(new TextNode(TEXT_COMMA));
+            }
+        }
+
+        if (header.hasChildren()) {
+            header.prepend(new TextNode("["));
+            header.append(new TextNode("]"));
+            header.wrap(new ElementNode(TagName.P));
         }
 
         return header;

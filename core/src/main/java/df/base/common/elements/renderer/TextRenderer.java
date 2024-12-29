@@ -13,7 +13,7 @@ public class TextRenderer implements Renderer {
             return indentation(node.getDepth()) + textNode.getText() + "\n";
         }
 
-        throw new IllegalArgumentException("INCORRECT NODE TYPE FOR RENDERER");
+        throw new IllegalArgumentException("Incorrect node type for renderer");
     }
 
 }
