@@ -29,7 +29,7 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
 
     @Override
     public ClassDTO map(Class<?> rawClass) {
-        Class<?> classType = Reflections.unwrapArrayClass(rawClass);
+        Class<?> userClass = Reflections.getArrayClass(rawClass);
         ClassDTO classDTO  = CACHE.get(rawClass);
 
         if (classDTO == null) {
@@ -38,7 +38,7 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
             classDTO.setArray(rawClass.isArray());
 
             // map base values Class<?> only
-            mapClass(classType, classDTO);
+            mapClass(userClass, classDTO);
 
             // IMPORTANT! need to add class dto to cache
             // before mapping additional member to avoid StackOverflowError
@@ -46,9 +46,9 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
 
             // map class' members if class is from native package
             if (!classDTO.isForeign()) {
-                mapSuperClasses(classType, classDTO);
-                mapInterfaces(classType, classDTO);
-                mapClassMembers(classType, classDTO);
+                mapSuperClasses(userClass, classDTO);
+                mapInterfaces(userClass, classDTO);
+                mapClassMembers(userClass, classDTO);
             }
         }
 

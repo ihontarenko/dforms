@@ -620,7 +620,7 @@ abstract public class Reflections {
         return clazz;
     }
 
-    public static Class<?> unwrapAnonymousClass(Class<?> classType) {
+    public static Class<?> getAnonymousClass(Class<?> classType) {
         Class<?> userClass = classType;
 
         while (userClass.isAnonymousClass()) {
@@ -630,7 +630,7 @@ abstract public class Reflections {
         return userClass;
     }
 
-    public static Class<?> unwrapArrayClass(Class<?> clazz) {
+    public static Class<?> getArrayClass(Class<?> clazz) {
         Class<?> unwrapped = clazz;
 
         if (clazz.isArray()) {
