@@ -1,12 +1,10 @@
 package df.base.common.parser.ast;
 
-import df.base.common.libs.ast.node.EntryNode;
-import df.base.common.libs.ast.compiler.EvaluationContext;
+import df.base.common.ast.node.EntryNode;
+import df.base.common.ast.compiler.EvaluationContext;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ParametersNode extends EntryNode {
 

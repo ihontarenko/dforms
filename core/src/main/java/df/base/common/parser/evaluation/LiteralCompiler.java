@@ -1,10 +1,10 @@
 package df.base.common.parser.evaluation;
 
-import df.base.common.libs.ast.compiler.Compiler;
-import df.base.common.libs.ast.compiler.EvaluationContext;
+import df.base.common.ast.compiler.Compiler;
+import df.base.common.ast.compiler.EvaluationContext;
 import df.base.common.parser.ast.LiteralNode;
 
-import static df.base.common.libs.ast.token.DefaultToken.*;
+import static df.base.common.ast.token.DefaultToken.*;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Double.parseDouble;
 import static java.lang.Float.parseFloat;

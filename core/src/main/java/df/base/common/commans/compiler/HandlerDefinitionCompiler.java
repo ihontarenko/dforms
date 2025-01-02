@@ -1,8 +1,8 @@
 package df.base.common.commans.compiler;
 
 import df.base.common.commans.CommandRoute;
-import df.base.common.libs.ast.compiler.Compiler;
-import df.base.common.libs.ast.compiler.EvaluationContext;
+import df.base.common.ast.compiler.Compiler;
+import df.base.common.ast.compiler.EvaluationContext;
 import df.base.common.parser.ast.StringDefinitionNode;
 import df.base.common.parser.ast.VariableNode;
 

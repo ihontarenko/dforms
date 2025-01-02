@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static df.base.common.libs.jbm.ReflectionUtils.getClassInterfaces;
-import static df.base.common.libs.jbm.ReflectionUtils.hasMethod;
+import static df.base.common.container.ReflectionUtils.getClassInterfaces;
+import static df.base.common.container.ReflectionUtils.hasMethod;
 
 public class ProxyConfig {
 

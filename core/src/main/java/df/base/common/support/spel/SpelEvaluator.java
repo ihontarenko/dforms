@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
-import static df.base.common.libs.jbm.ReflectionUtils.extractStaticMethods;
+import static df.base.common.container.ReflectionUtils.extractStaticMethods;
 import static java.util.Objects.requireNonNull;
 import static java.util.Objects.requireNonNullElse;
 

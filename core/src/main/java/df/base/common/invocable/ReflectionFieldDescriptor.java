@@ -1,10 +1,8 @@
 package df.base.common.invocable;
 
-import df.base.common.libs.jbm.StringUtils;
-
 import java.lang.reflect.Field;
 
-import static df.base.common.libs.jbm.StringUtils.underscored;
+import static df.base.common.container.StringUtils.underscored;
 
 public class ReflectionFieldDescriptor implements FieldDescriptor {
 

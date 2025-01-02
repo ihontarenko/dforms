@@ -2,8 +2,8 @@ package df.base.common.proxy;
 
 import df.base.common.proxy.annotation.Interceptor;
 
-import static df.base.common.libs.jbm.ReflectionUtils.findFirstConstructor;
-import static df.base.common.libs.jbm.ReflectionUtils.instantiate;
+import static df.base.common.container.ReflectionUtils.findFirstConstructor;
+import static df.base.common.container.ReflectionUtils.instantiate;
 
 public class AnnotationProxyFactory extends ProxyFactory {
 

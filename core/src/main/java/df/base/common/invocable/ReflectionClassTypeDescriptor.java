@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static df.base.common.libs.jbm.StringUtils.underscored;
+import static df.base.common.container.StringUtils.underscored;
 
 public class ReflectionClassTypeDescriptor implements ClassTypeDescriptor {
 

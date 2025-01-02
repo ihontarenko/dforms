@@ -1,8 +1,8 @@
 package df.base.common.parser.evaluation;
 
-import df.base.common.libs.ast.compiler.Compiler;
-import df.base.common.libs.ast.compiler.EvaluationContext;
-import df.base.common.libs.ast.node.RootNode;
+import df.base.common.ast.compiler.Compiler;
+import df.base.common.ast.compiler.EvaluationContext;
+import df.base.common.ast.node.RootNode;
 
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;

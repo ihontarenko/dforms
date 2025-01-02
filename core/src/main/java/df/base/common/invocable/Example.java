@@ -1,6 +1,6 @@
 package df.base.common.invocable;
 
-import df.base.common.libs.jbm.StringUtils;
+import df.base.common.container.StringUtils;
 
 public class Example {
 

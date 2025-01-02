@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static df.base.common.libs.jbm.ClassUtils.getShortName;
+import static df.base.common.container.ClassUtils.getShortName;
 import static df.base.common.reflection.Reflections.getInterfacesParameterizedType;
 
 /**

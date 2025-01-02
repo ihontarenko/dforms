@@ -1,8 +1,8 @@
 package df.base.common.parser.ast;
 
-import df.base.common.libs.ast.node.EntryNode;
-import df.base.common.libs.ast.compiler.EvaluationContext;
-import df.base.common.libs.ast.node.Node;
+import df.base.common.ast.node.EntryNode;
+import df.base.common.ast.compiler.EvaluationContext;
+import df.base.common.ast.node.Node;
 
 import java.util.ArrayList;
 import java.util.List;

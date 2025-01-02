@@ -5,8 +5,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import static df.base.common.libs.jbm.ReflectionUtils.isEqualsMethod;
-import static df.base.common.libs.jbm.ReflectionUtils.isHashCodeMethod;
+import static df.base.common.container.ReflectionUtils.isEqualsMethod;
+import static df.base.common.container.ReflectionUtils.isHashCodeMethod;
 import static java.lang.reflect.Proxy.*;
 
 public class JdkProxy implements InvocationHandler, Proxy {

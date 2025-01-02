@@ -1,7 +1,7 @@
 package df.base.common.parser.evaluation;
 
-import df.base.common.libs.ast.compiler.EvaluationContext;
-import df.base.common.libs.ast.configurer.Configurator;
+import df.base.common.ast.compiler.EvaluationContext;
+import df.base.common.ast.configurer.Configurator;
 
 public class EvaluationContextConfigurator implements Configurator<EvaluationContext> {
 

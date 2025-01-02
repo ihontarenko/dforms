@@ -2,7 +2,7 @@ package df.base.common.invocable;
 
 import java.lang.reflect.Method;
 
-import static df.base.common.libs.jbm.StringUtils.underscored;
+import static df.base.common.container.StringUtils.underscored;
 
 public class ReflectionMethodDescriptor implements MethodDescriptor {
 

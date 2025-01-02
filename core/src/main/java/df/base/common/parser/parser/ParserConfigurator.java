@@ -1,7 +1,7 @@
 package df.base.common.parser.parser;
 
-import df.base.common.libs.ast.configurer.Configurator;
-import df.base.common.libs.ast.parser.ParserContext;
+import df.base.common.ast.configurer.Configurator;
+import df.base.common.ast.parser.ParserContext;
 
 public class ParserConfigurator implements Configurator<ParserContext> {
 

@@ -3,7 +3,7 @@ package df.base.common.context.beans;
 import java.util.HashMap;
 import java.util.Map;
 
-import static df.base.common.libs.jbm.ReflectionUtils.readPropertyDescriptors;
+import static df.base.common.container.ReflectionUtils.readPropertyDescriptors;
 
 public class MapObjectBeanInfo extends AbstractBeanInfo {
 

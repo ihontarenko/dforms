@@ -7,7 +7,7 @@ import df.base.common.elements.builder.NodeBuilder;
 import df.base.common.elements.builder.NodeBuilderContext;
 import df.base.common.elements.node.ElementNode;
 import df.base.common.elements.node.TextNode;
-import df.base.common.libs.jbm.StringUtils;
+import df.base.common.container.StringUtils;
 import df.base.dto.form.FieldAttributeDTO;
 import df.base.dto.form.FieldDTO;
 import df.base.dto.form.FieldOptionDTO;

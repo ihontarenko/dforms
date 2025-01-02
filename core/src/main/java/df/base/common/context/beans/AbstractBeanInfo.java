@@ -4,7 +4,7 @@ import java.beans.PropertyDescriptor;
 import java.util.HashMap;
 import java.util.Map;
 
-import static df.base.common.libs.jbm.ReflectionUtils.unwrapAnonymousClass;
+import static df.base.common.container.ReflectionUtils.unwrapAnonymousClass;
 import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 

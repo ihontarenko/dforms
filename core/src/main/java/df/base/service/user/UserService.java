@@ -1,6 +1,5 @@
 package df.base.service.user;
 
-import df.base.common.libs.jbm.StringUtils;
 import df.base.persistence.entity.user.Role;
 import df.base.persistence.entity.user.User;
 import df.base.persistence.repository.user.UserRepository;
@@ -19,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static df.base.Messages.ERROR_USER_NOT_FOUND;
-import static df.base.common.libs.jbm.StringUtils.hasText;
+import static df.base.common.container.StringUtils.hasText;
 import static java.util.Optional.empty;
 
 // todo: implement ServiceInterface

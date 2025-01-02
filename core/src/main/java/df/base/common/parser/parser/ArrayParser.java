@@ -1,11 +1,11 @@
 package df.base.common.parser.parser;
 
-import df.base.common.libs.ast.lexer.Lexer;
-import df.base.common.libs.ast.node.Node;
-import df.base.common.libs.ast.parser.Parser;
-import df.base.common.libs.ast.parser.ParserContext;
+import df.base.common.ast.lexer.Lexer;
+import df.base.common.ast.node.Node;
+import df.base.common.ast.parser.Parser;
+import df.base.common.ast.parser.ParserContext;
 
-import static df.base.common.libs.ast.token.DefaultToken.*;
+import static df.base.common.ast.token.DefaultToken.*;
 
 public class ArrayParser implements Parser {
 

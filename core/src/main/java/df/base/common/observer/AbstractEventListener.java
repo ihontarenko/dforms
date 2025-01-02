@@ -1,6 +1,6 @@
 package df.base.common.observer;
 
-import df.base.common.libs.jbm.StringUtils;
+import df.base.common.container.StringUtils;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.reflection.TypeMatchers;
 

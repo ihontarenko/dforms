@@ -1,6 +1,6 @@
 package df.base.common.reflection;
 
-import df.base.common.libs.jbm.scanner.ClassScanner;
+import df.base.common.container.scanner.ClassScanner;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.reflection.ClassMatchers;
 

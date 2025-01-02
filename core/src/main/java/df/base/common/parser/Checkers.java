@@ -1,7 +1,7 @@
 package df.base.common.parser;
 
-import df.base.common.libs.ast.lexer.Lexer;
-import df.base.common.libs.ast.token.DefaultToken;
+import df.base.common.ast.lexer.Lexer;
+import df.base.common.ast.token.DefaultToken;
 
 final public class Checkers {
 

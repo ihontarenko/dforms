@@ -1,6 +1,6 @@
 package df.base.common.parser;
 
-import df.base.common.libs.ast.token.Token;
+import df.base.common.ast.token.Token;
 
 public enum ExtendedToken implements Token {
 

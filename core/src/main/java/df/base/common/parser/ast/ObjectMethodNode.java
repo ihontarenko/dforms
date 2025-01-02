@@ -1,7 +1,7 @@
 package df.base.common.parser.ast;
 
-import df.base.common.libs.ast.node.EntryNode;
-import df.base.common.libs.ast.node.Node;
+import df.base.common.ast.node.EntryNode;
+import df.base.common.ast.node.Node;
 
 public class ObjectMethodNode extends EntryNode {
 

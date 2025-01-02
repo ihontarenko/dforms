@@ -1,6 +1,6 @@
 package df.base.common.validation.custom;
 
-import static df.base.common.libs.jbm.StringUtils.underscored;
+import static df.base.common.container.StringUtils.underscored;
 
 abstract public class AbstractValidator implements Validator {
 

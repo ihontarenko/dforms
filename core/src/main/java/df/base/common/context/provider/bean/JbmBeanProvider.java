@@ -1,7 +1,7 @@
 package df.base.common.context.provider.bean;
 
 import df.base.common.context.BeanProvider;
-import df.base.common.libs.jbm.bean.context.JbmContext;
+import df.base.common.container.bean.context.JbmContext;
 
 public class JbmBeanProvider implements BeanProvider {
 

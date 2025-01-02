@@ -1,13 +1,10 @@
 package df.base.common.parser.ast;
 
-import df.base.common.libs.ast.node.EntryNode;
-import df.base.common.libs.ast.compiler.EvaluationContext;
-import df.base.common.libs.ast.token.Token;
+import df.base.common.ast.node.EntryNode;
+import df.base.common.ast.compiler.EvaluationContext;
+import df.base.common.ast.token.Token;
 
-import static df.base.common.libs.ast.token.DefaultToken.*;
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Double.parseDouble;
-import static java.lang.Float.parseFloat;
+import static df.base.common.ast.token.DefaultToken.*;
 import static java.lang.Integer.parseInt;
 
 public class LiteralNode extends EntryNode {

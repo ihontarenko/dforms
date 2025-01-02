@@ -10,7 +10,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import java.util.ArrayList;
 import java.util.List;
 
-import static df.base.common.libs.jbm.ReflectionUtils.*;
+import static df.base.common.container.ReflectionUtils.*;
 
 public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
 

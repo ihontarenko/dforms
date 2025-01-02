@@ -1,6 +1,6 @@
 package df.base.common.proxy;
 
-import df.base.common.libs.jbm.scanner.ClassScanner;
+import df.base.common.container.scanner.ClassScanner;
 import df.base.common.proxy.annotation.Interceptor;
 
 import java.util.*;

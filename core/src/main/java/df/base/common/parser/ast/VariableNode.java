@@ -1,6 +1,6 @@
 package df.base.common.parser.ast;
 
-import df.base.common.libs.ast.node.EntryNode;
+import df.base.common.ast.node.EntryNode;
 
 public class VariableNode extends EntryNode {
 
