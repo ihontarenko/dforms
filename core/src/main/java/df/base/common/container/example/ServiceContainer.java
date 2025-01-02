@@ -1,10 +1,10 @@
 package df.base.common.container.example;
 
-import df.base.common.container.bean.Bean;
-import df.base.common.container.bean.BeanConstructor;
+import df.base.common.container.bean.annotation.Provide;
+import df.base.common.container.bean.annotation.BeanConstructor;
 import df.base.common.container.example.services.ServiceInterface;
 
-@Bean
+@Provide
 public class ServiceContainer {
 
     private ServiceInterface serviceA;

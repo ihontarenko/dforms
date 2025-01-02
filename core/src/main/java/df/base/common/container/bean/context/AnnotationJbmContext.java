@@ -5,7 +5,7 @@ import df.base.common.container.bean.processor.Processable;
 import df.base.common.container.bean.BeanFactory;
 import df.base.common.container.bean.processor.BeanProcessor;
 
-public class AnnotationJbmContext implements JbmContext, Processable {
+public class AnnotationJbmContext implements BeanContainerContext, Processable {
 
     private final BeanFactory factory;
 
@@ -14,8 +14,8 @@ public class AnnotationJbmContext implements JbmContext, Processable {
         this.factory.setApplicationContext(this);
     }
 
-    public static JbmContext run(Class<?>... classes) {
-        Class<?>[]  root    = classes == null ? new Class<?>[]{JbmContext.class} : classes;
+    public static BeanContainerContext run(Class<?>... classes) {
+        Class<?>[]  root    = classes == null ? new Class<?>[]{BeanContainerContext.class} : classes;
         BeanFactory factory = new BeanFacrotyBuilder(root).build();
 
         return new AnnotationJbmContext(factory);

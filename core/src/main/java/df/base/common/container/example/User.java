@@ -1,8 +1,8 @@
 package df.base.common.container.example;
 
-import df.base.common.container.bean.Bean;
+import df.base.common.container.bean.annotation.Provide;
 
-@Bean
+@Provide
 public class User {
 
 }

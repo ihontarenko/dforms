@@ -1,7 +1,7 @@
 package df.base.common.container.bean.definition;
 
 import df.base.common.container.bean.BeanDependency;
-import df.base.common.container.bean.Scope;
+import df.base.common.container.bean.annotation.Lifecycle;
 import df.base.common.container.bean.creation.BeanCreationStrategy;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ abstract public class AbstractBeanDefinition implements BeanDefinition {
     protected       Class<?>             type;
     protected       BeanDefinition       parent;
     protected       List<BeanDefinition> children;
-    protected       Scope                scope;
+    protected       Lifecycle.Scope      scope;
     protected       Object               instance = null;
     protected       BeanCreationStrategy strategy = null;
 
@@ -66,12 +66,12 @@ abstract public class AbstractBeanDefinition implements BeanDefinition {
     }
 
     @Override
-    public Scope getBeanScope() {
+    public Lifecycle.Scope getBeanScope() {
         return scope;
     }
 
     @Override
-    public void setBeanScope(Scope scope) {
+    public void setBeanScope(Lifecycle.Scope scope) {
         this.scope = scope;
     }
 

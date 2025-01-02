@@ -1,13 +1,13 @@
 package df.base.common.context.provider.bean;
 
 import df.base.common.context.BeanProvider;
-import df.base.common.container.bean.context.JbmContext;
+import df.base.common.container.bean.context.BeanContainerContext;
 
 public class JbmBeanProvider implements BeanProvider {
 
-    private final JbmContext jbmContext;
+    private final BeanContainerContext jbmContext;
 
-    public JbmBeanProvider(JbmContext jbmContext) {
+    public JbmBeanProvider(BeanContainerContext jbmContext) {
         this.jbmContext = jbmContext;
     }
 

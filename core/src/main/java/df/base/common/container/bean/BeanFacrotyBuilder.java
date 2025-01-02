@@ -1,6 +1,7 @@
 package df.base.common.container.bean;
 
 import df.base.common.container.Builder;
+import df.base.common.container.bean.annotation.Provide;
 import df.base.common.matcher.reflection.TypeMatchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +64,7 @@ public class BeanFacrotyBuilder implements Builder<BeanFactory> {
 
         // scanning bean factory methods
         for (Class<?> candidate : scanBeanConfigurationClasses(classes)) {
-            for (Method method : findAllAnnotatedMethods(candidate, Bean.class)) {
+            for (Method method : findAllAnnotatedMethods(candidate, Provide.class)) {
                 factory.registerBeanDefinition(
                         factory.createBeanDefinition(method.getReturnType(), method.getDeclaringClass(), method)
                 );

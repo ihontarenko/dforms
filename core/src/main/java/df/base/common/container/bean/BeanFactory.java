@@ -1,6 +1,7 @@
 package df.base.common.container.bean;
 
 import df.base.common.container.ClassUtils;
+import df.base.common.container.bean.annotation.Provide;
 import df.base.common.container.bean.context.JbmContextAware;
 import df.base.common.container.bean.processor.Processable;
 import df.base.common.container.bean.definition.BeanDefinition;
@@ -33,7 +34,7 @@ public interface BeanFactory extends Processable, JbmContextAware {
     }
 
     default String getBeanName(Class<?> type) {
-        String beanName = getBeanName(type, Bean.class);
+        String beanName = getBeanName(type, Provide.class);
 
         if (beanName == null) {
             beanName = ClassUtils.getShortName(type);
@@ -43,7 +44,7 @@ public interface BeanFactory extends Processable, JbmContextAware {
     }
 
     default String getBeanName(Method method) {
-        String beanName = getBeanName(method, Bean.class);
+        String beanName = getBeanName(method, Provide.class);
 
         if (beanName == null) {
             beanName = method.getName();

@@ -1,4 +1,4 @@
-package df.base.common.container.bean;
+package df.base.common.container.bean.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

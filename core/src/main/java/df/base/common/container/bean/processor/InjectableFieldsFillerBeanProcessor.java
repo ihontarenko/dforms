@@ -1,15 +1,15 @@
 package df.base.common.container.bean.processor;
 
 import df.base.common.container.bean.BeanFactory;
-import df.base.common.container.bean.BeanInjection;
-import df.base.common.container.bean.context.JbmContext;
+import df.base.common.container.bean.annotation.BeanInjection;
+import df.base.common.container.bean.context.BeanContainerContext;
 
 import java.lang.reflect.Field;
 
 public class InjectableFieldsFillerBeanProcessor implements BeanProcessor {
 
     @Override
-    public void process(Object bean, JbmContext context) {
+    public void process(Object bean, BeanContainerContext context) {
         BeanFactory factory = context.getFactory();
         for (Field field : bean.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(BeanInjection.class)) {

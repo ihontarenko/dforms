@@ -1,13 +1,17 @@
 package df.base.common.container.bean;
 
 import df.base.common.container.ClassUtils;
-import df.base.common.container.bean.context.JbmContext;
-import df.base.common.container.bean.creation.SupplierBeanCreationStrategy;
-import df.base.common.container.bean.definition.*;
+import df.base.common.container.bean.annotation.BeanConstructor;
+import df.base.common.container.bean.annotation.Lifecycle;
+import df.base.common.container.bean.annotation.Lifecycle.Scope;
+import df.base.common.container.bean.annotation.Name;
+import df.base.common.container.bean.annotation.Provide;
+import df.base.common.container.bean.context.BeanContainerContext;
 import df.base.common.container.bean.creation.BeanCreationStrategy;
 import df.base.common.container.bean.creation.ConstructorBeanCreationStrategy;
 import df.base.common.container.bean.creation.MethodBeanCreationStrategy;
-import df.base.common.libs.container.bean.definition.*;
+import df.base.common.container.bean.creation.SupplierBeanCreationStrategy;
+import df.base.common.container.bean.definition.*;
 import df.base.common.container.bean.processor.BeanProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,22 +24,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static df.base.common.container.StringUtils.underscored;
-import static java.util.stream.Collectors.joining;
 import static df.base.common.container.ReflectionUtils.findFirstAnnotatedConstructor;
 import static df.base.common.container.ReflectionUtils.findFirstConstructor;
+import static df.base.common.container.StringUtils.underscored;
+import static java.util.stream.Collectors.joining;
 
 public class AnnotationBeanFactory implements BeanFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BeanFactory.class);
 
-    private final Map<String, BeanDefinition> definitions;
-    private final Map<String, Object>         beans;
+    private final Map<String, BeanDefinition>  definitions;
+    private final Map<String, Object>          beans;
     private final Map<Class<?>, List<String>>  names;
     private final BeanCreationStrategyResolver resolver;
     private final List<BeanProcessor>          processors = new ArrayList<>();
-    private final List<BeanDefinition>        visitor;
-    private       JbmContext                  context;
+    private final List<BeanDefinition> visitor;
+    private       BeanContainerContext context;
 
     public AnnotationBeanFactory() {
         this.beans = new ConcurrentHashMap<>();
@@ -182,6 +186,8 @@ public class AnnotationBeanFactory implements BeanFactory {
         String                    beanName   = getBeanName(klass);
         ConstructorBeanDefinition definition = new ConstructorBeanDefinition(beanName, klass);
 
+        // registerBeanDefinition(definition);
+
         Constructor<?> constructor;
 
         try {
@@ -206,10 +212,10 @@ public class AnnotationBeanFactory implements BeanFactory {
             }
         }
 
-        if (klass.isAnnotationPresent(Bean.class)) {
-            definition.setBeanScope(klass.getAnnotation(Bean.class).scope());
-        } else if (klass.isAnnotationPresent(BeanScope.class)) {
-            definition.setBeanScope(klass.getAnnotation(BeanScope.class).value());
+        if (klass.isAnnotationPresent(Provide.class)) {
+            definition.setBeanScope(klass.getAnnotation(Provide.class).scope());
+        } else if (klass.isAnnotationPresent(Lifecycle.class)) {
+            definition.setBeanScope(klass.getAnnotation(Lifecycle.class).value());
         } else {
             definition.setBeanScope(Scope.SINGLETON);
         }
@@ -218,25 +224,30 @@ public class AnnotationBeanFactory implements BeanFactory {
     }
 
     @Override
-    public BeanDefinition createBeanDefinition(Class<?> type, Class<?> klass, Method method) {
-        String               beanName   = getBeanName(method);
-        MethodBeanDefinition definition = new MethodBeanDefinition(beanName, method.getReturnType());
+    public BeanDefinition createBeanDefinition(Class<?> type, Class<?> klass, Method factoryMethod) {
+        String               beanName   = getBeanName(factoryMethod);
+        MethodBeanDefinition definition = new MethodBeanDefinition(beanName, factoryMethod.getReturnType());
 
-        definition.setBeanFactoryMethod(method);
+        definition.setBeanFactoryMethod(factoryMethod);
 
-        if (method.getParameterCount() != 0) {
-            for (Parameter parameter : method.getParameters()) {
+        if (factoryMethod.getParameterCount() != 0) {
+            for (Parameter parameter : factoryMethod.getParameters()) {
                 processDependencies(definition.getBeanDependencies(), parameter);
             }
         }
 
-        Bean annotation = method.getAnnotation(Bean.class);
+        if (factoryMethod.isAnnotationPresent(Provide.class)) {
+            Provide annotation = factoryMethod.getAnnotation(Provide.class);
 
-        definition.setBeanScope(annotation.scope());
+            definition.setBeanScope(annotation.scope());
 
-        // todo: add fast initializing and lazy-load handling
-        if (!annotation.lazy()) {
-            createBean(definition);
+            if (!annotation.lazy()) {
+                createBean(definition);
+            }
+        } else if (factoryMethod.isAnnotationPresent(Lifecycle.class)) {
+            definition.setBeanScope(factoryMethod.getAnnotation(Lifecycle.class).value());
+        } else {
+            definition.setBeanScope(Scope.SINGLETON);
         }
 
         return definition;
@@ -259,12 +270,12 @@ public class AnnotationBeanFactory implements BeanFactory {
     }
 
     @Override
-    public JbmContext getApplicationContext() {
+    public BeanContainerContext getApplicationContext() {
         return context;
     }
 
     @Override
-    public void setApplicationContext(JbmContext context) {
+    public void setApplicationContext(BeanContainerContext context) {
         this.context = context;
     }
 

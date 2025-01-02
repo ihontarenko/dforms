@@ -1,8 +1,8 @@
 package df.base.common.container;
 
 import df.base.common.container.bean.context.AnnotationJbmContext;
-import df.base.common.container.bean.context.JbmContext;
-import df.base.common.container.bean.processor.JbmContextAwareBeanProcessor;
+import df.base.common.container.bean.context.BeanContainerContext;
+import df.base.common.container.bean.processor.BeanContainerContextAwareBeanProcessor;
 import df.base.common.container.bean.processor.LoggingBeanProcessor;
 import df.base.common.container.bean.processor.PropertyValueBeanProcessor;
 import df.base.common.container.example.User;
@@ -18,11 +18,11 @@ public class Example {
         System.out.println(ServiceInterface.class.isAssignableFrom(ServiceA.class));
         System.out.println(ServiceA.class.isAssignableFrom(ServiceInterface.class));
 
-        JbmContext context = AnnotationJbmContext.run(Example.class);
+        BeanContainerContext context = AnnotationJbmContext.run(Example.class);
         System.getProperties().put("project.name", "jdi jbm jac");
 
         context.addBeanProcessor(new LoggingBeanProcessor(System.out::println));
-        context.addBeanProcessor(new JbmContextAwareBeanProcessor());
+        context.addBeanProcessor(new BeanContainerContextAwareBeanProcessor());
         context.addBeanProcessor(new InjectableFieldsFillerBeanProcessor());
         context.addBeanProcessor(new PropertyValueBeanProcessor(
                 System.getProperties(), System.getenv()

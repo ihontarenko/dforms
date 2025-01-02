@@ -1,9 +1,9 @@
 package df.base.common.container.example.services;
 
-import df.base.common.container.bean.Bean;
-import df.base.common.container.bean.EnvironmentValue;
+import df.base.common.container.bean.annotation.Provide;
+import df.base.common.container.bean.annotation.EnvironmentValue;
 
-@Bean
+@Provide
 public interface Storage {
 
     class InMemoryStorage implements Storage {

@@ -1,8 +1,8 @@
 package df.base.common.container.example.services;
 
-import df.base.common.container.bean.BeanConstructor;
-import df.base.common.container.bean.BeanInjection;
-import df.base.common.container.bean.Name;
+import df.base.common.container.bean.annotation.BeanConstructor;
+import df.base.common.container.bean.annotation.BeanInjection;
+import df.base.common.container.bean.annotation.Name;
 
 public class ServiceD implements ServiceInterface {
 

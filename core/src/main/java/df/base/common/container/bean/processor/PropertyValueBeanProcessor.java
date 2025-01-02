@@ -1,7 +1,7 @@
 package df.base.common.container.bean.processor;
 
-import df.base.common.container.bean.context.JbmContext;
-import df.base.common.container.bean.EnvironmentValue;
+import df.base.common.container.bean.context.BeanContainerContext;
+import df.base.common.container.bean.annotation.EnvironmentValue;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class PropertyValueBeanProcessor implements BeanProcessor {
     }
 
     @Override
-    public void process(Object bean, JbmContext context) {
+    public void process(Object bean, BeanContainerContext context) {
         for (Field field : bean.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(EnvironmentValue.class)) {
                 if (String.class.isAssignableFrom(field.getType())) {

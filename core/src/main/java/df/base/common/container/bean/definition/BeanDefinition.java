@@ -2,7 +2,7 @@ package df.base.common.container.bean.definition;
 
 import df.base.common.container.bean.BeanCreationType;
 import df.base.common.container.bean.BeanDependency;
-import df.base.common.container.bean.Scope;
+import df.base.common.container.bean.annotation.Lifecycle;
 import df.base.common.container.bean.creation.BeanCreationStrategy;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 public interface BeanDefinition {
 
     default boolean isSingleton() {
-        return getBeanScope() == Scope.SINGLETON || getBeanScope() == Scope.NON_BEAN;
+        return getBeanScope() == Lifecycle.Scope.SINGLETON || getBeanScope() == Lifecycle.Scope.NON_BEAN;
     }
 
     default boolean isPrototype() {
@@ -33,9 +33,9 @@ public interface BeanDefinition {
 
     void addChildDefinition(BeanDefinition child);
 
-    Scope getBeanScope();
+    Lifecycle.Scope getBeanScope();
 
-    void setBeanScope(Scope scope);
+    void setBeanScope(Lifecycle.Scope scope);
 
     List<BeanDependency> getBeanDependencies();
 

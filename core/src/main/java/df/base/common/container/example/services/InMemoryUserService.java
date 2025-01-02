@@ -1,6 +1,6 @@
 package df.base.common.container.example.services;
 
-import df.base.common.container.bean.BeanInjection;
+import df.base.common.container.bean.annotation.BeanInjection;
 
 public class InMemoryUserService implements UserService {
 

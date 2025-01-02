@@ -1,5 +1,7 @@
 package df.base.common.container.bean;
 
+import df.base.common.container.bean.annotation.BeansProvider;
+import df.base.common.container.bean.annotation.Provide;
 import df.base.common.container.scanner.ClassScanner;
 import df.base.common.matcher.Matcher;
 import df.base.common.matcher.reflection.ClassMatchers;
@@ -13,9 +15,9 @@ import static df.base.common.matcher.reflection.MethodMatchers.isPublic;
 public class BeanClassScanner extends ClassScanner {
 
     public static final  Matcher<Class<?>> METHOD_BEAN_ANNOTATED_CLASS_FILTER         = ClassMatchers.hasMethod(
-            isAnnotatedWith(Bean.class).and(isPublic()));
+            isAnnotatedWith(Provide.class).and(isPublic()));
     public static final  Matcher<Class<?>> CLASS_BEAN_ANNOTATED_CLASS_FILTER          = ClassMatchers.isAnnotatedWith(
-            Bean.class);
+            Provide.class);
     public static final  Matcher<Class<?>> CLASS_CONFIGURATION_ANNOTATED_CLASS_FILTER = ClassMatchers.isAnnotatedWith(
             BeansProvider.class);
     private static final ClassScanner      CLASS_SCANNER                              = ClassScanner.getDefaultScanner();

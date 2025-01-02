@@ -1,4 +1,4 @@
-package df.base.common.container.bean;
+package df.base.common.container.bean.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,14 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BeanScope {
+public @interface Provide {
 
-    Scope value() default Scope.SINGLETON;
+    String value() default "";
+
+    String name() default "";
+
+    Lifecycle.Scope scope() default Lifecycle.Scope.SINGLETON;
+
+    boolean lazy() default true;
 
 }

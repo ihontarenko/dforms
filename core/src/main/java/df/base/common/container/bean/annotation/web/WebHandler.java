@@ -1,14 +1,14 @@
-package df.base.common.container.bean;
+package df.base.common.container.bean.annotation.web;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.METHOD, ElementType.FIELD})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EnvironmentValue {
+public @interface WebHandler {
 
-    String value();
+    String value() default "/";
 
 }

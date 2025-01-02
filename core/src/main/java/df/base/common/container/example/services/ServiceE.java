@@ -1,6 +1,6 @@
 package df.base.common.container.example.services;
 
-import df.base.common.container.bean.BeanConstructor;
+import df.base.common.container.bean.annotation.BeanConstructor;
 
 public class ServiceE implements ServiceInterface {
 

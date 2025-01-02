@@ -1,6 +1,6 @@
 package df.base.common.container.bean.processor;
 
-import df.base.common.container.bean.context.JbmContext;
+import df.base.common.container.bean.context.BeanContainerContext;
 
 import java.util.function.Consumer;
 
@@ -13,7 +13,7 @@ public class LoggingBeanProcessor implements BeanProcessor {
     }
 
     @Override
-    public void process(Object bean, JbmContext context) {
+    public void process(Object bean, BeanContainerContext context) {
         logger.accept(
                 "-- BEAN CREATED: [%s@%x] [%s]".formatted(bean.getClass().getName(), bean.hashCode(), bean)
         );

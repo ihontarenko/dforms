@@ -2,8 +2,8 @@ package df.base.common.container.bean.context;
 
 public interface JbmContextAware {
 
-    void setApplicationContext(JbmContext context);
+    void setApplicationContext(BeanContainerContext context);
 
-    JbmContext getApplicationContext();
+    BeanContainerContext getApplicationContext();
 
 }

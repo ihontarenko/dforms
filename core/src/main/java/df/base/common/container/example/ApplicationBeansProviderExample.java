@@ -1,31 +1,31 @@
 package df.base.common.container.example;
 
-import df.base.common.container.bean.BeansProvider;
-import df.base.common.container.bean.Name;
+import df.base.common.container.bean.annotation.BeansProvider;
+import df.base.common.container.bean.annotation.Name;
 import df.base.common.container.example.services.ServiceA;
 import df.base.common.container.example.services.ServiceB;
 import df.base.common.container.example.services.ServiceInterface;
-import df.base.common.container.bean.Bean;
+import df.base.common.container.bean.annotation.Provide;
 
 @BeansProvider
 public class ApplicationBeansProviderExample {
 
-    @Bean("superHero")
+    @Provide("superHero")
     public String superHero() {
         return "Chuck Norris";
     }
 
-    @Bean("wonderWoman")
+    @Provide("wonderWoman")
     public String wonderWoman() {
         return "Gal Gadot";
     }
 
-    @Bean("ServiceA1")
+    @Provide("ServiceA1")
     public ServiceInterface serviceA(@Name("SUPER_HERO") String name) {
         return new ServiceA(name);
     }
 
-    @Bean("ServiceB1")
+    @Provide("ServiceB1")
     public ServiceInterface serviceB() {
         return new ServiceB();
     }
