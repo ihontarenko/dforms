@@ -29,7 +29,7 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
 
     @Override
     public ClassDTO map(Class<?> rawClass) {
-        Class<?> classType = unwrap(rawClass);
+        Class<?> classType = Reflections.unwrap(rawClass);
         ClassDTO classDTO  = CACHE.get(rawClass);
 
         if (classDTO == null) {
@@ -93,16 +93,6 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
         } catch (Exception exception) {
             LOGGER.error("Mapping class %s failed!".formatted(klass.getName()), exception);
         }
-    }
-
-    public Class<?> unwrap(Class<?> clazz) {
-        Class<?> unwrapped = clazz;
-
-        if (clazz.isArray()) {
-            unwrapped = clazz.getComponentType();
-        }
-
-        return unwrapped;
     }
 
     @Override

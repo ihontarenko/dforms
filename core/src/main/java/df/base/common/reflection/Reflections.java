@@ -620,4 +620,14 @@ abstract public class Reflections {
         return clazz;
     }
 
+    public static Class<?> unwrap(Class<?> clazz) {
+        Class<?> unwrapped = clazz;
+
+        if (clazz.isArray()) {
+            unwrapped = clazz.getComponentType();
+        }
+
+        return unwrapped;
+    }
+
 }
