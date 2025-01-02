@@ -1,6 +1,6 @@
 package df.base.common.elements;
 
-public class ReorderNodeCorrector implements Corrector{
+public class ReorderNodeCorrector implements Corrector {
 
     @Override
     public void accept(Node node) {

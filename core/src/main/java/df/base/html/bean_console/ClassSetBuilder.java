@@ -6,12 +6,8 @@ import df.base.common.elements.builder.NodeBuilder;
 import df.base.common.elements.builder.NodeBuilderContext;
 import df.base.common.elements.node.ElementNode;
 import df.base.common.elements.node.TextNode;
-import df.base.common.flow.Flow;
 import df.base.dto.reflection.ClassDTO;
 import df.base.dto.reflection.ClassSetDTO;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * A builder class for generating an HTML representation of a set of Java classes.
@@ -44,20 +40,16 @@ public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
      */
     @Override
     public Node build(ClassSetDTO classDTOs, NodeBuilderContext ctx) {
-        Node                        wrapper        = new ElementNode(TagName.DIV);
-        Map<String, List<ClassDTO>> groupedClasses = Flow.of(classDTOs).groupBy(ClassDTO::getName);
+        Node wrapper   = new ElementNode(TagName.DIV);
+        Node container = new ElementNode(TagName.OL);
 
-        for (var entry : groupedClasses.entrySet()) {
-            Node container = new ElementNode(TagName.OL);
+        container.addAttribute("class", "list-group list-group-numbered mt-3");
 
-            container.addAttribute("class", "list-group list-group-numbered mt-3");
-
-            for (ClassDTO classDTO : entry.getValue()) {
-                container.append(createItem(classDTO));
-            }
-
-            wrapper.append(container);
+        for (ClassDTO classDTO : classDTOs) {
+            container.append(createItem(classDTO));
         }
+
+        wrapper.append(container);
 
         wrapper.prepend(createHeader(classDTOs));
         wrapper.addAttribute("class", "mt-3");
@@ -150,7 +142,7 @@ public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
      */
     public Node createSmallNode(ClassDTO classDTO) {
         Node small = new ElementNode(TagName.SMALL);
-        small.append(new TextNode(classDTO.getName()));
+        small.append(new TextNode(classDTO.getFullName()));
         return small;
     }
 

@@ -620,4 +620,24 @@ abstract public class Reflections {
         return clazz;
     }
 
+    public static Class<?> unwrapAnonymousClass(Class<?> classType) {
+        Class<?> userClass = classType;
+
+        while (userClass.isAnonymousClass()) {
+            userClass = userClass.getSuperclass();
+        }
+
+        return userClass;
+    }
+
+    public static Class<?> unwrapArrayClass(Class<?> clazz) {
+        Class<?> unwrapped = clazz;
+
+        if (clazz.isArray()) {
+            unwrapped = clazz.getComponentType();
+        }
+
+        return unwrapped;
+    }
+
 }
