@@ -14,7 +14,7 @@
         <start-class>df.api.DFAPIApplication</start-class>
     </properties>
 
-    <name>Dynamic Forms - API Application</name>
+    <name>DF - API</name>
     <artifactId>df-api</artifactId>
     <packaging>jar</packaging>
 

@@ -1,10 +1,10 @@
 package df.web.controller.user;
 
-import df.base.persistence.entity.user.Privilege;
-import df.base.mapping.user.PrivilegeMapper;
-import df.base.dto.user.PrivilegeDTO;
-import df.base.persistence.exception.JpaResourceNotFoundException;
-import df.base.service.user.PrivilegeService;
+import df.application.persistence.entity.user.Privilege;
+import df.application.mapping.user.PrivilegeMapper;
+import df.application.dto.user.PrivilegeDTO;
+import df.application.persistence.exception.JpaResourceNotFoundException;
+import df.application.service.user.PrivilegeService;
 import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
-import static df.base.Messages.SUCCESS_PRIVILEGE_SAVED;
+import static df.application.Messages.SUCCESS_PRIVILEGE_SAVED;
 import static df.web.common.flash.FlashMessage.success;
 
 @Controller

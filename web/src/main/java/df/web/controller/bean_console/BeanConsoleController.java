@@ -1,10 +1,10 @@
 package df.web.controller.bean_console;
 
-import df.base.common.breadcrumb.Breadcrumbs;
-import df.base.dto.reflection.ClassDTO;
-import df.base.dto.reflection.ClassSetDTO;
-import df.base.service.bc.ClassManagementService;
-import df.base.service.bc.ClassService;
+import df.common.breadcrumb.Breadcrumbs;
+import df.application.dto.reflection.ClassDTO;
+import df.application.dto.reflection.ClassSetDTO;
+import df.application.service.bc.ClassManagementService;
+import df.application.service.bc.ClassService;
 import df.web.common.flash.FlashMessageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

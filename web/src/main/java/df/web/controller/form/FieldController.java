@@ -1,17 +1,17 @@
 package df.web.controller.form;
 
-import df.base.common.validation.custom.Validation;
-import df.base.common.validation.custom.ValidationContext;
-import df.base.dto.form.FieldDTO;
-import df.base.mapping.form.FieldMapper;
-import df.base.persistence.entity.form.Field;
-import df.base.persistence.entity.support.ElementType;
-import df.base.persistence.entity.support.FieldStatus;
-import df.base.persistence.entity.support.UsageType;
-import df.base.persistence.exception.JpaResourceNotFoundException;
-import df.base.persistence.repository.form.FieldRepository;
-import df.base.service.form.FieldService;
-import df.base.validation.groups.Operations;
+import df.common.validation.custom.Validation;
+import df.common.validation.custom.ValidationContext;
+import df.application.dto.form.FieldDTO;
+import df.application.mapping.form.FieldMapper;
+import df.application.persistence.entity.form.Field;
+import df.application.persistence.entity.support.ElementType;
+import df.application.persistence.entity.support.FieldStatus;
+import df.application.persistence.entity.support.UsageType;
+import df.application.persistence.exception.JpaResourceNotFoundException;
+import df.application.persistence.repository.form.FieldRepository;
+import df.application.service.form.FieldService;
+import df.application.validation.groups.Operations;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
 import df.web.controller.MAVConstants;
@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static df.base.Messages.*;
+import static df.application.Messages.*;
 import static df.web.common.flash.FlashMessage.*;
 
 @Controller

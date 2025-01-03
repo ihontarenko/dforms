@@ -1,25 +1,22 @@
 package df.web.controller.form;
 
-import df.base.common.context.ArgumentsContext;
-import df.base.common.context.ResultContext;
-import df.base.common.exception.ApplicationException;
-import df.base.common.pipeline.PipelineContextFactoty;
-import df.base.common.pipeline.PipelineManager;
-import df.base.common.pipeline.context.DefaultPipelineContext;
-import df.base.common.pipeline.context.PipelineContext;
-import df.base.dto.form.FormDTO;
-import df.base.mapping.form.FormMapper;
-import df.base.persistence.entity.form.Form;
-import df.base.persistence.entity.support.FormStatus;
-import df.base.persistence.exception.JpaResourceNotFoundException;
-import df.base.security.UserInfo;
-import df.base.service.form.FieldService;
-import df.base.service.form.FormManagement;
-import df.base.service.form.FormService;
+import df.common.context.ArgumentsContext;
+import df.common.context.ResultContext;
+import df.application.exception.ApplicationException;
+import df.common.pipeline.PipelineContextFactoty;
+import df.common.pipeline.context.DefaultPipelineContext;
+import df.common.pipeline.context.PipelineContext;
+import df.application.dto.form.FormDTO;
+import df.application.mapping.form.FormMapper;
+import df.application.persistence.entity.form.Form;
+import df.application.persistence.entity.support.FormStatus;
+import df.application.persistence.exception.JpaResourceNotFoundException;
+import df.application.security.UserInfo;
+import df.application.service.form.FormManagement;
+import df.application.service.form.FormService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
 import df.web.controller.MAVConstants;
-import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -33,7 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.*;
 import java.util.function.Function;
 
-import static df.base.Messages.*;
+import static df.application.Messages.*;
 import static df.web.common.flash.FlashMessage.*;
 
 @Controller

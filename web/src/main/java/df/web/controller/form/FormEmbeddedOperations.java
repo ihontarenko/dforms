@@ -1,21 +1,17 @@
 package df.web.controller.form;
 
-import df.base.common.breadcrumb.Breadcrumbs;
-import df.base.common.validation.custom.ValidationContext;
-import df.base.dto.form.FieldDTO;
-import df.base.dto.form.FormConfigDTO;
-import df.base.dto.form.FormDTO;
-import df.base.validation.groups.Operations;
+import df.common.breadcrumb.Breadcrumbs;
+import df.common.validation.custom.ValidationContext;
+import df.application.dto.form.FieldDTO;
+import df.application.dto.form.FormDTO;
+import df.application.validation.groups.Operations;
 import df.web.controller.DefaultOperations;
 import df.web.controller.MAVConstants;
-import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Map;
 
 @RequestMapping(MAVConstants.REQUEST_MAPPING_FORM_EMBEDDED)
 public interface FormEmbeddedOperations extends DefaultOperations<FormDTO> {

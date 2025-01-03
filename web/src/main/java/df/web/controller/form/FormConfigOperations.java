@@ -1,7 +1,7 @@
 package df.web.controller.form;
 
-import df.base.common.breadcrumb.Breadcrumbs;
-import df.base.dto.form.FormConfigDTO;
+import df.common.breadcrumb.Breadcrumbs;
+import df.application.dto.form.FormConfigDTO;
 import df.web.controller.DefaultOperations;
 import df.web.controller.MAVConstants;
 import jakarta.validation.Valid;

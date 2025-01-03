@@ -1,9 +1,9 @@
 package df.web.controller.form;
 
-import df.base.common.validation.custom.ValidationContext;
-import df.base.dto.form.FieldDTO;
-import df.base.service.form.FieldService;
-import df.base.service.form.FormService;
+import df.common.validation.custom.ValidationContext;
+import df.application.dto.form.FieldDTO;
+import df.application.service.form.FieldService;
+import df.application.service.form.FormService;
 import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import static df.base.Messages.*;
+import static df.application.Messages.*;
 import static df.web.common.flash.FlashMessage.primary;
 import static df.web.common.flash.FlashMessage.success;
 import static df.web.controller.MAVConstants.REDIRECT_FIELD_CUSTOMIZATION;

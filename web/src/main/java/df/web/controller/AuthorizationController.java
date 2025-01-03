@@ -1,6 +1,6 @@
 package df.web.controller;
 
-import df.base.persistence.repository.user.UserRepository;
+import df.application.persistence.repository.user.UserRepository;
 import df.web.property.HttpSecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

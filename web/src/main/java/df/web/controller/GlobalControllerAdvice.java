@@ -1,11 +1,11 @@
 package df.web.controller;
 
-import df.base.common.breadcrumb.BreadcrumbService;
-import df.base.common.exception.ApplicationException;
-import df.base.common.proxy.ProxyInvocationException;
-import df.base.property.ApplicationProperties;
-import df.base.security.UserInfo;
-import df.base.service.RedirectAware;
+import df.common.breadcrumb.BreadcrumbService;
+import df.application.exception.ApplicationException;
+import df.common.proxy.ProxyInvocationException;
+import df.application.property.ApplicationProperties;
+import df.application.security.UserInfo;
+import df.application.service.RedirectAware;
 import df.web.common.flash.FlashMessageService;
 import io.pebbletemplates.pebble.error.PebbleException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,6 +1,6 @@
 package df.web.property;
 
-import df.base.property.AuthorizationRedirectProperties;
+import df.application.property.AuthorizationRedirectProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "http-security")

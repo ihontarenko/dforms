@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Dynamic Forms - Dependencies</name>
+    <name>DF - DEPENDENCIES</name>
     <groupId>df</groupId>
     <artifactId>df-dependencies</artifactId>
     <packaging>pom</packaging>
@@ -23,6 +23,17 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Own -->
+            <dependency>
+                <groupId>df</groupId>
+                <artifactId>df-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>df</groupId>
+                <artifactId>df-infrastructure</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- ByteBuddy -->
             <dependency>
                 <groupId>net.bytebuddy</groupId>

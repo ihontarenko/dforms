@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Dynamic Forms - ROOT</name>
+    <name>DF - PROJECT</name>
     <groupId>df</groupId>
     <artifactId>df-project</artifactId>
     <packaging>pom</packaging>
@@ -17,7 +17,8 @@
 
     <modules>
         <module>dependencies</module>
-        <module>core</module>
+        <module>common</module>
+        <module>infrastructure</module>
         <module>api</module>
         <module>web</module>
     </modules>

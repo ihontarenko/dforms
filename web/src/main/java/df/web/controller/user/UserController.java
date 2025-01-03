@@ -1,11 +1,11 @@
 package df.web.controller.user;
 
-import df.base.persistence.entity.user.User;
-import df.base.mapping.user.UserMapper;
-import df.base.dto.user.UserDTO;
-import df.base.persistence.exception.JpaResourceNotFoundException;
-import df.base.service.user.RoleService;
-import df.base.service.user.UserService;
+import df.application.persistence.entity.user.User;
+import df.application.mapping.user.UserMapper;
+import df.application.dto.user.UserDTO;
+import df.application.persistence.exception.JpaResourceNotFoundException;
+import df.application.service.user.RoleService;
+import df.application.service.user.UserService;
 import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
-import static df.base.Messages.SUCCESS_USER_SAVED;
+import static df.application.Messages.SUCCESS_USER_SAVED;
 import static df.web.common.flash.FlashMessage.success;
 
 @SuppressWarnings({"unused"})

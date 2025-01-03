@@ -3,7 +3,7 @@ package df.web.common.pebble.function;
 import io.pebbletemplates.pebble.extension.Function;
 import io.pebbletemplates.pebble.template.EvaluationContext;
 import io.pebbletemplates.pebble.template.PebbleTemplate;
-import df.base.common.i18n.Translator;
+import df.common.i18n.Translator;
 import org.springframework.context.ApplicationContext;
 
 import java.util.*;

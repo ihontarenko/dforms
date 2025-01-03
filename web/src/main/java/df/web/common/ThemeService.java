@@ -1,6 +1,6 @@
 package df.web.common;
 
-import df.base.property.ApplicationProperties;
+import df.application.property.ApplicationProperties;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

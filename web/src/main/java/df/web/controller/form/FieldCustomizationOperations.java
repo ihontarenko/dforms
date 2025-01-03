@@ -1,13 +1,13 @@
 package df.web.controller.form;
 
-import df.base.common.breadcrumb.Breadcrumbs;
-import df.base.common.validation.custom.ValidationContext;
-import df.base.dto.KeyValuePair;
-import df.base.dto.form.FieldAttributeDTO;
-import df.base.dto.form.FieldConfigDTO;
-import df.base.dto.form.FieldDTO;
-import df.base.dto.form.FieldOptionDTO;
-import df.base.validation.groups.Operations;
+import df.common.breadcrumb.Breadcrumbs;
+import df.common.validation.custom.ValidationContext;
+import df.application.dto.KeyValuePair;
+import df.application.dto.form.FieldAttributeDTO;
+import df.application.dto.form.FieldConfigDTO;
+import df.application.dto.form.FieldDTO;
+import df.application.dto.form.FieldOptionDTO;
+import df.application.validation.groups.Operations;
 import df.web.controller.DefaultOperations;
 import df.web.controller.MAVConstants;
 import org.springframework.validation.BindingResult;

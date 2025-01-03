@@ -14,7 +14,7 @@
         <start-class>df.web.DFWebApplication</start-class>
     </properties>
 
-    <name>Dynamic Forms - WEB Application</name>
+    <name>DF - WEB</name>
     <artifactId>df-web</artifactId>
     <packaging>jar</packaging>
 
@@ -33,8 +33,7 @@
     <dependencies>
         <dependency>
             <groupId>df</groupId>
-            <artifactId>df-core</artifactId>
-            <version>${project.version}</version>
+            <artifactId>df-infrastructure</artifactId>
         </dependency>
         <dependency>
             <groupId>io.pebbletemplates</groupId>

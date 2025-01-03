@@ -1,17 +1,16 @@
 package df.web.controller.form;
 
-import df.base.persistence.entity.form.Form;
-import df.base.persistence.entity.form.FormConfig;
-import df.base.mapping.form.FormConfigMapper;
-import df.base.dto.form.FormConfigDTO;
-import df.base.persistence.exception.JpaResourceNotFoundException;
-import df.base.service.form.FormConfigService;
-import df.base.service.form.FormService;
+import df.application.persistence.entity.form.Form;
+import df.application.persistence.entity.form.FormConfig;
+import df.application.mapping.form.FormConfigMapper;
+import df.application.dto.form.FormConfigDTO;
+import df.application.persistence.exception.JpaResourceNotFoundException;
+import df.application.service.form.FormConfigService;
+import df.application.service.form.FormService;
 import df.web.common.ControllerHelper;
 import df.web.controller.MAVConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -19,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static df.base.Messages.*;
+import static df.application.Messages.*;
 import static df.web.common.flash.FlashMessage.*;
 
 @Controller
