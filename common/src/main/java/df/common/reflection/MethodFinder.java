@@ -9,20 +9,9 @@ import java.util.*;
  * A class that finds methods in a given class. It supports scanning superclasses
  * and interfaces to retrieve inherited or implemented methods.
  */
-public class MethodFinder extends AbstractFinder<Method> {
+public class MethodFinder implements MemberFinder<Method> {
 
     public static final MethodFinder FINDER = new MethodFinder();
-
-    /**
-     * Retrieves all methods from the specified class.
-     *
-     * @param clazz the class whose methods are to be retrieved
-     * @return a collection of methods from the class
-     */
-    @Override
-    protected Collection<Method> getMembers(Class<?> clazz) {
-        return getAllMethods(clazz);
-    }
 
     /**
      * Retrieves all methods from the specified class.
@@ -32,32 +21,22 @@ public class MethodFinder extends AbstractFinder<Method> {
      * @return a collection of methods from the class
      */
     @Override
-    protected Collection<Method> getMembers(Class<?> clazz, boolean deepScan) {
+    public Collection<Method> getMembers(Class<?> clazz, boolean deepScan) {
         Set<Method> methods = new HashSet<>(Set.of(clazz.getDeclaredMethods()));
 
         // Optionally scan superclasses for methods (except Object.class)
         if (deepScan && clazz.getSuperclass() != null && clazz.getSuperclass() != Object.class) {
-            methods.addAll(getAllMethods(clazz.getSuperclass(), true));
+            methods.addAll(getMembers(clazz.getSuperclass(), true));
         }
 
         // Optionally scan interfaces for methods
         if (deepScan) {
             for (Class<?> ifc : clazz.getInterfaces()) {
-                methods.addAll(getAllMethods(ifc, true));
+                methods.addAll(getMembers(ifc, true));
             }
         }
 
         return methods;
-    }
-
-
-    public static Collection<Method> getAllMethods(Class<?> clazz) {
-
-    }
-
-
-    public static Collection<Method> getAllMethods(Class<?> clazz, boolean deepScan) {
-
     }
 
     /**

@@ -132,7 +132,7 @@ public interface Mapping {
                         "Please generalize mapper '%s' to resolve acceptable type".formatted(getShortName(mapper)));
             }
 
-            LOGGER.info("Mapper '{}' assigned for type '{}'.", getShortName(mapper), getShortName(preferredType));
+            LOGGER.info("Mapper '{}' assigned for type '{}'.", mapper.getClass().getName(), preferredType.getName());
 
             mappers.computeIfAbsent(preferredType, type -> new HashSet<>())
                     .add((Mapper<Object, Object>) mapper);

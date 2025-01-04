@@ -16,6 +16,7 @@
     </properties>
 
     <modules>
+        <module>svit-context</module>
         <module>dependencies</module>
         <module>common</module>
         <module>infrastructure</module>

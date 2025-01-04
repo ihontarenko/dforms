@@ -239,11 +239,11 @@ abstract public class Reflections {
      *
      * <p><b>Example usage:</b></p>
      * <pre>{@code
-     * List<Field> fields = Reflections.getClassFields(MyClass.class, Modifier.PUBLIC);
+     * Collection<Field> fields = Reflections.getClassFields(MyClass.class, Modifier.PUBLIC);
      * fields.forEach(field -> System.out.println(field.getName()));
      * }</pre>
      */
-    public static List<Field> getClassFields(Class<?> type, int modifiers) {
+    public static Collection<Field> getClassFields(Class<?> type, int modifiers) {
         return new FieldFinder().find(type, FieldMatchers.withModifier(modifiers));
     }
 
@@ -456,7 +456,7 @@ abstract public class Reflections {
      * methods.forEach(method -> System.out.println(method.getName()));
      * }</pre>
      */
-    public static List<Method> getClassMethods(Class<?> clazz) {
+    public static Collection<Method> getClassMethods(Class<?> clazz) {
         return new MethodFinder().find(clazz, MethodMatchers.isPublic());
     }
 

@@ -1,6 +1,7 @@
 package df.common.reflection;
 
 import df.common.matcher.Matcher;
+import df.common.matcher.reflection.MemberMatcher;
 
 import java.lang.reflect.Member;
 import java.util.Collection;
@@ -40,9 +41,32 @@ import java.util.Optional;
  * filter.by(MemberMatcher.isStatic()).sortedBy(Comparator.comparing(Member::getName)).findAll();
  * }</pre>
  *
- * @param <T> the type of {@link Member} being searched (e.g., {@link java.lang.reflect.Method}, {@link java.lang.reflect.Field})
+ * @param <T> the type of {@link Member} being searched (e.g., {@link java.lang.reflect.Constructor}, {@link java.lang.reflect.Method}, {@link java.lang.reflect.Field})
  */
 public interface MemberFinder<T extends Member> {
+
+    /**
+     * Returns a collection of members from the specified class.
+     * This method should be implemented by subclasses to define which members are to be searched
+     * (e.g., methods, fields, constructors).
+     *
+     * @param clazz the class whose members should be retrieved
+     * @return a collection of members from the class
+     */
+    default Collection<T> getMembers(Class<?> clazz) {
+        return getMembers(clazz, true);
+    }
+
+    /**
+     * Returns a collection of members from the specified class.
+     * This method should be implemented by subclasses to define which members are to be searched
+     * (e.g., methods, fields, constructors).
+     *
+     * @param clazz the class whose members should be retrieved
+     * @param deepScan whether to scan superclasses for members
+     * @return a collection of members from the class
+     */
+    Collection<T> getMembers(Class<?> clazz, boolean deepScan);
 
     /**
      * Finds all members of the specified class that match the given {@link Matcher}.
@@ -77,17 +101,34 @@ public interface MemberFinder<T extends Member> {
 
     /**
      * Finds all members of the specified class that match the given {@link Matcher}.
-     * The results are sorted using the provided collection of comparators.
+     * The results are sorted using the provided collection of {@link Comparator}s.
      *
-     * <p>If multiple comparators are provided, they are combined in order using {@link Comparator#thenComparing}.
-     * If no comparators are provided, the original order is maintained.</p>
+     * <p>This method applies a strict matching mode first, ensuring the member belongs
+     * to the declaring class. If no matches are found, it relaxes the condition
+     * and applies the matcher to all members of the class.</p>
      *
      * @param clazz       the class whose members are to be searched
      * @param matcher     the matcher to filter the members
-     * @param comparators a collection of comparators for multi-level sorting
+     * @param comparators a collection of comparators to sort the matched members; if empty, no sorting is applied
      * @return a collection of members that match the criteria, sorted as specified
      */
-    Collection<T> find(Class<?> clazz, Matcher<? super T> matcher, Collection<Comparator<T>> comparators);
+    default Collection<T> find(Class<?> clazz, Matcher<? super T> matcher, Collection<Comparator<T>> comparators) {
+        Matcher<Member> strictMatcher = MemberMatcher.isDeclaredClass(clazz).and((Matcher<? super Member>) matcher);
+        Collection<T>   members       = getMembers(clazz);
+
+        Collection<T> matched = members.stream()
+                .filter(strictMatcher::matches).toList();
+
+        if (matched.isEmpty()) {
+            matched = members.stream().filter(matcher::matches).toList();
+        }
+
+        Comparator<T> comparator = comparators.stream()
+                .reduce(Comparator::thenComparing)
+                .orElse((a, b) -> 0);
+
+        return matched.stream().sorted(comparator).toList();
+    }
 
     /**
      * Finds the first member of the specified class that matches the given {@link Matcher}.

@@ -2,31 +2,34 @@ package df.application.mapping.reflection;
 
 import df.application.Instances;
 import df.application.dto.reflection.ClassDTO;
+import df.application.dto.reflection.FieldDTO;
+import df.application.dto.reflection.MethodDTO;
 import df.common.mapping.Mapper;
 import df.common.mapping.Mapping;
 import df.common.matcher.Matcher;
 import df.common.matcher.reflection.ClassMatchers;
+import df.common.reflection.ClassFinder;
+import df.common.reflection.FieldFinder;
+import df.common.reflection.MethodFinder;
 import df.common.reflection.Reflections;
-import df.application.dto.reflection.FieldDTO;
-import df.application.dto.reflection.MethodDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static df.common.reflection.FieldFinder.getAllFields;
-import static df.common.reflection.MethodFinder.getAllMethods;
-
 public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
 
-    private static final Logger                  LOGGER    = LoggerFactory.getLogger(ClassMapper.class);
-    private static final Map<Class<?>, ClassDTO> CACHE     = new HashMap<>();
-    private static final Matcher<Class<?>>       IS_NATIVE = ClassMatchers.nameStarts("df.");
-    private static final Matcher<Class<?>>       IS_JDK    = ClassMatchers.isJavaPackage();
-    private static final Mapping                 MAPPING   = Instances.MAPPING;
+    private static final Logger                  LOGGER        = LoggerFactory.getLogger(ClassMapper.class);
+    private static final Map<Class<?>, ClassDTO> CACHE         = new HashMap<>();
+    private static final Matcher<Class<?>>       IS_NATIVE     = ClassMatchers.nameStarts("df.");
+    private static final Matcher<Class<?>>       IS_JDK        = ClassMatchers.isJavaPackage();
+    private static final Mapping                 MAPPING       = Instances.MAPPING;
+    private static final MethodFinder            METHOD_FINDER = new MethodFinder();
+    private static final FieldFinder             FIELD_FINDER  = new FieldFinder();
 
     @Override
     public ClassDTO map(Class<?> rawClass) {
@@ -70,28 +73,28 @@ public class ClassMapper implements Mapper<Class<?>, ClassDTO> {
     }
 
     private void mapSuperClasses(Class<?> klass, ClassDTO classDTO) {
-        for (Class<?> superClass : Reflections.getSuperClasses(klass)) {
+        Arrays.stream(Reflections.getSuperClasses(klass)).sorted(ClassFinder.ORDER_CLASS_NAME).forEach(superClass -> {
             if (superClass != klass) {
                 classDTO.addBaseClass(map(superClass));
             }
-        }
+        });
     }
 
     private void mapInterfaces(Class<?> klass, ClassDTO classDTO) {
-        for (Class<?> iface : Reflections.getClassInterfaces(klass)) {
+        Arrays.stream(Reflections.getClassInterfaces(klass)).sorted(ClassFinder.ORDER_CLASS_NAME).forEach(iface -> {
             if (iface != klass) {
                 classDTO.addInterface(map(iface));
             }
-        }
+        });
     }
 
     private void mapClassMembers(Class<?> klass, ClassDTO classDTO) {
         try {
-            for (Field field : getAllFields(klass, false)) {
+            for (Field field : FIELD_FINDER.find(klass, Matcher.constant(true))) {
                 classDTO.addField((FieldDTO) MAPPING.mapper(field).map(field));
             }
 
-            for (Method method : getAllMethods(klass, false)) {
+            for (Method method : METHOD_FINDER.find(klass, Matcher.constant(true))) {
                 classDTO.addMethod((MethodDTO) MAPPING.mapper(method).map(method));
             }
         } catch (Exception exception) {
