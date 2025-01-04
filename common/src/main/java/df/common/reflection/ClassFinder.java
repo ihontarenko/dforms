@@ -11,18 +11,27 @@ import static df.common.matcher.reflection.ClassMatchers.implementsInterface;
 import static df.common.matcher.reflection.ClassMatchers.isAbstract;
 
 /**
- * ClassFinder provides utilities for finding and filtering classes
- * using annotations, interfaces, and other criteria. It supports caching
- * and dynamic sorting.
+ * ClassFinder provides utilities for finding, filtering, and sorting classes.
+ * It includes caching mechanisms, a default class scanner, and a variety of
+ * comparators to customize the sorting of classes.
  *
- * Example usage:
+ * <p>Example usage:</p>
  * <pre>{@code
- * Collection<Class<?>> annotatedClasses = ClassFinder.findAnnotatedClasses(MyAnnotation.class);
- * Collection<Class<?>> sortedEnums = ClassFinder.findEnums(MyBaseClass.class)
- *     .stream()
- *     .sorted(Comparator.comparing(Class::getName))
- *     .collect(Collectors.toList());
+ * Collection<Class<?>> result = ClassFinder.findAll(
+ *     ClassMatchers.isAnnotatedWith(MyAnnotation.class), // Matcher to find annotated classes
+ *     List.of(
+ *         ClassFinder.ORDER_PACKAGE_NAME,                // Sort by package name
+ *         ClassFinder.ORDER_MODIFIER,                    // Sort by modifiers
+ *         Comparator.comparingInt(clazz
+ *         -> clazz.getDeclaredConstructors().length)     // Custom comparator
+ *     ),
+ *     RootPackageClass.class                             // Base class for scanning
+ * );
+ * result.forEach(System.out::println);
  * }</pre>
+ *
+ * <p>This example demonstrates how to find classes annotated with a specific annotation
+ * and sort them using predefined and custom comparators.</p>
  */
 public interface ClassFinder {
 
@@ -47,6 +56,11 @@ public interface ClassFinder {
      * A comparator for sorting classes alphabetically by their names.
      */
     Comparator<Class<?>> ORDER_CLASS_NAME = Comparator.comparing(Class::getName);
+
+    /**
+     * A comparator for sorting classes alphabetically by their simple-names.
+     */
+    Comparator<Class<?>> ORDER_CLASS_SIMPLE_NAME = Comparator.comparing(Class::getSimpleName);
 
     /**
      * A comparator for sorting classes alphabetically by their package names.
@@ -147,7 +161,7 @@ public interface ClassFinder {
      * @see ScannerContext
      */
     static Collection<Class<?>> findAll(
-            Matcher<Class<?>> matcher, List<Comparator<Class<?>>> comparators, Class<?>... baseClasses) {
+            Matcher<Class<?>> matcher, Collection<Comparator<Class<?>>> comparators, Class<?>... baseClasses) {
         // Retrieve base classes from context if none are passed
         if (baseClasses == null || baseClasses.length == 0) {
             baseClasses = CONTEXT.getDefaultRootClasses().toArray(Class<?>[]::new);

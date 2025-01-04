@@ -33,28 +33,6 @@ public class MethodFinder extends AbstractFinder<Method> {
      */
     @Override
     protected Collection<Method> getMembers(Class<?> clazz, boolean deepScan) {
-        return getAllMethods(clazz);
-    }
-
-    /**
-     * Retrieves all methods from the specified class, with scanning superclasses or interfaces.
-     *
-     * @param clazz the class whose methods are to be retrieved
-     * @return a collection of methods from the class
-     */
-    public static Collection<Method> getAllMethods(Class<?> clazz) {
-        return getAllMethods(clazz, true);
-    }
-
-    /**
-     * Retrieves all methods from the specified class. If {@code withSuperclass} is true,
-     * it recursively scans all superclasses and implemented interfaces to retrieve inherited methods.
-     *
-     * @param clazz           the class whose methods are to be retrieved
-     * @param deepScan  whether to scan superclasses and interfaces for methods
-     * @return a collection of methods from the class and optionally from its superclasses and interfaces
-     */
-    public static Collection<Method> getAllMethods(Class<?> clazz, boolean deepScan) {
         Set<Method> methods = new HashSet<>(Set.of(clazz.getDeclaredMethods()));
 
         // Optionally scan superclasses for methods (except Object.class)
@@ -72,13 +50,23 @@ public class MethodFinder extends AbstractFinder<Method> {
         return methods;
     }
 
+
+    public static Collection<Method> getAllMethods(Class<?> clazz) {
+
+    }
+
+
+    public static Collection<Method> getAllMethods(Class<?> clazz, boolean deepScan) {
+
+    }
+
     /**
      * Retrieves all methods from the specified class which satisfy the condition according to the parameters types
      *
      * @param clazz the class whose methods are to be retrieved
      * @return a collection of methods from the class
      */
-    public static List<Method> getMethods(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
+    public static Collection<Method> getMethods(Class<?> clazz, String methodName, Class<?>... parameterTypes) {
         return FINDER.filter(clazz).parameterTypes(parameterTypes).methodName(methodName).find();
     }
 

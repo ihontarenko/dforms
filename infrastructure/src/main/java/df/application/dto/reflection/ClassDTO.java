@@ -9,10 +9,10 @@ public class ClassDTO {
     private boolean      isPrimitive = false;
     private boolean      isForeign   = false;
     private boolean      isJdk       = false;
-    private ClassSetDTO  baseClasses = new ClassSetDTO();
-    private ClassSetDTO  interfaces  = new ClassSetDTO();
-    private MethodSetDTO methods     = new MethodSetDTO();
-    private FieldSetDTO  fields      = new FieldSetDTO();
+    private ClassListDTO baseClasses = new ClassListDTO();
+    private ClassListDTO  interfaces = new ClassListDTO();
+    private MethodListDTO methods    = new MethodListDTO();
+    private FieldListDTO  fields     = new FieldListDTO();
 
     public String getFullName() {
         return fullName;
@@ -38,11 +38,11 @@ public class ClassDTO {
         this.nativeClass = nativeClass;
     }
 
-    public FieldSetDTO getFields() {
+    public FieldListDTO getFields() {
         return fields;
     }
 
-    public void setFields(FieldSetDTO fields) {
+    public void setFields(FieldListDTO fields) {
         this.fields = fields;
     }
 
@@ -50,11 +50,11 @@ public class ClassDTO {
         this.fields.add(field);
     }
 
-    public MethodSetDTO getMethods() {
+    public MethodListDTO getMethods() {
         return methods;
     }
 
-    public void setMethods(MethodSetDTO methods) {
+    public void setMethods(MethodListDTO methods) {
         this.methods = methods;
     }
 
@@ -94,11 +94,11 @@ public class ClassDTO {
         isPrimitive = primitive;
     }
 
-    public ClassSetDTO getInterfaces() {
+    public ClassListDTO getInterfaces() {
         return interfaces;
     }
 
-    public void setInterfaces(ClassSetDTO interfaces) {
+    public void setInterfaces(ClassListDTO interfaces) {
         this.interfaces = interfaces;
     }
 
@@ -106,11 +106,11 @@ public class ClassDTO {
         getInterfaces().add(iface);
     }
 
-    public ClassSetDTO getBaseClasses() {
+    public ClassListDTO getBaseClasses() {
         return baseClasses;
     }
 
-    public void setBaseClasses(ClassSetDTO baseClasses) {
+    public void setBaseClasses(ClassListDTO baseClasses) {
         this.baseClasses = baseClasses;
     }
 

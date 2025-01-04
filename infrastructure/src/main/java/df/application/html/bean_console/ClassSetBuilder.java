@@ -7,7 +7,7 @@ import df.common.elements.builder.NodeBuilderContext;
 import df.common.elements.node.ElementNode;
 import df.common.elements.node.TextNode;
 import df.application.dto.reflection.ClassDTO;
-import df.application.dto.reflection.ClassSetDTO;
+import df.application.dto.reflection.ClassListDTO;
 
 /**
  * A builder class for generating an HTML representation of a set of Java classes.
@@ -20,7 +20,7 @@ import df.application.dto.reflection.ClassSetDTO;
  *
  * <p>
  * This class implements the {@link NodeBuilder} interface and operates on
- * {@link ClassSetDTO} data structures.
+ * {@link ClassListDTO} data structures.
  * </p>
  *
  * <p><b>Example Usage:</b></p>
@@ -29,7 +29,7 @@ import df.application.dto.reflection.ClassSetDTO;
  * Node result = builder.build(classSetDTO, context);
  * }</pre>
  */
-public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
+public class ClassSetBuilder implements NodeBuilder<ClassListDTO> {
 
     /**
      * Builds an HTML representation of the provided set of classes.
@@ -39,7 +39,7 @@ public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
      * @return a {@link Node} representing the HTML structure of the class set.
      */
     @Override
-    public Node build(ClassSetDTO classDTOs, NodeBuilderContext ctx) {
+    public Node build(ClassListDTO classDTOs, NodeBuilderContext ctx) {
         Node wrapper   = new ElementNode(TagName.DIV);
         Node container = new ElementNode(TagName.OL);
 
@@ -147,7 +147,7 @@ public class ClassSetBuilder implements NodeBuilder<ClassSetDTO> {
     }
 
 
-    public Node createHeader(ClassSetDTO classDTOs) {
+    public Node createHeader(ClassListDTO classDTOs) {
         Node header = new ElementNode(TagName.H4);
         header.append(new TextNode("Classes Count: %d".formatted(classDTOs.size())));
         return header;

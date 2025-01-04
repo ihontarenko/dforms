@@ -3,7 +3,7 @@ package df.common.reflection;
 import df.common.matcher.Matcher;
 
 import java.lang.reflect.Member;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Interface for filtering reflection members in a class.
@@ -28,7 +28,7 @@ public interface Filter<T extends Member> {
      *
      * @return a list of matching members
      */
-    List<T> find();
+    Collection<T> find();
 
     /**
      * Gets the current matcher being used to filter the members.

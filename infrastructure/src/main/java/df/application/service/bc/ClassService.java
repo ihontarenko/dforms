@@ -1,6 +1,6 @@
 package df.application.service.bc;
 
-import df.application.dto.reflection.ClassSetDTO;
+import df.application.dto.reflection.ClassListDTO;
 import df.common.matcher.Matcher;
 import df.common.matcher.reflection.ClassMatchers;
 import df.common.reflection.Reflections;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.annotation.Annotation;
 import java.util.AbstractCollection;
-import java.util.Set;
+import java.util.Collection;
 
 @Service
 public class ClassService {
@@ -26,32 +26,32 @@ public class ClassService {
         return classMapper.map(Reflections.getClassFor(className));
     }
 
-    public ClassSetDTO findAnnotatedClasses(Class<? extends Annotation> annotation) {
+    public ClassListDTO findAnnotatedClasses(Class<? extends Annotation> annotation) {
         return mapClasses(repository.findClasses(ClassMatchers.isAnnotatedWith(annotation)));
     }
 
-    public ClassSetDTO findClassesByName(String name) {
+    public ClassListDTO findClassesByName(String name) {
         return mapClasses(repository.findClasses(name == null ? Matcher.constant(false) : ClassMatchers.nameContains(name)));
     }
 
-    public ClassSetDTO findAnnotations() {
+    public ClassListDTO findAnnotations() {
         return mapClasses(repository.findClasses(ClassMatchers.isAnnotation()));
     }
 
-    public ClassSetDTO findPublicClasses() {
+    public ClassListDTO findPublicClasses() {
         return mapClasses(repository.findClasses(ClassMatchers.isPublic()));
     }
 
-    public ClassSetDTO findEnums() {
+    public ClassListDTO findEnums() {
         return mapClasses(repository.findClasses(ClassMatchers.isEnum()));
     }
 
-    public ClassSetDTO findImplementations(Class<?> interfaceClass) {
+    public ClassListDTO findImplementations(Class<?> interfaceClass) {
         return mapClasses(repository.findClasses(ClassMatchers.implementsInterface(interfaceClass).and(ClassMatchers.isAbstract().not())));
     }
 
-    public ClassSetDTO mapClasses(Set<Class<?>> classes) {
-        return classes.stream().map(classMapper::map).collect(ClassSetDTO::new, Set::add, AbstractCollection::addAll);
+    public ClassListDTO mapClasses(Collection<Class<?>> classes) {
+        return classes.stream().map(classMapper::map).collect(ClassListDTO::new, Collection::add, AbstractCollection::addAll);
     }
 
 }

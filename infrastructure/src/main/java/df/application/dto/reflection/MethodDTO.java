@@ -5,8 +5,8 @@ import java.lang.reflect.Modifier;
 
 public class MethodDTO {
 
-    private final ClassSetDTO parametersTypes = new ClassSetDTO();
-    private       String      name;
+    private final ClassListDTO parametersTypes = new ClassListDTO();
+    private       String       name;
     private       ClassDTO    declaringClass;
     private       ClassDTO    returnType;
     private       Method      nativeMethod;
@@ -48,7 +48,7 @@ public class MethodDTO {
         this.parametersTypes.add(type);
     }
 
-    public ClassSetDTO getParametersTypes() {
+    public ClassListDTO getParametersTypes() {
         return parametersTypes;
     }
 

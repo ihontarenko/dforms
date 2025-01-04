@@ -9,10 +9,7 @@ import df.common.container.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static df.common.container.StringUtils.underscored;
 
@@ -30,7 +27,7 @@ public class ReflectionClassTypeDescriptor implements ClassTypeDescriptor {
 
     @Override
     public MethodDescriptor getMethod(String name, Class<?>... parameterTypes) {
-        List<Method> methods = MethodFinder.getMethods(getNativeClass(), name, parameterTypes);
+        Collection<Method> methods = MethodFinder.getMethods(getNativeClass(), name, parameterTypes);
 
         if (methods.size() > 1) {
             throw new AmbiguousDescriptorException(
@@ -49,7 +46,7 @@ public class ReflectionClassTypeDescriptor implements ClassTypeDescriptor {
                             .formatted(nativeClass.getCanonicalName(), name, parametersString));
         }
 
-        return new ReflectionMethodDescriptor(methods.get(0), nativeClass);
+        return new ReflectionMethodDescriptor(methods.iterator().next(), nativeClass);
     }
 
     @Override

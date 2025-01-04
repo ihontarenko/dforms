@@ -3,47 +3,142 @@ package df.common.reflection;
 import df.common.matcher.Matcher;
 
 import java.lang.reflect.Member;
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Optional;
 
 /**
- * Interface for finding and filtering reflection members in a class.
+ * An interface for finding members (fields, methods, constructors) of a class that match specific criteria.
  *
- * The {@code Finder} interface provides methods for searching reflection members (e.g., methods, fields, constructors)
- * based on a specified {@link Matcher}. It supports finding all matching members or just the first match.
- * Additionally, it allows filtering members based on certain criteria.
+ * <p>The {@code MemberFinder} interface provides methods to:
+ * <ol>
+ *     <li>Find members that match a {@link Matcher}.</li>
+ *     <li>Sort the results using one or more {@link Comparator}s.</li>
+ *     <li>Retrieve the first matching member.</li>
+ *     <li>Filter members dynamically through the {@link Filter} abstraction.</li>
+ * </ol>
  *
- * @param <T> the type of {@link Member} (e.g., {@link java.lang.reflect.Method}, {@link java.lang.reflect.Field})
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * // Find all public methods in a class, sorted by name
+ * Collection<Method> methods = memberFinder.find(
+ *     MyClass.class,
+ *     MemberMatcher.isPublic(),
+ *     Comparator.comparing(Member::getName)
+ * );
+ *
+ * // Find the first matching method
+ * Optional<Method> firstMethod = memberFinder.findFirst(
+ *     MyClass.class,
+ *     MemberMatcher.isAnnotatedWith(MyAnnotation.class),
+ *     List.of(Comparator.comparing(Member::getName))
+ * );
+ *
+ * // Use dynamic filtering for members
+ * Filter<Member> filter = memberFinder.filter(MyClass.class);
+ * filter.by(MemberMatcher.isStatic()).sortedBy(Comparator.comparing(Member::getName)).findAll();
+ * }</pre>
+ *
+ * @param <T> the type of {@link Member} being searched (e.g., {@link java.lang.reflect.Method}, {@link java.lang.reflect.Field})
  */
 public interface MemberFinder<T extends Member> {
 
     /**
      * Finds all members of the specified class that match the given {@link Matcher}.
+     * The results are sorted using the default comparator by member name.
      *
-     * @param clazz the class to search for members in
-     * @param matcher the matcher used to filter the members
-     * @return a list of members matching the criteria
-     */
-    List<T> find(Class<?> clazz, Matcher<? super T> matcher);
-
-    /**
-     * Finds the first member of the specified class that matches the given {@link Matcher}.
-     * This method calls {@link #find(Class, Matcher)} and returns the first element in the list,
-     * if any match is found.
+     * <p>This method is a shortcut for calling {@link #find(Class, Matcher, Comparator)}
+     * with {@code Comparator.comparing(Member::getName)} as the comparator.</p>
      *
-     * @param clazz the class to search for members in
-     * @param matcher the matcher used to filter the members
-     * @return an {@link Optional} containing the first matching member, or empty if no match is found
+     * @param clazz   the class whose members are to be searched
+     * @param matcher the matcher to filter the members
+     * @return a collection of members that match the criteria, sorted by name
      */
-    default Optional<T> findFirst(Class<?> clazz, Matcher<? super T> matcher) {
-        return find(clazz, matcher).stream().findFirst();
+    default Collection<T> find(Class<?> clazz, Matcher<? super T> matcher) {
+        return find(clazz, matcher, Comparator.comparing(Member::getName));
     }
 
     /**
-     * Returns a {@link Filter} to apply additional filtering criteria to members of the specified class.
+     * Finds all members of the specified class that match the given {@link Matcher}.
+     * The results are sorted using the provided comparator.
      *
-     * @param clazz the class to filter members from
-     * @return a {@link Filter} instance for filtering members
+     * <p>This method is a shortcut for calling {@link #find(Class, Matcher, Collection)}
+     * with a single comparator in a list.</p>
+     *
+     * @param clazz      the class whose members are to be searched
+     * @param matcher    the matcher to filter the members
+     * @param comparator the comparator to sort the matched members
+     * @return a collection of members that match the criteria, sorted as specified
+     */
+    default Collection<T> find(Class<?> clazz, Matcher<? super T> matcher, Comparator<T> comparator) {
+        return find(clazz, matcher, Collections.singletonList(comparator));
+    }
+
+    /**
+     * Finds all members of the specified class that match the given {@link Matcher}.
+     * The results are sorted using the provided collection of comparators.
+     *
+     * <p>If multiple comparators are provided, they are combined in order using {@link Comparator#thenComparing}.
+     * If no comparators are provided, the original order is maintained.</p>
+     *
+     * @param clazz       the class whose members are to be searched
+     * @param matcher     the matcher to filter the members
+     * @param comparators a collection of comparators for multi-level sorting
+     * @return a collection of members that match the criteria, sorted as specified
+     */
+    Collection<T> find(Class<?> clazz, Matcher<? super T> matcher, Collection<Comparator<T>> comparators);
+
+    /**
+     * Finds the first member of the specified class that matches the given {@link Matcher}.
+     * The results are sorted using the provided collection of comparators before retrieving the first match.
+     *
+     * @param clazz       the class whose members are to be searched
+     * @param matcher     the matcher to filter the members
+     * @param comparators a collection of comparators for sorting the members
+     * @return an {@link Optional} containing the first matching member, or empty if no match is found
+     */
+    default Optional<T> findFirst(Class<?> clazz, Matcher<? super T> matcher, Collection<Comparator<T>> comparators) {
+        return find(clazz, matcher, comparators).stream().findFirst();
+    }
+
+    /**
+     * Finds the first member of the specified class that matches the given {@link Matcher}.
+     * The results are sorted using the provided comparator before retrieving the first match.
+     *
+     * <p>This method is a shortcut for calling {@link #findFirst(Class, Matcher, Collection)}
+     * with a single comparator in a list.</p>
+     *
+     * @param clazz      the class whose members are to be searched
+     * @param matcher    the matcher to filter the members
+     * @param comparator the comparator to sort the members
+     * @return an {@link Optional} containing the first matching member, or empty if no match is found
+     */
+    default Optional<T> findFirst(Class<?> clazz, Matcher<? super T> matcher, Comparator<T> comparator) {
+        return findFirst(clazz, matcher, Collections.singletonList(comparator));
+    }
+
+    /**
+     * Finds the first member of the specified class that matches the given {@link Matcher}.
+     * The results are sorted by member name before retrieving the first match.
+     *
+     * <p>This method is a shortcut for calling {@link #findFirst(Class, Matcher, Comparator)}
+     * with {@code Comparator.comparing(Member::getName)} as the comparator.</p>
+     *
+     * @param clazz   the class whose members are to be searched
+     * @param matcher the matcher to filter the members
+     * @return an {@link Optional} containing the first matching member, or empty if no match is found
+     */
+    default Optional<T> findFirst(Class<?> clazz, Matcher<? super T> matcher) {
+        return findFirst(clazz, matcher, Comparator.comparing(Member::getName));
+    }
+
+    /**
+     * Creates a {@link Filter} for dynamically filtering members of the specified class.
+     * The filter allows chaining of matching and sorting operations to retrieve members on demand.
+     *
+     * @param clazz the class whose members are to be filtered
+     * @return a {@link Filter} object for the specified class
      */
     Filter<T> filter(Class<?> clazz);
 }

@@ -9,8 +9,8 @@ import df.common.elements.node.ElementNode;
 import df.common.elements.node.HTMLElementNode;
 import df.common.elements.node.TextNode;
 import df.application.dto.reflection.ClassDTO;
-import df.application.dto.reflection.ClassSetDTO;
-import df.application.dto.reflection.MethodSetDTO;
+import df.application.dto.reflection.ClassListDTO;
+import df.application.dto.reflection.MethodListDTO;
 
 public class ClassTypeBuilder implements NodeBuilder<ClassDTO> {
 
@@ -18,9 +18,9 @@ public class ClassTypeBuilder implements NodeBuilder<ClassDTO> {
 
     @Override
     public Node build(ClassDTO classDTO, NodeBuilderContext ctx) {
-        NodeBuilderRegistry       registry      = ctx.getRegistry();
-        NodeBuilder<MethodSetDTO> methodBuilder = registry.getBuilder(MethodSetDTO.class);
-        NodeBuilder<ClassSetDTO>  classBuilder  = registry.getBuilder(ClassSetDTO.class);
+        NodeBuilderRegistry        registry      = ctx.getRegistry();
+        NodeBuilder<MethodListDTO> methodBuilder = registry.getBuilder(MethodListDTO.class);
+        NodeBuilder<ClassListDTO>  classBuilder  = registry.getBuilder(ClassListDTO.class);
         Node                      wrapper       = new ElementNode(TagName.DIV);
 
         wrapper.append(createHeader(classDTO));
@@ -40,7 +40,7 @@ public class ClassTypeBuilder implements NodeBuilder<ClassDTO> {
         return header;
     }
 
-    private Node createClasses(ClassSetDTO classes, ClassSetBuilder builder, String label) {
+    private Node createClasses(ClassListDTO classes, ClassSetBuilder builder, String label) {
         HTMLElementNode header          = new HTMLElementNode(TagName.H6);
         int             currentPosition = 0;
 

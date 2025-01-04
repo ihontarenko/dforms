@@ -3,6 +3,7 @@ package df.common.reflection;
 import df.common.matcher.Matcher;
 
 import java.lang.reflect.Member;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -53,7 +54,7 @@ abstract public class AbstractFilter<T extends Member> implements Filter<T> {
      * @return a list of matching members
      */
     @Override
-    public List<T> find() {
+    public Collection<T> find() {
         return finder.find(type, matcher);
     }
 

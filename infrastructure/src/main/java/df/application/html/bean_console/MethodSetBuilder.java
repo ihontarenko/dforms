@@ -9,19 +9,19 @@ import df.common.elements.node.TextNode;
 import df.common.flow.Flow;
 import df.common.reflection.Reflections;
 import df.application.dto.reflection.ClassDTO;
-import df.application.dto.reflection.ClassSetDTO;
+import df.application.dto.reflection.ClassListDTO;
 import df.application.dto.reflection.MethodDTO;
-import df.application.dto.reflection.MethodSetDTO;
+import df.application.dto.reflection.MethodListDTO;
 
 import java.util.List;
 import java.util.Map;
 
-public class MethodSetBuilder implements NodeBuilder<MethodSetDTO> {
+public class MethodSetBuilder implements NodeBuilder<MethodListDTO> {
 
     @Override
-    public Node build(MethodSetDTO methodDTOs, NodeBuilderContext ctx) {
+    public Node build(MethodListDTO methodDTOs, NodeBuilderContext ctx) {
         Node            wrapper = new ElementNode(TagName.DIV);
-        ClassSetBuilder builder = (ClassSetBuilder) ctx.getRegistry().getBuilder(ClassSetDTO.class);
+        ClassSetBuilder builder = (ClassSetBuilder) ctx.getRegistry().getBuilder(ClassListDTO.class);
 
         for (Map.Entry<String, List<MethodDTO>> entry : Flow.of(methodDTOs).groupBy(MethodDTO::getAccessLevel).entrySet()) {
             Node container  = new ElementNode(TagName.OL);
@@ -96,9 +96,9 @@ public class MethodSetBuilder implements NodeBuilder<MethodSetDTO> {
     }
 
     public Node createParametersNode(MethodDTO methodDTO, ClassSetBuilder builder) {
-        Node        text            = new ElementNode(TagName.SPAN);
-        ClassSetDTO parametersTypes = methodDTO.getParametersTypes();
-        int         parametersCount = parametersTypes.size();
+        Node         text            = new ElementNode(TagName.SPAN);
+        ClassListDTO parametersTypes = methodDTO.getParametersTypes();
+        int          parametersCount = parametersTypes.size();
 
         text.addAttribute("class", "fw-bold");
         text.append(new TextNode("("));

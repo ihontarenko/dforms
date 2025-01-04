@@ -12,11 +12,11 @@ public class ClassBuilderRegistry extends AbstractBuilderRegistry {
     @Override
     protected void initialize() {
         setBuilder(ClassDTO.class, new ClassTypeBuilder());
-        setBuilder(ClassSetDTO.class, new ClassSetBuilder());
+        setBuilder(ClassListDTO.class, new ClassSetBuilder());
         setBuilder(MethodDTO.class, new MethodItemBuilder());
-        setBuilder(MethodSetDTO.class, new MethodSetBuilder());
+        setBuilder(MethodListDTO.class, new MethodSetBuilder());
         setBuilder(FieldDTO.class, new FieldItemBuilder());
-        setBuilder(FieldSetDTO.class, new FieldSetBuilder());
+        setBuilder(FieldListDTO.class, new FieldSetBuilder());
     }
 
 }

@@ -2,7 +2,7 @@ package df.web.controller.bean_console;
 
 import df.common.breadcrumb.Breadcrumbs;
 import df.application.dto.reflection.ClassDTO;
-import df.application.dto.reflection.ClassSetDTO;
+import df.application.dto.reflection.ClassListDTO;
 import df.application.service.bc.ClassManagementService;
 import df.application.service.bc.ClassService;
 import df.web.common.flash.FlashMessageService;
@@ -52,7 +52,7 @@ public class BeanConsoleController {
     @GetMapping("/search")
     public ModelAndView search(@RequestParam(value = "keyword", required = false) String keyword) {
         Map<String, Object> attributes = new HashMap<>();
-        ClassSetDTO         classes    = classService.findClassesByName(keyword);
+        ClassListDTO        classes    = classService.findClassesByName(keyword);
 
         attributes.put("keyword", keyword);
         attributes.put("html", classManagement.renderHtml(classes));
