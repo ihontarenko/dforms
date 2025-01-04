@@ -14,17 +14,8 @@ public record ClassRepository(Class<?>... baseClasses) {
         this.baseClasses = baseClasses;
     }
 
-    @SuppressWarnings({"all"})
-    public static Set<Class<?>> findAll(Class<?>... baseClasses) {
-        return ClassFinder.findAll(baseClasses);
-    }
-
     public Set<Class<?>> findClasses(Matcher<Class<?>> matcher) {
         return ClassFinder.findAll(matcher, baseClasses);
-    }
-
-    public Set<Class<?>> findAll() {
-        return findAll(baseClasses);
     }
 
 }

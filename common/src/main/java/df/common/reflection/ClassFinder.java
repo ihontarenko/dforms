@@ -7,104 +7,186 @@ import df.common.matcher.reflection.ClassMatchers;
 import java.lang.annotation.Annotation;
 import java.util.*;
 
-import static java.util.stream.Collectors.toSet;
+import static df.common.matcher.reflection.ClassMatchers.implementsInterface;
+import static df.common.matcher.reflection.ClassMatchers.isAbstract;
 
 /**
- * {@code ClassFinder} provides utility methods to locate classes based on specific criteria.
- * It supports searching for annotated classes, enumerations, and interface implementations within the provided base classes.
- * Results are cached to optimize repeated queries with the same parameters.
+ * ClassFinder provides utilities for finding and filtering classes
+ * using annotations, interfaces, and other criteria. It supports caching
+ * and dynamic sorting.
  *
- * <p>Example usage:</p>
+ * Example usage:
  * <pre>{@code
- * // Find all classes annotated with @MyAnnotation
- * Set<Class<?>> annotatedClasses = ClassFinder.findAnnotatedClasses(MyAnnotation.class, BaseClass1.class, BaseClass2.class);
- *
- * // Find all enums within the specified base classes
- * Set<Class<?>> enums = ClassFinder.findEnums(BaseClass1.class, BaseClass2.class);
- *
- * // Find all implementations of MyInterface
- * Set<Class<?>> implementations = ClassFinder.findImplementations(MyInterface.class, BaseClass1.class, BaseClass2.class);
+ * Collection<Class<?>> annotatedClasses = ClassFinder.findAnnotatedClasses(MyAnnotation.class);
+ * Collection<Class<?>> sortedEnums = ClassFinder.findEnums(MyBaseClass.class)
+ *     .stream()
+ *     .sorted(Comparator.comparing(Class::getName))
+ *     .collect(Collectors.toList());
  * }</pre>
  */
 public interface ClassFinder {
 
     /**
-     * Cache to store the results of previous searches, keyed by the hash of the base classes.
+     * A cache for storing previously scanned and filtered classes.
+     * Key: hash of base classes and matcher used in the search.
+     * Value: a collection of matched classes.
      */
-    Map<Integer, Set<Class<?>>> CACHE = new HashMap<>();
+    Map<Integer, Collection<Class<?>>> CACHE = new HashMap<>();
 
     /**
-     * Default class scanner used for searching classes.
+     * The default class scanner used for locating classes in the classpath.
      */
     ClassScanner SCANNER = ClassScanner.getDefaultScanner();
 
     /**
-     * Finds all classes annotated with the specified annotation within the provided base classes.
-     *
-     * @param annotation  the annotation to search for
-     * @param baseClasses the base classes to restrict the search to
-     * @return a set of classes annotated with the specified annotation
+     * The scanner context containing default configuration for scanning classes.
      */
-    static Set<Class<?>> findAnnotatedClasses(Class<? extends Annotation> annotation, Class<?>... baseClasses) {
+    ScannerContext CONTEXT = new ScannerContext();
+
+    /**
+     * A comparator for sorting classes alphabetically by their names.
+     */
+    Comparator<Class<?>> ORDER_CLASS_NAME = Comparator.comparing(Class::getName);
+
+    /**
+     * A comparator for sorting classes alphabetically by their package names.
+     */
+    Comparator<Class<?>> ORDER_PACKAGE_NAME = Comparator.comparing(Class::getPackageName);
+
+    /**
+     * A comparator for sorting classes by their modifiers (e.g., public, abstract).
+     * The modifiers are represented as integer values.
+     */
+    Comparator<Class<?>> ORDER_MODIFIER = Comparator.comparingInt(Class::getModifiers);
+
+    /**
+     * Finds all classes annotated with the given annotation.
+     *
+     * @param annotation the annotation to look for
+     * @param baseClasses the base classes to scan
+     * @return a collection of annotated classes
+     */
+    static Collection<Class<?>> findAnnotatedClasses(Class<? extends Annotation> annotation, Class<?>... baseClasses) {
         return findAll(ClassMatchers.isAnnotatedWith(annotation), baseClasses);
     }
 
     /**
-     * Finds all enumerations within the provided base classes.
+     * Finds all enum classes.
      *
-     * @param baseClasses the base classes to restrict the search to
-     * @return a set of enumeration classes
+     * @param baseClasses the base classes to scan
+     * @return a collection of enum classes
      */
-    static Set<Class<?>> findEnums(Class<?>... baseClasses) {
+    static Collection<Class<?>> findEnums(Class<?>... baseClasses) {
         return findAll(ClassMatchers.isEnum(), baseClasses);
     }
 
     /**
-     * Finds all classes that implement the specified interface within the provided base classes.
+     * Finds all implementations of a given interface.
      *
-     * @param interfaceClass the interface to search for implementations
-     * @param baseClasses    the base classes to restrict the search to
-     * @return a set of classes that implement the specified interface
+     * @param interfaceClass the interface to look for
+     * @param baseClasses the base classes to scan
+     * @return a collection of implementations
      */
-    static Set<Class<?>> findImplementations(Class<?> interfaceClass, Class<?>... baseClasses) {
-        return findAll(ClassMatchers.implementsInterface(interfaceClass).and(ClassMatchers.isAbstract().not()),
-                       baseClasses);
+    static Collection<Class<?>> findImplementations(Class<?> interfaceClass, Class<?>... baseClasses) {
+        return findAll(implementsInterface(interfaceClass).and(isAbstract().not()), baseClasses);
     }
 
     /**
-     * Finds all classes matching the given matcher within the provided base classes.
+     * Finds all classes matching the given matcher.
      *
-     * @param matcher     a {@link Matcher} to filter classes
-     * @param baseClasses the base classes to restrict the search to
-     * @return a set of classes matching the criteria
+     * @param matcher the matcher to filter classes
+     * @param baseClasses the base classes to scan
+     * @return a collection of matching classes
      */
-    static Set<Class<?>> findAll(Matcher<Class<?>> matcher, Class<?>... baseClasses) {
-        return findAll(baseClasses).stream().filter(matcher::matches).collect(toSet());
+    static Collection<Class<?>> findAll(Matcher<Class<?>> matcher, Class<?>... baseClasses) {
+        return findAll(matcher, ORDER_CLASS_NAME, baseClasses);
     }
 
     /**
-     * Finds all classes within the provided base classes without any filtering.
+     * Finds all classes matching the given matcher and sorts them using the given comparator.
      *
-     * @param baseClasses the base classes to restrict the search to
-     * @return a set of all classes found within the specified base classes
+     * @param matcher the matcher to filter classes
+     * @param comparator the comparator to sort classes
+     * @param baseClasses the base classes to scan
+     * @return a sorted collection of matching classes
      */
-    static Set<Class<?>> findAll(Class<?>... baseClasses) {
-        int cacheKey = Objects.hash(baseClasses);
-
-        if (CACHE.containsKey(cacheKey)) {
-            return CACHE.get(cacheKey);
-        }
-
-        Set<Class<?>> classes = new HashSet<>();
-
-        SCANNER.setMatcher(Matcher.constant(true));
-
-        for (Class<?> baseClass : baseClasses) {
-            classes.addAll(SCANNER.scan(baseClass.getPackageName(), baseClass.getClassLoader()));
-        }
-
-        CACHE.put(cacheKey, classes);
-
-        return classes;
+    static Collection<Class<?>> findAll(
+            Matcher<Class<?>> matcher, Comparator<Class<?>> comparator, Class<?>... baseClasses) {
+        return findAll(matcher, Collections.singletonList(comparator), baseClasses);
     }
+
+    /**
+     * Finds all classes that match the given criteria, sorts them using the provided comparators,
+     * and optionally scans the provided base classes' packages.
+     *
+     * <p>This method performs the following operations:</p>
+     * <ul>
+     *     <li>If no base classes are provided, it retrieves default root classes from the {@link ScannerContext}.</li>
+     *     <li>Checks the {@link #CACHE} for already scanned and matched results. If found, returns the cached collection.</li>
+     *     <li>Uses the {@link ClassScanner} to scan the packages of the base classes for all available classes.</li>
+     *     <li>Applies the provided {@link Matcher} to filter the scanned classes.</li>
+     *     <li>Sorts the filtered classes using the provided list of {@link Comparator} objects.
+     *         If no comparators are provided, the original order is maintained.</li>
+     * </ul>
+     *
+     * <p>Important notes:</p>
+     * <ul>
+     *     <li>The caching mechanism is based on a hash of the matcher and base classes to optimize performance.</li>
+     *     <li>Sorting is optional, and the classes can be returned in their natural or scanned order if no comparators are provided.</li>
+     *     <li>This method is thread-safe if the {@link #CACHE}, {@link ClassScanner}, and {@link ScannerContext} are accessed in a thread-safe manner.</li>
+     * </ul>
+     *
+     * @param matcher     the matcher used to filter classes based on specific criteria; cannot be {@code null}.
+     * @param comparators a list of comparators used to sort the filtered classes; can be empty to maintain original order.
+     * @param baseClasses the base classes whose packages will be scanned; if empty, defaults from {@link ScannerContext} are used.
+     * @return a collection of classes that match the given criteria, sorted as specified.
+     * @throws IllegalArgumentException if the matcher is {@code null}.
+     * @see Matcher
+     * @see Comparator
+     * @see ClassScanner
+     * @see ScannerContext
+     */
+    static Collection<Class<?>> findAll(
+            Matcher<Class<?>> matcher, List<Comparator<Class<?>>> comparators, Class<?>... baseClasses) {
+        // Retrieve base classes from context if none are passed
+        if (baseClasses == null || baseClasses.length == 0) {
+            baseClasses = CONTEXT.getDefaultRootClasses().toArray(Class<?>[]::new);
+        }
+
+        // Build a unique cache key based on base classes and matcher
+        final int cacheKey = Objects.hash(baseClasses);
+
+        // Check cache
+        Collection<Class<?>> classes = CACHE.get(cacheKey);
+
+        if (classes == null) {
+            classes = new HashSet<>();
+
+            SCANNER.setMatcher(Matcher.constant(true));
+
+            for (Class<?> baseClass : baseClasses) {
+                classes.addAll(SCANNER.scan(baseClass.getPackageName(), baseClass.getClassLoader()));
+            }
+
+            CACHE.put(cacheKey, classes);
+        }
+
+        // Combine comparators; default to no sorting if no comparators provided
+        Comparator<Class<?>> comparator = comparators.stream()
+                .reduce(Comparator::thenComparing)
+                .orElse((a, b) -> 0);
+
+        // Filter and sort classes
+        return classes.stream().filter(matcher::matches).sorted(comparator).toList();
+    }
+
+    /**
+     * Retrieves the scanner context.
+     *
+     * @return the scanner context
+     */
+    static ScannerContext getContext() {
+        return CONTEXT;
+    }
+
 }
