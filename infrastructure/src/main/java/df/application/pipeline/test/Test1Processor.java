@@ -2,7 +2,7 @@ package df.application.pipeline.test;
 
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.PipelineProcessor;
-import df.common.context.ArgumentsContext;
+import svit.context.ArgumentsContext;
 import df.application.pipeline.DefaultReturnCode;
 
 public class Test1Processor implements PipelineProcessor {

@@ -1,11 +1,11 @@
 package df.common.commans;
 
-import df.common.context.Context;
-import df.common.context.ErrorDetails;
-import df.common.invocable.Invocable;
-import df.common.invocable.InvokeResult;
-import df.common.invocable.Invoker;
-import df.common.invocable.MethodParameter;
+import svit.context.Context;
+import svit.context.ErrorDetails;
+import svit.invocable.Invocable;
+import svit.invocable.InvokeResult;
+import svit.invocable.Invoker;
+import svit.invocable.MethodParameter;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -2,7 +2,7 @@ package df.application.mapping.user;
 
 import df.application.persistence.entity.user.Privilege;
 import df.application.persistence.entity.user.Role;
-import df.common.mapping.Mapper;
+import svit.mapping.Mapper;
 import df.application.dto.user.RoleDTO;
 import org.springframework.stereotype.Service;
 

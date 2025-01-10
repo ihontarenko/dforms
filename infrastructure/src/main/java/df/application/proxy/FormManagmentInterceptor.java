@@ -1,11 +1,11 @@
 package df.application.proxy;
 
 import df.application.service.form.FormManagementService;
-import df.common.proxy.MethodInterceptor;
-import df.common.proxy.MethodInvocation;
-import df.common.proxy.annotation.Interceptor;
+import svit.proxy.MethodInterceptor;
+import svit.proxy.MethodInvocation;
+import svit.proxy.annotation.ProxyMethodInterceptor;
 
-@Interceptor(target = {FormManagementService.class})
+@ProxyMethodInterceptor(value = {FormManagementService.class})
 public class FormManagmentInterceptor implements MethodInterceptor {
 
     @Override

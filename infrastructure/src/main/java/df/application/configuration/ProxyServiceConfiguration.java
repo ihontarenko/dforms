@@ -2,7 +2,7 @@ package df.application.configuration;
 
 import df.application.PackageCoreRoot;
 import df.common.pipeline.PipelineManager;
-import df.common.proxy.AnnotationProxyFactory;
+import svit.proxy.AnnotationProxyFactory;
 import df.application.service.form.FormManagement;
 import df.application.service.form.FormManagementService;
 import org.springframework.context.ApplicationContext;

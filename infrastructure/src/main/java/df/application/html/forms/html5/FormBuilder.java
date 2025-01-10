@@ -2,11 +2,11 @@ package df.application.html.forms.html5;
 
 import df.application.dto.form.FieldDTO;
 import df.application.dto.form.FormDTO;
-import df.common.elements.Node;
-import df.common.elements.TagName;
-import df.common.elements.builder.NodeBuilder;
-import df.common.elements.builder.NodeBuilderContext;
-import df.common.elements.node.ElementNode;
+import svit.dom.Node;
+import svit.dom.TagName;
+import svit.dom.builder.NodeBuilder;
+import svit.dom.builder.NodeBuilderContext;
+import svit.dom.node.ElementNode;
 
 import java.util.Collection;
 

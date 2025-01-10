@@ -1,14 +1,14 @@
 package df.application.proxy.persistence;
 
-import df.common.proxy.MethodInterceptor;
-import df.common.proxy.MethodInvocation;
-import df.common.proxy.MethodInvocationDecorator;
-import df.common.proxy.annotation.Interceptor;
+import svit.proxy.MethodInterceptor;
+import svit.proxy.MethodInvocation;
+import svit.proxy.MethodInvocationDecorator;
+import svit.proxy.annotation.ProxyMethodInterceptor;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
-@Interceptor(target = EntityManager.class)
+@ProxyMethodInterceptor(value = EntityManager.class)
 public class JpaEntityManagerInterceptor implements MethodInterceptor {
 
     private final static List<String> PERSISTENCE_METHODS = List.of("merge", "persist");

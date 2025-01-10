@@ -1,11 +1,11 @@
 package df.application.pipeline.form.rendering;
 
-import df.common.elements.Node;
-import df.common.elements.NodeContext;
+import svit.dom.Node;
+import svit.dom.NodeContext;
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.PipelineProcessor;
-import df.common.context.ArgumentsContext;
-import df.common.context.ResultContext;
+import svit.context.ArgumentsContext;
+import svit.context.ResultContext;
 
 public class RenderNodeTreeProcessor implements PipelineProcessor {
 

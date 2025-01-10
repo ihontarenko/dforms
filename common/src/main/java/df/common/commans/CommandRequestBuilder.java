@@ -1,11 +1,11 @@
 package df.common.commans;
 
 import df.common.commans.compiler.HandlerDefinitionCompiler;
-import df.common.context.Context;
-import df.common.context.provider.bean.SpringBeanProvider;
-import df.common.ast.compiler.EvaluationContext;
-import df.common.ast.node.Node;
-import df.common.parser.ParserService;
+import df.common.provider.bean.SpringBeanProvider;
+import svit.context.Context;
+import svit.ast.compiler.EvaluationContext;
+import svit.ast.node.Node;
+import svit.expression.ParserService;
 
 import java.util.Map;
 

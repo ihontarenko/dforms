@@ -2,7 +2,7 @@ package df.application.security.oauth2;
 
 import df.application.dto.user.UserDTO;
 import df.application.security.Provider;
-import df.common.mapping.Mapper;
+import svit.mapping.Mapper;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 package df.common.extensions.persistence.entity_graph.invocation;
 
-import df.common.proxy.MethodInvocation;
-import df.common.proxy.MethodInvocationDecorator;
+import svit.proxy.MethodInvocation;
+import svit.proxy.MethodInvocationDecorator;
 
 public class QueryMethodInvocation extends MethodInvocationDecorator {
 

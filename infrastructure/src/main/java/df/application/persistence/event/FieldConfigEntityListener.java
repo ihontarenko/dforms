@@ -2,10 +2,10 @@ package df.application.persistence.event;
 
 import df.application.Instances;
 import df.common.commans.CommandsManager;
-import df.common.context.Context;
-import df.common.observer.AbstractEventListener;
-import df.common.observer.Event;
-import df.common.observer.annotation.Listener;
+import svit.context.Context;
+import svit.observer.AbstractEventListener;
+import svit.observer.Event;
+import svit.observer.annotation.Listener;
 import df.application.persistence.entity.form.FieldConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package df.application.mapping.form;
 
-import df.common.mapping.Mapper;
+import svit.mapping.Mapper;
 import df.application.dto.form.FieldAttributeDTO;
 import df.application.persistence.entity.form.FieldAttribute;
 import org.springframework.stereotype.Service;

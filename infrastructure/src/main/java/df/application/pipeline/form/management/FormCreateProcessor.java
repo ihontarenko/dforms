@@ -5,7 +5,7 @@ import df.application.persistence.entity.user.User;
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.PipelineProcessor;
 import df.common.pipeline.context.DefaultPipelineContext;
-import df.common.context.ArgumentsContext;
+import svit.context.ArgumentsContext;
 import df.application.service.form.FormService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

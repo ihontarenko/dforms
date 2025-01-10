@@ -3,8 +3,8 @@ package df.common.pipeline;
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.definition.PipelineDefinitionException;
 import df.common.pipeline.definition.RootDefinition;
-import df.common.proxy.AnnotationProxyFactory;
-import df.common.proxy.ProxyFactory;
+import svit.proxy.AnnotationProxyFactory;
+import svit.proxy.ProxyFactory;
 import df.common.pipeline.definition.DefinitionLoader;
 
 import java.util.HashMap;

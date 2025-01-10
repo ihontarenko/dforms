@@ -6,8 +6,8 @@
     <name>DF - DEPENDENCIES</name>
     <groupId>df</groupId>
     <artifactId>df-dependencies</artifactId>
-    <packaging>pom</packaging>
     <version>1.0.0-RC</version>
+    <packaging>pom</packaging>
 
     <properties>
         <spring-boot.version>3.3.0</spring-boot.version>
@@ -19,18 +19,20 @@
         <mariadb-java-client.version>2.7.0</mariadb-java-client.version>
         <cglib.version>3.3.0</cglib.version>
         <byte-buddy.version>1.12.10</byte-buddy.version>
-        <svit-context.version>1.0.0-Beta</svit-context.version>
+        <svit.version>1.0.0-Beta</svit.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- SvitFramework -->
+            <!-- Svit Framework -->
             <dependency>
                 <groupId>org.svitframework</groupId>
-                <artifactId>svit-context</artifactId>
-                <version>${svit-context.version}</version>
+                <artifactId>svit-dependencies</artifactId>
+                <version>${svit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
-            <!-- Own -->
+            <!-- DF -->
             <dependency>
                 <groupId>df</groupId>
                 <artifactId>df-common</artifactId>

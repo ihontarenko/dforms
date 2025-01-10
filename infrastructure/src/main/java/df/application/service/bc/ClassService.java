@@ -1,9 +1,9 @@
 package df.application.service.bc;
 
 import df.application.dto.reflection.ClassListDTO;
-import df.common.matcher.Matcher;
-import df.common.matcher.reflection.ClassMatchers;
-import df.common.reflection.Reflections;
+import svit.matcher.Matcher;
+import svit.reflection.ClassMatchers;
+import svit.reflection.Reflections;
 import df.application.dto.reflection.ClassDTO;
 import df.application.mapping.reflection.ClassMapper;
 import org.springframework.stereotype.Service;

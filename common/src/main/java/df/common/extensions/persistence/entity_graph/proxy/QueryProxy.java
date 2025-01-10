@@ -4,9 +4,9 @@ import df.common.extensions.persistence.entity_graph.EntityGraphQueryHint;
 import df.common.extensions.persistence.entity_graph.ObjectsHolder;
 import df.common.extensions.persistence.entity_graph.injector.QueryHintInjector;
 import df.common.extensions.persistence.entity_graph.invocation.QueryMethodInvocation;
-import df.common.proxy.MethodInterceptor;
-import df.common.proxy.MethodInvocation;
-import df.common.proxy.MethodInvocationDecorator;
+import svit.proxy.MethodInterceptor;
+import svit.proxy.MethodInvocation;
+import svit.proxy.MethodInvocationDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

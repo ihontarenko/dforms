@@ -1,11 +1,11 @@
 package df.application.proxy;
 
-import df.common.proxy.MethodInterceptor;
-import df.common.proxy.MethodInvocation;
-import df.common.proxy.annotation.Interceptor;
+import svit.proxy.MethodInterceptor;
+import svit.proxy.MethodInvocation;
+import svit.proxy.annotation.ProxyMethodInterceptor;
 import df.common.validation.custom.Validator;
 
-@Interceptor(target = Validator.class)
+@ProxyMethodInterceptor(value = Validator.class)
 public class ValidatorCustomInterceptor implements MethodInterceptor {
 
     @Override

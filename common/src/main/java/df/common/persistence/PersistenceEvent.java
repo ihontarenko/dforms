@@ -1,6 +1,6 @@
 package df.common.persistence;
 
-import df.common.observer.AbstractEvent;
+import svit.observer.AbstractEvent;
 
 public class PersistenceEvent extends AbstractEvent<Object> {
 

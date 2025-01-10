@@ -1,6 +1,6 @@
 package df.application.dto.form.support;
 
-import df.common.context.provider.data.EnumDataProvider;
+import svit.provider.data.EnumDataProvider;
 
 public class ARMDataProvider extends EnumDataProvider<ARM> {
 

@@ -9,7 +9,7 @@ import df.common.validation.custom.ValidatorConstraintFactory;
 
 import java.util.Map;
 
-import static df.common.container.ReflectionUtils.getClassFor;
+import static svit.container.ReflectionUtils.getClassFor;
 
 @Command("validation")
 public class ValidatorResolverOperation {

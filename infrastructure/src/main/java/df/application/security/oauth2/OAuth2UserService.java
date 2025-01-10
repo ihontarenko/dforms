@@ -4,7 +4,7 @@ import df.application.dto.user.UserDTO;
 import df.application.persistence.entity.user.User;
 import df.application.security.Provider;
 import df.application.security.UserInfo;
-import df.common.mapping.Mapper;
+import svit.mapping.Mapper;
 import df.application.service.user.UserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

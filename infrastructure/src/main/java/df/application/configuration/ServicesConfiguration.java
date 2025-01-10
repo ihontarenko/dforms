@@ -1,17 +1,17 @@
 package df.application.configuration;
 
 import df.application.PackageCoreRoot;
-import df.common.ast.parser.ParserContext;
-import df.common.ast.token.Tokenizer;
+import svit.ast.parser.ParserContext;
+import svit.ast.token.Tokenizer;
 import df.common.breadcrumb.BreadcrumbService;
-import df.common.elements.NodeContext;
-import df.common.elements.RendererFactory;
+import svit.dom.NodeContext;
+import svit.dom.RendererFactory;
 import df.common.i18n.Translator;
-import df.common.observer.EventManager;
-import df.common.observer.EventManagerFactory;
+import svit.observer.EventManager;
+import svit.observer.EventManagerFactory;
 import df.common.parser.DefaultTokenizer;
 import df.common.parser.TokenizerConfigurator;
-import df.common.parser.parser.ParserConfigurator;
+import svit.expression.parser.ParserConfigurator;
 import df.common.pipeline.PipelineManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

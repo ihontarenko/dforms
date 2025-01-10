@@ -1,6 +1,6 @@
 package df.common.commans;
 
-import df.common.context.AbstractContext;
+import svit.context.AbstractContext;
 
 import java.util.Map;
 import java.util.function.Consumer;

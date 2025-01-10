@@ -1,8 +1,8 @@
 package df.application.persistence.event;
 
-import df.common.observer.AbstractEventListener;
-import df.common.observer.Event;
-import df.common.observer.annotation.Listener;
+import svit.observer.AbstractEventListener;
+import svit.observer.Event;
+import svit.observer.annotation.Listener;
 import df.application.persistence.entity.form.Form;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

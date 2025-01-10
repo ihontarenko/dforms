@@ -1,10 +1,10 @@
 package df.common.commans.compiler;
 
-import df.common.ast.compiler.Compiler;
-import df.common.ast.compiler.EvaluationContext;
+import svit.ast.compiler.Compiler;
+import svit.ast.compiler.EvaluationContext;
 import df.common.commans.CommandRoute;
-import df.common.parser.ast.StringDefinitionNode;
-import df.common.parser.ast.VariableNode;
+import svit.expression.ast.StringDefinitionNode;
+import svit.expression.ast.VariableNode;
 
 /**
  * {@code HandlerDefinitionCompiler} is responsible for compiling {@link StringDefinitionNode} instances

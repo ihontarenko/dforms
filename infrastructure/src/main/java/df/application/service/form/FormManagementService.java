@@ -1,6 +1,6 @@
 package df.application.service.form;
 
-import df.common.context.provider.bean.SpringBeanProvider;
+import svit.provider.bean.SpringBeanProvider;
 import df.application.exception.ApplicationException;
 import df.common.pipeline.PipelineManager;
 import df.common.pipeline.context.DefaultPipelineContext;

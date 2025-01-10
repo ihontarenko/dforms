@@ -1,6 +1,6 @@
 package df.common.pipeline;
 
-import df.common.context.ResultContext;
+import svit.context.ResultContext;
 import df.common.pipeline.context.PipelineContext;
 import org.slf4j.Logger;
 

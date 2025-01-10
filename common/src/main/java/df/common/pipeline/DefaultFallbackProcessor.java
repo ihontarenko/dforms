@@ -1,6 +1,6 @@
 package df.common.pipeline;
 
-import df.common.context.ArgumentsContext;
+import svit.context.ArgumentsContext;
 import df.common.pipeline.context.PipelineContext;
 
 public class DefaultFallbackProcessor implements PipelineProcessor{

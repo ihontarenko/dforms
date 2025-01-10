@@ -1,6 +1,6 @@
 package df.common.validation.custom;
 
-import df.common.mapping.Mapper;
+import svit.mapping.Mapper;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 

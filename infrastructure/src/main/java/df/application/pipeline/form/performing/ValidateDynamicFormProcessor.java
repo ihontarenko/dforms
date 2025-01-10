@@ -1,8 +1,8 @@
 package df.application.pipeline.form.performing;
 
-import df.common.context.beans.BeanObjectInfo;
-import df.common.context.beans.BeanObjectInfoFactory;
-import df.common.context.ArgumentsContext;
+import svit.beans.BeanObjectInfo;
+import svit.beans.BeanObjectInfoFactory;
+import svit.context.ArgumentsContext;
 import df.common.pipeline.PipelineProcessor;
 import df.common.pipeline.context.PipelineContext;
 import df.common.validation.custom.Validation;

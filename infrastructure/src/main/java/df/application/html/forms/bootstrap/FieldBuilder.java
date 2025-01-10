@@ -3,14 +3,14 @@ package df.application.html.forms.bootstrap;
 import df.application.dto.form.FieldAttributeDTO;
 import df.application.dto.form.FieldDTO;
 import df.application.dto.form.FieldOptionDTO;
-import df.common.elements.Node;
-import df.common.elements.PostDataProvider;
-import df.common.elements.TagName;
-import df.common.elements.builder.NodeBuilder;
-import df.common.elements.builder.NodeBuilderContext;
-import df.common.elements.node.ElementNode;
-import df.common.elements.node.TextNode;
-import df.common.container.StringUtils;
+import svit.dom.Node;
+import svit.dom.PostDataProvider;
+import svit.dom.TagName;
+import svit.dom.builder.NodeBuilder;
+import svit.dom.builder.NodeBuilderContext;
+import svit.dom.node.ElementNode;
+import svit.dom.node.TextNode;
+import svit.util.Strings;
 
 import java.util.Collection;
 import java.util.List;
@@ -71,7 +71,7 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
             root.append(createInvalidFeedback(dataProvider.getError(fieldDTO.getName()).message()));
         }
 
-        if (StringUtils.hasText(fieldDTO.getDescription())) {
+        if (Strings.hasText(fieldDTO.getDescription())) {
             small.append(new TextNode(fieldDTO.getDescription()));
             root.append(small);
         }

@@ -2,12 +2,12 @@ package df.common.pipeline;
 
 import df.common.pipeline.definition.RootDefinition;
 import df.common.pipeline.definition.RootDefinition.Processor;
-import df.common.reflection.Reflections;
-import df.common.resolver.Resolver;
-import df.common.resolver.Resolvers;
-import df.common.resolver.ResolversFactory;
+import svit.reflection.Reflections;
+import svit.resolver.Resolver;
+import svit.resolver.Resolvers;
+import svit.resolver.ResolversFactory;
 
-import static df.common.resolver.Resolvers.valueOf;
+import static svit.resolver.Resolvers.valueOf;
 
 public class PipelineProcessorFactory {
 

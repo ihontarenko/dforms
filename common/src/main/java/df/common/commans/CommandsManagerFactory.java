@@ -2,16 +2,16 @@ package df.common.commans;
 
 import df.common.commans.annotation.Action;
 import df.common.commans.annotation.Command;
-import df.common.invocable.Invocable;
-import df.common.reflection.MethodFilter;
+import svit.invocable.Invocable;
+import svit.reflection.MethodFilter;
 
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
-import static df.common.reflection.ClassFinder.findAnnotatedClasses;
-import static df.common.reflection.MethodFinder.FINDER;
-import static df.common.reflection.Reflections.findFirstConstructor;
-import static df.common.reflection.Reflections.instantiate;
+import static svit.reflection.ClassFinder.findAnnotatedClasses;
+import static svit.reflection.MethodFinder.FINDER;
+import static svit.reflection.Reflections.findFirstConstructor;
+import static svit.reflection.Reflections.instantiate;
 
 /**
  * {@code CommandsManagerFactory} provides factory methods for creating and configuring {@link CommandsManager} instances.

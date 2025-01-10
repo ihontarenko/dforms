@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static df.common.container.StringUtils.hasText;
+import static svit.util.Strings.hasText;
 import static java.util.Optional.empty;
 
 // todo: implement ServiceInterface

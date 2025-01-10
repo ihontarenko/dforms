@@ -1,8 +1,8 @@
 package df.application.html.bean_console;
 
-import df.common.elements.Node;
-import df.common.elements.builder.NodeBuilder;
-import df.common.elements.builder.NodeBuilderContext;
+import svit.dom.Node;
+import svit.dom.builder.NodeBuilder;
+import svit.dom.builder.NodeBuilderContext;
 import df.application.dto.reflection.MethodDTO;
 
 public class MethodItemBuilder implements NodeBuilder<MethodDTO> {

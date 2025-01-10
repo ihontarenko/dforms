@@ -1,7 +1,7 @@
 package df.application.service.bc;
 
-import df.common.matcher.Matcher;
-import df.common.reflection.ClassFinder;
+import svit.matcher.Matcher;
+import svit.reflection.ClassFinder;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 

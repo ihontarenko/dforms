@@ -3,8 +3,8 @@ package df.application.mapping.reflection;
 import df.application.Instances;
 import df.application.dto.reflection.ClassDTO;
 import df.application.dto.reflection.MethodDTO;
-import df.common.mapping.Mapper;
-import df.common.mapping.Mapping;
+import svit.mapping.Mapper;
+import svit.mapping.Mapping;
 
 import java.lang.reflect.Method;
 import java.util.stream.Stream;

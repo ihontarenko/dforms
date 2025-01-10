@@ -1,7 +1,7 @@
 package df.application.mapping.reflection;
 
 import df.application.Instances;
-import df.common.mapping.Mapper;
+import svit.mapping.Mapper;
 import df.application.dto.reflection.FieldDTO;
 
 import java.lang.reflect.Field;

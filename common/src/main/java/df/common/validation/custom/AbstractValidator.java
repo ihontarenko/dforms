@@ -1,8 +1,8 @@
 package df.common.validation.custom;
 
-import df.common.container.StringUtils;
+import svit.util.Strings;
 
-import static df.common.container.StringUtils.underscored;
+import static svit.util.Strings.underscored;
 
 abstract public class AbstractValidator implements Validator {
 
@@ -18,7 +18,7 @@ abstract public class AbstractValidator implements Validator {
 
     @Override
     public String toString() {
-        return "%s [message='%s']".formatted(StringUtils.underscored(this.getClass().getSimpleName(), true), message);
+        return "%s [message='%s']".formatted(Strings.underscored(this.getClass().getSimpleName(), true), message);
     }
 
 }

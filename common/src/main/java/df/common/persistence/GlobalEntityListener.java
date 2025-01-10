@@ -1,7 +1,6 @@
 package df.common.persistence;
 
-import df.common.commans.CommandsManager;
-import df.common.observer.EventManager;
+import svit.observer.EventManager;
 import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

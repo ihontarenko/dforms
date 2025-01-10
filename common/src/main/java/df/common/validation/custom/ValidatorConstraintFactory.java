@@ -1,11 +1,11 @@
 package df.common.validation.custom;
 
-import df.common.mapping.mapper.ObjectFieldMapper;
-import df.common.proxy.AnnotationProxyFactory;
+import svit.mapping.mapper.ObjectFieldMapper;
+import svit.proxy.AnnotationProxyFactory;
 import df.common.validation.custom.constraint.NonEmptyValidator;
 import df.common.validation.custom.constraint.NotNullValidator;
 import df.common.validation.custom.constraint.NumberRangeValidator;
-import df.common.container.ReflectionUtils;
+import svit.container.ReflectionUtils;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;

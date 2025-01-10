@@ -1,19 +1,19 @@
 package df.application.pipeline.form.rendering;
 
 import df.application.dto.form.FormDTO;
-import df.common.context.ArgumentsContext;
-import df.common.context.provider.data.DataProvider;
-import df.common.context.provider.data.MapDataProvider;
-import df.common.context.provider.error.BindingResultErrorProvider;
-import df.common.context.provider.error.ErrorDetailsProvider;
-import df.common.context.provider.error.ErrorProvider;
-import df.common.elements.Node;
-import df.common.elements.PostDataProvider;
-import df.common.elements.builder.NodeBuilder;
-import df.common.elements.builder.NodeBuilderContext;
+import df.common.provider.error.BindingResultErrorProvider;
+import svit.context.ArgumentsContext;
+import svit.provider.data.DataProvider;
+import svit.provider.data.MapDataProvider;
+import svit.provider.error.ErrorDetailsProvider;
+import svit.provider.error.ErrorProvider;
+import svit.dom.Node;
+import svit.dom.PostDataProvider;
+import svit.dom.builder.NodeBuilder;
+import svit.dom.builder.NodeBuilderContext;
 import df.common.pipeline.PipelineProcessor;
 import df.common.pipeline.context.PipelineContext;
-import df.common.elements.builder.AbstractBuilderRegistry;
+import svit.dom.builder.AbstractBuilderRegistry;
 import df.application.html.forms.bootstrap.BootstrapBuilderRegistry;
 import org.springframework.validation.BindingResult;
 

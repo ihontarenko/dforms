@@ -2,10 +2,10 @@ package df.application;
 
 import df.common.commans.CommandsManager;
 import df.common.commans.CommandsManagerFactory;
-import df.common.mapping.Mapping;
-import df.common.mapping.MappingFactory;
-import df.common.observer.EventManager;
-import df.common.observer.EventManagerFactory;
+import svit.mapping.Mapping;
+import svit.mapping.MappingFactory;
+import svit.observer.EventManager;
+import svit.observer.EventManagerFactory;
 
 public interface Instances {
 

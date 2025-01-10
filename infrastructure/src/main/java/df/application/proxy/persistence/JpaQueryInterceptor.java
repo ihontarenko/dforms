@@ -1,11 +1,11 @@
 package df.application.proxy.persistence;
 
-import df.common.proxy.MethodInterceptor;
-import df.common.proxy.MethodInvocation;
-import df.common.proxy.annotation.Interceptor;
+import svit.proxy.MethodInterceptor;
+import svit.proxy.MethodInvocation;
+import svit.proxy.annotation.ProxyMethodInterceptor;
 import jakarta.persistence.Query;
 
-@Interceptor(target = Query.class)
+@ProxyMethodInterceptor(value = Query.class)
 public class JpaQueryInterceptor implements MethodInterceptor {
 
     @Override

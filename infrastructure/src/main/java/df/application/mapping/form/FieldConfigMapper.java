@@ -1,7 +1,7 @@
 package df.application.mapping.form;
 
 import df.application.dto.form.FieldConfigDTO;
-import df.common.mapping.Mapper;
+import svit.mapping.Mapper;
 import df.application.persistence.entity.form.FieldConfig;
 import org.springframework.stereotype.Service;
 

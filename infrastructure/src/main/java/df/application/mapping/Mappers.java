@@ -5,7 +5,7 @@ import df.application.mapping.form.*;
 import df.application.mapping.user.RoleMapper;
 import df.application.persistence.entity.form.*;
 import df.application.persistence.entity.user.Privilege;
-import df.common.mapping.Mapper;
+import svit.mapping.Mapper;
 import df.application.dto.user.PrivilegeDTO;
 import df.application.dto.user.RoleDTO;
 import df.application.dto.user.UserDTO;

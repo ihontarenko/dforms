@@ -2,7 +2,7 @@ package df.application.mapping.form;
 
 import df.application.dto.form.FormDTO;
 import df.application.persistence.entity.form.Form;
-import df.common.mapping.Mapper;
+import svit.mapping.Mapper;
 import org.springframework.stereotype.Service;
 
 @Service

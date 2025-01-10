@@ -1,6 +1,6 @@
 package df.common.support.jpa;
 
-import df.common.mapping.Mapper;
+import svit.mapping.Mapper;
 import df.common.support.spel.SpelEvaluator;
 import df.common.validation.jakarta.Fields;
 import df.common.validation.jakarta.Fields.ValueType;
@@ -10,7 +10,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import java.util.ArrayList;
 import java.util.List;
 
-import static df.common.container.ReflectionUtils.*;
+import static svit.container.ReflectionUtils.*;
 
 public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
 
