@@ -9,8 +9,6 @@ import svit.dom.RendererFactory;
 import df.common.i18n.Translator;
 import svit.observer.EventManager;
 import svit.observer.EventManagerFactory;
-import df.common.parser.DefaultTokenizer;
-import df.common.parser.TokenizerConfigurator;
 import svit.expression.parser.ParserConfigurator;
 import df.common.pipeline.PipelineManager;
 import org.slf4j.Logger;
@@ -44,15 +42,6 @@ public class ServicesConfiguration {
     @Bean
     public NodeContext nodeContext() {
         return new NodeContext(new RendererFactory());
-    }
-
-    @Bean
-    public Tokenizer parameterTokenizer() {
-        Tokenizer     tokenizer = new DefaultTokenizer();
-
-        new TokenizerConfigurator().configure(tokenizer);
-
-        return tokenizer;
     }
 
     @Bean

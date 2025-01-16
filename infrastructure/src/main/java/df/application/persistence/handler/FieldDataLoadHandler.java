@@ -22,7 +22,7 @@ public class FieldDataLoadHandler {
     @Action({"load"})
     public void preUpdate(String actionName, CommandRequest request) {
         Context context = request.context();
-        StringUtils
+
         if (context.getProperty("entity") instanceof FieldConfig entity) {
             Field              field   = entity.getField();
             FieldOptionService service = request.context().getBean(FieldOptionService.class);

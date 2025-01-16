@@ -8,14 +8,16 @@ import df.application.service.form.FormManagementService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import svit.proxy.ProxyFactory;
 
 @Configuration
 public class ProxyServiceConfiguration {
 
     @Bean
-    public FormManagement getFormManagment(PipelineManager pipelineManager, ApplicationContext applicationContext) {
-        return new AnnotationProxyFactory(new FormManagementService(
-                pipelineManager, applicationContext), PackageCoreRoot.class).getProxy();
+    public FormManagement getFormManagement(PipelineManager pipelineManager, ApplicationContext applicationContext) {
+        ProxyFactory proxyFactory = new AnnotationProxyFactory(PackageCoreRoot.class);
+
+        return proxyFactory.createProxy(new FormManagementService(pipelineManager, applicationContext));
     }
 
 }

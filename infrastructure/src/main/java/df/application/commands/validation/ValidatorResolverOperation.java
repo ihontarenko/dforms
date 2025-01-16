@@ -6,10 +6,9 @@ import df.common.commans.annotation.Command;
 import df.common.validation.custom.BasicValidators;
 import df.common.validation.custom.Validator;
 import df.common.validation.custom.ValidatorConstraintFactory;
+import svit.reflection.Reflections;
 
 import java.util.Map;
-
-import static svit.container.ReflectionUtils.getClassFor;
 
 @Command("validation")
 public class ValidatorResolverOperation {
@@ -19,7 +18,7 @@ public class ValidatorResolverOperation {
         Class<? extends Validator> validatorClass;
 
         if (validatorName.charAt(0) == '@') {
-            validatorClass = (Class<? extends Validator>) getClassFor(validatorName.substring(1));
+            validatorClass = (Class<? extends Validator>) Reflections.getClassFor(validatorName.substring(1));
         } else {
             BasicValidators validatorType = BasicValidators.valueOf(validatorName.toUpperCase());
             validatorClass = factory.getValidatorClass(validatorType);

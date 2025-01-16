@@ -1,7 +1,5 @@
 package df.common.pipeline.context;
 
-import svit.beans.context.*;
-import svit.common.context.*;
 import svit.context.*;
 
 public class DefaultPipelineContext extends AbstractContext implements

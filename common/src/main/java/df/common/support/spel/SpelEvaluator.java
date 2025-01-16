@@ -1,6 +1,5 @@
 package df.common.support.spel;
 
-import svit.container.ReflectionUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.expression.BeanFactoryResolver;
 import org.springframework.expression.Expression;
@@ -10,6 +9,7 @@ import org.springframework.expression.spel.support.StandardTypeConverter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
+import svit.reflection.Reflections;
 
 import java.lang.reflect.Method;
 import java.util.function.Consumer;
@@ -55,7 +55,7 @@ public class SpelEvaluator {
         // hasRole('USER'), isPrincipal(String userId), etc.
         // registerFunctions(ReflectionUtils.extractStaticMethods(AuthenticationHelper.class));
         // Spring's StringUtils functions
-        registerFunctions(ReflectionUtils.extractStaticMethods(StringUtils.class));
+        registerFunctions(Reflections.extractStaticMethods(StringUtils.class));
 
         requireNonNullElse(initializer, NOOP_CONSUMER).accept(evaluationContext);
 

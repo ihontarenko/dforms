@@ -14,11 +14,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import svit.util.Strings;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static svit.util.Strings.hasText;
 import static java.util.Optional.empty;
 
 // todo: implement ServiceInterface
@@ -55,7 +55,7 @@ public class UserService implements RedirectAware {
 
     @Transactional
     public User createOrUpdate(UserDTO userDTO) {
-        Optional<User> optional = hasText(userDTO.id()) ? repository.findById(userDTO.id()) : empty();
+        Optional<User> optional = Strings.isNotEmpty(userDTO.id()) ? repository.findById(userDTO.id()) : empty();
         User           userEntity;
 
         if (optional.isPresent()) {

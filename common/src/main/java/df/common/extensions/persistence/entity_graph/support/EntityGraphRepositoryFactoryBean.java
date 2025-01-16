@@ -2,7 +2,7 @@ package df.common.extensions.persistence.entity_graph.support;
 
 import df.common.extensions.persistence.entity_graph.ExtendedJpaRepositoryFactory;
 import df.common.extensions.persistence.entity_graph.proxy.EntityManagerProxy;
-import svit.proxy.AnnotationProxyFactory;
+import svit.proxy.DefaultProxyFactory;
 import svit.proxy.ProxyFactory;
 import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
@@ -14,7 +14,8 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
 public class EntityGraphRepositoryFactoryBean<R extends Repository<T, I>, T, I>
         extends JpaRepositoryFactoryBean<R, T, I> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EntityGraphRepositoryFactoryBean.class);
+    private static final Logger       LOGGER        = LoggerFactory.getLogger(EntityGraphRepositoryFactoryBean.class);
+    private static final ProxyFactory PROXY_FACTORY = new DefaultProxyFactory(new EntityManagerProxy());
 
     public EntityGraphRepositoryFactoryBean(Class<? extends R> repositoryInterface) {
         super(repositoryInterface);
@@ -27,9 +28,7 @@ public class EntityGraphRepositoryFactoryBean<R extends Repository<T, I>, T, I>
 
     @Override
     public void setEntityManager(EntityManager entityManager) {
-        ProxyFactory factory = new AnnotationProxyFactory(entityManager);
-        factory.addInterceptor(new EntityManagerProxy());
-        EntityManager entityManagerProxy = factory.getProxy();
+        EntityManager entityManagerProxy = PROXY_FACTORY.createProxy(entityManager);
 
         LOGGER.info("CREATE PROXY FOR ENTITY_MANAGER: {}", entityManagerProxy);
 

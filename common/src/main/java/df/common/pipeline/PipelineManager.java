@@ -4,6 +4,7 @@ import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.definition.PipelineDefinitionException;
 import df.common.pipeline.definition.RootDefinition;
 import svit.proxy.AnnotationProxyFactory;
+import svit.proxy.DefaultProxyFactory;
 import svit.proxy.ProxyFactory;
 import df.common.pipeline.definition.DefinitionLoader;
 
@@ -13,9 +14,10 @@ import java.util.Optional;
 
 public class PipelineManager {
 
-    private final Map<String, PipelineChain> chains = new HashMap<>();
+    private final Map<String, PipelineChain> chains       = new HashMap<>();
     private final RootDefinition             rootDefinition;
     private final PipelineProcessorFactory   processorFactory;
+    private final ProxyFactory               proxyFactory = new DefaultProxyFactory();
 
     public PipelineManager(String definition) {
         this.rootDefinition = DefinitionLoader.createLoader(definition).load(definition);
@@ -51,15 +53,13 @@ public class PipelineManager {
             Optional<RootDefinition.Fallback> fallback = propertiesDefinition == null ? Optional.empty() : Optional.ofNullable(
                     propertiesDefinition.fallback());
 
-            ProxyFactory proxyFactory = new AnnotationProxyFactory(processor);
-
-            processors.put(linkName, proxyFactory.getProxy());
+            processors.put(linkName, proxyFactory.createProxy(processor));
             properties.put(linkName, new ProcessorProperties(
                     transitions, configuration, fallback.map(RootDefinition.Fallback::link).orElse(null)));
         });
 
         PipelineChain chain = new PipelineProcessorChain(chainDefinition.initial(), processors, properties);
-        PipelineChain proxy = new AnnotationProxyFactory(chain).getProxy();
+        PipelineChain proxy = proxyFactory.createProxy(chain);
 
         chains.put(chainDefinition.name(), proxy);
 

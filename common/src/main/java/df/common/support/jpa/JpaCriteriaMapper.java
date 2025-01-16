@@ -6,11 +6,10 @@ import df.common.validation.jakarta.Fields;
 import df.common.validation.jakarta.Fields.ValueType;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+import svit.reflection.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static svit.container.ReflectionUtils.*;
 
 public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
 
@@ -54,12 +53,12 @@ public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
             }
             case RAW_VALUE -> rawValue;
             case FIELD_NAME -> {
-                Object objectValue = getFieldValue(object, rawValue);
+                Object objectValue = Reflections.getFieldValue(object, rawValue);
 
                 // try to extract the value through the getter
                 // when the real field-name is different from the object getter name
                 if (objectValue == null) {
-                    objectValue = getMethodValue(object, rawValue);
+                    objectValue = Reflections.getMethodValue(object, rawValue);
                 }
 
                 yield objectValue;

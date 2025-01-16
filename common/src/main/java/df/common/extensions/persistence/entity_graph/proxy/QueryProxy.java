@@ -4,17 +4,20 @@ import df.common.extensions.persistence.entity_graph.EntityGraphQueryHint;
 import df.common.extensions.persistence.entity_graph.ObjectsHolder;
 import df.common.extensions.persistence.entity_graph.injector.QueryHintInjector;
 import df.common.extensions.persistence.entity_graph.invocation.QueryMethodInvocation;
+import jakarta.persistence.Query;
 import svit.proxy.MethodInterceptor;
 import svit.proxy.MethodInvocation;
 import svit.proxy.MethodInvocationDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import svit.proxy.annotation.ProxyMethodInterceptor;
 
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
+@ProxyMethodInterceptor(Query.class)
 public class QueryProxy implements MethodInterceptor {
 
     private static final Logger       LOGGER                = LoggerFactory.getLogger(QueryProxy.class);

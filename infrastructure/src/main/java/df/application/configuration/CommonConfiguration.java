@@ -27,7 +27,8 @@ import java.util.List;
 @EnableAutoConfiguration
 @EnableJpaRepositories(
         basePackages = Constants.ENTITY_PACKAGE_TO_SCAN,
-        repositoryFactoryBeanClass = EntityGraphRepositoryFactoryBean.class)
+        repositoryFactoryBeanClass = EntityGraphRepositoryFactoryBean.class
+)
 @ComponentScan(basePackages = {Constants.BASE_PACKAGE_TO_SCAN})
 @EnableConfigurationProperties
 @ConfigurationPropertiesScan(basePackages = {"df.application.property"})

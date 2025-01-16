@@ -71,7 +71,7 @@ public class FieldBuilder implements NodeBuilder<FieldDTO> {
             root.append(createInvalidFeedback(dataProvider.getError(fieldDTO.getName()).message()));
         }
 
-        if (Strings.hasText(fieldDTO.getDescription())) {
+        if (Strings.isNotEmpty(fieldDTO.getDescription())) {
             small.append(new TextNode(fieldDTO.getDescription()));
             root.append(small);
         }

@@ -1,8 +1,8 @@
 package df.common.pipeline;
 
 import df.common.pipeline.context.PipelineContext;
-import svit.provider.bean.SpringBeanProvider;
 import df.common.pipeline.context.DefaultPipelineContext;
+import df.common.provider.bean.SpringBeanProvider;
 
 public class Example {
 
