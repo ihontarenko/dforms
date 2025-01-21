@@ -12,7 +12,6 @@ public class DFWebApplication {
 
     public static void main(String... arguments) {
         ApplicationContext applicationContext = run(DFWebApplication.class, arguments);
-
         System.out.println(applicationContext);
     }
 
