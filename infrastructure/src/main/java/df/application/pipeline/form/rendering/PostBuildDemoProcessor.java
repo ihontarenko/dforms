@@ -7,7 +7,7 @@ import svit.dom.node.InputElementNode;
 import svit.dom.node.TextNode;
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.PipelineProcessor;
-import svit.context.ArgumentsContext;
+import svit.support.context.ArgumentsContext;
 import df.application.persistence.entity.form.Form;
 
 public class PostBuildDemoProcessor implements PipelineProcessor {

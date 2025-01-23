@@ -2,11 +2,11 @@ package df.application.pipeline.form.rendering;
 
 import df.application.dto.form.FormDTO;
 import df.common.provider.error.BindingResultErrorProvider;
-import svit.context.ArgumentsContext;
-import svit.provider.data.DataProvider;
-import svit.provider.data.MapDataProvider;
-import svit.provider.error.ErrorDetailsProvider;
-import svit.provider.error.ErrorProvider;
+import svit.support.context.ArgumentsContext;
+import svit.support.provider.data.DataProvider;
+import svit.support.provider.data.MapDataProvider;
+import svit.support.provider.error.ErrorDetailsProvider;
+import svit.support.provider.error.ErrorProvider;
 import svit.dom.Node;
 import svit.dom.PostDataProvider;
 import svit.dom.builder.NodeBuilder;

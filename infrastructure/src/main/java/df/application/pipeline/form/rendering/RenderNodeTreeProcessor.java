@@ -4,8 +4,8 @@ import svit.dom.Node;
 import svit.dom.NodeContext;
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.PipelineProcessor;
-import svit.context.ArgumentsContext;
-import svit.context.ResultContext;
+import svit.support.context.ArgumentsContext;
+import svit.support.context.ResultContext;
 
 public class RenderNodeTreeProcessor implements PipelineProcessor {
 

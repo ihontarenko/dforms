@@ -3,11 +3,11 @@ package df.common.pipeline;
 import df.common.pipeline.definition.RootDefinition;
 import df.common.pipeline.definition.RootDefinition.Processor;
 import svit.reflection.Reflections;
-import svit.resolver.Resolver;
-import svit.resolver.Resolvers;
-import svit.resolver.ResolversFactory;
+import svit.support.resolver.Resolver;
+import svit.support.resolver.Resolvers;
+import svit.support.resolver.ResolversFactory;
 
-import static svit.resolver.Resolvers.valueOf;
+import static svit.support.resolver.Resolvers.valueOf;
 
 public class PipelineProcessorFactory {
 

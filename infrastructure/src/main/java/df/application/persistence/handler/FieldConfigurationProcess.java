@@ -4,7 +4,7 @@ import df.common.commans.CommandRequest;
 import df.common.commans.CommandsManager;
 import df.common.commans.annotation.Action;
 import df.common.commans.annotation.Command;
-import svit.context.Context;
+import svit.support.context.Context;
 import svit.observer.Event;
 import df.common.specification.SpecificationContext;
 import df.common.specification.SpecificationRunner;
