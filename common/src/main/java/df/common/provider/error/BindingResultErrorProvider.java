@@ -2,8 +2,8 @@ package df.common.provider.error;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import svit.context.ErrorDetails;
-import svit.provider.error.ErrorProvider;
+import svit.support.context.ErrorDetails;
+import svit.support.provider.error.ErrorProvider;
 
 import java.util.HashMap;
 import java.util.Map;

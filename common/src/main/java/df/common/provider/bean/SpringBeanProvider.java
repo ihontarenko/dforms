@@ -2,7 +2,7 @@ package df.common.provider.bean;
 
 import df.common.extensions.spring.context.SpringApplicationContext;
 import org.springframework.context.ApplicationContext;
-import svit.context.BeanProvider;
+import svit.support.context.BeanProvider;
 
 public class SpringBeanProvider implements BeanProvider {
 

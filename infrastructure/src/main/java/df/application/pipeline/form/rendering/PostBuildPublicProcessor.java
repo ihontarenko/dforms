@@ -2,7 +2,7 @@ package df.application.pipeline.form.rendering;
 
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.PipelineProcessor;
-import svit.context.ArgumentsContext;
+import svit.support.context.ArgumentsContext;
 
 public class PostBuildPublicProcessor implements PipelineProcessor {
 

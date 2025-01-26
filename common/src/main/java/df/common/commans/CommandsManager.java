@@ -1,7 +1,7 @@
 package df.common.commans;
 
-import svit.context.Context;
-import svit.context.ErrorDetails;
+import svit.support.context.Context;
+import svit.support.context.ErrorDetails;
 import svit.invocable.Invocable;
 import svit.invocable.InvokeResult;
 import svit.invocable.Invoker;

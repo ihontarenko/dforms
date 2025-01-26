@@ -1,8 +1,8 @@
 package df.common.pipeline.context;
 
-import svit.context.ArgumentsContextAware;
-import svit.context.Context;
-import svit.context.ResultContextAware;
+import svit.support.context.ArgumentsContextAware;
+import svit.support.context.Context;
+import svit.support.context.ResultContextAware;
 
 public interface PipelineContext extends Context, ArgumentsContextAware, ResultContextAware {
 
