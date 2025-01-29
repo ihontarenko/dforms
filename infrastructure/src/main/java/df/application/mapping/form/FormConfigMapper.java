@@ -1,7 +1,7 @@
 package df.application.mapping.form;
 
 import df.application.dto.form.FormConfigDTO;
-import svit.mapping.Mapper;
+import org.jmouse.core.mapping.Mapper;
 import df.application.persistence.entity.form.FormConfig;
 import org.springframework.stereotype.Service;
 

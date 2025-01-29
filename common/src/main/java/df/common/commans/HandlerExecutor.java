@@ -1,7 +1,7 @@
 package df.common.commans;
 
-import svit.invocable.InvokeResult;
-import svit.invocable.ObjectMethodInvocable;
+import svit.support.invocable.InvokeResult;
+import svit.support.invocable.ObjectMethodInvocable;
 
 import java.lang.reflect.Method;
 

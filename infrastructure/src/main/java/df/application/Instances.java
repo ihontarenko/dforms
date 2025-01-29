@@ -2,10 +2,10 @@ package df.application;
 
 import df.common.commans.CommandsManager;
 import df.common.commans.CommandsManagerFactory;
-import svit.mapping.Mapping;
-import svit.mapping.MappingFactory;
-import svit.observer.EventManager;
-import svit.observer.EventManagerFactory;
+import org.jmouse.core.mapping.Mapping;
+import org.jmouse.core.mapping.MappingFactory;
+import org.jmouse.core.observer.EventManager;
+import org.jmouse.core.observer.EventManagerFactory;
 
 public interface Instances {
 

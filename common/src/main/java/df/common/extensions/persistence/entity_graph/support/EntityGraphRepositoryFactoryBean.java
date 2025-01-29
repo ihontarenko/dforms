@@ -2,8 +2,8 @@ package df.common.extensions.persistence.entity_graph.support;
 
 import df.common.extensions.persistence.entity_graph.ExtendedJpaRepositoryFactory;
 import df.common.extensions.persistence.entity_graph.proxy.EntityManagerProxy;
-import svit.proxy.DefaultProxyFactory;
-import svit.proxy.ProxyFactory;
+import org.jmouse.core.proxy.DefaultProxyFactory;
+import org.jmouse.core.proxy.ProxyFactory;
 import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -2,7 +2,7 @@ package df.common.pipeline;
 
 import df.common.pipeline.definition.RootDefinition;
 import df.common.pipeline.definition.RootDefinition.Processor;
-import svit.reflection.Reflections;
+import org.jmouse.core.reflection.Reflections;
 import svit.support.resolver.Resolver;
 import svit.support.resolver.Resolvers;
 import svit.support.resolver.ResolversFactory;

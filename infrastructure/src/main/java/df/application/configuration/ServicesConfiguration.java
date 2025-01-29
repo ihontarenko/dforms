@@ -2,13 +2,12 @@ package df.application.configuration;
 
 import df.application.PackageCoreRoot;
 import svit.ast.parser.ParserContext;
-import svit.ast.token.Tokenizer;
 import df.common.breadcrumb.BreadcrumbService;
 import svit.dom.NodeContext;
 import svit.dom.RendererFactory;
 import df.common.i18n.Translator;
-import svit.observer.EventManager;
-import svit.observer.EventManagerFactory;
+import org.jmouse.core.observer.EventManager;
+import org.jmouse.core.observer.EventManagerFactory;
 import svit.expression.parser.ParserConfigurator;
 import df.common.pipeline.PipelineManager;
 import org.slf4j.Logger;

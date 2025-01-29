@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>org.svitframework</groupId>
-            <artifactId>svit-beans</artifactId>
+            <artifactId>jmouse-beans</artifactId>
         </dependency>
         <dependency>
             <groupId>df</groupId>

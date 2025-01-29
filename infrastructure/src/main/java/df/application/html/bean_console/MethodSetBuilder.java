@@ -7,7 +7,7 @@ import svit.dom.builder.NodeBuilderContext;
 import svit.dom.node.ElementNode;
 import svit.dom.node.TextNode;
 import df.common.flow.Flow;
-import svit.reflection.Reflections;
+import org.jmouse.core.reflection.Reflections;
 import df.application.dto.reflection.ClassDTO;
 import df.application.dto.reflection.ClassListDTO;
 import df.application.dto.reflection.MethodDTO;

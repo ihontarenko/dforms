@@ -9,7 +9,7 @@ import org.springframework.expression.spel.support.StandardTypeConverter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
-import svit.reflection.Reflections;
+import org.jmouse.core.reflection.Reflections;
 
 import java.lang.reflect.Method;
 import java.util.function.Consumer;

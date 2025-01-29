@@ -7,7 +7,7 @@ import df.common.commans.annotation.Action;
 import df.common.commans.annotation.Command;
 import svit.support.context.Context;
 import svit.support.provider.data.DataProvider;
-import svit.reflection.Reflections;
+import org.jmouse.core.reflection.Reflections;
 import df.application.persistence.entity.form.Field;
 import df.application.persistence.entity.form.FieldConfig;
 import df.application.persistence.entity.form.FieldOption;

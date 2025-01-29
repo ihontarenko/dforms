@@ -2,7 +2,7 @@ package df.web.controller;
 
 import df.common.breadcrumb.BreadcrumbService;
 import df.application.exception.ApplicationException;
-import svit.proxy.ProxyInvocationException;
+import org.jmouse.core.proxy.ProxyInvocationException;
 import df.application.property.ApplicationProperties;
 import df.application.security.UserInfo;
 import df.application.service.RedirectAware;
