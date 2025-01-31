@@ -1,6 +1,6 @@
 package df.application.mapping.form;
 
-import svit.mapping.Mapper;
+import org.jmouse.core.mapping.Mapper;
 import df.application.dto.form.FieldOptionDTO;
 import df.application.persistence.entity.form.FieldOption;
 import org.springframework.stereotype.Service;

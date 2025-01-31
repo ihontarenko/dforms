@@ -1,7 +1,7 @@
 package df.common.extensions.persistence.entity_graph.invocation;
 
-import svit.proxy.MethodInvocation;
-import svit.proxy.MethodInvocationDecorator;
+import org.jmouse.core.proxy.MethodInvocation;
+import org.jmouse.core.proxy.MethodInvocationDecorator;
 
 public class EntityManagerMethodInvocation extends MethodInvocationDecorator {
 

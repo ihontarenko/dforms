@@ -1,9 +1,9 @@
 package df.application.proxy.pipeline;
 
 import df.common.pipeline.PipelineChain;
-import svit.proxy.MethodInterceptor;
-import svit.proxy.MethodInvocation;
-import svit.proxy.annotation.ProxyMethodInterceptor;
+import org.jmouse.core.proxy.MethodInterceptor;
+import org.jmouse.core.proxy.MethodInvocation;
+import org.jmouse.core.proxy.annotation.ProxyMethodInterceptor;
 
 @ProxyMethodInterceptor(value = PipelineChain.class)
 public class PipelineChainInterceptor implements MethodInterceptor {

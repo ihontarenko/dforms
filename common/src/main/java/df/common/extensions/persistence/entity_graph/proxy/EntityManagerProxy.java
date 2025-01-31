@@ -5,10 +5,10 @@ import df.common.extensions.persistence.entity_graph.EntityGraphQueryHint;
 import df.common.extensions.persistence.entity_graph.injector.QueryParametersInjector;
 import df.common.extensions.persistence.entity_graph.invocation.EntityManagerMethodInvocation;
 import jakarta.persistence.Query;
+import org.jmouse.core.proxy.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import svit.proxy.*;
-import svit.proxy.annotation.ProxyMethodInterceptor;
+import org.jmouse.core.proxy.annotation.ProxyMethodInterceptor;
 
 import java.util.List;
 import java.util.Optional;

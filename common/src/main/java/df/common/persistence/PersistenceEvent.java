@@ -1,6 +1,6 @@
 package df.common.persistence;
 
-import svit.observer.AbstractEvent;
+import org.jmouse.core.observer.AbstractEvent;
 
 public class PersistenceEvent extends AbstractEvent<Object> {
 

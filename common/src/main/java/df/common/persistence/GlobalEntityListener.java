@@ -1,9 +1,10 @@
 package df.common.persistence;
 
-import svit.observer.EventManager;
+import org.jmouse.core.observer.EventManager;
 import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jmouse.core.observer.EventManagerFactory;
 
 import java.lang.annotation.Annotation;
 
@@ -12,7 +13,7 @@ public class GlobalEntityListener {
 
     private final static Logger          LOGGER           = LoggerFactory.getLogger(GlobalEntityListener.class);
     private final static String          LOGGER_TEMPLATE  = "EVENT '{}' CALLED FOR '{}' ENTITY";
-    private final        EventManager    eventManager     = EventManager.INSTANCE;
+    private final        EventManager    eventManager     = EventManagerFactory.create();
 
     @PrePersist
     public void onPrePersist(Object entity) {

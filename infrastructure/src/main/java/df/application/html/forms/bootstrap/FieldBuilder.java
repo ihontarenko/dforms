@@ -10,7 +10,7 @@ import svit.dom.builder.NodeBuilder;
 import svit.dom.builder.NodeBuilderContext;
 import svit.dom.node.ElementNode;
 import svit.dom.node.TextNode;
-import svit.util.Strings;
+import org.jmouse.util.Strings;
 
 import java.util.Collection;
 import java.util.List;

@@ -1,6 +1,6 @@
 package df.common.validation.custom;
 
-import svit.mapping.Mapper;
+import org.jmouse.core.mapping.Mapper;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 

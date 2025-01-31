@@ -1,7 +1,7 @@
 package df.application.mapping.form;
 
 import df.application.dto.form.FieldDTO;
-import svit.mapping.Mapper;
+import org.jmouse.core.mapping.Mapper;
 import df.application.persistence.entity.form.Field;
 import df.application.persistence.entity.support.ElementType;
 import df.application.persistence.entity.support.FieldStatus;

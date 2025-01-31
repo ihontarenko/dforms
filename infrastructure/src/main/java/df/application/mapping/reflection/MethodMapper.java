@@ -3,8 +3,8 @@ package df.application.mapping.reflection;
 import df.application.Instances;
 import df.application.dto.reflection.ClassDTO;
 import df.application.dto.reflection.MethodDTO;
-import svit.mapping.Mapper;
-import svit.mapping.Mapping;
+import org.jmouse.core.mapping.Mapper;
+import org.jmouse.core.mapping.Mapping;
 
 import java.lang.reflect.Method;
 import java.util.stream.Stream;

@@ -1,12 +1,12 @@
 package df.common.support.jpa;
 
-import svit.mapping.Mapper;
+import org.jmouse.core.mapping.Mapper;
 import df.common.support.spel.SpelEvaluator;
 import df.common.validation.jakarta.Fields;
 import df.common.validation.jakarta.Fields.ValueType;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import svit.reflection.Reflections;
+import org.jmouse.core.reflection.Reflections;
 
 import java.util.ArrayList;
 import java.util.List;

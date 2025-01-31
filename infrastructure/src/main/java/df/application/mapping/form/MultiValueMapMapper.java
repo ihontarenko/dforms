@@ -1,6 +1,6 @@
 package df.application.mapping.form;
 
-import svit.mapping.Mapper;
+import org.jmouse.core.mapping.Mapper;
 import org.springframework.util.MultiValueMap;
 
 import java.util.HashMap;

@@ -1,12 +1,12 @@
 package df.common.validation.custom;
 
-import svit.mapping.mapper.ObjectFieldMapper;
-import svit.proxy.AnnotationProxyFactory;
+import org.jmouse.core.mapping.mapper.ObjectFieldMapper;
+import org.jmouse.core.proxy.AnnotationProxyFactory;
 import df.common.validation.custom.constraint.NonEmptyValidator;
 import df.common.validation.custom.constraint.NotNullValidator;
 import df.common.validation.custom.constraint.NumberRangeValidator;
-import svit.proxy.ProxyFactory;
-import svit.reflection.Reflections;
+import org.jmouse.core.proxy.ProxyFactory;
+import org.jmouse.core.reflection.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
