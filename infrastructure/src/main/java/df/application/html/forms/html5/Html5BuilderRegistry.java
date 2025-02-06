@@ -2,7 +2,7 @@ package df.application.html.forms.html5;
 
 import df.application.dto.form.FieldDTO;
 import df.application.dto.form.FormDTO;
-import svit.dom.builder.AbstractBuilderRegistry;
+import org.jmouse.common.dom.builder.AbstractBuilderRegistry;
 
 public class Html5BuilderRegistry extends AbstractBuilderRegistry {
 

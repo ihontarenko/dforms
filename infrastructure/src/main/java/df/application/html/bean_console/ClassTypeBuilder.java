@@ -1,13 +1,13 @@
 package df.application.html.bean_console;
 
-import svit.dom.Node;
-import svit.dom.TagName;
-import svit.dom.builder.NodeBuilder;
-import svit.dom.builder.NodeBuilderContext;
-import svit.dom.builder.NodeBuilderRegistry;
-import svit.dom.node.ElementNode;
-import svit.dom.node.HTMLElementNode;
-import svit.dom.node.TextNode;
+import org.jmouse.common.dom.Node;
+import org.jmouse.common.dom.TagName;
+import org.jmouse.common.dom.builder.NodeBuilder;
+import org.jmouse.common.dom.builder.NodeBuilderContext;
+import org.jmouse.common.dom.builder.NodeBuilderRegistry;
+import org.jmouse.common.dom.node.ElementNode;
+import org.jmouse.common.dom.node.HTMLElementNode;
+import org.jmouse.common.dom.node.TextNode;
 import df.application.dto.reflection.ClassDTO;
 import df.application.dto.reflection.ClassListDTO;
 import df.application.dto.reflection.MethodListDTO;

@@ -1,6 +1,6 @@
 package df.common.pipeline.context;
 
-import svit.support.context.*;
+import org.jmouse.common.support.context.*;
 
 public class DefaultPipelineContext extends AbstractContext implements
         PipelineContext, ArgumentsContext, ResultContext {

@@ -1,6 +1,6 @@
 package df.common.pipeline;
 
-import svit.support.context.ArgumentsContext;
+import org.jmouse.common.support.context.ArgumentsContext;
 import df.common.pipeline.context.PipelineContext;
 
 public interface PipelineProcessor {

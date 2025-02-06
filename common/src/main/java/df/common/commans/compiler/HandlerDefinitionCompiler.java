@@ -1,7 +1,7 @@
 package df.common.commans.compiler;
 
-import svit.ast.compiler.Compiler;
-import svit.ast.compiler.EvaluationContext;
+import org.jmouse.common.ast.compiler.Compiler;
+import org.jmouse.common.ast.compiler.EvaluationContext;
 import df.common.commans.CommandRoute;
 import svit.expression.ast.StringDefinitionNode;
 import svit.expression.ast.VariableNode;

@@ -2,12 +2,12 @@ package df.application.html.forms.html5;
 
 import df.application.dto.form.FieldDTO;
 import df.application.dto.form.FieldOptionDTO;
-import svit.dom.Node;
-import svit.dom.TagName;
-import svit.dom.builder.NodeBuilder;
-import svit.dom.builder.NodeBuilderContext;
-import svit.dom.node.ElementNode;
-import svit.dom.node.TextNode;
+import org.jmouse.common.dom.Node;
+import org.jmouse.common.dom.TagName;
+import org.jmouse.common.dom.builder.NodeBuilder;
+import org.jmouse.common.dom.builder.NodeBuilderContext;
+import org.jmouse.common.dom.node.ElementNode;
+import org.jmouse.common.dom.node.TextNode;
 import df.application.persistence.entity.support.ElementType;
 
 public class FieldBuilder implements NodeBuilder<FieldDTO> {

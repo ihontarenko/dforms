@@ -1,6 +1,6 @@
 package df.application.dto.form.support;
 
-import svit.support.provider.data.EnumDataProvider;
+import org.jmouse.common.support.provider.data.EnumDataProvider;
 
 public class InterfaceTypeDataProvider extends EnumDataProvider<InterfaceType> {
 

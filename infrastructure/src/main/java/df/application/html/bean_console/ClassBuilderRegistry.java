@@ -1,7 +1,7 @@
 package df.application.html.bean_console;
 
 import df.application.dto.reflection.*;
-import svit.dom.builder.AbstractBuilderRegistry;
+import org.jmouse.common.dom.builder.AbstractBuilderRegistry;
 
 public class ClassBuilderRegistry extends AbstractBuilderRegistry {
 

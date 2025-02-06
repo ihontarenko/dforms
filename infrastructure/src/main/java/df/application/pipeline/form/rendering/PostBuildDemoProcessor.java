@@ -1,13 +1,13 @@
 package df.application.pipeline.form.rendering;
 
-import svit.dom.Node;
-import svit.dom.TagName;
-import svit.dom.node.HTMLElementNode;
-import svit.dom.node.InputElementNode;
-import svit.dom.node.TextNode;
+import org.jmouse.common.dom.Node;
+import org.jmouse.common.dom.TagName;
+import org.jmouse.common.dom.node.HTMLElementNode;
+import org.jmouse.common.dom.node.InputElementNode;
+import org.jmouse.common.dom.node.TextNode;
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.PipelineProcessor;
-import svit.support.context.ArgumentsContext;
+import org.jmouse.common.support.context.ArgumentsContext;
 import df.application.persistence.entity.form.Form;
 
 public class PostBuildDemoProcessor implements PipelineProcessor {

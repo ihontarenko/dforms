@@ -19,16 +19,16 @@
         <mariadb-java-client.version>2.7.0</mariadb-java-client.version>
         <cglib.version>3.3.0</cglib.version>
         <byte-buddy.version>1.12.10</byte-buddy.version>
-        <svit.version>1.0.0-Beta</svit.version>
+        <jmouse.version>1.0.0-Beta</jmouse.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Svit Framework -->
+            <!-- JMouse Framework -->
             <dependency>
-                <groupId>org.svitframework</groupId>
-                <artifactId>svit-dependencies</artifactId>
-                <version>${svit.version}</version>
+                <groupId>org.jmouse</groupId>
+                <artifactId>jmouse-dependencies</artifactId>
+                <version>${jmouse.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

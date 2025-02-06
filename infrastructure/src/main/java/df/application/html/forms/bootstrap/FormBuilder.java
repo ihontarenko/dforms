@@ -2,11 +2,11 @@ package df.application.html.forms.bootstrap;
 
 import df.application.dto.form.FieldDTO;
 import df.application.dto.form.FormDTO;
-import svit.dom.Node;
-import svit.dom.TagName;
-import svit.dom.builder.NodeBuilder;
-import svit.dom.builder.NodeBuilderContext;
-import svit.dom.node.ElementNode;
+import org.jmouse.common.dom.Node;
+import org.jmouse.common.dom.TagName;
+import org.jmouse.common.dom.builder.NodeBuilder;
+import org.jmouse.common.dom.builder.NodeBuilderContext;
+import org.jmouse.common.dom.node.ElementNode;
 
 import java.util.Collection;
 

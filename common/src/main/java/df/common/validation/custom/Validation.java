@@ -1,7 +1,7 @@
 package df.common.validation.custom;
 
-import svit.support.objects.BeanObjectInfo;
-import svit.support.objects.FieldAccessor;
+import org.jmouse.common.support.objects.BeanObjectInfo;
+import org.jmouse.common.support.objects.FieldAccessor;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.validation.BindingResult;

@@ -16,7 +16,7 @@
     </properties>
 
     <modules>
-        <module>svit-framework</module>
+        <module>jmouse-framework</module>
         <module>dependencies</module>
         <module>common</module>
         <module>infrastructure</module>

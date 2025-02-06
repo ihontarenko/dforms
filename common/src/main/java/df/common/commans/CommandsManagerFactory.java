@@ -2,7 +2,7 @@ package df.common.commans;
 
 import df.common.commans.annotation.Action;
 import df.common.commans.annotation.Command;
-import svit.support.invocable.Invocable;
+import org.jmouse.common.support.invocable.Invocable;
 import org.jmouse.core.reflection.MethodFilter;
 
 import java.lang.reflect.Method;

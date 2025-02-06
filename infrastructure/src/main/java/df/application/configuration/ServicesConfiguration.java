@@ -1,10 +1,10 @@
 package df.application.configuration;
 
 import df.application.PackageCoreRoot;
-import svit.ast.parser.ParserContext;
+import org.jmouse.common.ast.parser.ParserContext;
 import df.common.breadcrumb.BreadcrumbService;
-import svit.dom.NodeContext;
-import svit.dom.RendererFactory;
+import org.jmouse.common.dom.NodeContext;
+import org.jmouse.common.dom.RendererFactory;
 import df.common.i18n.Translator;
 import org.jmouse.core.observer.EventManager;
 import org.jmouse.core.observer.EventManagerFactory;

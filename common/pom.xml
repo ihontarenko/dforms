@@ -35,15 +35,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.svitframework</groupId>
-            <artifactId>svit-common</artifactId>
+            <groupId>org.jmouse</groupId>
+            <artifactId>jmouse-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.svitframework</groupId>
-            <artifactId>svit-expression</artifactId>
+            <groupId>org.jmouse</groupId>
+            <artifactId>jmouse-expression</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.svitframework</groupId>
+            <groupId>org.jmouse</groupId>
             <artifactId>jmouse-beans</artifactId>
         </dependency>
         <dependency>

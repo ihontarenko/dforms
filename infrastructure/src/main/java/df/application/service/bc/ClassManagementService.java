@@ -1,11 +1,11 @@
 package df.application.service.bc;
 
 import df.application.html.bean_console.ClassBuilderRegistry;
-import svit.dom.Node;
-import svit.dom.NodeContext;
-import svit.dom.builder.NodeBuilder;
-import svit.dom.builder.NodeBuilderContext;
-import svit.dom.builder.NodeBuilderRegistry;
+import org.jmouse.common.dom.Node;
+import org.jmouse.common.dom.NodeContext;
+import org.jmouse.common.dom.builder.NodeBuilder;
+import org.jmouse.common.dom.builder.NodeBuilderContext;
+import org.jmouse.common.dom.builder.NodeBuilderRegistry;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;

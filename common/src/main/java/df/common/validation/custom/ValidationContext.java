@@ -1,7 +1,7 @@
 package df.common.validation.custom;
 
-import svit.support.context.AbstractAttributesContext;
-import svit.support.context.AttributesContext;
+import org.jmouse.common.support.context.AbstractAttributesContext;
+import org.jmouse.common.support.context.AttributesContext;
 import org.springframework.validation.BindingResult;
 
 public interface ValidationContext extends AttributesContext {

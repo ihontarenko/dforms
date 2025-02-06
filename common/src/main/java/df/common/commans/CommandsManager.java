@@ -1,11 +1,11 @@
 package df.common.commans;
 
-import svit.support.context.Context;
-import svit.support.context.ErrorDetails;
-import svit.support.invocable.Invocable;
-import svit.support.invocable.InvokeResult;
-import svit.support.invocable.Invoker;
-import svit.support.invocable.MethodParameter;
+import org.jmouse.common.support.context.Context;
+import org.jmouse.common.support.context.ErrorDetails;
+import org.jmouse.common.support.invocable.Invocable;
+import org.jmouse.common.support.invocable.InvokeResult;
+import org.jmouse.common.support.invocable.Invoker;
+import org.jmouse.common.support.invocable.MethodParameter;
 
 import java.util.HashMap;
 import java.util.Map;
