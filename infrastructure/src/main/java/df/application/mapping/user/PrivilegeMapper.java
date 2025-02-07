@@ -2,7 +2,7 @@ package df.application.mapping.user;
 
 import df.application.dto.user.PrivilegeDTO;
 import df.application.persistence.entity.user.Privilege;
-import org.jmouse.core.mapping.Mapper;
+import org.jmouse.common.mapping.Mapper;
 import org.springframework.stereotype.Service;
 
 import static df.common.support.SlugifyTransliterator.slugify;

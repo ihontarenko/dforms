@@ -2,7 +2,7 @@ package df.application.security.oauth2;
 
 import df.application.dto.user.UserDTO;
 import df.application.security.Provider;
-import org.jmouse.core.mapping.Mapper;
+import org.jmouse.common.mapping.Mapper;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.HashMap;

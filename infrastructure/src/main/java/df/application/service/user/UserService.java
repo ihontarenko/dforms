@@ -14,7 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.jmouse.util.Strings;
+import org.jmouse.util.helper.Strings;
 
 import java.util.*;
 import java.util.stream.Collectors;

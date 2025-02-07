@@ -1,6 +1,6 @@
 package df.application.mapping.form;
 
-import org.jmouse.core.mapping.Mapper;
+import org.jmouse.common.mapping.Mapper;
 import org.springframework.util.MultiValueMap;
 
 import java.util.HashMap;

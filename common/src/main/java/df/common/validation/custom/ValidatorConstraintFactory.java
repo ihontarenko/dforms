@@ -1,6 +1,6 @@
 package df.common.validation.custom;
 
-import org.jmouse.core.mapping.mapper.ObjectFieldMapper;
+import org.jmouse.common.mapping.mapper.ObjectFieldMapper;
 import org.jmouse.core.proxy.AnnotationProxyFactory;
 import df.common.validation.custom.constraint.NonEmptyValidator;
 import df.common.validation.custom.constraint.NotNullValidator;

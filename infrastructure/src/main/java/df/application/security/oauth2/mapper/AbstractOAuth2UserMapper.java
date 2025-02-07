@@ -1,6 +1,6 @@
 package df.application.security.oauth2.mapper;
 
-import org.jmouse.core.mapping.Mapper;
+import org.jmouse.common.mapping.Mapper;
 import df.application.dto.user.UserDTO;
 import df.common.support.SlugifyTransliterator;
 import org.springframework.security.oauth2.core.user.OAuth2User;

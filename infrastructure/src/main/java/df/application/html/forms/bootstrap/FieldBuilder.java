@@ -10,7 +10,7 @@ import org.jmouse.common.dom.builder.NodeBuilder;
 import org.jmouse.common.dom.builder.NodeBuilderContext;
 import org.jmouse.common.dom.node.ElementNode;
 import org.jmouse.common.dom.node.TextNode;
-import org.jmouse.util.Strings;
+import org.jmouse.util.helper.Strings;
 
 import java.util.Collection;
 import java.util.List;

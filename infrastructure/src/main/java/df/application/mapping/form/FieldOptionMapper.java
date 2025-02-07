@@ -1,6 +1,6 @@
 package df.application.mapping.form;
 
-import org.jmouse.core.mapping.Mapper;
+import org.jmouse.common.mapping.Mapper;
 import df.application.dto.form.FieldOptionDTO;
 import df.application.persistence.entity.form.FieldOption;
 import org.springframework.stereotype.Service;

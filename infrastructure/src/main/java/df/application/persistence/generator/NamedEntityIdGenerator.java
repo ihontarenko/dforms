@@ -4,7 +4,7 @@ import df.common.extensions.hibernate.generator.IdPrefixGenerator;
 import df.common.extensions.hibernate.generator.PrefixedId;
 import df.application.persistence.entity.EntityNameAware;
 
-import static org.jmouse.util.Strings.underscored;
+import static org.jmouse.util.helper.Strings.underscored;
 import static df.common.support.SlugifyTransliterator.slugify;
 import static java.util.Objects.requireNonNull;
 

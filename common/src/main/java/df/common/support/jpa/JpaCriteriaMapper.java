@@ -1,6 +1,6 @@
 package df.common.support.jpa;
 
-import org.jmouse.core.mapping.Mapper;
+import org.jmouse.common.mapping.Mapper;
 import df.common.support.spel.SpelEvaluator;
 import df.common.validation.jakarta.Fields;
 import df.common.validation.jakarta.Fields.ValueType;

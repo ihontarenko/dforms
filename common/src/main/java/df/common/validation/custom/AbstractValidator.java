@@ -1,8 +1,8 @@
 package df.common.validation.custom;
 
-import org.jmouse.util.Strings;
+import org.jmouse.util.helper.Strings;
 
-import static org.jmouse.util.Strings.underscored;
+import static org.jmouse.util.helper.Strings.underscored;
 
 abstract public class AbstractValidator implements Validator {
 

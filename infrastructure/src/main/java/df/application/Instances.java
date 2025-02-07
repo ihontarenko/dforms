@@ -2,8 +2,8 @@ package df.application;
 
 import df.common.commans.CommandsManager;
 import df.common.commans.CommandsManagerFactory;
-import org.jmouse.core.mapping.Mapping;
-import org.jmouse.core.mapping.MappingFactory;
+import org.jmouse.common.mapping.Mapping;
+import org.jmouse.common.mapping.MappingFactory;
 import org.jmouse.core.observer.EventManager;
 import org.jmouse.core.observer.EventManagerFactory;
 
