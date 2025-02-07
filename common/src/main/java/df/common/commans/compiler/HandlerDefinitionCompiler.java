@@ -3,8 +3,8 @@ package df.common.commans.compiler;
 import org.jmouse.common.ast.compiler.Compiler;
 import org.jmouse.common.ast.compiler.EvaluationContext;
 import df.common.commans.CommandRoute;
-import svit.expression.ast.StringDefinitionNode;
-import svit.expression.ast.VariableNode;
+import org.jmouse.expression.ast.StringDefinitionNode;
+import org.jmouse.expression.ast.VariableNode;
 
 /**
  * {@code HandlerDefinitionCompiler} is responsible for compiling {@link StringDefinitionNode} instances

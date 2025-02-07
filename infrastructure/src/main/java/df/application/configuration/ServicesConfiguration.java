@@ -8,7 +8,7 @@ import org.jmouse.common.dom.RendererFactory;
 import df.common.i18n.Translator;
 import org.jmouse.core.observer.EventManager;
 import org.jmouse.core.observer.EventManagerFactory;
-import svit.expression.parser.ParserConfigurator;
+import org.jmouse.expression.parser.ParserConfigurator;
 import df.common.pipeline.PipelineManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
