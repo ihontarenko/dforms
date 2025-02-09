@@ -34,6 +34,7 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- jMouse -->
         <dependency>
             <groupId>org.jmouse</groupId>
             <artifactId>jmouse-core</artifactId>
@@ -42,6 +43,11 @@
             <groupId>org.jmouse</groupId>
             <artifactId>jmouse-beans</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jmouse</groupId>
+            <artifactId>jmouse-validation</artifactId>
+        </dependency>
+        <!-- DF -->
         <dependency>
             <groupId>df</groupId>
             <artifactId>df-common</artifactId>

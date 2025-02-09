@@ -6,7 +6,7 @@ import df.application.dto.DTO;
 import df.application.persistence.entity.form.Form;
 import df.application.persistence.entity.support.FormStatus;
 import df.common.validation.jakarta.Fields.Value;
-import df.common.validation.jakarta.constraint.EnumPattern;
+import org.jmouse.validator.jsr380.EnumPattern;
 import df.common.validation.jakarta.constraint.JpaResource;
 import df.common.validation.jakarta.constraint.SpelConstraint;
 import jakarta.validation.constraints.NotEmpty;

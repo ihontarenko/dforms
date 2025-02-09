@@ -6,7 +6,7 @@ import df.application.persistence.entity.user.User;
 import df.application.security.Provider;
 import df.common.validation.jakarta.Fields;
 import df.common.validation.jakarta.constraint.JpaResource;
-import df.common.validation.jakarta.constraint.StrongPassword;
+import org.jmouse.validator.jsr380.StrongPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
