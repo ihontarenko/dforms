@@ -4,10 +4,10 @@ import df.application.validation.custom.FieldErrorCode;
 import df.application.dto.form.FieldDTO;
 import df.application.persistence.entity.support.ElementType;
 import df.application.persistence.entity.support.UsageType;
-import df.common.validation.custom.AbstractValidator;
-import df.common.validation.custom.Errors;
-import df.common.validation.custom.ValidationContext;
-import df.common.validation.custom.ValidationException;
+import org.jmouse.validator.old.AbstractValidator;
+import org.jmouse.validator.old.Errors;
+import org.jmouse.validator.old.ValidationContext;
+import org.jmouse.validator.old.ValidationException;
 
 import static df.application.persistence.support.EntityConstants.FIELD_FIELD_USAGE_TYPE;
 

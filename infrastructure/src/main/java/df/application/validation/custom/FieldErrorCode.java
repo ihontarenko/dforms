@@ -1,6 +1,6 @@
 package df.application.validation.custom;
 
-import df.common.validation.custom.ErrorCode;
+import org.jmouse.validator.old.ErrorCode;
 
 public enum FieldErrorCode implements ErrorCode {
     INCOMPATIBLE_USAGE_TYPE
