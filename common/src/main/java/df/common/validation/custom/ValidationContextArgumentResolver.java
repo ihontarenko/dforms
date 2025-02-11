@@ -1,6 +1,6 @@
 package df.common.validation.custom;
 
-import org.jmouse.validator.manual.ValidationContext;
+import org.jmouse.validator.old.ValidationContext;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

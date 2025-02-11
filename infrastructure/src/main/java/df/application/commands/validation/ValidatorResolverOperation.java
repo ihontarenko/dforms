@@ -3,17 +3,17 @@ package df.application.commands.validation;
 import df.common.commans.CommandRequest;
 import df.common.commans.annotation.Action;
 import df.common.commans.annotation.Command;
-import df.common.validation.custom.BasicValidators;
-import df.common.validation.custom.Validator;
-import df.common.validation.custom.ValidatorConstraintFactory;
 import org.jmouse.core.reflection.Reflections;
+import org.jmouse.validator.old.BasicValidators;
+import org.jmouse.validator.old.Validator;
+import org.jmouse.validator.old.ValidatorConstraintFactory;
 
 import java.util.Map;
 
 @Command("validation")
 public class ValidatorResolverOperation {
 
-    private Validator resolveValidator(String validatorName, Map<String, Object> parameters) {
+    private org.jmouse.validator.old.Validator resolveValidator(String validatorName, Map<String, Object> parameters) {
         ValidatorConstraintFactory factory = ValidatorConstraintFactory.BASIC_FACTORY;
         Class<? extends Validator> validatorClass;
 
