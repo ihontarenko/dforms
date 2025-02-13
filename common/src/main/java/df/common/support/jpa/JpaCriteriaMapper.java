@@ -56,7 +56,7 @@ public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
                 Object objectValue = Reflections.getFieldValue(object, rawValue);
 
                 // try to extract the value through the getter
-                // when the real field-name is different from the object getter name
+                // when the real field-name is different from the bean getter name
                 if (objectValue == null) {
                     objectValue = Reflections.getMethodValue(object, rawValue);
                 }

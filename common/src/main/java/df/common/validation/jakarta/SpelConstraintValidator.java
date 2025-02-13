@@ -45,7 +45,7 @@ public class SpelConstraintValidator implements ConstraintValidator<SpelConstrai
         if (object != null) {
             boolean applicable = true;
 
-            // attach target object to evaluation context
+            // attach target bean to evaluation context
             spel.initialize(ctx -> ctx.setRootObject(object));
 
             if (applier != null) {
@@ -56,7 +56,7 @@ public class SpelConstraintValidator implements ConstraintValidator<SpelConstrai
                 valid = spel.evaluate(expression, Boolean.class);
             }
 
-            // detach target object to evaluation context
+            // detach target bean to evaluation context
             spel.uninitialize(ctx -> ctx.setRootObject(null));
         }
 

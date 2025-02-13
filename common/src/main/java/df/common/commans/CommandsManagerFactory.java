@@ -50,7 +50,7 @@ public class CommandsManagerFactory {
                     Action    actionAnnotation = method.getAnnotation(Action.class);
                     Invocable invocable        = new HandlerExecutor(commandInstance, method);
 
-                    // bind the same invocable object to each of registered action
+                    // bind the same invocable bean to each of registered action
                     for (String action : actionAnnotation.value()) {
                         manager.register(commandAnnotation.value(), action, invocable);
                     }
