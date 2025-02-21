@@ -78,7 +78,7 @@ public interface CommandRequest {
     /**
      * Retrieves the {@link Context} associated with this request.
      *
-     * @return a {@link Context} bean
+     * @return a {@link Context} structured
      */
     Context context();
 

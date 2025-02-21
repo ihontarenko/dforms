@@ -46,7 +46,7 @@ public class BeanConsoleController {
 
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),
-            @Breadcrumbs.Item(label = "Bean Console", url = "/bean-console/index"),
+            @Breadcrumbs.Item(label = "Bean Console", url = "/structured-console/index"),
             @Breadcrumbs.Item(label = "Search")
     })
     @GetMapping("/search")
@@ -62,7 +62,7 @@ public class BeanConsoleController {
 
     @Breadcrumbs({
             @Breadcrumbs.Item(label = "Home", url = "/"),
-            @Breadcrumbs.Item(label = "Bean Console", url = "/bean-console/index"),
+            @Breadcrumbs.Item(label = "Bean Console", url = "/structured-console/index"),
             @Breadcrumbs.Item(label = "{class}")
     })
     @GetMapping("/_class/{class}")

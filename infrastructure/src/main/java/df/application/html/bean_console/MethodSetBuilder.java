@@ -78,7 +78,7 @@ public class MethodSetBuilder implements NodeBuilder<MethodListDTO> {
     public Node createLinkNode(MethodDTO methodDTO) {
         Node link = new ElementNode(TagName.A);
         link.append(createMethodName(methodDTO));
-        link.addAttribute("href", "/bean-console/_method/" + methodDTO.getName());
+        link.addAttribute("href", "/structured-console/_method/" + methodDTO.getName());
         return link;
     }
 

@@ -107,7 +107,7 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
     public void attach(Field parent, Field child) {
         if (parent.equals(child)) {
             throw new IllegalReferenceException(
-                    "Detected a cyclic dependency: the child bean cannot serve as a parent bean");
+                    "Detected a cyclic dependency: the child structured cannot serve as a parent structured");
         }
 
         parent.getChildren().add(child);

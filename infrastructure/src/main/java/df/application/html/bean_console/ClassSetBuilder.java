@@ -108,7 +108,7 @@ public class ClassSetBuilder implements NodeBuilder<ClassListDTO> {
 
         if (!linkless) {
             item = new ElementNode(TagName.A);
-            item.addAttribute("href", "/bean-console/_class/" + classDTO.getFullName());
+            item.addAttribute("href", "/structured-console/_class/" + classDTO.getFullName());
             item.addAttribute("class", "text-primary");
         }
 
