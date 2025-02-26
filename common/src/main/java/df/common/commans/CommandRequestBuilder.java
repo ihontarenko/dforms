@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * {@code CommandRequestBuilder} facilitates the creation of {@link CommandRequest} instances
- * by parsing command definitions and parameters into executable requests.
+ * by lexer command definitions and parameters into executable requests.
  *
  * <p>This class uses the {@link ParserService} to parse and evaluate the provided command definitions
  * and parameters, leveraging the {@link HandlerDefinitionCompiler} to handle custom command routing.</p>
@@ -35,7 +35,7 @@ public final class CommandRequestBuilder {
     }
 
     /**
-     * Builds a {@link CommandRequest} by parsing and evaluating the provided command definition
+     * Builds a {@link CommandRequest} by lexer and evaluating the provided command definition
      * and parameters in the given context.
      *
      * <p>The method uses the {@link ParserService} to parse the command definition and parameters
@@ -44,7 +44,7 @@ public final class CommandRequestBuilder {
      *
      * @param context the {@link Context} for evaluating the command and parameters
      * @return a {@link CommandRequest} representing the parsed and evaluated command and parameters
-     * @throws RouteNotFoundException if parsing or evaluation of the parameters fails
+     * @throws RouteNotFoundException if lexer or evaluation of the parameters fails
      */
     public CommandRequest build(Context context) {
         Node              routeNode           = parser.parse(definition);
