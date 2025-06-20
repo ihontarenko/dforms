@@ -1,8 +1,8 @@
 package df.application.configuration;
 
-import df.common.validation.custom.Validation;
 import df.application.validation.custom.FieldValidation;
 import df.application.validation.custom.constraint.FieldUsageTypeValidator;
+import org.jmouse.validator.old.Validation;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
