@@ -24,7 +24,7 @@ import static java.util.Objects.requireNonNull;
 @SuppressWarnings("unused")
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan("df.web")
+@ComponentScan({"df.web", "df.application"})
 @ConfigurationPropertiesScan(basePackages = {"df.web.property"})
 @Import(CommonConfiguration.class)
 public class WebConfiguration implements WebMvcConfigurer {

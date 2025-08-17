@@ -1,7 +1,6 @@
 package df.web.controller.form;
 
 import df.common.breadcrumb.Breadcrumbs;
-import df.common.validation.custom.ValidationContext;
 import df.application.dto.KeyValuePair;
 import df.application.dto.form.FieldAttributeDTO;
 import df.application.dto.form.FieldConfigDTO;
@@ -36,7 +35,7 @@ public interface FieldCustomizationOperations extends DefaultOperations<KeyValue
             @PathVariable("primaryId") String primaryId,
             @ModelAttribute("itemDTO") @Validated(Operations.PrimaryId.class) FieldDTO itemDTO,
             BindingResult result, RedirectAttributes attributes,
-            ValidationContext context);
+            org.jmouse.validator.old.ValidationContext context);
 
     @GetMapping("/embedded/{embeddedId}/detach")
     ModelAndView detach(
