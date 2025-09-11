@@ -3,7 +3,7 @@ package df.application;
 public interface Messages {
 
     // Database Error Messages
-    String REQUIRED_ID_CANNOT_BE_NULL     = "Primary ID must be non-null";
+    String REQUIRED_ID_CANNOT_BE_NULL     = "PrimaryBean ID must be non-null";
     String ERROR_USER_NOT_FOUND           = "User '%s' not found";
     String ERROR_FORM_NOT_FOUND           = "Form '%s' not found";
     String ERROR_SEQUENCE_ORDER_NOT_FOUND = "Sequence order cannot be found %s:%s['%s:%s']";
