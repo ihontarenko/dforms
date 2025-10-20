@@ -8,14 +8,13 @@ import jakarta.persistence.Query;
 import org.jmouse.core.proxy.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.jmouse.core.proxy.annotation.ProxyMethodInterceptor;
 
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
-@ProxyMethodInterceptor(EntityManagerProxy.class)
+@Intercept(EntityManagerProxy.class)
 public class EntityManagerProxy implements MethodInterceptor {
 
     private static final String       FIND_METHOD          = "find";
