@@ -3,9 +3,9 @@ package df.application.proxy;
 import df.application.service.form.FormManagementService;
 import org.jmouse.core.proxy.MethodInterceptor;
 import org.jmouse.core.proxy.MethodInvocation;
-import org.jmouse.core.proxy.annotation.ProxyMethodInterceptor;
+import org.jmouse.core.proxy.Intercept;
 
-@ProxyMethodInterceptor(value = {FormManagementService.class})
+@Intercept(value = {FormManagementService.class})
 public class FormManagmentInterceptor implements MethodInterceptor {
 
     @Override

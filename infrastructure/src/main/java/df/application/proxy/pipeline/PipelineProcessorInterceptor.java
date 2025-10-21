@@ -3,9 +3,9 @@ package df.application.proxy.pipeline;
 import df.common.pipeline.PipelineProcessor;
 import org.jmouse.core.proxy.MethodInterceptor;
 import org.jmouse.core.proxy.MethodInvocation;
-import org.jmouse.core.proxy.annotation.ProxyMethodInterceptor;
+import org.jmouse.core.proxy.Intercept;
 
-@ProxyMethodInterceptor(PipelineProcessor.class)
+@Intercept(PipelineProcessor.class)
 public class PipelineProcessorInterceptor implements MethodInterceptor {
 
     @Override

@@ -10,14 +10,14 @@ import org.jmouse.core.proxy.MethodInvocation;
 import org.jmouse.core.proxy.MethodInvocationDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.jmouse.core.proxy.annotation.ProxyMethodInterceptor;
+import org.jmouse.core.proxy.Intercept;
 
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
 
-@ProxyMethodInterceptor(Query.class)
+@Intercept(Query.class)
 public class QueryProxy implements MethodInterceptor {
 
     private static final Logger       LOGGER                = LoggerFactory.getLogger(QueryProxy.class);

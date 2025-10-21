@@ -2,10 +2,10 @@ package df.application.proxy.persistence;
 
 import org.jmouse.core.proxy.MethodInterceptor;
 import org.jmouse.core.proxy.MethodInvocation;
-import org.jmouse.core.proxy.annotation.ProxyMethodInterceptor;
+import org.jmouse.core.proxy.Intercept;
 import jakarta.persistence.Query;
 
-@ProxyMethodInterceptor(value = Query.class)
+@Intercept(value = Query.class)
 public class JpaQueryInterceptor implements MethodInterceptor {
 
     @Override
