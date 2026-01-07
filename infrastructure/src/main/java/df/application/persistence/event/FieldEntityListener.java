@@ -1,8 +1,8 @@
 package df.application.persistence.event;
 
-import org.jmouse.core.observer.AbstractEventListener;
-import org.jmouse.core.observer.Event;
-import org.jmouse.core.observer.annotation.Listener;
+import org.jmouse.core.events.AbstractEventListener;
+import org.jmouse.core.events.Event;
+import org.jmouse.core.events.annotation.Listener;
 import df.application.persistence.entity.form.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ public class FieldEntityListener extends AbstractEventListener<Field> {
     private final static Logger LOGGER = LoggerFactory.getLogger(FieldEntityListener.class);
 
     @Override
-    public void update(Event<Field> event) {
+    public void onEvent(Event<Field> event) {
         Field entity = event.payload();
 
         System.out.println(entity);
@@ -22,7 +22,7 @@ public class FieldEntityListener extends AbstractEventListener<Field> {
     }
 
     @Override
-    public Class<?> applicableType() {
+    public Class<?> payloadType() {
         return Field.class;
     }
 }

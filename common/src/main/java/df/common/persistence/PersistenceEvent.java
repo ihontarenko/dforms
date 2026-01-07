@@ -1,6 +1,6 @@
 package df.common.persistence;
 
-import org.jmouse.core.observer.AbstractEvent;
+import org.jmouse.core.events.AbstractEvent;
 
 public class PersistenceEvent extends AbstractEvent<Object> {
 
