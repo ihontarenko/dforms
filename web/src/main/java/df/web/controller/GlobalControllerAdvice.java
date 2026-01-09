@@ -105,9 +105,7 @@ public class GlobalControllerAdvice {
 
     private String getStackTrace(Throwable throwable) {
         StringWriter writer = new StringWriter();
-
         throwable.printStackTrace(new PrintWriter(writer));
-
         return writer.toString();
     }
 
