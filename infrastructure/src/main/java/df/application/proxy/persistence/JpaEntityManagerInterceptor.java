@@ -1,9 +1,9 @@
 package df.application.proxy.persistence;
 
-import org.jmouse.core.proxy.Intercept;
 import org.jmouse.core.proxy.MethodInterceptor;
 import org.jmouse.core.proxy.MethodInvocation;
 import org.jmouse.core.proxy.MethodInvocationDecorator;
+import org.jmouse.core.proxy.Intercept;
 import jakarta.persistence.EntityManager;
 
 import java.util.List;

@@ -2,7 +2,6 @@ package df.web.controller.form;
 
 import df.common.specification.SpecificationContext;
 import df.common.specification.SpecificationRunner;
-import df.common.validation.custom.ValidationContext;
 import df.application.dto.KeyValuePair;
 import df.application.dto.form.FieldAttributeDTO;
 import df.application.dto.form.FieldConfigDTO;
@@ -163,7 +162,7 @@ public class FieldCustomizationController implements FieldCustomizationOperation
 
     @Override
     public ModelAndView attach(String primaryId, FieldDTO itemDTO, BindingResult result,
-                               RedirectAttributes attributes, ValidationContext context) {
+                               RedirectAttributes attributes, org.jmouse.validator.old.ValidationContext context) {
         helper.setRedirectUrl(REDIRECT_FIELD_CUSTOMIZATION.formatted(primaryId, "embedded"));
         helper.setRedirectAttributes(attributes);
 

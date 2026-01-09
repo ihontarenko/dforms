@@ -1,10 +1,10 @@
 package df.common.persistence;
 
 import org.jmouse.core.events.EventManager;
+import org.jmouse.core.events.EventManagerFactory;
 import jakarta.persistence.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.jmouse.core.events.EventManagerFactory;
 
 import java.lang.annotation.Annotation;
 
@@ -12,8 +12,8 @@ import java.lang.annotation.Annotation;
 public class GlobalEntityListener {
 
     private final static Logger          LOGGER           = LoggerFactory.getLogger(GlobalEntityListener.class);
-    private final static String          LOGGER_TEMPLATE  = "EVENT '{}' CALLED FOR '{}' ENTITY";
-    private final        EventManager    eventManager     = EventManagerFactory.create();
+    private final static String       LOGGER_TEMPLATE = "EVENT '{}' CALLED FOR '{}' ENTITY";
+    private final        EventManager eventManager    = EventManagerFactory.create();
 
     @PrePersist
     public void onPrePersist(Object entity) {

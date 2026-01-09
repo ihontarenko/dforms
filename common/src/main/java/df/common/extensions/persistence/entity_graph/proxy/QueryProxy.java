@@ -5,12 +5,12 @@ import df.common.extensions.persistence.entity_graph.ObjectsHolder;
 import df.common.extensions.persistence.entity_graph.injector.QueryHintInjector;
 import df.common.extensions.persistence.entity_graph.invocation.QueryMethodInvocation;
 import jakarta.persistence.Query;
-import org.jmouse.core.proxy.Intercept;
 import org.jmouse.core.proxy.MethodInterceptor;
 import org.jmouse.core.proxy.MethodInvocation;
 import org.jmouse.core.proxy.MethodInvocationDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jmouse.core.proxy.Intercept;
 
 import java.util.List;
 import java.util.Optional;
