@@ -53,7 +53,7 @@ public class SpelEvaluator {
         evaluationContext.setVariable("auth", authentication); // just alias
 
         // hasRole('USER'), isPrincipal(String userId), etc.
-        // registerFunctions(ReflectionUtils.extractStaticMethods(AuthenticationHelper.class));
+        // registerFunctions(Reflections.extractStaticMethods(AuthenticationHelper.class));
         // Spring's StringUtils functions
         registerFunctions(Reflections.extractStaticMethods(StringUtils.class));
 

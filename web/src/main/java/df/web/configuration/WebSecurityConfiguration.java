@@ -90,7 +90,7 @@ public class WebSecurityConfiguration {
                 .anyRequest().authenticated()
         );
 
-        http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        //http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.exceptionHandling(Customizer.withDefaults());
 

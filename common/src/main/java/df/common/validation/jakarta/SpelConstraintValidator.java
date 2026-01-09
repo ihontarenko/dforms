@@ -4,6 +4,7 @@ import df.common.support.spel.SpelEvaluator;
 import df.common.validation.jakarta.constraint.SpelConstraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.jmouse.core.reflection.Reflections;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -46,18 +47,23 @@ public class SpelConstraintValidator implements ConstraintValidator<SpelConstrai
             boolean applicable = true;
 
             // attach target structured to evaluation context
-            spel.initialize(ctx -> ctx.setRootObject(object));
+            spel.initialize(ctx -> {
+                ctx.setRootObject(object);
+                registerFunctions(Reflections.extractStaticMethods(AuthenticationHelper.class));
+            });
 
-            if (applier != null) {
-                applicable = spel.evaluate(applier, Boolean.class);
+            try {
+                if (applier != null) {
+                    applicable = spel.evaluate(applier, Boolean.class);
+                }
+
+                if (applicable) {
+                    valid = spel.evaluate(expression, Boolean.class);
+                }
+            } finally {
+                // detach target structured to evaluation context
+                spel.uninitialize(ctx -> ctx.setRootObject(null));
             }
-
-            if (applicable) {
-                valid = spel.evaluate(expression, Boolean.class);
-            }
-
-            // detach target structured to evaluation context
-            spel.uninitialize(ctx -> ctx.setRootObject(null));
         }
 
         if (!valid) {

@@ -4,9 +4,13 @@ import df.application.PackageCoreRoot;
 import df.common.extensions.spring.resource.ContentHashVersionStrategy;
 import df.application.configuration.CommonConfiguration;
 import df.application.property.ApplicationProperties;
+import df.common.support.jpa.JpaHelper;
+import df.common.support.spel.SpelEvaluator;
 import df.web.PackageWebRoot;
 import df.web.common.pebble.PebbleExtension;
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ApplicationContext;
@@ -73,6 +77,16 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Bean("baseClasses")
     public Class<?>[] baseClasses() {
         return new Class[]{PackageWebRoot.class, PackageCoreRoot.class};
+    }
+
+    @Bean
+    public JpaHelper jpaHelper(EntityManager entityManager) {
+        return new JpaHelper(entityManager);
+    }
+
+    @Bean
+    public SpelEvaluator spelEvaluator(BeanFactory factory) {
+        return  new SpelEvaluator(factory);
     }
 
 }
