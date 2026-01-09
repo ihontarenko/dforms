@@ -9,12 +9,12 @@ import df.application.persistence.exception.JpaResourceNotFoundException;
 import df.application.persistence.repository.user.UserRepository;
 import df.application.security.Provider;
 import df.application.service.RedirectAware;
+import org.jmouse.util.Strings;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.jmouse.util.helper.Strings;
 
 import java.util.*;
 import java.util.stream.Collectors;

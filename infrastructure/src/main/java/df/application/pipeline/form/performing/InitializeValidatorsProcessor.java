@@ -6,7 +6,7 @@ import df.common.commans.CommandsManager;
 import org.jmouse.common.support.context.ArgumentsContext;
 import df.common.pipeline.PipelineProcessor;
 import df.common.pipeline.context.PipelineContext;
-import df.common.validation.custom.Validation;
+import org.jmouse.validator.old.Validation;
 import org.springframework.context.ApplicationContext;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
     }
 
     private Validation createValidation(PipelineContext context) {
-        return new Validation("DYNAMIC_FORM_VALIDATION", context.getProperty(ApplicationContext.class));
+        return new Validation("DYNAMIC_FORM_VALIDATION");
     }
 
 }

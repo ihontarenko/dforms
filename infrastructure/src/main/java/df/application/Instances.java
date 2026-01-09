@@ -4,8 +4,8 @@ import df.common.commans.CommandsManager;
 import df.common.commans.CommandsManagerFactory;
 import org.jmouse.common.mapping.Mapping;
 import org.jmouse.common.mapping.MappingFactory;
-import org.jmouse.core.observer.EventManager;
-import org.jmouse.core.observer.EventManagerFactory;
+import org.jmouse.core.events.EventManager;
+import org.jmouse.core.events.EventManagerFactory;
 
 public interface Instances {
 

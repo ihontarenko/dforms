@@ -3,8 +3,8 @@ package df.application.persistence.generator;
 import df.common.extensions.hibernate.generator.IdPrefixGenerator;
 import df.common.extensions.hibernate.generator.PrefixedId;
 import df.application.persistence.entity.EntityNameAware;
+import org.jmouse.util.Strings;
 
-import static org.jmouse.util.helper.Strings.underscored;
 import static df.common.support.SlugifyTransliterator.slugify;
 import static java.util.Objects.requireNonNull;
 
@@ -35,7 +35,7 @@ public class NamedEntityIdGenerator implements IdPrefixGenerator {
     }
 
     private static String getNameForEntity(EntityNameAware nameAware) {
-        String underscored = underscored(requireNonNull(nameAware.getName()));
+        String underscored = Strings.underscored(requireNonNull(nameAware.getName()));
 
         if (underscored.indexOf('.') != -1) {
             underscored = underscored.substring(underscored.lastIndexOf('.') + 1);
