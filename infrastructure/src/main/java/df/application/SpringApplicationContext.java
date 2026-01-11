@@ -1,4 +1,4 @@
-package df.common.extensions.spring.context;
+package df.application;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;

@@ -2,7 +2,7 @@ package df.application.persistence.event;
 
 import df.application.Instances;
 import df.common.commans.CommandsManager;
-import org.jmouse.common.support.context.Context;
+import org.jmouse.core.scope.Context;
 import org.jmouse.core.events.AbstractEventListener;
 import org.jmouse.core.events.Event;
 import org.jmouse.core.events.annotation.Listener;

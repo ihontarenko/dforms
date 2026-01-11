@@ -1,9 +1,17 @@
 package df.common.pipeline.context;
 
-import org.jmouse.common.support.context.ArgumentsContextAware;
-import org.jmouse.common.support.context.Context;
-import org.jmouse.common.support.context.ResultContextAware;
+import org.jmouse.core.context.ProcessingControl;
+import org.jmouse.core.context.beans.BeanLookup;
+import org.jmouse.core.context.mutable.MutableArgumentsContext;
+import org.jmouse.core.context.mutable.MutableKeyValueContext;
+import org.jmouse.core.context.result.MutableResultContext;
 
-public interface PipelineContext extends Context, ArgumentsContextAware, ResultContextAware {
+public interface PipelineContext extends MutableArgumentsContext, ProcessingControl, MutableKeyValueContext {
+
+    BeanLookup getBeanLookup();
+
+    MutableArgumentsContext getArgumentsContext();
+
+    MutableResultContext getResultContext();
 
 }

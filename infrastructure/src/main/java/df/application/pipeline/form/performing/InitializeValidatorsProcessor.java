@@ -3,11 +3,10 @@ package df.application.pipeline.form.performing;
 import df.application.Instances;
 import df.application.dto.form.FieldConfigDTO;
 import df.common.commans.CommandsManager;
-import org.jmouse.common.support.context.ArgumentsContext;
+import org.jmouse.core.context.ArgumentsContext;
 import df.common.pipeline.PipelineProcessor;
 import df.common.pipeline.context.PipelineContext;
 import org.jmouse.validator.old.Validation;
-import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
 
     @Override
     public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
-        Map<String, List<FieldConfigDTO>> validationConfigs = arguments.requireArgument("VALIDATION_CONFIGS");
+        Map<String, List<FieldConfigDTO>> validationConfigs = arguments.getRequiredArgument("VALIDATION_CONFIGS");
         Validation                        validation        = createValidation(context);
         CommandsManager                   commandsManager   = Instances.COMMANDS_MANAGER;
 
@@ -29,7 +28,7 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
             }
         });
 
-        context.setProperty(Validation.class, validation);
+        context.setValue(Validation.class, validation);
 
         return ReturnCodes.VALIDATE;
     }

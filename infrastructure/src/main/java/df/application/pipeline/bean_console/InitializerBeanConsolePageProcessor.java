@@ -2,7 +2,7 @@ package df.application.pipeline.bean_console;
 
 import df.application.pipeline.DefaultReturnCode;
 import df.application.service.bc.ClassService;
-import org.jmouse.common.support.context.ArgumentsContext;
+import org.jmouse.core.context.ArgumentsContext;
 import df.common.pipeline.PipelineProcessor;
 import df.common.pipeline.context.PipelineContext;
 

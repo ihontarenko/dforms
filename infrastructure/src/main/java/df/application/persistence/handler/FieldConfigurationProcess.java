@@ -4,7 +4,7 @@ import df.common.commans.CommandRequest;
 import df.common.commans.CommandsManager;
 import df.common.commans.annotation.Action;
 import df.common.commans.annotation.Command;
-import org.jmouse.common.support.context.Context;
+import org.jmouse.core.scope.Context;
 import org.jmouse.core.events.Event;
 import df.common.specification.SpecificationContext;
 import df.common.specification.SpecificationRunner;

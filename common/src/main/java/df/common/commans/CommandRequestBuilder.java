@@ -1,8 +1,7 @@
 package df.common.commans;
 
 import df.common.commans.compiler.HandlerDefinitionCompiler;
-import df.common.provider.bean.SpringBeanProvider;
-import org.jmouse.common.support.context.Context;
+import org.jmouse.core.scope.Context;
 import org.jmouse.common.ast.compiler.EvaluationContext;
 import org.jmouse.common.ast.node.Node;
 import org.jmouse.expression.ParserService;
@@ -74,7 +73,7 @@ public final class CommandRequestBuilder {
 
         evaluationContext.copyFrom(context);
         evaluationContext.copyFrom(parser.getEvaluationContext());
-        evaluationContext.setBeanProvider(new SpringBeanProvider());
+//        evaluationContext.setBeanProvider(new SpringBeanProvider());
 
         return evaluationContext;
     }

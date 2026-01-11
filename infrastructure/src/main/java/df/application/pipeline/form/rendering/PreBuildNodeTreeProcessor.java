@@ -1,8 +1,8 @@
 package df.application.pipeline.form.rendering;
 
 import df.application.dto.form.FormDTO;
-import df.common.provider.error.BindingResultErrorProvider;
-import org.jmouse.common.support.context.ArgumentsContext;
+import df.application.provider.error.BindingResultErrorProvider;
+import org.jmouse.core.context.ArgumentsContext;
 import org.jmouse.common.support.provider.data.DataProvider;
 import org.jmouse.common.support.provider.data.MapDataProvider;
 import org.jmouse.common.support.provider.error.ErrorDetailsProvider;
@@ -15,6 +15,9 @@ import df.common.pipeline.PipelineProcessor;
 import df.common.pipeline.context.PipelineContext;
 import org.jmouse.common.dom.builder.AbstractBuilderRegistry;
 import df.application.html.forms.bootstrap.BootstrapBuilderRegistry;
+import org.jmouse.core.context.execution.ExecutionContext;
+import org.jmouse.core.context.execution.ExecutionContextHolder;
+import org.jmouse.core.context.mutable.MutableArgumentsContext;
 import org.springframework.validation.BindingResult;
 
 import java.util.Collections;
@@ -24,7 +27,9 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
     @Override
     public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
         NodeBuilderContext builderContext = new NodeBuilderContext();
+        // todo: replace with execution context
         String             environment    = arguments.getArgument("ENV_NAME");
+        ExecutionContext executionContext = ExecutionContextHolder.current();
 
         builderContext.setDataProvider(createPostDataProvider(arguments));
 
@@ -33,7 +38,9 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
         AbstractBuilderRegistry strategy = (AbstractBuilderRegistry) builderContext.getRegistry();
         NodeBuilder<FormDTO>    builder  = strategy.getBuilder(FormDTO.class);
 
-        arguments.setArgument(Node.class, builder.build(arguments.requireArgument(FormDTO.class), builderContext));
+        if (arguments instanceof MutableArgumentsContext mutableArgumentsContext) {
+            mutableArgumentsContext.setArgument(Node.class, builder.build(arguments.getRequiredArgument(FormDTO.class), builderContext));
+        }
 
         return (environment != null && environment.equals("DEMO")) ? FormRenderReturnCode.POST_BUILD_DEMO : FormRenderReturnCode.POST_BUILD_PUBLIC;
     }
@@ -43,7 +50,7 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
     }
 
     private DataProvider<String, Object> createDataProvider(ArgumentsContext arguments) {
-        return new MapDataProvider(arguments.requireArgument("REQUEST_DATA"));
+        return new MapDataProvider(arguments.getRequiredArgument("REQUEST_DATA"));
     }
 
     private ErrorProvider<String> createErrorProvider(ArgumentsContext arguments) {

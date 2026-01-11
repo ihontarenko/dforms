@@ -1,12 +1,12 @@
 package df.application.pipeline.form.management;
 
 import df.application.dto.form.FormDTO;
-import df.common.pipeline.context.PipelineContext;
-import df.common.pipeline.PipelineProcessor;
-import df.common.pipeline.context.DefaultPipelineContext;
-import org.jmouse.common.support.context.ArgumentsContext;
 import df.application.persistence.entity.form.Form;
 import df.application.service.form.FormService;
+import df.common.pipeline.PipelineProcessor;
+import df.common.pipeline.context.PipelineContext;
+import org.jmouse.core.context.ArgumentsContext;
+import org.jmouse.core.context.result.MutableResultContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,13 +18,12 @@ public class FormUpdateProcessor implements PipelineProcessor {
 
     @Override
     public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
-        Optional<Form> optional = arguments.requireArgument(Optional.class);
-        FormDTO        formDTO  = arguments.requireArgument(FormDTO.class);
-        FormService    service  = arguments.requireArgument(FormService.class);
+        Optional<Form>       optional      = arguments.getRequiredArgument(Optional.class);
+        FormDTO              formDTO       = arguments.getRequiredArgument(FormDTO.class);
+        FormService          service       = arguments.getRequiredArgument(FormService.class);
+        MutableResultContext resultContext = context.getResultContext();
 
-        ((DefaultPipelineContext) context).setReturnValue(
-                service.update(optional.get(), formDTO)
-        );
+        optional.ifPresent(form -> resultContext.setReturnValue(service.update(form, formDTO)));
 
         LOGGER.info("FORM '{}' UPDATED", formDTO.id());
 

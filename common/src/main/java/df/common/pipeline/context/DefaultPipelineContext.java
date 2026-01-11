@@ -1,119 +1,109 @@
 package df.common.pipeline.context;
 
-import org.jmouse.common.support.context.*;
+import org.jmouse.core.Streamable;
+import org.jmouse.core.context.beans.BeanLookup;
+import org.jmouse.core.context.beans.MissingBeanProviderException;
+import org.jmouse.core.context.keys.ContextKeyResolver;
+import org.jmouse.core.context.keys.UserClassContextKeyResolver;
+import org.jmouse.core.context.mutable.MutableArgumentsContext;
+import org.jmouse.core.context.mutable.StandardMutableContextContainer;
+import org.jmouse.core.context.result.MapBackedMutableResultContext;
+import org.jmouse.core.context.result.MutableResultContext;
 
-public class DefaultPipelineContext extends AbstractContext implements
-        PipelineContext, ArgumentsContext, ResultContext {
+import java.util.Map;
 
-    private ResultContext    result;
-    private ArgumentsContext arguments;
+public final class DefaultPipelineContext implements PipelineContext {
+
+    private final StandardMutableContextContainer values;
+    private final MapBackedMutableResultContext   result;
+    private final ContextKeyResolver              keyResolver;
+
+    private BeanLookup beanLookup;
 
     public DefaultPipelineContext() {
         this(null);
     }
 
-    public DefaultPipelineContext(BeanProvider beanProvider) {
-        super(beanProvider);
-        this.result = new DefaultPipelineResult();
-        this.arguments = new DefaultPipelineArguments();
+    public DefaultPipelineContext(BeanLookup beanLookup) {
+        this.keyResolver = new UserClassContextKeyResolver();
+        this.values = new StandardMutableContextContainer();
+        this.result = new MapBackedMutableResultContext();
+        this.beanLookup = beanLookup;
     }
 
     @Override
-    public ResultContext getResultContext() {
+    public BeanLookup getBeanLookup() {
+        if (beanLookup == null) {
+            throw new MissingBeanProviderException(
+                    "BeanProvider is not configured for this pipeline context."
+            );
+        }
+        return beanLookup;
+    }
+
+    public void setBeanLookup(BeanLookup beanLookup) {
+        this.beanLookup = beanLookup;
+    }
+
+    public void setArgument(Object argument) {
+        Object key = keyResolver.resolveKeyFor(argument);
+        values.setArgument(key, argument);
+    }
+
+    public void setArguments(Object... arguments) {
+        Streamable.of(arguments).forEach(this::setArgument);
+    }
+
+    @Override
+    public MutableResultContext getResultContext() {
         return result;
     }
 
     @Override
-    public void setResultContext(ResultContext result) {
-        this.result = result;
+    public MutableArgumentsContext getArgumentsContext() {
+        return values;
     }
 
     @Override
-    public ArgumentsContext getArgumentsContext() {
-        return arguments;
+    public Map<Object, Object> asMapView() {
+        return values.asMapView();
     }
 
     @Override
-    public void setArgumentsContext(ArgumentsContext arguments) {
-        this.arguments = arguments;
+    public <T> T getValue(Object key) {
+        return values.getValue(key);
     }
 
     @Override
-    public <T> T requireArgument(Object name) {
-        return getArgumentsContext().requireArgument(name);
+    public boolean containsKey(Object key) {
+        return values.containsKey(key);
     }
 
     @Override
-    public <T> T getArgument(Object name) {
-        return getArgumentsContext().getArgument(name);
+    public boolean isProcessingStopped() {
+        return values.isProcessingStopped();
     }
 
     @Override
-    public void setArgument(Object name, Object argument) {
-        getArgumentsContext().setArgument(name, argument);
+    public void setValue(Object key, Object value) {
+        values.setValue(key, value);
     }
 
     @Override
-    public void setArgument(Object argument) {
-        getArgumentsContext().setArgument(argument);
+    public void removeValue(Object key) {
+        values.removeValue(key);
     }
 
     @Override
-    public void setArguments(Object... arguments) {
-        getArgumentsContext().setArguments(arguments);
+    public void clear() {
+        values.clear();
     }
 
     @Override
-    public boolean hasArgument(Object name) {
-        return getArgumentsContext().hasArgument(name);
+    public String toString() {
+        return "DefaultPipelineContext[stopped=" + isProcessingStopped()
+                + ", values=" + asMapView()
+                + ", hasErrors=" + result.hasErrors()
+                + "]";
     }
-
-    @Override
-    public <T> T getReturnValue() {
-        return getResultContext().getReturnValue();
-    }
-
-    @Override
-    public void setReturnValue(Object value) {
-        getResultContext().setReturnValue(value);
-    }
-
-    @Override
-    public boolean hasErrors() {
-        return getResultContext().hasErrors();
-    }
-
-    @Override
-    public Iterable<ErrorDetails> getErrors() {
-        return getResultContext().getErrors();
-    }
-
-    @Override
-    public ErrorDetails getError(String name) {
-        return getResultContext().getError(name);
-    }
-
-    @Override
-    public void addError(ErrorDetails errorDetails) {
-        getResultContext().addError(errorDetails);
-    }
-
-    @Override
-    public void addError(String code, String message) {
-        getResultContext().addError(code, message);
-    }
-
-    @Override
-    public void cleanup() {
-        getResultContext().cleanup();
-    }
-
-    public static class DefaultPipelineResult extends AbstractResultContext {
-
-    }
-
-    public static class DefaultPipelineArguments extends AbstractArgumentsContext {
-
-    }
-
 }

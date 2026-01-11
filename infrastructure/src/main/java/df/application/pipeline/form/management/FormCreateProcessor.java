@@ -5,8 +5,9 @@ import df.application.persistence.entity.user.User;
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.PipelineProcessor;
 import df.common.pipeline.context.DefaultPipelineContext;
-import org.jmouse.common.support.context.ArgumentsContext;
+import org.jmouse.core.context.ArgumentsContext;
 import df.application.service.form.FormService;
+import org.jmouse.core.context.result.MutableResultContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +17,11 @@ public class FormCreateProcessor implements PipelineProcessor {
 
     @Override
     public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
-        FormDTO     formDTO = arguments.requireArgument(FormDTO.class);
-        FormService service = arguments.requireArgument(FormService.class);
+        FormDTO              formDTO       = arguments.getRequiredArgument(FormDTO.class);
+        FormService          service       = arguments.getRequiredArgument(FormService.class);
+        MutableResultContext resultContext = context.getResultContext();
 
-        ((DefaultPipelineContext) context).setReturnValue(
+        resultContext.setReturnValue(
                 service.create(arguments.getArgument(User.class), formDTO)
         );
 

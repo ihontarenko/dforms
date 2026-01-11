@@ -7,15 +7,15 @@ import org.jmouse.common.dom.node.InputElementNode;
 import org.jmouse.common.dom.node.TextNode;
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.PipelineProcessor;
-import org.jmouse.common.support.context.ArgumentsContext;
+import org.jmouse.core.context.ArgumentsContext;
 import df.application.persistence.entity.form.Form;
 
 public class PostBuildDemoProcessor implements PipelineProcessor {
 
     @Override
     public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
-        Form             entity  = arguments.requireArgument(Form.class);
-        Node             root    = arguments.requireArgument(Node.class);
+        Form             entity  = arguments.getRequiredArgument(Form.class);
+        Node             root    = arguments.getRequiredArgument(Node.class);
         InputElementNode submit  = new InputElementNode();
         HTMLElementNode  wrapper = new HTMLElementNode(TagName.DIV);
 

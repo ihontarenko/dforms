@@ -2,7 +2,7 @@ package df.application.pipeline.form.performing;
 
 import org.jmouse.common.support.objects.BeanObjectInfo;
 import org.jmouse.common.support.objects.BeanObjectInfoFactory;
-import org.jmouse.common.support.context.ArgumentsContext;
+import org.jmouse.core.context.ArgumentsContext;
 import df.common.pipeline.PipelineProcessor;
 import df.common.pipeline.context.PipelineContext;
 import org.jmouse.validator.old.Validation;
@@ -18,14 +18,14 @@ public class ValidateDynamicFormProcessor implements PipelineProcessor {
     @Override
     public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
         BindingResult       bindingResult     = new MapBindingResult(new HashMap<>(), "dynamicForm");
-        Map<String, Object>                        requestData       = arguments.getArgument("REQUEST_DATA");
-        org.jmouse.validator.old.ValidationContext validationContext = new ValidationContext.Simple();
-        Validation                                 validation        = context.getProperty(Validation.class);
+        Map<String, Object> requestData       = arguments.getArgument("REQUEST_DATA");
+        ValidationContext   validationContext = new ValidationContext.Simple();
+        Validation          validation        = context.getValue(Validation.class);
         BeanObjectInfo      beanInfo          = BeanObjectInfoFactory.createBeanObjectInfo(requestData);
 
         // validation.validate(beanInfo, requestData.keySet(), validationContext, bindingResult);
 
-        context.setProperty(BindingResult.class, bindingResult);
+        context.setValue(BindingResult.class, bindingResult);
 
         return bindingResult.hasFieldErrors() ? ReturnCodes.VALIDATION_FAIL : ReturnCodes.VALIDATION_PASS;
     }

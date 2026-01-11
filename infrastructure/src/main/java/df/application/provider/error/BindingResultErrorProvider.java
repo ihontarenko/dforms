@@ -1,8 +1,8 @@
-package df.common.provider.error;
+package df.application.provider.error;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.jmouse.common.support.context.ErrorDetails;
+import org.jmouse.core.scope.ErrorDetails;
 import org.jmouse.common.support.provider.error.ErrorProvider;
 
 import java.util.HashMap;

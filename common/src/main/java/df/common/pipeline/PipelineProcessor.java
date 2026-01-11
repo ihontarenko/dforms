@@ -1,7 +1,7 @@
 package df.common.pipeline;
 
-import org.jmouse.common.support.context.ArgumentsContext;
 import df.common.pipeline.context.PipelineContext;
+import org.jmouse.core.context.ArgumentsContext;
 
 public interface PipelineProcessor {
 

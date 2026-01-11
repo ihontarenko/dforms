@@ -1,9 +1,11 @@
 package df.web.controller.form;
 
-import org.jmouse.common.support.context.ArgumentsContext;
-import org.jmouse.common.support.context.ResultContext;
+import org.jmouse.core.context.mutable.MutableArgumentsContext;
+import org.jmouse.core.context.result.MutableResultContext;
+import org.jmouse.core.scope.ArgumentsContext;
+import org.jmouse.core.scope.ResultContext;
 import df.application.exception.ApplicationException;
-import df.common.pipeline.PipelineContextFactoty;
+import df.common.pipeline.PipelineContextFactory;
 import df.common.pipeline.context.DefaultPipelineContext;
 import df.common.pipeline.context.PipelineContext;
 import df.application.dto.form.FormDTO;
@@ -65,24 +67,24 @@ public class FormController implements FormOperations {
 
     @Override
     public ModelAndView demo(String primaryId, MultiValueMap<String, String> postData, RedirectAttributes attributes) {
-        PipelineContext performContext = PipelineContextFactoty.createByDefault();
+        PipelineContext performContext = PipelineContextFactory.createByDefault();
 
         managementService.performDynamicForm((DefaultPipelineContext) performContext, primaryId, postData);
 
-        BindingResult bindingResult = performContext.getProperty(BindingResult.class);
+        BindingResult bindingResult = performContext.getValue(BindingResult.class);
 
         controllerHelper.setRedirectAttributes(attributes);
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_DEMO);
         controllerHelper.setBindingResult(bindingResult);
 
         if (bindingResult.hasErrors()) {
-            PipelineContext  renderContext = PipelineContextFactoty.createByDefault();
-            ArgumentsContext arguments     = renderContext.getArgumentsContext();
-            Form             entity        = formService.loadFormWithFields(primaryId);
+            PipelineContext         renderContext = PipelineContextFactory.createByDefault();
+            MutableArgumentsContext arguments     = renderContext.getArgumentsContext();
+            Form                    entity        = formService.loadFormWithFields(primaryId);
 
             //  prepare context and pass necessary data to arguments
             arguments.setArgument(Form.class, entity);
-            arguments.copyArgument("REQUEST_DATA", performContext.getArgumentsContext());
+            arguments.setValue("REQUEST_DATA", performContext.getArgumentsContext().getValue("REQUEST_DATA"));
             arguments.setArgument(BindingResult.class, bindingResult);
 
             // render dynamic form
@@ -98,10 +100,10 @@ public class FormController implements FormOperations {
 
     @Override
     public ModelAndView demo(String primaryId, RedirectAttributes attributes) {
-        Form             entity    = formService.loadFormWithFields(primaryId);
-        PipelineContext  context   = PipelineContextFactoty.createByDefault();
-        ResultContext    result    = context.getResultContext();
-        ArgumentsContext arguments = context.getArgumentsContext();
+        Form                    entity    = formService.loadFormWithFields(primaryId);
+        PipelineContext         context   = PipelineContextFactory.createByDefault();
+        MutableResultContext    result    = context.getResultContext();
+        MutableArgumentsContext arguments = context.getArgumentsContext();
 
         arguments.setArgument(Form.class, entity);
         arguments.setArgument("REQUEST_DATA", Collections.emptyMap());

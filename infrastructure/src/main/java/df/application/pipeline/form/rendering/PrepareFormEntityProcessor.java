@@ -1,9 +1,10 @@
 package df.application.pipeline.form.rendering;
 
 import df.application.dto.form.FormDTO;
+import df.common.pipeline.context.DefaultPipelineContext;
 import df.common.pipeline.context.PipelineContext;
 import df.common.pipeline.PipelineProcessor;
-import org.jmouse.common.support.context.ArgumentsContext;
+import org.jmouse.core.context.ArgumentsContext;
 import df.application.mapping.form.DeepFormMapper;
 import df.application.persistence.entity.form.Form;
 
@@ -16,17 +17,19 @@ public class PrepareFormEntityProcessor implements PipelineProcessor {
         if (entity == null) {
             throw new FormRenderProcessorException(
                     "Form entry with the identifier '%s' was not found in the database."
-                            .formatted(arguments.requireArgument("PRIMARY_ID")));
+                            .formatted(arguments.getRequiredArgument("PRIMARY_ID")));
         }
 
-        arguments.setArgument(populateFormDTO(entity, context));
-        arguments.setArgument(entity);
+        if (arguments instanceof DefaultPipelineContext mutableArgumentsContext) {
+            mutableArgumentsContext.setArgument(populateFormDTO(entity, context));
+            mutableArgumentsContext.setArgument(entity);
+        }
 
         return FormRenderReturnCode.PRE_BUILD_NODE_TREE;
     }
 
     private FormDTO populateFormDTO(Form entity, PipelineContext context) {
-        return context.getBean(DeepFormMapper.class).map(entity);
+        return context.getBeanLookup().getBean(DeepFormMapper.class).map(entity);
     }
 
 }

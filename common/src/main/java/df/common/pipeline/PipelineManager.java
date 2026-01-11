@@ -60,13 +60,13 @@ public class PipelineManager {
         PipelineChain chain = new PipelineProcessorChain(chainDefinition.initial(), processors, properties);
         PipelineChain proxy = proxyFactory.createProxy(chain);
 
-        chains.put(chainDefinition.name(), proxy);
+        chains.put(chainDefinition.name(), chain);
 
-        return proxy;
+        return chain;
     }
 
     public void runPipeline(String chainName, PipelineContext context) throws Exception {
-        context.getResultContext().cleanup();
+        context.getResultContext().clear();
         createProcessorChain(chainName).proceed(context);
     }
 

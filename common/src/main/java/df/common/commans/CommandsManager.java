@@ -1,7 +1,7 @@
 package df.common.commans;
 
-import org.jmouse.common.support.context.Context;
-import org.jmouse.common.support.context.ErrorDetails;
+import org.jmouse.core.scope.Context;
+import org.jmouse.core.scope.ErrorDetails;
 import org.jmouse.common.support.invocable.Invocable;
 import org.jmouse.common.support.invocable.InvokeResult;
 import org.jmouse.common.support.invocable.Invoker;

@@ -1,14 +1,14 @@
-package df.common.provider.bean;
+package df.application.provider.bean;
 
-import df.common.extensions.spring.context.SpringApplicationContext;
+import df.application.SpringApplicationContext;
+import org.jmouse.core.context.beans.BeanLookup;
 import org.springframework.context.ApplicationContext;
-import org.jmouse.common.support.context.BeanProvider;
 
-public class SpringBeanProvider implements BeanProvider {
+public class SpringBeanLookup implements BeanLookup {
 
     private final ApplicationContext context;
 
-    public SpringBeanProvider() {
+    public SpringBeanLookup() {
         context = SpringApplicationContext.getApplicationContext();
     }
 

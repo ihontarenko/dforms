@@ -49,7 +49,7 @@ public class SpelConstraintValidator implements ConstraintValidator<SpelConstrai
             // attach target structured to evaluation context
             spel.initialize(ctx -> {
                 ctx.setRootObject(object);
-                registerFunctions(Reflections.extractStaticMethods(AuthenticationHelper.class));
+                // registerFunctions(Reflections.extractStaticMethods(AuthenticationHelper.class));
             });
 
             try {

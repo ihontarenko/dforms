@@ -1,6 +1,6 @@
 package df.common.commans;
 
-import org.jmouse.common.support.context.Context;
+import org.jmouse.core.scope.Context;
 
 import java.util.Map;
 
