@@ -20,7 +20,7 @@ public class JpaEntityManagerInterceptor implements MethodInterceptor {
 
         if (PERSISTENCE_METHODS.contains(methodName)) {
             // modify entity before persist
-            System.out.println(methodName);
+            System.out.println("JpaEntityManagerInterceptor: " + methodName);
         }
 
         return invocation.proceed();

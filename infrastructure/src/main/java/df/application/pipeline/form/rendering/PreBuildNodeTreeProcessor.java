@@ -39,10 +39,12 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
         NodeBuilder<FormDTO>    builder  = strategy.getBuilder(FormDTO.class);
 
         if (arguments instanceof MutableArgumentsContext mutableArgumentsContext) {
-            mutableArgumentsContext.setArgument(Node.class, builder.build(arguments.getRequiredArgument(FormDTO.class), builderContext));
+            mutableArgumentsContext.setArgument(
+                    Node.class, builder.build(arguments.getRequiredArgument(FormDTO.class), builderContext));
         }
 
-        return (environment != null && environment.equals("DEMO")) ? FormRenderReturnCode.POST_BUILD_DEMO : FormRenderReturnCode.POST_BUILD_PUBLIC;
+        return (environment != null && environment.equalsIgnoreCase("DEMO"))
+                ? FormRenderReturnCode.POST_BUILD_DEMO : FormRenderReturnCode.POST_BUILD_PUBLIC;
     }
 
     private PostDataProvider createPostDataProvider(ArgumentsContext arguments) {
