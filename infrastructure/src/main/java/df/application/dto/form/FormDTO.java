@@ -28,7 +28,7 @@ import static df.common.validation.jakarta.Fields.ValueType.FIELD_NAME;
                                 entityField = "name")
                 },
                 entityClass = Form.class,
-                // message = "[NEW]: form name already taken",
+                message = "[NEW]: form name already taken",
                 applier = "!#hasText(id)" // for new records
         ),
         // validation for updating existing form
