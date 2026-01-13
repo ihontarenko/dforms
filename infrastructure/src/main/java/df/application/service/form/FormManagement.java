@@ -1,6 +1,6 @@
 package df.application.service.form;
 
-import df.common.pipeline.context.DefaultPipelineContext;
+import org.jmouse.common.pipeline.context.DefaultPipelineContext;
 import org.springframework.util.MultiValueMap;
 
 public interface FormManagement {

@@ -1,7 +1,7 @@
 package df.application.configuration;
 
 import df.application.PackageCoreRoot;
-import df.common.pipeline.PipelineManager;
+import org.jmouse.common.pipeline.PipelineManager;
 import df.application.service.form.FormManagement;
 import df.application.service.form.FormManagementService;
 import org.jmouse.core.proxy.DefaultProxyFactory;

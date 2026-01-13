@@ -1,6 +1,6 @@
 package df.application.proxy.pipeline;
 
-import df.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.core.proxy.MethodInterceptor;
 import org.jmouse.core.proxy.MethodInvocation;
 import org.jmouse.core.proxy.Intercept;

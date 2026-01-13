@@ -5,8 +5,8 @@ import org.jmouse.common.dom.TagName;
 import org.jmouse.common.dom.node.HTMLElementNode;
 import org.jmouse.common.dom.node.InputElementNode;
 import org.jmouse.common.dom.node.TextNode;
-import df.common.pipeline.context.PipelineContext;
-import df.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.context.PipelineContext;
+import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.core.context.ArgumentsContext;
 import df.application.persistence.entity.form.Form;
 

@@ -1,9 +1,9 @@
 package df.application.pipeline.form.rendering;
 
 import df.application.dto.form.FormDTO;
-import df.common.pipeline.context.DefaultPipelineContext;
-import df.common.pipeline.context.PipelineContext;
-import df.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.context.DefaultPipelineContext;
+import org.jmouse.common.pipeline.context.PipelineContext;
+import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.core.context.ArgumentsContext;
 import df.application.mapping.form.DeepFormMapper;
 import df.application.persistence.entity.form.Form;

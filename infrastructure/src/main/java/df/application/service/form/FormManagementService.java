@@ -1,8 +1,8 @@
 package df.application.service.form;
 
 import df.application.exception.ApplicationException;
-import df.common.pipeline.PipelineManager;
-import df.common.pipeline.context.DefaultPipelineContext;
+import org.jmouse.common.pipeline.PipelineManager;
+import org.jmouse.common.pipeline.context.DefaultPipelineContext;
 import df.application.provider.bean.SpringBeanLookup;
 import org.jmouse.core.context.ContextKey;
 import org.jmouse.core.context.execution.Execution;

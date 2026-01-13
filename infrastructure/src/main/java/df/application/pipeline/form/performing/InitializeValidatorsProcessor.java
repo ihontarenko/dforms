@@ -4,8 +4,8 @@ import df.application.Instances;
 import df.application.dto.form.FieldConfigDTO;
 import df.common.commans.CommandsManager;
 import org.jmouse.core.context.ArgumentsContext;
-import df.common.pipeline.PipelineProcessor;
-import df.common.pipeline.context.PipelineContext;
+import org.jmouse.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.context.PipelineContext;
 import org.jmouse.validator.old.Validation;
 
 import java.util.List;

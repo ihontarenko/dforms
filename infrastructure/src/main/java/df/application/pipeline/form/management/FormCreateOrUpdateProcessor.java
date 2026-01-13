@@ -1,7 +1,7 @@
 package df.application.pipeline.form.management;
 
-import df.common.pipeline.context.PipelineContext;
-import df.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.context.PipelineContext;
+import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.core.context.ArgumentsContext;
 
 import java.util.Optional;

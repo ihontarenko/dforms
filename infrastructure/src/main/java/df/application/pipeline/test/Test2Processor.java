@@ -1,7 +1,7 @@
 package df.application.pipeline.test;
 
-import df.common.pipeline.context.PipelineContext;
-import df.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.context.PipelineContext;
+import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.core.context.ArgumentsContext;
 
 public class Test2Processor implements PipelineProcessor {

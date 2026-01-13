@@ -1,8 +1,8 @@
 package df.application.pipeline.form.performing;
 
 import org.jmouse.core.context.ArgumentsContext;
-import df.common.pipeline.PipelineProcessor;
-import df.common.pipeline.context.PipelineContext;
+import org.jmouse.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.context.PipelineContext;
 
 import java.util.Map;
 

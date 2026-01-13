@@ -9,7 +9,7 @@ import df.common.i18n.Translator;
 import org.jmouse.core.events.EventManager;
 import org.jmouse.core.events.EventManagerFactory;
 import org.jmouse.expression.parser.ParserConfigurator;
-import df.common.pipeline.PipelineManager;
+import org.jmouse.common.pipeline.PipelineManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;

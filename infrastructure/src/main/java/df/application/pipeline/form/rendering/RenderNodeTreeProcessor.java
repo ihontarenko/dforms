@@ -2,8 +2,8 @@ package df.application.pipeline.form.rendering;
 
 import org.jmouse.common.dom.Node;
 import org.jmouse.common.dom.NodeContext;
-import df.common.pipeline.context.PipelineContext;
-import df.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.context.PipelineContext;
+import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.core.context.ArgumentsContext;
 import org.jmouse.core.context.result.MutableResultContext;
 

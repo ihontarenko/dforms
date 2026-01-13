@@ -1,8 +1,8 @@
 package df.application.pipeline.form.management;
 
 import df.application.service.form.FormConfigService;
-import df.common.pipeline.context.PipelineContext;
-import df.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.context.PipelineContext;
+import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.core.context.ArgumentsContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

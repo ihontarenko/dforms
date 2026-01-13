@@ -3,8 +3,8 @@ package df.application.pipeline.bean_console;
 import df.application.pipeline.DefaultReturnCode;
 import df.application.service.bc.ClassService;
 import org.jmouse.core.context.ArgumentsContext;
-import df.common.pipeline.PipelineProcessor;
-import df.common.pipeline.context.PipelineContext;
+import org.jmouse.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.context.PipelineContext;
 
 public class InitializerBeanConsolePageProcessor implements PipelineProcessor {
 

@@ -2,9 +2,8 @@ package df.application.pipeline.form.management;
 
 import df.application.dto.form.FormDTO;
 import df.application.persistence.entity.user.User;
-import df.common.pipeline.context.PipelineContext;
-import df.common.pipeline.PipelineProcessor;
-import df.common.pipeline.context.DefaultPipelineContext;
+import org.jmouse.common.pipeline.context.PipelineContext;
+import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.core.context.ArgumentsContext;
 import df.application.service.form.FormService;
 import org.jmouse.core.context.result.MutableResultContext;
