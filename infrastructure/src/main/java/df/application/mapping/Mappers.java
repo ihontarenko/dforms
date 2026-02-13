@@ -51,7 +51,7 @@ public enum Mappers {
         Mapper<?, ?> mapper = MAPPER_MAP.get(classType);
 
         if (mapper == null) {
-            throw new MapperException("No registered mapper for source-type '%s'".formatted(classType.getName()));
+            throw new MapperException("No registered mapperProvider for source-type '%s'".formatted(classType.getName()));
         }
 
         return (Mapper<S, D>) mapper;

@@ -29,7 +29,7 @@ public class DefaultFlow<T> implements Flow<T> {
     }
 
     /**
-     * Transforms each element of the flow using the provided mapper function.
+     * Transforms each element of the flow using the provided mapperProvider function.
      *
      * @param mapper the function to apply to each element
      * @param <R> the result type of the transformation
@@ -180,7 +180,7 @@ public class DefaultFlow<T> implements Flow<T> {
     }
 
     /**
-     * Computes the sum of the elements in the flow, using the provided mapper function.
+     * Computes the sum of the elements in the flow, using the provided mapperProvider function.
      *
      * @param mapper the function to extract numeric values from the elements
      * @param <N>    the type of the result (should extend {@link Number})

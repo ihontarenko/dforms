@@ -49,7 +49,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         Mapper<OAuth2User, UserDTO> mapper = factory.getMapper(provider);
 
         if (mapper == null) {
-            throw new OAuth2AuthenticationException("Unsupported provider %s".formatted(registrationId));
+            throw new OAuth2AuthenticationException("Unsupported valueProvider %s".formatted(registrationId));
         }
 
         UserDTO        userDTO    = mapper.map(user);
