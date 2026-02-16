@@ -2,6 +2,7 @@ package df.application.pipeline.form.rendering;
 
 import df.application.dto.form.FormDTO;
 import df.application.provider.error.BindingResultErrorProvider;
+import org.jmouse.common.pipeline.PipelineResult;
 import org.jmouse.core.context.ArgumentsContext;
 import org.jmouse.common.support.provider.data.DataProvider;
 import org.jmouse.common.support.provider.data.MapDataProvider;
@@ -25,7 +26,8 @@ import java.util.Collections;
 public class PreBuildNodeTreeProcessor implements PipelineProcessor {
 
     @Override
-    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
+    public PipelineResult process(
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
         NodeBuilderContext builderContext = new NodeBuilderContext();
         // todo: replace with execution context
         String             environment    = arguments.getArgument("ENV_NAME");
@@ -38,13 +40,14 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
         AbstractBuilderRegistry strategy = (AbstractBuilderRegistry) builderContext.getRegistry();
         NodeBuilder<FormDTO>    builder  = strategy.getBuilder(FormDTO.class);
 
-        if (arguments instanceof MutableArgumentsContext mutableArgumentsContext) {
-            mutableArgumentsContext.setArgument(
-                    Node.class, builder.build(arguments.getRequiredArgument(FormDTO.class), builderContext));
-        }
+        arguments.setArgument(
+                Node.class, builder.build(arguments.getRequiredArgument(FormDTO.class), builderContext)
+        );
 
-        return (environment != null && environment.equalsIgnoreCase("DEMO"))
+        Enum<?> nextCode = (environment != null && environment.equalsIgnoreCase("DEMO"))
                 ? FormRenderReturnCode.POST_BUILD_DEMO : FormRenderReturnCode.POST_BUILD_PUBLIC;
+
+        return PipelineResult.of(nextCode);
     }
 
     private PostDataProvider createPostDataProvider(ArgumentsContext arguments) {

@@ -3,9 +3,10 @@ package df.application.pipeline.form.performing;
 import df.application.Instances;
 import df.application.dto.form.FieldConfigDTO;
 import df.common.commans.CommandsManager;
-import org.jmouse.core.context.ArgumentsContext;
+import org.jmouse.common.pipeline.PipelineResult;
 import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.common.pipeline.context.PipelineContext;
+import org.jmouse.core.context.mutable.MutableArgumentsContext;
 import org.jmouse.validator.old.Validation;
 
 import java.util.List;
@@ -16,7 +17,8 @@ import static df.common.commans.CommandExecutionContext.create;
 public class InitializeValidatorsProcessor implements PipelineProcessor {
 
     @Override
-    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
+    public PipelineResult process(
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
         Map<String, List<FieldConfigDTO>> validationConfigs = arguments.getRequiredArgument("VALIDATION_CONFIGS");
         Validation                        validation        = createValidation(context);
         CommandsManager                   commandsManager   = Instances.COMMANDS_MANAGER;
@@ -30,7 +32,7 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
 
         context.setValue(Validation.class, validation);
 
-        return ReturnCodes.VALIDATE;
+        return PipelineResult.of(ReturnCodes.VALIDATE);
     }
 
     private Validation createValidation(PipelineContext context) {

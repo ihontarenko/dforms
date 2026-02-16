@@ -85,7 +85,7 @@ public class FormService implements RedirectAware {
         context.setArguments(this, optional, formDTO, user, configService);
 
         try {
-            pipelineManager.runPipeline("process-form-entity", context);
+            pipelineManager.run("process-form-entity", context);
         } catch (Exception e) {
             e.printStackTrace();
         }

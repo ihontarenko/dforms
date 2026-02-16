@@ -1,14 +1,15 @@
 package df.application.pipeline.form.performing;
 
-import org.jmouse.core.context.ArgumentsContext;
+import org.jmouse.common.pipeline.PipelineResult;
 import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.common.pipeline.context.PipelineContext;
+import org.jmouse.core.context.mutable.MutableArgumentsContext;
 
 public class BindValidationErrorsProcessor implements PipelineProcessor {
 
     @Override
-    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
-        return ReturnCodes.FINISH;
+    public PipelineResult process(
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
+        return PipelineResult.of(ReturnCodes.FINISH);
     }
-
 }

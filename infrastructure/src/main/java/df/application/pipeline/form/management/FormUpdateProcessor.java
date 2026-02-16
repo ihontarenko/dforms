@@ -4,8 +4,9 @@ import df.application.dto.form.FormDTO;
 import df.application.persistence.entity.form.Form;
 import df.application.service.form.FormService;
 import org.jmouse.common.pipeline.PipelineProcessor;
+import org.jmouse.common.pipeline.PipelineResult;
 import org.jmouse.common.pipeline.context.PipelineContext;
-import org.jmouse.core.context.ArgumentsContext;
+import org.jmouse.core.context.mutable.MutableArgumentsContext;
 import org.jmouse.core.context.result.MutableResultContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,8 @@ public class FormUpdateProcessor implements PipelineProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(FormUpdateProcessor.class);
 
     @Override
-    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
+    public PipelineResult process(
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
         Optional<Form>       optional      = arguments.getRequiredArgument(Optional.class);
         FormDTO              formDTO       = arguments.getRequiredArgument(FormDTO.class);
         FormService          service       = arguments.getRequiredArgument(FormService.class);
@@ -27,7 +29,7 @@ public class FormUpdateProcessor implements PipelineProcessor {
 
         LOGGER.info("FORM '{}' UPDATED", formDTO.id());
 
-        return FormReturnCode.END;
+        return PipelineResult.of(FormReturnCode.END);
     }
 
 }

@@ -51,11 +51,6 @@
             <groupId>org.jmouse</groupId>
             <artifactId>jmouse-validation</artifactId>
         </dependency>
-        <!-- DF -->
-        <dependency>
-            <groupId>df</groupId>
-            <artifactId>df-common</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>

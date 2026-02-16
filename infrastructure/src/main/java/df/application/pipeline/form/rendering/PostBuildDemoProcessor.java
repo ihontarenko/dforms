@@ -5,15 +5,17 @@ import org.jmouse.common.dom.TagName;
 import org.jmouse.common.dom.node.HTMLElementNode;
 import org.jmouse.common.dom.node.InputElementNode;
 import org.jmouse.common.dom.node.TextNode;
+import org.jmouse.common.pipeline.PipelineResult;
 import org.jmouse.common.pipeline.context.PipelineContext;
 import org.jmouse.common.pipeline.PipelineProcessor;
-import org.jmouse.core.context.ArgumentsContext;
 import df.application.persistence.entity.form.Form;
+import org.jmouse.core.context.mutable.MutableArgumentsContext;
 
 public class PostBuildDemoProcessor implements PipelineProcessor {
 
     @Override
-    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
+    public PipelineResult process(
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
         Form             entity  = arguments.getRequiredArgument(Form.class);
         Node             root    = arguments.getRequiredArgument(Node.class);
         InputElementNode submit  = new InputElementNode();
@@ -32,7 +34,7 @@ public class PostBuildDemoProcessor implements PipelineProcessor {
         root.addAttribute("action", "/form/%s/demo".formatted(entity.getId()));
         root.addAttribute("method", "post");
 
-        return FormRenderReturnCode.RENDER_NOTE_TREE;
+        return PipelineResult.of(FormRenderReturnCode.RENDER_NOTE_TREE);
     }
 
     private Node createInformationBlock() {

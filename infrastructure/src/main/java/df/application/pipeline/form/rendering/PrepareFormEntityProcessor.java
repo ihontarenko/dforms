@@ -1,17 +1,19 @@
 package df.application.pipeline.form.rendering;
 
 import df.application.dto.form.FormDTO;
+import org.jmouse.common.pipeline.PipelineResult;
 import org.jmouse.common.pipeline.context.DefaultPipelineContext;
 import org.jmouse.common.pipeline.context.PipelineContext;
 import org.jmouse.common.pipeline.PipelineProcessor;
-import org.jmouse.core.context.ArgumentsContext;
 import df.application.mapping.form.DeepFormMapper;
 import df.application.persistence.entity.form.Form;
+import org.jmouse.core.context.mutable.MutableArgumentsContext;
 
 public class PrepareFormEntityProcessor implements PipelineProcessor {
 
     @Override
-    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
+    public PipelineResult process(
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
         Form entity = arguments.getArgument(Form.class);
 
         if (entity == null) {
@@ -25,7 +27,7 @@ public class PrepareFormEntityProcessor implements PipelineProcessor {
             mutableArgumentsContext.setArgument(entity);
         }
 
-        return FormRenderReturnCode.PRE_BUILD_NODE_TREE;
+        return PipelineResult.of(FormRenderReturnCode.PRE_BUILD_NODE_TREE);
     }
 
     private FormDTO populateFormDTO(Form entity, PipelineContext context) {

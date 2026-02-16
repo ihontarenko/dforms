@@ -2,7 +2,7 @@ package df.application.pipeline.form.performing;
 
 import df.application.dto.form.FieldConfigDTO;
 import df.application.mapping.form.FieldConfigMapper;
-import org.jmouse.core.context.ArgumentsContext;
+import org.jmouse.common.pipeline.PipelineResult;
 import org.jmouse.common.pipeline.PipelineProcessor;
 import org.jmouse.common.pipeline.context.PipelineContext;
 import df.application.mapping.form.MultiValueMapMapper;
@@ -19,7 +19,8 @@ import java.util.*;
 public class PrepareRequestPostDataProcessor implements PipelineProcessor {
 
     @Override
-    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
+    public PipelineResult process(
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
         MultiValueMapMapper           mapper      = new MultiValueMapMapper();
         MultiValueMap<String, String> postData    = arguments.getRequiredArgument(MultiValueMap.class);
         Map<String, Object>           requestData = mapper.map(postData);
@@ -29,13 +30,11 @@ public class PrepareRequestPostDataProcessor implements PipelineProcessor {
 
         Map<String, Field> fields = getFields(context, requestData.keySet());
 
-        if (arguments instanceof MutableArgumentsContext mutableArgumentsContext) {
-            mutableArgumentsContext.setArgument("REQUEST_DATA", requestData);
-            mutableArgumentsContext.setArgument("FIELDS", fields);
-            mutableArgumentsContext.setArgument("VALIDATION_CONFIGS", getValidationConfigs(context, fields));
-        }
+        arguments.setArgument("REQUEST_DATA", requestData);
+        arguments.setArgument("FIELDS", fields);
+        arguments.setArgument("VALIDATION_CONFIGS", getValidationConfigs(context, fields));
 
-        return ReturnCodes.INITIALIZE_VALIDATORS;
+        return PipelineResult.of(ReturnCodes.INITIALIZE_VALIDATORS);
     }
 
     private void fulfilAbsentFieldWithNulls(PipelineContext context, Map<String, Object> requestData) {

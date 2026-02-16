@@ -36,7 +36,7 @@ public class FormManagementService implements FormManagement {
         ctx.setBeanLookup(new SpringBeanLookup());
 
         try {
-            pipelineManager.runPipeline(DYNAMIC_FORM_HANDLER_PIPELINE, ctx);
+            pipelineManager.run(DYNAMIC_FORM_HANDLER_PIPELINE, ctx);
         } catch (Exception e) {
             throw new ApplicationException(e, e.getMessage());
         }
@@ -51,7 +51,7 @@ public class FormManagementService implements FormManagement {
 
         Execution.in(ACTIVE_ENVIRONMENT, DEMO, () -> {
             try {
-                pipelineManager.runPipeline(PROCESS_FORM_HTML_PIPELINE, ctx);
+                pipelineManager.run(PROCESS_FORM_HTML_PIPELINE, ctx);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

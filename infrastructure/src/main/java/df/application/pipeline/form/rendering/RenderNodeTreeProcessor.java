@@ -2,15 +2,17 @@ package df.application.pipeline.form.rendering;
 
 import org.jmouse.common.dom.Node;
 import org.jmouse.common.dom.NodeContext;
+import org.jmouse.common.pipeline.PipelineResult;
 import org.jmouse.common.pipeline.context.PipelineContext;
 import org.jmouse.common.pipeline.PipelineProcessor;
-import org.jmouse.core.context.ArgumentsContext;
+import org.jmouse.core.context.mutable.MutableArgumentsContext;
 import org.jmouse.core.context.result.MutableResultContext;
 
 public class RenderNodeTreeProcessor implements PipelineProcessor {
 
     @Override
-    public Enum<?> process(PipelineContext context, ArgumentsContext arguments) throws Exception {
+    public PipelineResult process(
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
         Node                 root   = arguments.getRequiredArgument(Node.class);
         MutableResultContext result = context.getResultContext();
 
@@ -18,7 +20,7 @@ public class RenderNodeTreeProcessor implements PipelineProcessor {
 
         result.setReturnValue(root.interpret(context.getBeanLookup().getBean(NodeContext.class)));
 
-        return FormRenderReturnCode.FINISH;
+        return PipelineResult.of(FormRenderReturnCode.FINISH);
     }
 
 }

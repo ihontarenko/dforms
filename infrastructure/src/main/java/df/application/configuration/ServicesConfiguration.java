@@ -1,13 +1,24 @@
 package df.application.configuration;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import df.application.PackageCoreRoot;
 import org.jmouse.common.ast.parser.ParserContext;
 import df.common.breadcrumb.BreadcrumbService;
 import org.jmouse.common.dom.NodeContext;
 import org.jmouse.common.dom.RendererFactory;
 import df.common.i18n.Translator;
+import org.jmouse.common.pipeline.PipelineProcessorFactory;
+import org.jmouse.common.pipeline.definition.DefaultDefinitionProcessing;
+import org.jmouse.common.pipeline.definition.loading.ClasspathSource;
+import org.jmouse.common.pipeline.definition.loading.DefinitionLoader;
+import org.jmouse.common.pipeline.definition.loading.dto.XmlDTO2DefinitionMapper;
+import org.jmouse.common.pipeline.definition.loading.readers.XmlDefinitionReader;
+import org.jmouse.common.pipeline.definition.model.PipelineDefinition;
+import org.jmouse.common.pipeline.runtime.DefaultPipelineCompiler;
+import org.jmouse.common.pipeline.runtime.PipelineCompiler;
 import org.jmouse.core.events.EventManager;
 import org.jmouse.core.events.EventManagerFactory;
+import org.jmouse.core.proxy.DefaultProxyFactory;
 import org.jmouse.expression.parser.ParserConfigurator;
 import org.jmouse.common.pipeline.PipelineManager;
 import org.slf4j.Logger;
@@ -17,6 +28,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import java.util.List;
 
 @Configuration
 public class ServicesConfiguration {
@@ -51,8 +64,31 @@ public class ServicesConfiguration {
     }
 
     @Bean
-    public PipelineManager pipelineManager() {
-        return new PipelineManager("/pipeline/pipeline-DEFAULT.xml");
+    public PipelineManager pipelineManager(PipelineDefinition definition, PipelineCompiler pipelineCompiler) {
+        return new PipelineManager(definition, pipelineCompiler);
+    }
+
+    @Bean
+    public DefinitionLoader definitionLoader() {
+        return new DefinitionLoader(
+                List.of(
+                        new XmlDefinitionReader(new XmlMapper(), new XmlDTO2DefinitionMapper())
+                ),
+                DefaultDefinitionProcessing.defaults()
+        );
+    }
+
+    @Bean
+    public PipelineCompiler pipelineCompiler() {
+        return new DefaultPipelineCompiler(
+                new PipelineProcessorFactory(),
+                new DefaultProxyFactory()
+        );
+    }
+
+    @Bean
+    public PipelineDefinition pipelineDefinition(DefinitionLoader loader) {
+        return loader.load(new ClasspathSource("/pipeline/pipeline-DEFAULT.xml"));
     }
 
     @Bean

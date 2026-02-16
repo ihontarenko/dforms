@@ -1,5 +1,6 @@
 package df.common.validation.jakarta;
 
+import df.application.security.helper.AuthenticationHelper;
 import df.common.support.spel.SpelEvaluator;
 import df.common.validation.jakarta.constraint.SpelConstraint;
 import jakarta.validation.ConstraintValidator;
@@ -49,7 +50,7 @@ public class SpelConstraintValidator implements ConstraintValidator<SpelConstrai
             // attach target structured to evaluation context
             spel.initialize(ctx -> {
                 ctx.setRootObject(object);
-                // registerFunctions(Reflections.extractStaticMethods(AuthenticationHelper.class));
+                spel.registerFunctions(Reflections.extractStaticMethods(AuthenticationHelper.class));
             });
 
             try {

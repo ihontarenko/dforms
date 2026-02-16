@@ -120,9 +120,6 @@
         <!--  Initialize (Mapping)  -->
         <processor-link name="initialize">
             <processor class="df.application.pipeline.bean_console.InitializerBeanConsolePageProcessor" />
-            <properties>
-                <transition return="AA" link="validatorsInitialize" />
-            </properties>
         </processor-link>
 
     </processor-chain>
