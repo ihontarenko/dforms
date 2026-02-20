@@ -1,6 +1,5 @@
 package df.web.common;
 
-import df.application.service.RedirectAware;
 import df.web.common.flash.FlashMessage;
 import df.web.common.flash.FlashMessageService;
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static df.application.Messages.*;
 import static df.web.common.flash.FlashMessage.error;
 import static java.util.Objects.requireNonNull;
 import static java.util.Objects.requireNonNullElse;

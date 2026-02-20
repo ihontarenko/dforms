@@ -1,7 +1,7 @@
 package df.web.controller.user;
 
 import df.application.persistence.entity.user.User;
-import df.application.mapping.user.UserMapper;
+import df.application.old_mapping.user.UserMapper;
 import df.application.dto.user.UserDTO;
 import df.application.persistence.exception.JpaResourceNotFoundException;
 import df.application.service.user.RoleService;

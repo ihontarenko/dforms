@@ -19,7 +19,6 @@
         <module>jmouse</module>
         <module>dependencies</module>
         <module>common</module>
-        <module>infrastructure</module>
         <module>web</module>
     </modules>
 

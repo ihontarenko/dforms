@@ -1,7 +1,7 @@
 package df.web.controller.form;
 
 import df.application.dto.form.FieldDTO;
-import df.application.mapping.form.FieldMapper;
+import df.application.old_mapping.form.FieldMapper;
 import df.application.persistence.entity.form.Field;
 import df.application.persistence.entity.support.ElementType;
 import df.application.persistence.entity.support.FieldStatus;
@@ -14,7 +14,6 @@ import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
 import df.web.controller.MAVConstants;
 import org.jmouse.validator.old.Validation;
-import org.jmouse.validator.old.ValidationContext;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

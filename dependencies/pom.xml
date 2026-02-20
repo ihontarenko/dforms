@@ -38,11 +38,6 @@
                 <artifactId>df-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>df</groupId>
-                <artifactId>df-infrastructure</artifactId>
-                <version>${project.version}</version>
-            </dependency>
             <!-- ByteBuddy -->
             <dependency>
                 <groupId>net.bytebuddy</groupId>

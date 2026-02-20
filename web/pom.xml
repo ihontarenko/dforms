@@ -33,7 +33,7 @@
     <dependencies>
         <dependency>
             <groupId>df</groupId>
-            <artifactId>df-infrastructure</artifactId>
+            <artifactId>df-common</artifactId>
         </dependency>
         <dependency>
             <groupId>io.pebbletemplates</groupId>
