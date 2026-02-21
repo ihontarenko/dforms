@@ -65,7 +65,7 @@ public class Form implements EntityNameAware {
             joinColumns = @JoinColumn(name = EntityConstants.COLUMN_FORM_FIELD_MAPPING_FORM_ID)
     )
     @OrderColumn(name = "SEQUENCE_ORDER")
-    private List<Field> fields;
+    private List<Field> fields = new ArrayList<>();
 
     @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FormEntry> entries;
