@@ -3,12 +3,17 @@ package df.application.persistence.entity.form;
 import df.application.persistence.entity.support.ElementType;
 import org.jmouse.core.access.ObjectAccessorWrapper;
 import org.jmouse.core.access.descriptor.structured.DescriptorResolver;
+import org.jmouse.dom.CommentInfoCorrector;
+import org.jmouse.dom.CorrectNodeDepth;
 import org.jmouse.dom.Node;
-import org.jmouse.dom.NodeContext;
+import org.jmouse.dom.TagName;
 import org.jmouse.dom.meterializer.BootstrapTemplates;
 import org.jmouse.dom.meterializer.BootstrapThemeModule;
 import org.jmouse.dom.meterializer.DOMMaterializer;
 import org.jmouse.dom.meterializer.DOMRenderingPipeline;
+import org.jmouse.dom.renderer.RendererContext;
+import org.jmouse.dom.renderer.Renderers;
+import org.jmouse.dom.renderer.RenderingProcessor;
 import org.jmouse.meterializer.*;
 
 import java.util.HashMap;
@@ -31,11 +36,16 @@ public class Demo {
                 "df/form", getForm()
         ));
 
-        node.execute(NodeContext.CORRECT_NODE_DEPTH);
+        node.execute(new CorrectNodeDepth());
+        node.execute(new CommentInfoCorrector(n -> {
+            if (n.getTagName() == TagName.INPUT) {
+                return "Before Input!";
+            }
+            return null;
+        }, n -> null));
 
-        String html = node.interpret(NodeContext.defaults());
-
-        DescriptorResolver.describe(FieldOption.class);
+        RenderingProcessor engine = new RenderingProcessor(Renderers.html());
+        String             html    = engine.render(node, RendererContext.defaultsHtmlPretty());
 
         System.out.println(html);
     }
