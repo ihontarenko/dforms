@@ -25,14 +25,16 @@ public class JpaCriteriaMapper implements Mapper<Fields[], JpaCriteria[]> {
     public JpaCriteria[] map(Fields[] source) {
         List<JpaCriteria> criteria = new ArrayList<>();
 
-        evaluator.initialize(ctx -> ctx.setRootObject(object));
+        evaluator.initialize(
+                context -> context.setRootObject(object));
 
         for (Fields fields : source) {
             criteria.add(new JpaCriteria.SimpleCriteria(fields.entityField(),
                     resolveObjectValue(this.object, fields), fields.comparison()));
         }
 
-        evaluator.uninitialize(ctx -> ctx.setRootObject(null));
+        evaluator.uninitialize(
+                context -> context.setRootObject(null));
 
         return criteria.toArray(JpaCriteria[]::new);
     }

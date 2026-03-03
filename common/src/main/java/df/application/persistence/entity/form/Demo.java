@@ -51,7 +51,7 @@ public class Demo {
     }
 
     private static void configureTemplates(TemplateRegistry registry) {
-        registry.register("df/form", Templates.defaultForm());
+        registry.register("df/form", Templates.defaultForm("/form/_/id_f_0001/\"2\"", "POST"));
         registry.register("default/button/submit", BootstrapTemplates.submitButton("submit"));
 
         registry.register("field.type.SELECT", BootstrapTemplates.select("name", "description", "options", "option.optionValue", "option.optionLabel"));
@@ -61,7 +61,7 @@ public class Demo {
     public static Form getForm() {
         Form form = new Form();
 
-        form.setDescription("Add Resistor!");
+        form.setDescription("Resistor & Other");
         form.setId("resistor_1");
         form.setName("add_resistor");
 

@@ -12,7 +12,8 @@ public class RenderNodeTreeProcessor implements PipelineProcessor {
 
     @Override
     public PipelineResult process(
-            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous
+    ) throws Exception {
         Node                 root   = arguments.getRequiredArgument(Node.class);
         MutableResultContext result = context.getResultContext();
 

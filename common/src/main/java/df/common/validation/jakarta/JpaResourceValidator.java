@@ -81,14 +81,16 @@ public class JpaResourceValidator implements ConstraintValidator<JpaResource, Ob
         SpelExpressionParser parser     = new SpelExpressionParser();
         Expression           expression = parser.parseExpression(spel);
 
-        evaluator.initialize(ctx -> {
-            ctx.setRootObject(object);
-            ctx.setVariables(variables);
+        evaluator.initialize(context -> {
+            context.setRootObject(object);
+            context.setVariables(variables);
         });
+
         boolean require = evaluator.evaluate(expression, Boolean.class);
-        evaluator.uninitialize(ctx -> {
-            ctx.setRootObject(null);
-            variables.forEach((key, value) -> ctx.setVariable(key, null));
+
+        evaluator.uninitialize(context -> {
+            context.setRootObject(null);
+            variables.forEach((key, value) -> context.setVariable(key, null));
         });
 
         return require;

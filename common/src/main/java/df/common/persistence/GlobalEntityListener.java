@@ -11,7 +11,7 @@ import java.lang.annotation.Annotation;
 @SuppressWarnings({"unused"})
 public class GlobalEntityListener {
 
-    private final static Logger          LOGGER           = LoggerFactory.getLogger(GlobalEntityListener.class);
+    private final static Logger       LOGGER          = LoggerFactory.getLogger(GlobalEntityListener.class);
     private final static String       LOGGER_TEMPLATE = "EVENT '{}' CALLED FOR '{}' ENTITY";
     private final        EventManager eventManager    = EventManagerFactory.create();
 
