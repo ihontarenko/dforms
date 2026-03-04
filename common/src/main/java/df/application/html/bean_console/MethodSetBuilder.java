@@ -1,27 +1,26 @@
 package df.application.html.bean_console;
 
-import org.jmouse.common.dom.Node;
-import org.jmouse.common.dom.TagName;
-import org.jmouse.common.dom.old_builder.NodeBuilder;
-import org.jmouse.common.dom.old_builder.NodeBuilderContext;
-import org.jmouse.common.dom.node.ElementNode;
-import org.jmouse.common.dom.node.TextNode;
+import org.jmouse.dom.*;
+import org.jmouse.dom.constructor.NodeConstructor;
+import org.jmouse.dom.constructor.NodeConstructorContext;
 import df.common.flow.Flow;
 import org.jmouse.core.reflection.Reflections;
 import df.application.dto.reflection.ClassDTO;
 import df.application.dto.reflection.ClassListDTO;
 import df.application.dto.reflection.MethodDTO;
 import df.application.dto.reflection.MethodListDTO;
+import org.jmouse.dom.node.ElementNode;
+import org.jmouse.dom.node.TextNode;
 
 import java.util.List;
 import java.util.Map;
 
-public class MethodSetBuilder implements NodeBuilder<MethodListDTO> {
+public class MethodSetBuilder implements NodeConstructor<MethodListDTO> {
 
     @Override
-    public Node build(MethodListDTO methodDTOs, NodeBuilderContext ctx) {
+    public Node construct(MethodListDTO methodDTOs, NodeConstructorContext context) {
         Node            wrapper = new ElementNode(TagName.DIV);
-        ClassSetBuilder builder = (ClassSetBuilder) ctx.getRegistry().getBuilder(ClassListDTO.class);
+        ClassSetBuilder builder = (ClassSetBuilder) context.getRegistry().getConstructor(ClassListDTO.class);
 
         for (Map.Entry<String, List<MethodDTO>> entry : Flow.of(methodDTOs).groupBy(MethodDTO::getAccessLevel).entrySet()) {
             Node container  = new ElementNode(TagName.OL);

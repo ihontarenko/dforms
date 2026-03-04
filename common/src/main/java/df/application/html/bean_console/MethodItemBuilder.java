@@ -1,14 +1,14 @@
 package df.application.html.bean_console;
 
-import org.jmouse.common.dom.Node;
-import org.jmouse.common.dom.old_builder.NodeBuilder;
-import org.jmouse.common.dom.old_builder.NodeBuilderContext;
+import org.jmouse.dom.Node;
+import org.jmouse.dom.constructor.NodeConstructor;
+import org.jmouse.dom.constructor.NodeConstructorContext;
 import df.application.dto.reflection.MethodDTO;
 
-public class MethodItemBuilder implements NodeBuilder<MethodDTO> {
+public class MethodItemBuilder implements NodeConstructor<MethodDTO> {
 
     @Override
-    public Node build(MethodDTO methodDTO, NodeBuilderContext ctx) {
+    public Node construct(MethodDTO methodDTO, NodeConstructorContext context) {
         return null;
     }
 

@@ -1,13 +1,12 @@
 package df.application.html.bean_console;
 
-import org.jmouse.common.dom.Node;
-import org.jmouse.common.dom.TagName;
-import org.jmouse.common.dom.old_builder.NodeBuilder;
-import org.jmouse.common.dom.old_builder.NodeBuilderContext;
-import org.jmouse.common.dom.node.ElementNode;
-import org.jmouse.common.dom.node.TextNode;
+import org.jmouse.dom.Node;
+import org.jmouse.dom.TagName;
+import org.jmouse.dom.constructor.NodeConstructor;
+import org.jmouse.dom.constructor.NodeConstructorContext;
 import df.application.dto.reflection.ClassDTO;
 import df.application.dto.reflection.ClassListDTO;
+import org.jmouse.dom.node.*;
 
 /**
  * A builder class for generating an HTML representation of a set of Java classes.
@@ -19,7 +18,7 @@ import df.application.dto.reflection.ClassListDTO;
  * </p>
  *
  * <p>
- * This class implements the {@link NodeBuilder} interface and operates on
+ * This class implements the {@link NodeConstructor} interface and operates on
  * {@link ClassListDTO} data structures.
  * </p>
  *
@@ -29,17 +28,17 @@ import df.application.dto.reflection.ClassListDTO;
  * Node result = builder.build(classSetDTO, context);
  * }</pre>
  */
-public class ClassSetBuilder implements NodeBuilder<ClassListDTO> {
+public class ClassSetBuilder implements NodeConstructor<ClassListDTO> {
 
     /**
      * Builds an HTML representation of the provided set of classes.
      *
      * @param classDTOs the set of class definitions to be processed.
-     * @param ctx the context for building the nodes.
-     * @return a {@link Node} representing the HTML structure of the class set.
+     * @param context the context for building the nodes.
+     * @return a {@link org.jmouse.dom.Node} representing the HTML structure of the class set.
      */
     @Override
-    public Node build(ClassListDTO classDTOs, NodeBuilderContext ctx) {
+    public Node construct(ClassListDTO classDTOs, NodeConstructorContext context) {
         Node wrapper   = new ElementNode(TagName.DIV);
         Node container = new ElementNode(TagName.OL);
 

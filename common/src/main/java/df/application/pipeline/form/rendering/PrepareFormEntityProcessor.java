@@ -28,6 +28,7 @@ public class PrepareFormEntityProcessor implements PipelineProcessor {
         Form                         entity    = arguments.getArgument(Form.class);
         DOMRenderingPipeline         rendering = (DOMRenderingPipeline) context.getBeanLookup()
                 .getBean(Rendering.class);
+
         FillActionMethod.RequestData data      = new FillActionMethod.RequestData(
                 "/action/" + entity.getId(), "POST", Map.of());
 

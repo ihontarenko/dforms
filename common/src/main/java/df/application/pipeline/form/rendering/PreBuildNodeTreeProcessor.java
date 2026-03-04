@@ -10,11 +10,11 @@ import org.jmouse.common.support.provider.error.ErrorDetailsProvider;
 import org.jmouse.common.support.provider.error.ErrorProvider;
 import org.jmouse.common.dom.Node;
 import org.jmouse.common.dom.PostDataProvider;
-import org.jmouse.common.dom.old_builder.NodeBuilder;
-import org.jmouse.common.dom.old_builder.NodeBuilderContext;
+import org.jmouse.dom.constructor.NodeConstructor;
+import org.jmouse.dom.constructor.NodeConstructorContext;
 import org.jmouse.pipeline.PipelineProcessor;
 import org.jmouse.pipeline.context.PipelineContext;
-import org.jmouse.common.dom.old_builder.AbstractBuilderRegistry;
+import org.jmouse.dom.constructor.AbstractNodeConstructorRegistry;
 import df.application.html.forms.bootstrap.BootstrapBuilderRegistry;
 import org.jmouse.core.context.execution.ExecutionContext;
 import org.jmouse.core.context.execution.ExecutionContextHolder;
@@ -28,7 +28,7 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
     @Override
     public PipelineResult process(
             PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
-        NodeBuilderContext builderContext = new NodeBuilderContext();
+        NodeConstructorContext builderContext = new NodeConstructorContext();
         // todo: replace with execution context
         String             environment    = arguments.getArgument("ENV_NAME");
         ExecutionContext executionContext = ExecutionContextHolder.current();
@@ -37,11 +37,11 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
 
         builderContext.setRegistry(new BootstrapBuilderRegistry());
 
-        AbstractBuilderRegistry strategy = (AbstractBuilderRegistry) builderContext.getRegistry();
-        NodeBuilder<FormDTO>    builder  = strategy.getBuilder(FormDTO.class);
+        AbstractNodeConstructorRegistry strategy = (AbstractNodeConstructorRegistry) builderContext.getRegistry();
+        NodeConstructor<FormDTO>        builder  = strategy.getConstructor(FormDTO.class);
 
         arguments.setArgument(
-                Node.class, builder.build(arguments.getRequiredArgument(FormDTO.class), builderContext)
+                Node.class, builder.construct(arguments.getRequiredArgument(FormDTO.class), builderContext)
         );
 
         Enum<?> nextCode = (environment != null && environment.equalsIgnoreCase("DEMO"))

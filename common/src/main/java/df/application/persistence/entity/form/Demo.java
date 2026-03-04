@@ -7,10 +7,7 @@ import org.jmouse.dom.CommentInfoCorrector;
 import org.jmouse.dom.CorrectNodeDepth;
 import org.jmouse.dom.Node;
 import org.jmouse.dom.TagName;
-import org.jmouse.dom.meterializer.BootstrapTemplates;
-import org.jmouse.dom.meterializer.BootstrapThemeModule;
-import org.jmouse.dom.meterializer.DOMMaterializer;
-import org.jmouse.dom.meterializer.DOMRenderingPipeline;
+import org.jmouse.dom.meterializer.*;
 import org.jmouse.dom.renderer.RendererContext;
 import org.jmouse.dom.renderer.Renderers;
 import org.jmouse.dom.renderer.RenderingProcessor;
@@ -52,9 +49,9 @@ public class Demo {
 
     private static void configureTemplates(TemplateRegistry registry) {
         registry.register("df/form", Templates.defaultForm("/form/_/id_f_0001/\"2\"", "POST"));
-        registry.register("default/button/submit", BootstrapTemplates.submitButton("submit"));
+        registry.register("default.button.submit", BootstrapTemplates.submitButton("submit"));
 
-        registry.register("field.type.SELECT", BootstrapTemplates.select("name", "description", "options", "option.optionValue", "option.optionLabel"));
+        registry.register("field.type.SELECT", Html5Templates.select("name", "description", "options", "option.optionValue", "option.optionLabel"));
         registry.register("field.type.TEXT", BootstrapTemplates.inputText("name", "description", "value"));
     }
 
@@ -74,6 +71,12 @@ public class Demo {
         form.addField(title);
 
         Field vendor = new Field();
+        FieldAttribute attribute = new FieldAttribute();
+
+        attribute.setName("data-vendor");
+        attribute.setValue("TI");
+
+        vendor.setAttributes(Set.of(attribute));
 
         vendor.setElementType(ElementType.SELECT);
         vendor.setId("vendor_1");

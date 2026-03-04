@@ -1,32 +1,29 @@
 package df.application.html.bean_console;
 
-import org.jmouse.common.dom.Node;
-import org.jmouse.common.dom.TagName;
-import org.jmouse.common.dom.old_builder.NodeBuilder;
-import org.jmouse.common.dom.old_builder.NodeBuilderContext;
-import org.jmouse.common.dom.old_builder.NodeBuilderRegistry;
-import org.jmouse.common.dom.node.ElementNode;
-import org.jmouse.common.dom.node.HTMLElementNode;
-import org.jmouse.common.dom.node.TextNode;
+import org.jmouse.dom.*;
+import org.jmouse.dom.constructor.NodeConstructor;
+import org.jmouse.dom.constructor.NodeConstructorContext;
+import org.jmouse.dom.constructor.NodeConstructorRegistry;
 import df.application.dto.reflection.ClassDTO;
 import df.application.dto.reflection.ClassListDTO;
 import df.application.dto.reflection.MethodListDTO;
+import org.jmouse.dom.node.*;
 
-public class ClassTypeBuilder implements NodeBuilder<ClassDTO> {
+public class ClassTypeBuilder implements NodeConstructor<ClassDTO> {
 
     public static final String TEXT_COMMA = ", ";
 
     @Override
-    public Node build(ClassDTO classDTO, NodeBuilderContext ctx) {
-        NodeBuilderRegistry        registry      = ctx.getRegistry();
-        NodeBuilder<MethodListDTO> methodBuilder = registry.getBuilder(MethodListDTO.class);
-        NodeBuilder<ClassListDTO>  classBuilder  = registry.getBuilder(ClassListDTO.class);
-        Node                      wrapper       = new ElementNode(TagName.DIV);
+    public Node construct(ClassDTO classDTO, NodeConstructorContext context) {
+        NodeConstructorRegistry        registry      = context.getRegistry();
+        NodeConstructor<MethodListDTO> methodBuilder = registry.getConstructor(MethodListDTO.class);
+        NodeConstructor<ClassListDTO>  classBuilder  = registry.getConstructor(ClassListDTO.class);
+        Node                           wrapper       = new ElementNode(TagName.DIV);
 
         wrapper.append(createHeader(classDTO));
         wrapper.append(createClasses(classDTO.getBaseClasses(), (ClassSetBuilder) classBuilder, "Base Classes: "));
         wrapper.append(createClasses(classDTO.getInterfaces(), (ClassSetBuilder) classBuilder, "Interfaces: "));
-        wrapper.append(methodBuilder.build(classDTO.getMethods(), ctx));
+        wrapper.append(methodBuilder.construct(classDTO.getMethods(), context));
 
         return wrapper;
     }
