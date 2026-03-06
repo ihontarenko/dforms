@@ -37,7 +37,8 @@ public class FormService implements RedirectAware {
 
     public FormService(
             FormRepository repository, FieldService fieldService, FormConfigService configService,
-            PipelineManager pipelineManager) {
+            PipelineManager pipelineManager
+    ) {
         this.repository = repository;
         this.configService = configService;
         this.fieldService = fieldService;
@@ -51,9 +52,11 @@ public class FormService implements RedirectAware {
 
     @Transactional(readOnly = true)
     public Form loadFormWithFields(String formId) {
-        JpaEntityGraph entityGraph = fetch("fields", "fields.configs", "fields.attributes", "fields.options",
-                                            "fields.children", "fields.children.configs", "fields.children.attributes",
-                                            "fields.children.options");
+        JpaEntityGraph entityGraph = fetch(
+                "fields", "fields.configs", "fields.attributes", "fields.options",
+                "fields.children", "fields.children.configs", "fields.children.attributes",
+                "fields.children.options"
+        );
         Optional<Form> optionalForm = repository.findById(formId, entityGraph);
 
         return optionalForm.orElseThrow(()

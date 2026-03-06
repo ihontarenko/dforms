@@ -4,8 +4,6 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import df.application.PackageCoreRoot;
 import org.jmouse.common.ast.parser.ParserContext;
 import df.common.breadcrumb.BreadcrumbService;
-import org.jmouse.common.dom.NodeContext;
-import org.jmouse.common.dom.RendererFactory;
 import df.common.i18n.Translator;
 import org.jmouse.pipeline.PipelineProcessorFactory;
 import org.jmouse.pipeline.definition.DefaultDefinitionProcessing;
@@ -51,11 +49,6 @@ public class ServicesConfiguration {
     public BreadcrumbService breadcrumbService(
             @Qualifier("requestMappingHandlerMapping") RequestMappingHandlerMapping mapping) {
         return new BreadcrumbService(mapping);
-    }
-
-    @Bean
-    public NodeContext nodeContext() {
-        return new NodeContext(new RendererFactory());
     }
 
     @Bean

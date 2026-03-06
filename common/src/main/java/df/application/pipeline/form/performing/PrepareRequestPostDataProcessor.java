@@ -23,7 +23,8 @@ public class PrepareRequestPostDataProcessor implements PipelineProcessor {
 
     @Override
     public PipelineResult process(
-            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous
+    ) throws Exception {
         MultiValueMapMapper           mapper      = new MultiValueMapMapper();
         MultiValueMap<String, String> postData    = arguments.getRequiredArgument(MultiValueMap.class);
         Map<String, Object>           requestData = mapper.map(postData);
@@ -67,8 +68,7 @@ public class PrepareRequestPostDataProcessor implements PipelineProcessor {
         for (Map.Entry<String, Field> entry : fields.entrySet()) {
             validationConfigs.putIfAbsent(entry.getKey(), new ArrayList<>());
             for (FieldConfig config : entry.getValue().getConfigs()) {
-                FieldConfigDTO configDTO = mapper.map(config);
-                mapper().map(config, FieldConfigDTO.class);
+                FieldConfigDTO configDTO = mapper().map(config, FieldConfigDTO.class);
                 if (configDTO.getKey().startsWith("#validation")) {
                     validationConfigs.get(entry.getKey()).add(configDTO);
                 }

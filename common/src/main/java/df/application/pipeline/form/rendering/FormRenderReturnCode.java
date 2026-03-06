@@ -5,6 +5,6 @@ public enum FormRenderReturnCode {
     POST_BUILD_PUBLIC,
     POST_BUILD_DEMO,
     RENDER_NOTE_TREE,
-    FINISH,
+    PRINT_RESULT,
     END
 }

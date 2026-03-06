@@ -1,8 +1,9 @@
 package df.application.service.bc;
 
 import df.application.html.bean_console.ClassBuilderRegistry;
-import org.jmouse.common.dom.Node;
-import org.jmouse.common.dom.NodeContext;
+import org.jmouse.dom.CorrectNodeDepth;
+import org.jmouse.dom.NbspReplacerCorrector;
+import org.jmouse.dom.Node;
 import org.jmouse.dom.constructor.NodeConstructor;
 import org.jmouse.dom.constructor.NodeConstructorContext;
 import org.jmouse.dom.constructor.NodeConstructorRegistry;
@@ -15,11 +16,9 @@ public class ClassManagementService {
 
     private final ClassService           classService;
     private final NodeConstructorContext builderContext;
-    private final NodeContext            nodeContext;
 
-    public ClassManagementService(ClassService classService, NodeContext nodeContext) {
+    public ClassManagementService(ClassService classService) {
         this.classService = classService;
-        this.nodeContext = nodeContext;
         this.builderContext = new NodeConstructorContext();
         builderContext.setRegistry(new ClassBuilderRegistry());
     }
@@ -31,10 +30,11 @@ public class ClassManagementService {
 
         Node rootNode = builder.construct(objectDTO, builderContext);
 
-        rootNode.execute(NodeContext.REORDER_NODE_CORRECTOR);
-        rootNode.execute(NodeContext.NBSP_REPLACER_CORRECTOR);
+        rootNode.execute(new CorrectNodeDepth());
+        rootNode.execute(new NbspReplacerCorrector());
 
-        return rootNode.interpret(nodeContext);
+//        return rootNode.interpret(nodeContext);
+        return null;
     }
 
 

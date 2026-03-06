@@ -4,7 +4,8 @@ import org.jmouse.core.access.ObjectAccessorWrapper;
 import org.jmouse.dom.Node;
 import org.jmouse.dom.meterializer.*;
 import org.jmouse.dom.meterializer.hooks.NodeRuleHook;
-import org.jmouse.dom.meterializer.rules.FillActionMethod;
+import org.jmouse.dom.meterializer.hooks.SubmissionDecorationHook;
+import org.jmouse.dom.meterializer.rules.ComplementForm;
 import org.jmouse.meterializer.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +25,9 @@ public class DomRenderingConfiguration {
         builder.instanceFactory(DOMRenderingPipeline::new);
 
         assembler.addHook(new NodeRuleHook(
-                new NodeRuleSet().add(new FillActionMethod("post"))
+                new NodeRuleSet().add(new ComplementForm("post"))
         ));
+        assembler.addHook(new SubmissionDecorationHook());
 
         configureTemplates(assembler.templateRegistry());
 
@@ -37,9 +39,11 @@ public class DomRenderingConfiguration {
         registry.register("default.form", Templates.defaultForm());
         registry.register("default.button.submit", Html5Templates.submitButton("submit"));
         // default fields
-        registry.register("field.type.NONE", element("h5", block -> block.child(text(constant("none block")))));
+        registry.register("field.type.NONE", Html5Templates.group("children"));
         registry.register("field.type.SELECT", Html5Templates.select("name", "description", "options", "option.optionValue", "option.optionLabel"));
+        registry.register("field.type.RADIO", Html5Templates.radioGroup("name", "description", "options", "option.optionValue", "option.optionLabel"));
         registry.register("field.type.TEXT", Html5Templates.inputText("name", "label", "value"));
+        registry.register("field.type.NUMBER", Html5Templates.inputNumber("name", "label", "value"));
     }
 
 }

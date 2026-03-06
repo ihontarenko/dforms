@@ -1,16 +1,9 @@
 <pipeline name="DEFAULT">
 
     <!--  Form HTML Rendering (For Demo and Public)  -->
-    <processor-chain name="process-form-html" initial="prepareFormEntity">
+    <processor-chain name="process-form-html" initial="domNode">
 
-        <processor-link name="prepareFormEntity">
-            <processor class="df.application.pipeline.form.rendering.PrepareFormEntityProcessor" />
-            <properties>
-                <transition return="PRE_BUILD_NODE_TREE" link="preBuildNodeTree" />
-            </properties>
-        </processor-link>
-
-        <processor-link name="preBuildNodeTree">
+        <processor-link name="domNode">
             <processor class="df.application.pipeline.form.rendering.PreBuildNodeTreeProcessor" />
             <properties>
                 <transition return="POST_BUILD_DEMO" link="postBuildDemo" />
@@ -33,9 +26,9 @@
         </processor-link>
 
         <processor-link name="renderNodeTree">
-            <processor class="df.application.pipeline.form.rendering.RenderNodeTreeProcessor" />
+            <processor class="df.application.pipeline.form.rendering.RenderNodeProcessor" />
             <properties>
-                <transition return="FINISH" link="printResultValue" />
+                <transition return="PRINT_RESULT" link="printResultValue" />
             </properties>
         </processor-link>
 

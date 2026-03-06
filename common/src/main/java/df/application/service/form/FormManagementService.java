@@ -3,7 +3,7 @@ package df.application.service.form;
 import df.application.exception.ApplicationException;
 import org.jmouse.pipeline.PipelineManager;
 import org.jmouse.pipeline.context.DefaultPipelineContext;
-import df.application.provider.bean.SpringBeanLookup;
+import df.application.provider.SpringBeanLookup;
 import org.jmouse.core.context.ContextKey;
 import org.jmouse.core.context.execution.Execution;
 import org.springframework.context.ApplicationContext;

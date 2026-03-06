@@ -1,71 +1,64 @@
 package df.application.pipeline.form.rendering;
 
-import df.application.dto.form.FormDTO;
-import df.application.provider.error.BindingResultErrorProvider;
+import df.application.persistence.entity.form.Form;
+import df.application.persistence.entity.form.FormConfig;
+import org.jmouse.dom.CorrectNodeDepth;
+import org.jmouse.dom.FormMetadata;
+import org.jmouse.dom.Node;
+import org.jmouse.dom.meterializer.DOMRenderingPipeline;
+import org.jmouse.meterializer.ModelReference;
+import org.jmouse.meterializer.Rendering;
+import org.jmouse.meterializer.SubmissionState;
 import org.jmouse.pipeline.PipelineResult;
-import org.jmouse.core.context.ArgumentsContext;
-import org.jmouse.common.support.provider.data.DataProvider;
-import org.jmouse.common.support.provider.data.MapDataProvider;
-import org.jmouse.common.support.provider.error.ErrorDetailsProvider;
-import org.jmouse.common.support.provider.error.ErrorProvider;
-import org.jmouse.common.dom.Node;
-import org.jmouse.common.dom.PostDataProvider;
-import org.jmouse.dom.constructor.NodeConstructor;
-import org.jmouse.dom.constructor.NodeConstructorContext;
 import org.jmouse.pipeline.PipelineProcessor;
 import org.jmouse.pipeline.context.PipelineContext;
-import org.jmouse.dom.constructor.AbstractNodeConstructorRegistry;
-import df.application.html.forms.bootstrap.BootstrapBuilderRegistry;
-import org.jmouse.core.context.execution.ExecutionContext;
-import org.jmouse.core.context.execution.ExecutionContextHolder;
 import org.jmouse.core.context.mutable.MutableArgumentsContext;
-import org.springframework.validation.BindingResult;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PreBuildNodeTreeProcessor implements PipelineProcessor {
 
     @Override
     public PipelineResult process(
-            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
-        NodeConstructorContext builderContext = new NodeConstructorContext();
-        // todo: replace with execution context
-        String             environment    = arguments.getArgument("ENV_NAME");
-        ExecutionContext executionContext = ExecutionContextHolder.current();
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous
+    ) throws Exception {
+        Form                 entity      = arguments.getArgument(Form.class);
+        String               environment = arguments.getArgument("ENV_NAME");
+        DOMRenderingPipeline rendering   = (DOMRenderingPipeline) context.getBeanLookup().getBean(Rendering.class);
 
-        builderContext.setDataProvider(createPostDataProvider(arguments));
+        Map<String, String> configs = new HashMap<>();
 
-        builderContext.setRegistry(new BootstrapBuilderRegistry());
+        for (FormConfig config : entity.getConfigs()) {
+            configs.put(config.getConfigName(), config.getConfigValue());
+        }
 
-        AbstractNodeConstructorRegistry strategy = (AbstractNodeConstructorRegistry) builderContext.getRegistry();
-        NodeConstructor<FormDTO>        builder  = strategy.getConstructor(FormDTO.class);
+        FormMetadata         metadata    = FormMetadata.of(
+                configs.get("CONFIG_FORM_ACTION"),
+                configs.get("CONFIG_FORM_METHOD"),
+                Map.of());
 
-        arguments.setArgument(
-                Node.class, builder.construct(arguments.getRequiredArgument(FormDTO.class), builderContext)
+        SubmissionState submission = SubmissionState.of(
+                Map.of("element_name", "R13"),
+                Map.of("element_name", "Some error!")
         );
+
+        Node node = rendering.render(ModelReference.of(
+                "default.form", entity
+        ), request -> request
+                .setAttribute(FormMetadata.REQUEST_ATTRIBUTE, metadata)
+                .setAttribute("submitCaption", configs.get("CONFIG_SUBMIT_TEXT"))
+                .setAttribute(SubmissionState.REQUEST_ATTRIBUTE, submission)
+        );
+
+        node.execute(new CorrectNodeDepth());
+
+        arguments.setArgument(Node.class, node);
 
         Enum<?> nextCode = (environment != null && environment.equalsIgnoreCase("DEMO"))
                 ? FormRenderReturnCode.POST_BUILD_DEMO : FormRenderReturnCode.POST_BUILD_PUBLIC;
 
         return PipelineResult.of(nextCode);
-    }
-
-    private PostDataProvider createPostDataProvider(ArgumentsContext arguments) {
-        return new PostDataProvider(createDataProvider(arguments), createErrorProvider(arguments));
-    }
-
-    private DataProvider<String, Object> createDataProvider(ArgumentsContext arguments) {
-        return new MapDataProvider(arguments.getRequiredArgument("REQUEST_DATA"));
-    }
-
-    private ErrorProvider<String> createErrorProvider(ArgumentsContext arguments) {
-        BindingResult bindingResult = arguments.getArgument(BindingResult.class);
-
-        if (bindingResult == null) {
-            return new ErrorDetailsProvider(Collections.emptyMap());
-        }
-
-        return new BindingResultErrorProvider(bindingResult);
     }
 
 }

@@ -36,7 +36,7 @@ public class Demo {
         node.execute(new CorrectNodeDepth());
         node.execute(new CommentInfoCorrector(n -> {
             if (n.getTagName() == TagName.INPUT) {
-                return "Before Input!";
+                return "INPUT:" + n.getAttribute("type");
             }
             return null;
         }, n -> null));
@@ -51,8 +51,10 @@ public class Demo {
         registry.register("df/form", Templates.defaultForm("/form/_/id_f_0001/\"2\"", "POST"));
         registry.register("default.button.submit", BootstrapTemplates.submitButton("submit"));
 
+        registry.register("field.type.NUMBER", Html5Templates.inputNumber("name", "description", "value"));
+        registry.register("field.type.NONE", Html5Templates.composite("children"));
         registry.register("field.type.SELECT", Html5Templates.select("name", "description", "options", "option.optionValue", "option.optionLabel"));
-        registry.register("field.type.TEXT", BootstrapTemplates.inputText("name", "description", "value"));
+        registry.register("field.type.TEXT", Html5Templates.inputText("name", "description", "value"));
     }
 
     public static Form getForm() {
@@ -61,6 +63,40 @@ public class Demo {
         form.setDescription("Resistor & Other");
         form.setId("resistor_1");
         form.setName("add_resistor");
+
+        Field resistorValue = new Field();
+        resistorValue.setName("resistor_value");
+        resistorValue.setDescription("Resistor Value");
+        resistorValue.setElementType(ElementType.TEXT);
+
+        Field resistorUnit = new Field();
+        resistorUnit.setName("resistor_unit");
+        resistorUnit.setDescription("Resistor Unit");
+        resistorUnit.setElementType(ElementType.SELECT);
+
+        Map<String, String> valueType = new HashMap<>();
+        Set<FieldOption>    options2  = new HashSet<>();
+        valueType.put("ohm",       "Ohm");
+        valueType.put("kilo_ohm",  "kOhm");
+        valueType.put("mega_ohm",  "MOhm");
+
+        for (Map.Entry<String, String> e : valueType.entrySet()) {
+            FieldOption option = new FieldOption();
+            option.setId("option_" + e.getKey());
+            option.setOptionLabel(e.getValue());
+            option.setOptionValue(e.getKey());
+            options2.add(option);
+        }
+
+        resistorUnit.setOptions(options2);
+
+        Field composed = new Field();
+        composed.setName("composed");
+        composed.setElementType(ElementType.NONE);
+        composed.setDescription("Resistor Ohms");
+
+        composed.addChild(resistorUnit);
+        composed.addChild(resistorValue);
 
         Field title = new Field();
         title.setElementType(ElementType.TEXT);
@@ -109,6 +145,7 @@ public class Demo {
         vendor.setOptions(options);
 
         form.addField(vendor);
+        form.addField(composed);
 
         return form;
     }

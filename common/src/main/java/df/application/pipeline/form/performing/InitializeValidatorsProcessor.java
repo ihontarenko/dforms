@@ -18,7 +18,8 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
 
     @Override
     public PipelineResult process(
-            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
+            PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous
+    ) throws Exception {
         Map<String, List<FieldConfigDTO>> validationConfigs = arguments.getRequiredArgument("VALIDATION_CONFIGS");
         Validation                        validation        = createValidation(context);
         CommandsManager                   commandsManager   = Instances.COMMANDS_MANAGER;

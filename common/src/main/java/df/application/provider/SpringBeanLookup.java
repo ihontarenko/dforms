@@ -1,4 +1,4 @@
-package df.application.provider.bean;
+package df.application.provider;
 
 import df.application.SpringApplicationContext;
 import org.jmouse.core.context.beans.BeanLookup;
