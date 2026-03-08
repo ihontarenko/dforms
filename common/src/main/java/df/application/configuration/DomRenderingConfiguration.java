@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.jmouse.meterializer.NodeTemplate.element;
 import static org.jmouse.meterializer.NodeTemplate.text;
-import static org.jmouse.meterializer.ValueExpression.constant;
 
 @Configuration
 public class DomRenderingConfiguration {
@@ -36,14 +35,15 @@ public class DomRenderingConfiguration {
 
     private static void configureTemplates(TemplateRegistry registry) {
         // default components
-        registry.register("default.form", Templates.defaultForm());
-        registry.register("default.button.submit", Html5Templates.submitButton("submit"));
+        registry.register("default.form", DefaultTemplates.defaultForm());
+        registry.register("default.button.submit", DefaultTemplates.submitButton("submit"));
         // default fields
-        registry.register("field.type.NONE", Html5Templates.group("children"));
-        registry.register("field.type.SELECT", Html5Templates.select("name", "description", "options", "option.optionValue", "option.optionLabel"));
-        registry.register("field.type.RADIO", Html5Templates.radioGroup("name", "description", "options", "option.optionValue", "option.optionLabel"));
-        registry.register("field.type.TEXT", Html5Templates.inputText("name", "label", "value"));
-        registry.register("field.type.NUMBER", Html5Templates.inputNumber("name", "label", "value"));
+        registry.register("field.type.NONE", DefaultTemplates.composite("children"));
+        registry.register("field.type.SELECT", DefaultTemplates.select("name", "description", "options", "option.optionValue", "option.optionLabel"));
+        registry.register("field.type.RADIO", DefaultTemplates.radioGroup("name", "description", "options", "option.optionValue", "option.optionLabel"));
+        registry.register("field.type.TEXT", DefaultTemplates.inputText("name", "label", "value"));
+        registry.register("field.type.NUMBER", DefaultTemplates.inputNumber("name", "label", "value"));
+        registry.register("field.type.URL", DefaultTemplates.input(InputType.URL, "name", "label", "value"));
     }
 
 }

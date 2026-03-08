@@ -17,11 +17,14 @@ import df.application.service.form.FormService;
 import df.web.common.ControllerHelper;
 import df.web.common.flash.FlashMessage;
 import df.web.controller.MAVConstants;
+import org.jmouse.validator.ValidationResult;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
@@ -69,21 +72,29 @@ public class FormController implements FormOperations {
 
         managementService.performDynamicForm((DefaultPipelineContext) performContext, primaryId, postData);
 
-        BindingResult bindingResult = performContext.getValue(BindingResult.class);
+        BindingResult                         bindingResult    = performContext.getValue(BindingResult.class);
+        ValidationResult<Map<String, Object>> validationResult = performContext.getValue(ValidationResult.class);
+
+        if (bindingResult == null) {
+            bindingResult = new MapBindingResult(Map.of(), "empty");
+        }
 
         controllerHelper.setRedirectAttributes(attributes);
         controllerHelper.setViewName(MAVConstants.VIEW_FORM_DEMO);
         controllerHelper.setBindingResult(bindingResult);
 
-        if (bindingResult.hasErrors()) {
+        if (validationResult.hasErrors()) {
             PipelineContext         renderContext = PipelineContextFactory.createByDefault();
             MutableArgumentsContext arguments     = renderContext.getArgumentsContext();
             Form                    entity        = formService.loadFormWithFields(primaryId);
+
+            bindingResult.addError(new FieldError("a", "b", "message"));
 
             //  prepare context and pass necessary data to arguments
             arguments.setArgument(Form.class, entity);
             arguments.setValue("REQUEST_DATA", performContext.getArgumentsContext().getValue("REQUEST_DATA"));
             arguments.setArgument(BindingResult.class, bindingResult);
+            arguments.setArgument(ValidationResult.class, validationResult);
 
             // render dynamic form
             managementService.renderDynamicForm((DefaultPipelineContext) renderContext, primaryId);

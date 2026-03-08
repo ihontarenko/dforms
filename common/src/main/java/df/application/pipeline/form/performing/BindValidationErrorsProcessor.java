@@ -10,6 +10,6 @@ public class BindValidationErrorsProcessor implements PipelineProcessor {
     @Override
     public PipelineResult process(
             PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous) throws Exception {
-        return PipelineResult.of(ReturnCodes.FINISH);
+        return PipelineResult.finish();
     }
 }

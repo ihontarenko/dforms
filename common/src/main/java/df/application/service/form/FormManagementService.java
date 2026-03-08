@@ -29,14 +29,14 @@ public class FormManagementService implements FormManagement {
     }
 
     @Override
-    public void performDynamicForm(DefaultPipelineContext ctx, String primaryId, MultiValueMap<String, String> postData) {
-        ctx.setArgument(MultiValueMap.class, postData);
-        ctx.setArgument(PRIMARY_ID, primaryId);
-        ctx.setValue(ApplicationContext.class, applicationContext);
-        ctx.setBeanLookup(new SpringBeanLookup());
+    public void performDynamicForm(DefaultPipelineContext context, String primaryId, MultiValueMap<String, String> postData) {
+        context.setArgument(MultiValueMap.class, postData);
+        context.setArgument(PRIMARY_ID, primaryId);
+        context.setValue(ApplicationContext.class, applicationContext);
+        context.setBeanLookup(new SpringBeanLookup());
 
         try {
-            pipelineManager.run(DYNAMIC_FORM_HANDLER_PIPELINE, ctx);
+            pipelineManager.run(DYNAMIC_FORM_HANDLER_PIPELINE, context);
         } catch (Exception e) {
             throw new ApplicationException(e, e.getMessage());
         }
@@ -44,14 +44,14 @@ public class FormManagementService implements FormManagement {
     }
 
     @Override
-    public void renderDynamicForm(DefaultPipelineContext ctx, String primaryId) {
-        ctx.setArgument(PRIMARY_ID, primaryId);
-        ctx.setArgument(ENV_NAME, DEMO);
-        ctx.setBeanLookup(new SpringBeanLookup());
+    public void renderDynamicForm(DefaultPipelineContext context, String primaryId) {
+        context.setArgument(PRIMARY_ID, primaryId);
+        context.setArgument(ENV_NAME, DEMO);
+        context.setBeanLookup(new SpringBeanLookup());
 
         Execution.in(ACTIVE_ENVIRONMENT, DEMO, () -> {
             try {
-                pipelineManager.run(PROCESS_FORM_HTML_PIPELINE, ctx);
+                pipelineManager.run(PROCESS_FORM_HTML_PIPELINE, context);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

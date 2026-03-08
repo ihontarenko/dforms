@@ -2,7 +2,6 @@ package df.application.persistence.entity.form;
 
 import df.application.persistence.entity.support.ElementType;
 import org.jmouse.core.access.ObjectAccessorWrapper;
-import org.jmouse.core.access.descriptor.structured.DescriptorResolver;
 import org.jmouse.dom.CommentInfoCorrector;
 import org.jmouse.dom.CorrectNodeDepth;
 import org.jmouse.dom.Node;
@@ -48,13 +47,13 @@ public class Demo {
     }
 
     private static void configureTemplates(TemplateRegistry registry) {
-        registry.register("df/form", Templates.defaultForm("/form/_/id_f_0001/\"2\"", "POST"));
+        registry.register("df/form", DefaultTemplates.defaultForm("/form/_/id_f_0001/\"2\"", "POST"));
         registry.register("default.button.submit", BootstrapTemplates.submitButton("submit"));
 
-        registry.register("field.type.NUMBER", Html5Templates.inputNumber("name", "description", "value"));
-        registry.register("field.type.NONE", Html5Templates.composite("children"));
-        registry.register("field.type.SELECT", Html5Templates.select("name", "description", "options", "option.optionValue", "option.optionLabel"));
-        registry.register("field.type.TEXT", Html5Templates.inputText("name", "description", "value"));
+        registry.register("field.type.NUMBER", DefaultTemplates.inputNumber("name", "description", "value"));
+        registry.register("field.type.NONE", DefaultTemplates.composite("children"));
+        registry.register("field.type.SELECT", DefaultTemplates.select("name", "description", "options", "option.optionValue", "option.optionLabel"));
+        registry.register("field.type.TEXT", DefaultTemplates.inputText("name", "description", "value"));
     }
 
     public static Form getForm() {
