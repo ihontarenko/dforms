@@ -2,20 +2,18 @@ package df.application.pipeline.form.performing;
 
 import df.application.dto.form.FieldConfigDTO;
 import org.jetbrains.annotations.NotNull;
-import org.jmouse.core.mapping.Mapper;
 import org.jmouse.core.mapping.Mappers;
-import org.jmouse.core.mapping.config.MappingConfig;
 import org.jmouse.el.ExpressionLanguage;
 import org.jmouse.pipeline.PipelineResult;
 import org.jmouse.pipeline.PipelineProcessor;
 import org.jmouse.pipeline.context.PipelineContext;
 import org.jmouse.core.context.mutable.MutableArgumentsContext;
 import org.jmouse.validator.*;
+import org.jmouse.validator.constraint.StandardConstraintModule;
 import org.jmouse.validator.constraint.adapter.core.ConstraintSchemaValidator;
 import org.jmouse.validator.constraint.adapter.el.ConstraintELModule;
 import org.jmouse.validator.constraint.adapter.el.ConstraintExpressionSupport;
 import org.jmouse.validator.constraint.api.Constraint;
-import org.jmouse.validator.constraint.constraint.*;
 import org.jmouse.validator.constraint.dsl.ConstraintSchemas;
 import org.jmouse.validator.constraint.handler.ConstraintHandler;
 import org.jmouse.validator.constraint.handler.SchemaSelector;
@@ -87,22 +85,9 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
     }
 
     public static ConstraintExpressionSupport getConstraintExpressionSupport() {
-        ConstraintTypeRegistry typeRegistry = new ConstraintTypeRegistry()
-                .register("minmax", MinMaxConstraint.class)
-                .register("required", RequiredConstraint.class)
-                .register("notBlank", NotBlankConstraint.class)
-                .register("oneOf", OneOfConstraint.class)
-                .register("webLink", WebLinkConstraint.class);
-
-        return ConstraintELModule.create(new ExpressionLanguage(), typeRegistry, getMapper());
-    }
-
-    public static Mapper getMapper() {
-        return Mappers.builder()
-                .config(MappingConfig.builder()
-                        .listFactory(LinkedList::new)
-                        .build())
-                .build();
+        ConstraintTypeRegistry typeRegistry = new ConstraintTypeRegistry();
+        StandardConstraintModule.registerDefaults(typeRegistry);
+        return ConstraintELModule.create(new ExpressionLanguage(), typeRegistry, Mappers.defaultMapper());
     }
 
 }

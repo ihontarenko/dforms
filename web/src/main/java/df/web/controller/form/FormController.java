@@ -1,5 +1,6 @@
 package df.web.controller.form;
 
+import df.application.service.form.FieldEntryService;
 import org.jmouse.core.context.mutable.MutableArgumentsContext;
 import org.jmouse.core.context.result.MutableResultContext;
 import df.application.exception.ApplicationException;
@@ -39,12 +40,14 @@ import static df.web.common.flash.FlashMessage.*;
 @Controller
 public class FormController implements FormOperations {
 
-    private final FormService        formService;
-    private final ControllerHelper   controllerHelper;
+    private final FieldEntryService entryService;
+    private final FormService       formService;
+    private final ControllerHelper  controllerHelper;
 
     private final FormManagement managementService;
 
-    public FormController(FormService formService, ControllerHelper controllerHelper, FormManagement management) {
+    public FormController(FormService formService, FieldEntryService entryService, ControllerHelper controllerHelper, FormManagement management) {
+        this.entryService = entryService;
         this.formService = formService;
         this.controllerHelper = controllerHelper;
         this.managementService = management;
@@ -70,6 +73,8 @@ public class FormController implements FormOperations {
     public ModelAndView demo(String primaryId, MultiValueMap<String, String> postData, RedirectAttributes attributes) {
         PipelineContext performContext = PipelineContextFactory.createByDefault();
 
+        performContext.setArgument(FieldEntryService.class, entryService);
+
         managementService.performDynamicForm((DefaultPipelineContext) performContext, primaryId, postData);
 
         BindingResult                         bindingResult    = performContext.getValue(BindingResult.class);
@@ -92,7 +97,7 @@ public class FormController implements FormOperations {
 
             //  prepare context and pass necessary data to arguments
             arguments.setArgument(Form.class, entity);
-            arguments.setValue("REQUEST_DATA", performContext.getArgumentsContext().getValue("REQUEST_DATA"));
+            arguments.setValue("DATA", performContext.getArgumentsContext().getValue("DATA"));
             arguments.setArgument(BindingResult.class, bindingResult);
             arguments.setArgument(ValidationResult.class, validationResult);
 

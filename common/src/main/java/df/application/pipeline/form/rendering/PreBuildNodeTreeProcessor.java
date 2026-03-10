@@ -81,7 +81,7 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
     private Map<String, Object> getRequestData(PipelineContext context) {
         Map<String, Object> requestData = Map.of();
 
-        if (context.getValue("REQUEST_DATA") instanceof Map<?,?> map) {
+        if (context.getValue("DATA") instanceof Map<?,?> map) {
             requestData = (Map<String, Object>) map;
         }
 

@@ -6,6 +6,7 @@ import df.application.persistence.support.EntityGraphConstants;
 import df.common.extensions.persistence.entity_graph.JpaEntityGraphRepository;
 import df.common.extensions.persistence.entity_graph.JpaEntityGraph;
 import df.application.persistence.entity.support.FieldStatus;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,7 @@ public interface FieldRepository extends JpaEntityGraphRepository<Field, String>
 
     @Override
     @EntityGraph(EntityGraphConstants.FORM_FIELD_WITH_CONFIGS)
+    @NotNull
     List<Field> findAll();
 
     List<Field> findAllByUsageType(UsageType usageType, JpaEntityGraph graph);
@@ -29,7 +31,10 @@ public interface FieldRepository extends JpaEntityGraphRepository<Field, String>
     List<Field> findAllByUsageTypeInAndStatus(Iterable<UsageType> usageTypes, FieldStatus status, JpaEntityGraph graph);
 
     @EntityGraph(EntityGraphConstants.FORM_FIELD_FULL)
-    Optional<Field> findById(@Param("id") String id);
+    Optional<Field> findById(@Param("id") @NotNull String id);
+
+    @EntityGraph(EntityGraphConstants.FORM_FIELD_FULL)
+    Optional<Field> findByName(@Param("name") @NotNull String name);
 
     Optional<Field> findById(@Param("id") String id, JpaEntityGraph graph);
 

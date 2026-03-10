@@ -3,8 +3,10 @@ package df.application.persistence.entity.form;
 import df.application.persistence.support.EntityGraphConstants;
 import df.common.extensions.hibernate.generator.PrefixedId;
 import jakarta.persistence.*;
+import org.jmouse.core.Safe;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -68,6 +70,10 @@ public class FormEntry {
 
     public void setFieldEntries(Set<FieldEntry> fieldEntries) {
         this.fieldEntries = fieldEntries;
+    }
+
+    public void addFieldEntry(FieldEntry fieldEntry) {
+        this.fieldEntries = Safe.add(this.fieldEntries, HashSet::new, fieldEntry);
     }
 }
 

@@ -19,12 +19,11 @@ import static df.common.commans.CommandExecutionContext.create;
 public class FieldConfigEntityListener extends AbstractEventListener<FieldConfig> {
 
     private final static Logger          LOGGER          = LoggerFactory.getLogger(FieldConfigEntityListener.class);
-    private final        CommandsManager commandsManager = Instances.COMMANDS_MANAGER;
 
     @Override
     public void onEvent(Event<FieldConfig> event) {
-        Context context = create(Map.of("entity", event.payload(), "manager", commandsManager, "event", event));
-        commandsManager.execute("#config/process", "(entity=#entity, manager=#manager)", context);
+        Context context = create(Map.of("entity", event.payload(), "manager", Instances.COMMANDS_MANAGER, "event", event));
+        Instances.COMMANDS_MANAGER.execute("#config/process", "(entity=#entity, manager=#manager)", context);
     }
 
     @Override

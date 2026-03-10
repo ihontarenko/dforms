@@ -4,7 +4,9 @@ import df.application.dto.form.FieldEntryDTO;
 import df.application.persistence.entity.form.FieldEntry;
 import df.application.service.CommonService;
 import df.application.persistence.repository.form.FieldEntryRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FieldEntryService implements CommonService<FieldEntryDTO, FieldEntry, FieldEntryRepository> {
 
     private final FieldEntryRepository repository;

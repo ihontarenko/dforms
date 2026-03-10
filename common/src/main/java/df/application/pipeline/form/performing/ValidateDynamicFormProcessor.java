@@ -9,20 +9,23 @@ import org.jmouse.validator.ValidationResult;
 
 import java.util.Map;
 
+import static df.application.pipeline.form.performing.ReturnCodes.VALIDATION_FAIL;
+import static df.application.pipeline.form.performing.ReturnCodes.VALIDATION_PASS;
+
 public class ValidateDynamicFormProcessor implements PipelineProcessor {
 
     @Override
     public PipelineResult process(
             PipelineContext context, MutableArgumentsContext arguments, PipelineResult previous
     ) throws Exception {
-        Map<String, Object>                   requestData         = arguments.getArgument("REQUEST_DATA");
+        Map<String, Object>                   requestData         = arguments.getArgument("DATA");
         ValidationProcessor                   validationProcessor = context.getRequiredValue(ValidationProcessor.class);
         ValidationResult<Map<String, Object>> validationResult    = validationProcessor.validate(requestData, "test");
 
         context.setValue(ValidationResult.class, validationResult);
 
         return PipelineResult.of(
-                validationResult.hasErrors() ? ReturnCodes.VALIDATION_FAIL : ReturnCodes.VALIDATION_PASS
+                validationResult.hasErrors() ? VALIDATION_FAIL : VALIDATION_PASS
         );
     }
 

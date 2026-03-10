@@ -65,6 +65,11 @@ public class FieldService implements RedirectAware, CommonService<FieldDTO, Fiel
     }
 
     @Transactional(readOnly = true)
+    public Optional<Field> getByName(String name) {
+        return name == null || name.isBlank() ? Optional.empty() : repository.findByName(name);
+    }
+
+    @Transactional(readOnly = true)
     public Field requireById(String id) {
         return getById(Objects.requireNonNull(id, Messages.REQUIRED_ID_CANNOT_BE_NULL))
                 .orElseThrow(() -> new JpaResourceNotFoundException(Messages.FORM_FIELD_NOT_FOUND.formatted(id), this.getRedirectUrl()));

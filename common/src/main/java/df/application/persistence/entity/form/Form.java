@@ -33,8 +33,9 @@ public class Form implements EntityNameAware {
             numberFormat = "%04d",
             initialValue = 1000,
             incrementBy = 1,
-            prefixSeparator = "_"
+            prefixSeparator = "-"
     )
+//    @PrefixedId(prefixValue = "FORM", sequenceName = "FORM")
     @Column(name = "ID")
     private String id;
 
