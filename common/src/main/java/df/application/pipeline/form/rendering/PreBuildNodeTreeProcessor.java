@@ -2,8 +2,11 @@ package df.application.pipeline.form.rendering;
 
 import df.application.persistence.entity.form.Form;
 import df.application.persistence.entity.form.FormConfig;
+import org.jmouse.action.adapter.el.ActionExpressionAdapter;
 import org.jmouse.core.i18n.MessageSource;
 import org.jmouse.core.i18n.StandardMessageSourceBundle;
+import org.jmouse.core.scope.AbstractVariablesContext;
+import org.jmouse.core.scope.Context;
 import org.jmouse.dom.CorrectNodeDepth;
 import org.jmouse.dom.FormMetadata;
 import org.jmouse.dom.Node;
@@ -31,6 +34,10 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
         String               environment = arguments.getArgument("ENV_NAME");
         DOMRenderingPipeline rendering   = (DOMRenderingPipeline) context.getBeanLookup().getBean(Rendering.class);
 
+        ActionExpressionAdapter adapter = context.getBeanLookup().getBean(ActionExpressionAdapter.class);
+        Context actionContext = new AbstractVariablesContext(){};
+        adapter.execute("@Action[load]{'source':class('df.application.dto.form.support.Manufacturers')}", actionContext);
+
         Map<String, String> configs = new HashMap<>();
 
         for (FormConfig config : entity.getConfigs()) {
@@ -47,9 +54,7 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
                 getErrors(context)
         );
 
-        Node node = rendering.render(ModelReference.of(
-                "default.form", entity
-        ), request -> request
+        Node node = rendering.render(ModelReference.of("default.form", entity), request -> request
                 .setAttribute(FormMetadata.REQUEST_ATTRIBUTE, metadata)
                 .setAttribute("submitCaption", configs.get("CONFIG_SUBMIT_TEXT"))
                 .setAttribute(SubmissionState.REQUEST_ATTRIBUTE, submission)
