@@ -5,7 +5,7 @@ import org.jmouse.core.access.data.EnumDataProvider;
 public class InterfaceTypeDataProvider extends EnumDataProvider<InterfaceType> {
 
     public InterfaceTypeDataProvider() {
-        super(InterfaceType.class, InterfaceType::getName);
+        super(InterfaceType.class, type -> "%s - %s".formatted(type.getCode(), type.getName()));
     }
 
 }

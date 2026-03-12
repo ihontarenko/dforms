@@ -2,11 +2,8 @@ package df.application.pipeline.form.rendering;
 
 import df.application.persistence.entity.form.Form;
 import df.application.persistence.entity.form.FormConfig;
-import org.jmouse.action.adapter.el.ActionExpressionAdapter;
 import org.jmouse.core.i18n.MessageSource;
 import org.jmouse.core.i18n.StandardMessageSourceBundle;
-import org.jmouse.core.scope.AbstractVariablesContext;
-import org.jmouse.core.scope.Context;
 import org.jmouse.dom.CorrectNodeDepth;
 import org.jmouse.dom.FormMetadata;
 import org.jmouse.dom.Node;
@@ -34,10 +31,6 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
         String               environment = arguments.getArgument("ENV_NAME");
         DOMRenderingPipeline rendering   = (DOMRenderingPipeline) context.getBeanLookup().getBean(Rendering.class);
 
-        ActionExpressionAdapter adapter = context.getBeanLookup().getBean(ActionExpressionAdapter.class);
-        Context actionContext = new AbstractVariablesContext(){};
-        adapter.execute("@Action[load]{'source':class('df.application.dto.form.support.Manufacturers')}", actionContext);
-
         Map<String, String> configs = new HashMap<>();
 
         for (FormConfig config : entity.getConfigs()) {
@@ -47,7 +40,8 @@ public class PreBuildNodeTreeProcessor implements PipelineProcessor {
         FormMetadata         metadata    = FormMetadata.of(
                 configs.get("CONFIG_FORM_ACTION"),
                 configs.get("CONFIG_FORM_METHOD"),
-                Map.of());
+                Map.of()
+        );
 
         SubmissionState submission = SubmissionState.of(
                 getRequestData(context),

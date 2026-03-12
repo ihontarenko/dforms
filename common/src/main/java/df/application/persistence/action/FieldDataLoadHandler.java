@@ -1,10 +1,9 @@
-package df.application.persistence.handler;
+package df.application.persistence.action;
 
 import df.application.dto.form.FieldOptionDTO;
 import df.application.service.form.FieldOptionService;
-import df.common.commans.CommandRequest;
-import df.common.commans.annotation.Action;
-import df.common.commans.annotation.Command;
+import org.jmouse.action.ActionRequest;
+import org.jmouse.action.annotation.Action;
 import org.jmouse.core.access.data.DataProvider;
 import org.jmouse.core.scope.Context;
 import org.jmouse.core.reflection.Reflections;
@@ -16,22 +15,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SuppressWarnings({"unused"})
-@Command("action")
 public class FieldDataLoadHandler {
 
-    @Action({"load"})
-    public void preUpdate(String actionName, CommandRequest request) {
+    @Action("action:load")
+    public void preUpdate(ActionRequest request) {
         Context context = request.context();
 
         if (context.getProperty("entity") instanceof FieldConfig entity) {
             Field              field   = entity.getField();
             FieldOptionService service = request.context().getBean(FieldOptionService.class);
 
-            if (request.queryParameter("class") instanceof Class<?> dataProviderType) {
+            if (request.argument("class") instanceof Class<?> dataProviderType) {
                 DataProvider<String, Object> dataProvider = (DataProvider<String, Object>) Reflections.instantiate(
                         Reflections.findFirstConstructor(dataProviderType));
 
                 Set<FieldOption> options = new HashSet<>();
+
+                entity.setConfigValue("PROCESSED! " + entity.getConfigValue());
 
                 dataProvider.getValuesMap().forEach((key, value) -> {
                     FieldOptionDTO option = new FieldOptionDTO();

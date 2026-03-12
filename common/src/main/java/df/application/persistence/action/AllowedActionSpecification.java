@@ -1,4 +1,4 @@
-package df.application.persistence.handler;
+package df.application.persistence.action;
 
 import df.common.specification.Specification;
 import df.common.specification.SpecificationContext;
