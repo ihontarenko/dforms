@@ -1,6 +1,6 @@
 package df.application.dto.form.support;
 
-import org.jmouse.common.support.provider.data.EnumDataProvider;
+import org.jmouse.core.access.data.EnumDataProvider;
 
 public class ARMDataProvider extends EnumDataProvider<ARM> {
 
