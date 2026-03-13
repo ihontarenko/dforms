@@ -29,6 +29,7 @@ public class FieldConfigEntityListener extends AbstractEventListener<FieldConfig
         if (name.startsWith("#action")) {
             ActionExecutionContext context = new ActionExecutionContext();
             context.setProperty("entity", config);
+            context.setProperty("field", config.getField());
             context.setBeanLookup(new SpringBeanLookup());
             ActionExecutorSingleton.getActionExpressionAdapter(ACTION_EXECUTOR).execute(value, context);
         }

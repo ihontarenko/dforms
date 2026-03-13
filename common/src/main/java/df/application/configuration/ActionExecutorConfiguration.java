@@ -2,10 +2,9 @@ package df.application.configuration;
 
 import df.application.PackageCoreRoot;
 import org.jmouse.action.*;
-import org.jmouse.action.adapter.el.ActionELModule;
+import org.jmouse.action.adapter.el.ActionExpressionConfigurer;
 import org.jmouse.action.adapter.el.ActionExpressionAdapter;
 import org.jmouse.action.adapter.mapper.ActionDefinitionMapper;
-import org.jmouse.action.smoke.SmokeA;
 import org.jmouse.action.support.ActionAnnotationProcessor;
 import org.jmouse.core.annotation.AnnotationBootstrapper;
 import org.jmouse.core.annotation.AnnotationDiscovery;
@@ -44,7 +43,7 @@ public class ActionExecutorConfiguration {
     public ActionExpressionAdapter actionExpressionAdapter(
             ExpressionLanguage expressionLanguage, ActionExecutor actionExecutor
     ) {
-        ActionELModule.configure(expressionLanguage);
+        ActionExpressionConfigurer.configure(expressionLanguage);
         return new ActionExpressionAdapter(expressionLanguage, actionExecutor);
     }
 

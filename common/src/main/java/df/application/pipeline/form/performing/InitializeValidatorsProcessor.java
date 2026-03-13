@@ -1,6 +1,7 @@
 package df.application.pipeline.form.performing;
 
 import df.application.dto.form.FieldConfigDTO;
+import df.application.persistence.entity.form.Field;
 import org.jetbrains.annotations.NotNull;
 import org.jmouse.core.mapping.Mappers;
 import org.jmouse.el.ExpressionLanguage;
@@ -21,6 +22,7 @@ import org.jmouse.validator.constraint.processor.ConstraintProcessor;
 import org.jmouse.validator.constraint.registry.ConstraintTypeRegistry;
 import org.jmouse.validator.constraint.registry.InMemoryConstraintSchemaRegistry;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +42,19 @@ public class InitializeValidatorsProcessor implements PipelineProcessor {
         ConstraintHandler                constraintHandler = new ConstraintHandler(processor);
 
         ConstraintExpressionSupport support = getConstraintExpressionSupport();
+        ConstraintSchemas.Builder   builder = ConstraintSchemas.builder("DF.expression");
 
-        ConstraintSchemas.Builder builder = ConstraintSchemas.builder("DF.expression");
+        Map<String, Field> fields = context.getValue("FIELDS");
 
         validationConfigs.forEach((fieldName, configs) -> {
             for (FieldConfigDTO configDTO : configs) {
-                Constraint constraint = support.parse(configDTO.getValue());
+                Map<String, Object> values = new HashMap<>();
+
+                if (fields.containsKey(fieldName)) {
+                    values.put("field", fields.get(fieldName));
+                }
+
+                Constraint constraint = support.parse(configDTO.getValue(), values);
                 builder.field(fieldName).use(constraint).add().done();
             }
         });
